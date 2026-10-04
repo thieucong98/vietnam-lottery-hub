@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Calendar, Trophy, Sparkles, ChevronRight, Award } from 'lucide-react';
-import { LatestDrawXSMB, LatestDrawVietlott } from '../types';
+import { Calendar, Trophy, Sparkles, ChevronRight, Award, Flame, Dice5 } from 'lucide-react';
+import { LatestDrawXSMB, LatestDrawVietlott, LatestDraw3D, LatestDrawKeno } from '../types';
 
 interface LiveResultsBoardProps {
   gameType: 'xsmb' | 'vietlott_655' | 'vietlott_645';
   drawData: any;
   onSelectNumber: (num: string) => void;
+  latest3D?: LatestDraw3D;
+  latestKeno?: LatestDrawKeno;
 }
 
 export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
   gameType,
   drawData,
   onSelectNumber,
+  latest3D,
+  latestKeno,
 }) => {
   const [hoveredNumber, setHoveredNumber] = useState<string | null>(null);
 
@@ -97,6 +101,9 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
             </div>
           )}
         </div>
+
+        {/* Các sản phẩm Vietlott đồng hành: Max 3D & Keno */}
+        <CompanionVietlottGames latest3D={latest3D} latestKeno={latestKeno} />
       </div>
     );
   }
@@ -244,6 +251,114 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
           </table>
         </div>
       </div>
+      {/* Các sản phẩm Vietlott đồng hành: Max 3D & Keno */}
+      <div style={{ gridColumn: '1 / -1' }}>
+        <CompanionVietlottGames latest3D={latest3D} latestKeno={latestKeno} />
+      </div>
+    </div>
+  );
+};
+
+const CompanionVietlottGames: React.FC<{ latest3D?: LatestDraw3D; latestKeno?: LatestDrawKeno }> = ({
+  latest3D,
+  latestKeno,
+}) => {
+  if (!latest3D && !latestKeno) return null;
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16, marginTop: 16 }}>
+      {/* Max 3D */}
+      {latest3D && (
+        <div className="glass-card" style={{ padding: 18, background: 'rgba(30, 41, 59, 0.7)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Dice5 size={18} color="var(--accent-gold)" />
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>VIETLOTT MAX 3D</h3>
+            </div>
+            <span className="badge badge-normal" style={{ fontSize: '0.72rem' }}>
+              KỲ #{latest3D.id} ({latest3D.date})
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: 4 }}>Giải Đặc Biệt (2 bộ 3 số):</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {(latest3D.result?.['Giải Đặc biệt'] || []).map((num, i) => (
+                  <span key={i} className="badge badge-hot" style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '0.05em', padding: '3px 8px' }}>
+                    {num}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: 4 }}>Giải Nhất (4 bộ):</div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {(latest3D.result?.['Giải Nhất'] || []).map((num, i) => (
+                  <span key={i} className="badge badge-normal" style={{ fontSize: '0.82rem', fontWeight: 700 }}>
+                    {num}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: 4 }}>Giải Nhì (6 bộ):</div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {(latest3D.result?.['Giải Nhì'] || []).map((num, i) => (
+                  <span key={i} style={{ fontSize: '0.8rem', color: 'var(--text-main)', fontFamily: 'var(--font-mono)', padding: '2px 5px', background: 'rgba(255,255,255,0.05)', borderRadius: 3 }}>
+                    {num}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Keno */}
+      {latestKeno && (
+        <div className="glass-card" style={{ padding: 18, background: 'rgba(30, 41, 59, 0.7)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Flame size={18} color="#ef4444" />
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>VIETLOTT KENO (QUAY NHANH)</h3>
+            </div>
+            <span className="badge badge-hot" style={{ fontSize: '0.72rem' }}>
+              KỲ {latestKeno.id} ({latestKeno.date})
+            </span>
+          </div>
+
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: 6 }}>
+            20 con số trúng thưởng kỳ quay gần nhất:
+          </div>
+          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 12 }}>
+            {(latestKeno.result || []).map((num, i) => (
+              <span
+                key={i}
+                className="lottery-ball ball-gold"
+                style={{ width: 28, height: 28, fontSize: '0.75rem', fontWeight: 700 }}
+              >
+                {num.toString().padStart(2, '0')}
+              </span>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {latestKeno.big_small && (
+              <span className="badge badge-normal" style={{ fontSize: '0.72rem' }}>
+                Quy luật: <strong>{latestKeno.big_small}</strong>
+              </span>
+            )}
+            {latestKeno.odd_even && (
+              <span className="badge badge-normal" style={{ fontSize: '0.72rem' }}>
+                Chẵn/Lẻ: <strong>{latestKeno.odd_even}</strong>
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { InstantLookupModal } from './components/InstantLookupModal';
 import { HeatmapMatrix } from './components/HeatmapMatrix';
 import { GanRankingView } from './components/GanRankingView';
 import { AIStrategyHub } from './components/AIStrategyHub';
-import { LotteryIndexData, MLInsightsData } from './types';
+import { LotteryIndexData, MLInsightsData, SummaryData } from './types';
 import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw } from 'lucide-react';
 
 export function App() {
@@ -17,25 +17,50 @@ export function App() {
   const [vietlott655Data, setVietlott655Data] = useState<LotteryIndexData | null>(null);
   const [vietlott645Data, setVietlott645Data] = useState<LotteryIndexData | null>(null);
   const [mlData, setMlData] = useState<MLInsightsData | null>(null);
+  const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Phím tắt toàn cục: Ctrl+K / Cmd+K hoặc phím '/' để mở tra cứu tức thì
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+        return;
+      }
+      if (e.key === '/' && !isSearchOpen) {
+        const target = e.target as HTMLElement;
+        const tagName = target?.tagName?.toUpperCase();
+        if (tagName !== 'INPUT' && tagName !== 'TEXTAREA' && !target?.isContentEditable) {
+          e.preventDefault();
+          setIsSearchOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchOpen]);
 
   // Tải dữ liệu chỉ mục JSON khi khởi động ứng dụng
   useEffect(() => {
     async function loadAllData() {
       try {
         setLoading(true);
-        // Tải song song cả 4 file chỉ mục
-        const [resXsmb, res655, res645, resMl] = await Promise.all([
+        // Tải song song tất cả các file chỉ mục và tóm tắt
+        const [resXsmb, res655, res645, resMl, resSummary] = await Promise.all([
           fetch('./data/xsmb_index.json'),
           fetch('./data/vietlott_655_index.json'),
           fetch('./data/vietlott_645_index.json'),
           fetch('./data/ml_insights.json'),
+          fetch('./data/summary.json'),
         ]);
 
         if (resXsmb.ok) setXsmbData(await resXsmb.json());
         if (res655.ok) setVietlott655Data(await res655.json());
         if (res645.ok) setVietlott645Data(await res645.json());
         if (resMl.ok) setMlData(await resMl.json());
+        if (resSummary.ok) setSummaryData(await resSummary.json());
       } catch (err) {
         console.error('Lỗi tải dữ liệu chỉ mục:', err);
       } finally {
@@ -164,6 +189,8 @@ export function App() {
                   gameType="xsmb"
                   drawData={xsmbData?.latest_draw}
                   onSelectNumber={handleSelectNumber}
+                  latest3D={summaryData?.vietlott_3d_latest}
+                  latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
                 <HeatmapMatrix
@@ -180,6 +207,8 @@ export function App() {
                   gameType="vietlott_655"
                   drawData={vietlott655Data?.latest_draw}
                   onSelectNumber={handleSelectNumber}
+                  latest3D={summaryData?.vietlott_3d_latest}
+                  latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
                 <GanRankingView
@@ -197,6 +226,8 @@ export function App() {
                   gameType="vietlott_645"
                   drawData={vietlott645Data?.latest_draw}
                   onSelectNumber={handleSelectNumber}
+                  latest3D={summaryData?.vietlott_3d_latest}
+                  latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
                 <GanRankingView
@@ -265,6 +296,17 @@ export function App() {
       >
         <Search size={20} />
         <span>Tra Cứu Số Tức Thì</span>
+        <kbd style={{
+          background: 'rgba(0, 0, 0, 0.35)',
+          borderRadius: 4,
+          padding: '1px 6px',
+          fontSize: '0.72rem',
+          fontFamily: 'var(--font-mono)',
+          color: '#ffffff',
+          marginLeft: 4,
+        }}>
+          Ctrl K
+        </kbd>
       </button>
 
       {/* Modal Tra Cứu Số */}
@@ -272,7 +314,8 @@ export function App() {
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         xsmbData={xsmbData}
-        vietlottData={vietlott655Data}
+        vietlott655Data={vietlott655Data}
+        vietlott645Data={vietlott645Data}
         initialNumber={selectedSearchNumber}
       />
 

@@ -66,7 +66,32 @@ export interface LatestDrawVietlott {
   date: string;
   id: string;
   result: number[];
-  process_time?: string;
+  jackpot1?: string | number;
+  jackpot2?: string | number;
+}
+
+export interface LatestDraw3D {
+  date: string;
+  id: string;
+  result: Record<string, string[]>;
+}
+
+export interface LatestDrawKeno {
+  date: string;
+  id: string;
+  result: number[];
+  big_small?: string;
+  odd_even?: string;
+}
+
+export interface SummaryData {
+  xsmb_latest?: LatestDrawXSMB;
+  vietlott_655_latest?: LatestDrawVietlott;
+  vietlott_645_latest?: LatestDrawVietlott;
+  vietlott_3d_latest?: LatestDraw3D;
+  vietlott_3d_pro_latest?: LatestDraw3D;
+  vietlott_keno_latest?: LatestDrawKeno;
+  generated_at?: string;
 }
 
 export interface LotteryIndexData {

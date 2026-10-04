@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from loguru import logger
+import polars as pl
 
 from engine.analytics.matrix_builder import MatrixBuilder
 from engine.analytics.gap_analyzer import GapAnalyzer
@@ -75,6 +76,35 @@ class IndexBuilder:
             "vietlott_645_top_gan": vietlott_645.get("top_gan"),
             "generated_at": xsmb_data.get("metadata", {}).get("generated_at"),
         }
+
+        # Bổ sung kết quả mới nhất của Max 3D, 3D Pro và Keno
+        p3d_file = self.data_dir_vietlott / "3d.jsonl"
+        if p3d_file.exists():
+            try:
+                df_3d = pl.read_ndjson(p3d_file)
+                if not df_3d.is_empty():
+                    summary_payload["vietlott_3d_latest"] = df_3d.sort(["date", "id"]).to_dicts()[-1]
+            except Exception as e:
+                logger.warning(f"Lỗi đọc 3d.jsonl: {e}")
+
+        p3d_pro_file = self.data_dir_vietlott / "3d_pro.jsonl"
+        if p3d_pro_file.exists():
+            try:
+                df_3d_pro = pl.read_ndjson(p3d_pro_file)
+                if not df_3d_pro.is_empty():
+                    summary_payload["vietlott_3d_pro_latest"] = df_3d_pro.sort(["date", "id"]).to_dicts()[-1]
+            except Exception as e:
+                logger.warning(f"Lỗi đọc 3d_pro.jsonl: {e}")
+
+        keno_file = self.data_dir_vietlott / "keno.jsonl"
+        if keno_file.exists():
+            try:
+                df_keno = pl.read_ndjson(keno_file)
+                if not df_keno.is_empty():
+                    summary_payload["vietlott_keno_latest"] = df_keno.sort(["date", "id"]).to_dicts()[-1]
+            except Exception as e:
+                logger.warning(f"Lỗi đọc keno.jsonl: {e}")
+
         with open(self.web_data_dir / "summary.json", "w", encoding="utf-8") as f:
             json.dump(summary_payload, f, ensure_ascii=False, indent=2)
 

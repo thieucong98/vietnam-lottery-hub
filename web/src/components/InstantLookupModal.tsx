@@ -14,6 +14,8 @@ import {
   CheckCircle2,
   Clock,
   BarChart2,
+  Download,
+  Copy,
 } from 'lucide-react';
 import { LotteryIndexData, NumberDetail, NumberAppearance } from '../types';
 
@@ -21,7 +23,8 @@ interface InstantLookupModalProps {
   isOpen: boolean;
   onClose: () => void;
   xsmbData: LotteryIndexData | null;
-  vietlottData: LotteryIndexData | null;
+  vietlott655Data: LotteryIndexData | null;
+  vietlott645Data: LotteryIndexData | null;
   initialNumber?: string;
 }
 
@@ -29,11 +32,12 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
   isOpen,
   onClose,
   xsmbData,
-  vietlottData,
+  vietlott655Data,
+  vietlott645Data,
   initialNumber = '',
 }) => {
   const [activeTabMode, setActiveTabMode] = useState<'single' | 'xien'>('single');
-  const [selectedGame, setSelectedGame] = useState<'xsmb' | 'vietlott'>('xsmb');
+  const [selectedGame, setSelectedGame] = useState<'xsmb' | 'vietlott_655' | 'vietlott_645'>('xsmb');
   const [searchQuery, setSearchQuery] = useState(initialNumber);
 
   // Xiên 2 inputs
@@ -50,6 +54,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
   // Lazy loaded full history
   const [fullHistoryMap, setFullHistoryMap] = useState<Record<string, NumberAppearance[]>>({});
   const [loadingFullHistory, setLoadingFullHistory] = useState<boolean>(false);
+  const [copiedNotice, setCopiedNotice] = useState<boolean>(false);
 
   // Phím Escape để đóng modal
   useEffect(() => {
@@ -67,8 +72,14 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
     }
   }, [initialNumber]);
 
-  const activeData = selectedGame === 'xsmb' ? xsmbData : vietlottData;
-  const maxNumber = selectedGame === 'xsmb' ? 99 : 55;
+  const activeData =
+    selectedGame === 'xsmb'
+      ? xsmbData
+      : selectedGame === 'vietlott_655'
+      ? vietlott655Data
+      : vietlott645Data;
+
+  const maxNumber = selectedGame === 'xsmb' ? 99 : selectedGame === 'vietlott_655' ? 55 : 45;
 
   // Chuẩn hóa số tìm kiếm
   const formattedNumber = useMemo(() => {
@@ -91,7 +102,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
     try {
       setLoadingFullHistory(true);
-      const folder = selectedGame === 'xsmb' ? 'xsmb' : 'vietlott_655';
+      const folder =
+        selectedGame === 'xsmb' ? 'xsmb' : selectedGame === 'vietlott_655' ? 'vietlott_655' : 'vietlott_645';
       const res = await fetch(`./data/history/${folder}/${num}.json`);
       if (res.ok) {
         const data: NumberAppearance[] = await res.json();
@@ -125,6 +137,37 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
     return list;
   }, [sourceList, selectedYear, onlySpecial, onlyMultiHits]);
 
+  // Xuất file CSV
+  const handleExportCSV = () => {
+    if (!filteredHistory || filteredHistory.length === 0) return;
+    const headers = 'Ngày quay,Số nháy,Chi tiết giải thưởng,Giải Đặc Biệt\n';
+    const rows = filteredHistory
+      .map((item) => {
+        const prizesStr = (item.prizes || []).join('; ');
+        const specialStr = item.is_special ? 'Có' : 'Không';
+        return `"${item.date}",${item.hits || 1},"${prizesStr}","${specialStr}"`;
+      })
+      .join('\n');
+
+    const blob = new Blob(['\uFEFF' + headers + rows], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${selectedGame}_so_${formattedNumber}_lich_su.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Sao chép tóm tắt
+  const handleCopySummary = () => {
+    if (!detail) return;
+    const text = `Thống kê số ${detail.number} (${selectedGame.toUpperCase()}): Đã về ${detail.total_hits} lần, lần gần nhất: ${detail.last_seen_date} (${detail.days_since_last} ngày trước), kỷ lục gan: ${detail.max_gap_historical} ngày, chu kỳ trung bình: ${detail.average_gap} ngày/lần.`;
+    navigator.clipboard.writeText(text);
+    setCopiedNotice(true);
+    setTimeout(() => setCopiedNotice(false), 2000);
+  };
+
   // Xử lý tra cứu Xiên 2
   const handleCheckXien = async () => {
     const n1 = xienNum1.trim().padStart(2, '0');
@@ -133,7 +176,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
     setXienLoading(true);
     try {
-      const folder = selectedGame === 'xsmb' ? 'xsmb' : 'vietlott_655';
+      const folder =
+        selectedGame === 'xsmb' ? 'xsmb' : selectedGame === 'vietlott_655' ? 'vietlott_655' : 'vietlott_645';
       const [res1, res2] = await Promise.all([
         fetch(`./data/history/${folder}/${n1}.json`),
         fetch(`./data/history/${folder}/${n2}.json`),
@@ -166,7 +210,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
   if (!isOpen) return null;
 
-  const quickPicks = ['68', '86', '79', '39', '18', '51', '04', '99'];
+  const quickPicks = selectedGame === 'xsmb' ? ['68', '86', '79', '39', '18', '51', '04', '99'] : ['07', '18', '24', '35', '41', '13', '02', '45'];
   const yearsList = ['all', '2026', '2025', '2024', '2023', '2022', '2021', '2020'];
 
   return (
@@ -187,7 +231,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
         className="glass-card animate-fade-in"
         style={{
           width: '100%',
-          maxWidth: 860,
+          maxWidth: 900,
           maxHeight: '94vh',
           display: 'flex',
           flexDirection: 'column',
@@ -216,7 +260,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                 Trung Tâm Tra Cứu Lịch Sử & Kiểm Tra Kết Quả
               </h2>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Tra cứu xem số đã về bao giờ chưa, ngày đầu tiên, lần gần nhất, tổng số lần & toàn bộ thời gian xuất hiện
+                Tra cứu xem số đã về bao giờ chưa, ngày đầu tiên, lần gần nhất, tổng số lần & toàn bộ thời gian xuất hiện (Phím tắt: <kbd style={{ padding: '2px 5px', background: 'rgba(255,255,255,0.1)', borderRadius: 3, border: '1px solid var(--border-subtle)' }}>Esc</kbd>)
               </p>
             </div>
           </div>
@@ -271,22 +315,29 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
           {/* ===================== TAB 1: TRA CỨU ĐƠN SỐ ===================== */}
           {activeTabMode === 'single' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {/* Chọn trò chơi & Input Search */}
+              {/* Chọn trò chơi (3 game) & Input Search */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <button
                     className={`tab-btn ${selectedGame === 'xsmb' ? 'active' : ''}`}
-                    style={{ flex: 1, justifyContent: 'center' }}
+                    style={{ flex: 1, minWidth: 140, justifyContent: 'center' }}
                     onClick={() => setSelectedGame('xsmb')}
                   >
                     XSMB (00 - 99)
                   </button>
                   <button
-                    className={`tab-btn ${selectedGame === 'vietlott' ? 'active' : ''}`}
-                    style={{ flex: 1, justifyContent: 'center' }}
-                    onClick={() => setSelectedGame('vietlott')}
+                    className={`tab-btn ${selectedGame === 'vietlott_655' ? 'active' : ''}`}
+                    style={{ flex: 1, minWidth: 160, justifyContent: 'center' }}
+                    onClick={() => setSelectedGame('vietlott_655')}
                   >
                     Vietlott Power 6/55 (01 - 55)
+                  </button>
+                  <button
+                    className={`tab-btn ${selectedGame === 'vietlott_645' ? 'active' : ''}`}
+                    style={{ flex: 1, minWidth: 160, justifyContent: 'center' }}
+                    onClick={() => setSelectedGame('vietlott_645')}
+                  >
+                    Vietlott Mega 6/45 (01 - 45)
                   </button>
                 </div>
 
@@ -306,7 +357,9 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                     placeholder={
                       selectedGame === 'xsmb'
                         ? 'Nhập số loto cần tra cứu (ví dụ: 68, 51, 99)...'
-                        : 'Nhập số Vietlott (01 - 55)...'
+                        : selectedGame === 'vietlott_655'
+                        ? 'Nhập số Vietlott Power (01 - 55)...'
+                        : 'Nhập số Vietlott Mega (01 - 45)...'
                     }
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -403,14 +456,13 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
                         {detail.first_seen_date && (
                           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                            Lần đầu tiên có trong cơ sở dữ liệu: <strong>{detail.first_seen_date}</strong> (Hơn 20 năm
-                            lịch sử)
+                            Lần đầu tiên có trong cơ sở dữ liệu: <strong>{detail.first_seen_date}</strong>
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                       <div
                         style={{
                           fontSize: '0.75rem',
@@ -427,6 +479,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                           fontWeight: 800,
                           color: 'var(--accent-gold)',
                           fontFamily: 'var(--font-mono)',
+                          lineHeight: 1,
                         }}
                       >
                         {detail.total_hits.toLocaleString()}{' '}
@@ -437,6 +490,25 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                           Trúng Giải Đặc Biệt (Đề): {detail.special_hits} lần
                         </div>
                       )}
+                      <button
+                        onClick={handleCopySummary}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          padding: '4px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          background: 'rgba(255,255,255,0.06)',
+                          border: '1px solid var(--border-subtle)',
+                          color: copiedNotice ? 'var(--accent-emerald)' : 'var(--text-dim)',
+                          fontSize: '0.72rem',
+                          cursor: 'pointer',
+                          marginTop: 4,
+                        }}
+                      >
+                        <Copy size={12} />
+                        {copiedNotice ? 'Đã sao chép!' : 'Sao chép tóm tắt'}
+                      </button>
                     </div>
                   </div>
 
@@ -526,11 +598,23 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                           }}
                         >
                           <BarChart2 size={16} color="var(--accent-cyan)" />
-                          Phân Bố Số Lần Về Theo Từng Năm (2005 - 2026)
+                          Phân Bố Số Lần Về Theo Từng Năm (Click vào năm để lọc)
                         </span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                          Click vào năm để lọc danh sách
-                        </span>
+                        {selectedYear !== 'all' && (
+                          <button
+                            onClick={() => setSelectedYear('all')}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: 'var(--accent-gold)',
+                              fontSize: '0.75rem',
+                              cursor: 'pointer',
+                              textDecoration: 'underline',
+                            }}
+                          >
+                            Xóa lọc (Hiện tất cả)
+                          </button>
+                        )}
                       </div>
 
                       <div
@@ -671,27 +755,51 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                         </span>
                       </div>
 
-                      {/* Nút tải full lịch sử nếu chưa tải */}
-                      {!loadedFullList && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        {/* Nút Xuất CSV */}
                         <button
-                          onClick={() => loadFullHistory(detail.number)}
-                          disabled={loadingFullHistory}
+                          onClick={handleExportCSV}
+                          title="Tải về file CSV để xem trên Excel"
                           style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
                             padding: '6px 12px',
                             borderRadius: 'var(--radius-sm)',
-                            background: 'rgba(56, 189, 248, 0.15)',
-                            border: '1px solid var(--accent-cyan)',
-                            color: 'var(--accent-cyan)',
+                            background: 'rgba(16, 185, 129, 0.15)',
+                            border: '1px solid var(--accent-emerald)',
+                            color: 'var(--accent-emerald)',
                             fontSize: '0.78rem',
                             fontWeight: 700,
                             cursor: 'pointer',
                           }}
                         >
-                          {loadingFullHistory
-                            ? 'Đang tải...'
-                            : `⚡ Tải Toàn Bộ 20 Năm Lịch Sử (${detail.total_hits} Lần)`}
+                          <Download size={13} />
+                          <span>Xuất CSV</span>
                         </button>
-                      )}
+
+                        {/* Nút tải full lịch sử nếu chưa tải */}
+                        {!loadedFullList && (
+                          <button
+                            onClick={() => loadFullHistory(detail.number)}
+                            disabled={loadingFullHistory}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: 'var(--radius-sm)',
+                              background: 'rgba(56, 189, 248, 0.15)',
+                              border: '1px solid var(--accent-cyan)',
+                              color: 'var(--accent-cyan)',
+                              fontSize: '0.78rem',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {loadingFullHistory
+                              ? 'Đang tải...'
+                              : `⚡ Tải Toàn Bộ Lịch Sử (${detail.total_hits} Lần)`}
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {/* Bộ lọc Năm & Tùy chọn */}
@@ -740,23 +848,25 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                         </select>
                       </div>
 
-                      <label
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          fontSize: '0.78rem',
-                          color: onlySpecial ? 'var(--accent-red)' : 'var(--text-muted)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={onlySpecial}
-                          onChange={(e) => setOnlySpecial(e.target.checked)}
-                        />
-                        Chỉ hiện Giải Đặc Biệt (Đề)
-                      </label>
+                      {selectedGame === 'xsmb' && (
+                        <label
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            fontSize: '0.78rem',
+                            color: onlySpecial ? 'var(--accent-red)' : 'var(--text-muted)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={onlySpecial}
+                            onChange={(e) => setOnlySpecial(e.target.checked)}
+                          />
+                          Chỉ hiện Giải Đặc Biệt (Đề)
+                        </label>
+                      )}
 
                       <label
                         style={{

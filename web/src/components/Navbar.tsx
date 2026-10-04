@@ -132,7 +132,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
           >
             <Search size={16} />
-            <span>Tra Cứu Số Nhanh</span>
+            <span>Tra Cứu</span>
+            <kbd style={{
+              background: 'rgba(0, 0, 0, 0.35)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: 4,
+              padding: '1px 6px',
+              fontSize: '0.72rem',
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--accent-gold)',
+            }}>
+              Ctrl K
+            </kbd>
           </button>
 
           <a
