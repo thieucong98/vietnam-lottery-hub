@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <a
-            href="https://github.com"
+            href="https://github.com/thieucong98/vietnam-lottery-hub"
             target="_blank"
             rel="noreferrer"
             style={{
