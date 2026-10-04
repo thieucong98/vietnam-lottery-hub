@@ -5,13 +5,13 @@ import pandas as pd
 import polars as pl
 from loguru import logger
 
-README_TEMPLATE = """# Vietnam Lottery & Vietlott Analytics Platform
+README_TEMPLATE = """# Vietnam Lottery & Vietlott Analytics Platform (vietnam-lottery-hub)
 
-[![Daily Pipeline](https://github.com/OWNER/REPO/actions/workflows/daily-crawler.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/daily-crawler.yml)
-[![Deploy GitHub Pages](https://github.com/OWNER/REPO/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/deploy-pages.yml)
+[![Daily Pipeline](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/daily-crawler.yml/badge.svg)](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/daily-crawler.yml)
+[![Deploy GitHub Pages](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/deploy-pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Nền tảng Tự Động Thu Thập, Phân Tích & Tra Cứu Kết Quả Xổ Số Kiến Thiết (XSMB) và Vietlott (Power 6/55, Mega 6/45, Max 3D, Keno).
-
+> 🌐 **Live Web Demo:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
 > **Cập nhật tự động lần cuối:** {updated_at} (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
@@ -37,19 +37,22 @@ Nền tảng Tự Động Thu Thập, Phân Tích & Tra Cứu Kết Quả Xổ S
 
 ## 🚀 TÍNH NĂNG NỔI BẬT
 
-1. **Tra Cứu Lịch Sử Siêu Tốc (Zero Latency Instant Lookup)**:
-   - Tra cứu xem bất kỳ số nào (00 - 99 hoặc 01 - 55) đã từng về trong lịch sử chưa.
-   - Thống kê ngày đầu tiên xuất hiện, ngày gần nhất về (cách đây bao nhiêu ngày).
+1. **Tra Cứu Lịch Sử Siêu Tốc (Zero-Latency Instant Lookup)**:
+   - Tra cứu tức thì bất kỳ số nào: **XSMB (00-99)**, **Vietlott Power 6/55 (01-55)**, **Vietlott Mega 6/45 (01-45)**.
+   - Thống kê **Ngày đầu tiên xuất hiện (First Seen)**, **Kỳ quay gần nhất (Last Seen - cách đây bao nhiêu ngày)**.
    - Tổng số lần về trong 20 năm, số lần trúng Giải Đặc Biệt (Đề).
    - Biểu đồ phân bố xuất hiện theo từng năm (2005 - 2026).
-   - Tra cứu dòng thời gian toàn bộ các ngày đã về kèm chi tiết giải trúng và bộ lọc Năm/Tháng.
-   - Tra cứu Cặp Lô Xiên (Xiên 2): Kiểm tra xem 2 số đã từng cùng về ngày nào chưa, bao nhiêu lần và lần gần nhất là khi nào.
+   - Tra cứu dòng thời gian toàn bộ các ngày đã về kèm chi tiết giải thưởng và bộ lọc Năm.
+   - **Xuất file CSV** toàn bộ ngày xuất hiện để phân tích bằng Excel/Sheets.
+   - **Tra cứu Cặp Lô Xiên (Xiên 2)**: Kiểm tra xem 2 số đã từng cùng về ngày nào chưa, tần suất xuất hiện và ngày về gần nhất.
+   - **Phím tắt toàn cục:** Bấm `Ctrl + K` (hoặc `Cmd + K`) hoặc phím `/` để mở ngay ô tra cứu.
 
 2. **Phân Tích Thống Kê & Bạc Nhớ Khoa Học**:
    - Bảng xếp hạng Lô Gan cực đại lịch sử và thước đo nguy cơ gan (Risk Gauge).
    - Ma trận đồng xuất hiện (Co-occurrence Matrix): Tìm 5 cặp số hay về cùng nhau nhất trên dữ liệu 1 năm qua.
    - Bản đồ nhiệt (Heatmap Matrix) 100 số trực quan.
    - Chiến lược xác suất thống kê (Markov Chain, Exponential Decay, Mean Reversion) kèm báo cáo Backtest khách quan.
+   - Bảng kết quả đồng hành thời gian thực cho **Vietlott Max 3D** & **Keno** quay nhanh.
 
 3. **Tự Động Hóa 100% Bằng GitHub Actions**:
    - Tự động cào kết quả hàng ngày lúc **18:35** (XSMB) và **18:45** (Vietlott).
