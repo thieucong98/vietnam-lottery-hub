@@ -360,6 +360,8 @@ export function App() {
         xsmbData={xsmbData}
         vietlott655Data={vietlott655Data}
         vietlott645Data={vietlott645Data}
+        fullDrawsData={fullDrawsData}
+        cooccurrenceData={cooccurrenceData}
         initialNumber={selectedSearchNumber}
       />
 
