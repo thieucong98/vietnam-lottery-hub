@@ -57,7 +57,14 @@ README_TEMPLATE = """# Vietnam Lottery & Vietlott Analytics Platform (vietnam-lo
    - **Bộ lọc dàn đề:** Lọc theo Chạm (0-9), Tổng (0-9), Tổng Chẵn/Lẻ, Tổng Lớn/Bé, Kép bằng, và tự động loại trừ các số Lô Gan > 10 ngày hoặc > 15 ngày.
    - **Trình so vé hàng loạt:** Dán bất kỳ dàn số nào (10 - 64 số), hệ thống đối soát ngay lập tức với kỳ quay mới nhất (hoặc kỳ đã chọn), hiển thị chi tiết số nháy ăn và cảnh báo trúng Giải Đặc Biệt.
 
-4. **Tự Động Hóa 100% Bằng GitHub Actions & Telegram Bot**:
+4. **Tra Cứu Bộ Số & Vé Bao Vietlott (Tổ Hợp 2 - 18 Bóng)**:
+   - Hỗ trợ cả **Power 6/55** và **Mega 6/45**.
+   - Bảng chọn bóng trực quan 55 bóng / 45 bóng, chọn nhanh 6 số ngẫu nhiên hoặc bộ số kỳ gần nhất.
+   - Đối soát tức thì toàn bộ 1,400+ kỳ quay lịch sử (<2ms): Đếm chính xác số lần từng trúng **Jackpot 1 (6/6)**, **Jackpot 2 (5+1)**, **Giải Nhất (5/6)**, **Giải Nhì (4/6)**, **Giải Ba (3/6)**.
+   - **Mô phỏng tài chính (PnL Simulator):** Tính toán chi phí nuôi bộ 6 số từ kỳ đầu tiên đến nay vs tổng tiền thưởng thu về.
+   - **Ma trận Cặp số & Bộ ba thường về cùng nhau:** Top 20 cặp số và top 20 bộ ba số xuất hiện nhiều nhất lịch sử Vietlott.
+
+5. **Tự Động Hóa 100% Bằng GitHub Actions & Telegram Bot**:
    - Tự động cào kết quả hàng ngày lúc **18:35** (XSMB) và **18:45** (Vietlott).
    - Tự động cập nhật ma trận thưa, chỉ mục JSON và commit lại repository.
    - Tự động render bảng kết quả mới nhất vào `README.md`.

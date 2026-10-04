@@ -156,3 +156,44 @@ export interface BacNhoData {
   by_loto: Record<string, BacNhoItem>;
   by_special: Record<string, BacNhoItem>;
 }
+
+export interface VietlottHistoricalDraw {
+  id: string;
+  date: string;
+  balls: number[];
+  special?: number | null;
+}
+
+export interface VietlottFullDrawsData {
+  metadata: {
+    generated_at: string;
+    total_655: number;
+    total_645: number;
+  };
+  vietlott_655: VietlottHistoricalDraw[];
+  vietlott_645: VietlottHistoricalDraw[];
+}
+
+export interface VietlottCooccurrenceItem {
+  numbers: string[];
+  hits: number;
+  rate: number;
+  last_seen: {
+    date: string;
+    id: string;
+  };
+}
+
+export interface VietlottCooccurrenceData {
+  metadata: {
+    generated_at: string;
+  };
+  vietlott_655: {
+    top_pairs: VietlottCooccurrenceItem[];
+    top_triplets: VietlottCooccurrenceItem[];
+  };
+  vietlott_645: {
+    top_pairs: VietlottCooccurrenceItem[];
+    top_triplets: VietlottCooccurrenceItem[];
+  };
+}

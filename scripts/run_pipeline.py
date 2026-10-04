@@ -65,16 +65,26 @@ def main():
     except Exception as e:
         logger.error(f"Lỗi khi phân tích Bạc Nhớ: {e}")
 
-    # 6. ML Insights & Backtest
-    logger.info("Bước 6/7: Phân tích chiến lược AI/ML và đo lường Backtest...")
+    # 6. Vietlott Full Draws & Combination Matrix
+    logger.info("Bước 6/8: Phân tích bộ số và ma trận cặp/bộ ba Vietlott...")
+    try:
+        from engine.analytics.vietlott_combination_analyzer import VietlottCombinationAnalyzer
+        v_analyzer = VietlottCombinationAnalyzer()
+        v_analyzer.run()
+        logger.info("-> Xuất dữ liệu bộ số và cặp/bộ ba Vietlott thành công.")
+    except Exception as e:
+        logger.error(f"Lỗi khi phân tích bộ số Vietlott: {e}")
+
+    # 7. ML Insights & Backtest
+    logger.info("Bước 7/8: Phân tích chiến lược AI/ML và đo lường Backtest...")
     try:
         generate_ml_insights()
         logger.info("-> Xuất báo cáo AI & Backtest thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi tạo dự đoán ML: {e}")
 
-    # 7. Render README
-    logger.info("Bước 7/7: Cập nhật bảng kết quả sống động vào README.md...")
+    # 8. Render README
+    logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")
     try:
         from engine.render_readme import render_readme
         render_readme()

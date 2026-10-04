@@ -44,3 +44,33 @@ def test_bac_nho_analysis():
     finally:
         if os.path.exists(tmp_path):
             os.remove(tmp_path)
+
+def test_vietlott_combination_analysis():
+    from engine.analytics.vietlott_combination_analyzer import VietlottCombinationAnalyzer
+    import tempfile
+    import os
+    
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp_draws:
+        tmp_draws_path = tmp_draws.name
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp_cooc:
+        tmp_cooc_path = tmp_cooc.name
+
+    try:
+        analyzer = VietlottCombinationAnalyzer(
+            output_draws_path=tmp_draws_path,
+            output_matrix_path=tmp_cooc_path
+        )
+        full_draws = analyzer.extract_full_draws()
+        assert "vietlott_655" in full_draws
+        assert "vietlott_645" in full_draws
+        assert len(full_draws["vietlott_655"]) > 1000
+
+        cooc = analyzer.analyze_cooccurrence(full_draws)
+        assert "vietlott_655" in cooc
+        assert len(cooc["vietlott_655"]["top_pairs"]) > 0
+        assert len(cooc["vietlott_655"]["top_triplets"]) > 0
+    finally:
+        if os.path.exists(tmp_draws_path):
+            os.remove(tmp_draws_path)
+        if os.path.exists(tmp_cooc_path):
+            os.remove(tmp_cooc_path)

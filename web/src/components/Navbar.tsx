@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter } from 'lucide-react';
+import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter, Trophy } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: string;
@@ -84,6 +84,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Dices size={18} />
             <span>Mega 6/45</span>
+          </button>
+
+          <button
+            className={`tab-btn ${currentTab === 'vietlott_combo' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('vietlott_combo')}
+          >
+            <Trophy size={18} color="var(--accent-gold)" />
+            <span>Bộ Số Vietlott</span>
           </button>
 
           <button
