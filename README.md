@@ -3,9 +3,10 @@
 [![Daily Pipeline](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/daily-crawler.yml/badge.svg)](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/daily-crawler.yml)
 [![Deploy GitHub Pages](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/thieucong98/vietnam-lottery-hub/actions/workflows/deploy-pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web Demo:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> **Cập nhật tự động lần cuối:** 05/10/2026 00:02:00 (Giờ Việt Nam)  
+> **Cập nhật tự động lần cuối:** 05/10/2026 00:10:07 (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
 ---
@@ -98,6 +99,17 @@ npm run dev
 
 ---
 
-## ⚖️ TUYÊN BỐ MIỄN TRỪ TRÁCH NHIỆM (DISCLAIMER)
+## ⚖️ TUYÊN BỐ PHÁP LÝ & CHƠI CÓ TRÁCH NHIỆM (LEGAL COMPLIANCE & 18+)
 
-Dự án này được phát triển hoàn toàn vì mục đích **học tập, nghiên cứu khoa học dữ liệu, kỹ thuật dữ liệu (Data Engineering) và tự động hóa**. Xổ số là trò chơi có bản chất ngẫu nhiên độc lập về mặt toán học. Dự án này **KHÔNG** khuyến khích cờ bạc dưới mọi hình thức và **KHÔNG** đảm bảo bất kỳ kết quả dự đoán nào.
+> [!IMPORTANT]
+> **Về ranh giới pháp lý tại Việt Nam:**
+> 1. **Xổ số Nhà nước là hợp pháp:** Hoạt động kinh doanh Xổ số kiến thiết truyền thống và Xổ số điện toán Vietlott là ngành nghề kinh doanh có điều kiện, hoàn toàn hợp pháp do Nhà nước quản lý theo **Nghị định 30/2007/NĐ-CP**, **Thông tư 75/2013/TT-BTC** và **Quyết định 1108/QĐ-TTg** của Thủ tướng Chính phủ, nhằm tạo nguồn thu xây dựng các công trình phúc lợi, y tế và giáo dục cộng đồng.
+> 2. **Lô đề ngầm là bất hợp pháp:** Các hoạt động đánh bạc bằng hình thức "lô đề" tự phát ăn tiền là hành vi vi phạm pháp luật nghiêm trọng, bị xử phạt hành chính theo **Nghị định 144/2021/NĐ-CP** hoặc truy cứu trách nhiệm hình sự theo **Điều 321, 322 Bộ luật Hình sự 2015 (sửa đổi 2017)**.
+
+### Mục Đích & Nguyên Tắc Dự Án:
+- **Nghiên cứu khoa học dữ liệu & học thuật thuần túy:** Dự án được xây dựng phục vụ nghiên cứu xác suất thống kê, mô hình chuỗi thời gian, kiến trúc dữ liệu ma trận thưa và tự động hóa pipeline CI/CD mã nguồn mở.
+- **Nghiêm cấm cờ bạc & lô đề:** Tác giả và cộng đồng phát triển **kiên quyết phản đối và nghiêm cấm** việc sử dụng mã nguồn, dữ liệu, trang web, Telegram Bot hay tài liệu của dự án vào các hoạt động cờ bạc, cá cược, tổ chức đánh bạc hoặc bất kỳ hành vi vi phạm pháp luật nào.
+- **Biến cố ngẫu nhiên độc lập:** Về mặt toán học xác suất, mỗi kỳ quay là một biến cố ngẫu nhiên độc lập. Mọi phân tích thống kê chỉ mang tính chất mô tả quá khứ, **KHÔNG CÓ GIÁ TRỊ CAM KẾT** hay bảo đảm bất kỳ kết quả nào trong tương lai.
+- **Chơi có trách nhiệm (18+):** Chỉ dành cho công dân từ đủ 18 tuổi trở lên. Tuyệt đối không vay mượn, không xem xổ số là hình thức đầu tư kiếm tiền hay làm giàu.
+
+👉 **Đọc toàn văn Chính Sách & Tuyên Bố Pháp Lý Đầy Đủ Tại Đây:** [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md)

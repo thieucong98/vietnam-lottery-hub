@@ -8,6 +8,7 @@ import { AIStrategyHub } from './components/AIStrategyHub';
 import { BacNhoHub } from './components/BacNhoHub';
 import { SmartFilterAndChecker } from './components/SmartFilterAndChecker';
 import { VietlottCombinationHub } from './components/VietlottCombinationHub';
+import { LegalComplianceModal } from './components/LegalComplianceModal';
 import {
   LotteryIndexData,
   MLInsightsData,
@@ -16,11 +17,12 @@ import {
   VietlottFullDrawsData,
   VietlottCooccurrenceData,
 } from './types';
-import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw } from 'lucide-react';
+import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw, Scale, AlertTriangle } from 'lucide-react';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('xsmb');
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [selectedSearchNumber, setSelectedSearchNumber] = useState<string>('');
 
   const [xsmbData, setXsmbData] = useState<LotteryIndexData | null>(null);
@@ -107,6 +109,7 @@ export function App() {
           setSelectedSearchNumber('');
           setIsSearchOpen(true);
         }}
+        onOpenLegal={() => setIsLegalModalOpen(true)}
         latestDate={latestDate}
       />
 
@@ -372,22 +375,147 @@ export function App() {
         initialNumber={selectedSearchNumber}
       />
 
-      {/* Footer */}
+      {/* Modal Tuân Thủ Pháp Lý & 18+ */}
+      <LegalComplianceModal
+        isOpen={isLegalModalOpen}
+        onClose={() => setIsLegalModalOpen(false)}
+      />
+
+      {/* Footer Tuân Thủ Pháp Lý & Trách Nhiệm Xã Hội */}
       <footer style={{
         marginTop: 60,
         borderTop: '1px solid var(--border-subtle)',
-        padding: '24px 20px',
-        textAlign: 'center',
-        fontSize: '0.8rem',
-        color: 'var(--text-dim)',
-        background: 'rgba(8, 12, 20, 0.95)',
+        padding: '40px 20px 24px',
+        fontSize: '0.82rem',
+        color: 'var(--text-muted)',
+        background: 'rgba(5, 8, 15, 0.98)',
+        backdropFilter: 'blur(20px)',
       }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+        <div style={{
+          maxWidth: 1400,
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 28,
+          marginBottom: 32,
+        }}>
+          {/* Cột 1: Thông tin Dự án & Nghiên cứu Khoa học */}
           <div>
-            <strong>Vietnam Lottery & Vietlott Analytics Platform</strong> © 2026. Mã nguồn mở phục vụ mục đích nghiên cứu & học tập.
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <div className="lottery-ball ball-gold" style={{ width: 28, height: 28, fontSize: '0.8rem' }}>88</div>
+              <strong style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>Vietnam Lottery & Vietlott Hub</strong>
+            </div>
+            <p style={{ lineHeight: 1.6, color: 'var(--text-dim)', marginBottom: 12 }}>
+              Nền tảng phân tích thống kê xác suất, chuỗi thời gian và trực quan hóa dữ liệu xổ số mở (XSMB, Vietlott Power 6/55, Mega 6/45). Dự án mã nguồn mở phi lợi nhuận phục vụ học thuật và nghiên cứu khoa học dữ liệu.
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <span className="badge" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '2px 8px', borderRadius: 4, fontSize: '0.72rem' }}>
+                Open Source (MIT)
+              </span>
+              <span className="badge" style={{ background: 'rgba(6, 182, 212, 0.15)', color: '#22d3ee', border: '1px solid rgba(6, 182, 212, 0.3)', padding: '2px 8px', borderRadius: 4, fontSize: '0.72rem' }}>
+                100% Client-Side Privacy
+              </span>
+            </div>
           </div>
+
+          {/* Cột 2: Hành Lang Pháp Lý & Phân Định Lô Đề Bất Hợp Pháp */}
           <div>
-            Tự động cập nhật hàng ngày bằng GitHub Actions • Host 100% trên GitHub Pages
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <Scale size={18} color="var(--accent-emerald)" />
+              <strong style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>Hành Lang Pháp Lý & Phân Định</strong>
+            </div>
+            <p style={{ lineHeight: 1.6, color: 'var(--text-dim)', marginBottom: 12 }}>
+              Xổ số kiến thiết truyền thống và Vietlott là hoạt động hợp pháp do Nhà nước cấp phép (Nghị định 30/2007/NĐ-CP & QĐ 1108/QĐ-TTg). Nền tảng <strong>tuyệt đối phản đối và nghiêm cấm</strong> việc lợi dụng dữ liệu vào hành vi lô đề, cờ bạc bất hợp pháp (Điều 321, 322 BLHS & Nghị định 144/2021/NĐ-CP).
+            </p>
+            <button
+              onClick={() => setIsLegalModalOpen(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '6px 14px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
+                color: '#34d399',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.7)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+              }}
+            >
+              <ShieldCheck size={14} />
+              <span>Xem Toàn Văn Tuyên Bố Pháp Lý & Miễn Trừ</span>
+            </button>
+          </div>
+
+          {/* Cột 3: Chơi Có Trách Nhiệm (18+) & Cảnh Báo Rủi Ro */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <AlertTriangle size={18} color="var(--accent-gold)" />
+              <strong style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>Chơi Có Trách Nhiệm (18+)</strong>
+            </div>
+            <p style={{ lineHeight: 1.6, color: 'var(--text-dim)', marginBottom: 8 }}>
+              Chỉ dành cho người từ đủ <strong>18 tuổi trở lên</strong>. Xổ số là trò chơi giải trí xác suất ngẫu nhiên, không phải là phương thức đầu tư, tích lũy tài sản hay kiếm sống.
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 5, fontSize: '0.76rem', color: 'var(--text-dim)' }}>
+              <li>• Giữ vững nguyên tắc chi tiêu giải trí, tuyệt đối không vay mượn.</li>
+              <li>• Thuật toán thống kê chỉ phản ánh dữ liệu lịch sử, không đảm bảo tương lai.</li>
+              <li>• Biết dừng lại đúng lúc để bảo vệ bản thân và gia đình.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Thanh Bản Quyền & Trạng Thái Hệ Thống */}
+        <div style={{
+          borderTop: '1px solid var(--border-subtle)',
+          paddingTop: 18,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 12,
+          fontSize: '0.75rem',
+          color: 'var(--text-dim)',
+        }}>
+          <div>
+            © 2026 <strong>Vietnam Lottery Analytics Hub</strong>. Mã nguồn mở phục vụ mục đích nghiên cứu & học tập xác suất thống kê.
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+              GitHub Actions Tự Động Hóa 24/7
+            </span>
+            <button
+              onClick={() => setIsLegalModalOpen(true)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--accent-emerald)',
+                cursor: 'pointer',
+                fontSize: '0.75rem',
+                textDecoration: 'underline',
+                padding: 0,
+              }}
+            >
+              Chính sách & Miễn trừ trách nhiệm (18+)
+            </button>
+            <a
+              href="https://github.com/thieucong98/vietnam-lottery-hub/blob/main/LEGAL_DISCLAIMER.md"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: 'var(--accent-emerald)', textDecoration: 'none' }}
+            >
+              LEGAL_DISCLAIMER.md ↗
+            </a>
           </div>
         </div>
       </footer>

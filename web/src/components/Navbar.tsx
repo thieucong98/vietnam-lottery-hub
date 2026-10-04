@@ -1,10 +1,11 @@
 import React from 'react';
-import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter, Trophy } from 'lucide-react';
+import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter, Trophy, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
   onOpenSearch: () => void;
+  onOpenLegal?: () => void;
   latestDate?: string;
 }
 
@@ -12,6 +13,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentTab,
   setCurrentTab,
   onOpenSearch,
+  onOpenLegal,
   latestDate,
 }) => {
   return (
@@ -169,6 +171,38 @@ export const Navbar: React.FC<NavbarProps> = ({
               Ctrl K
             </kbd>
           </button>
+
+          {onOpenLegal && (
+            <button
+              onClick={onOpenLegal}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '8px 14px',
+                borderRadius: 'var(--radius-full)',
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                color: '#34d399',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              title="Xem Quy Định Pháp Lý & Chơi Có Trách Nhiệm (18+)"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+              }}
+            >
+              <ShieldCheck size={16} color="#10b981" />
+              <span>18+ Pháp Lý</span>
+            </button>
+          )}
 
           <a
             href="https://github.com/thieucong98/vietnam-lottery-hub"

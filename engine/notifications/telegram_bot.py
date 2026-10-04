@@ -63,7 +63,8 @@ def format_telegram_message(summary_data: dict, gan_data: dict = None) -> str:
         msg += "🟢 <b>VIETLOTT KENO (QUAY NHANH)</b>\n"
         msg += f"🎯 [ {' '.join(balls)} ... ]{rule}\n\n"
 
-    msg += "👉 <b>Tra cứu 20 năm & Soi cầu:</b> https://thieucong98.github.io/vietnam-lottery-hub/"
+    msg += "👉 <b>Tra cứu 20 năm & Soi cầu:</b> https://thieucong98.github.io/vietnam-lottery-hub/\n"
+    msg += "⚖️ <i>Dữ liệu thống kê XSKT & Vietlott hợp pháp. Chơi có trách nhiệm (18+).</i>"
     return msg
 
 def send_telegram_alert(summary_file: str = "web/public/data/summary.json") -> bool:
@@ -140,11 +141,24 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             "⏳ <b>/gan [xsmb|655|645]</b> - Top 10 số gan lì chưa về lâu nhất\n"
             "🧠 <b>/bacnho &lt;số&gt;</b> - Bạc nhớ 20 năm: những số hay về theo sau số này\n"
             "🔥 <b>/hot [655|645]</b> - Top các cặp số có tần suất về cùng nhau cao nhất\n"
-            "🌐 <b>/web</b> - Link truy cập nền tảng trực tuyến\n\n"
-            "<i>Dữ liệu được cập nhật tự động 100% sau mỗi giờ quay!</i>"
+            "🌐 <b>/web</b> - Link truy cập nền tảng trực tuyến\n"
+            "⚖️ <b>/legal</b> - Chính sách pháp lý & Chơi có trách nhiệm (18+)\n\n"
+            "<i>Dữ liệu được cập nhật tự động 100% sau mỗi giờ quay!</i>\n\n"
+            "⚠️ <b>Lưu ý:</b> Dữ liệu chỉ phục vụ mục đích học thuật xác suất thống kê đối với XSKT & Vietlott hợp pháp. Nghiêm cấm sử dụng cho hoạt động lô đề cờ bạc bất hợp pháp."
         )
 
-    # 2. /web
+    # 2. /legal hoặc /policy
+    if cmd in ["/legal", "/policy", "/dieukhoan"]:
+        return (
+            "⚖️ <b>CHÍNH SÁCH PHÁP LÝ & CHƠI CÓ TRÁCH NHIỆM (18+)</b>\n\n"
+            "1. <b>Tính Hợp Pháp Của Xổ Số Nhà Nước:</b> Xổ số kiến thiết truyền thống và Xổ số điện toán Vietlott là hoạt động vui chơi giải trí hợp pháp tại Việt Nam (theo Nghị định 30/2007/NĐ-CP, Thông tư 75/2013/TT-BTC, Quyết định 1108/QĐ-TTg).\n\n"
+            "2. <b>Nghiêm Cấm Lô Đề Bất Hợp Pháp:</b> Nền tảng <b>tuyệt đối không liên quan, không cổ súy và nghiêm cấm</b> việc sử dụng dữ liệu vào hành vi lô đề, cờ bạc ngầm (vi phạm Điều 321, 322 Bộ luật Hình sự 2015 & Nghị định 144/2021/NĐ-CP).\n\n"
+            "3. <b>Mục Đích Học Thuật:</b> Toàn bộ thuật toán chỉ nhằm phân tích thống kê xác suất dữ liệu lịch sử, không có giá trị cam kết hay đảm bảo kết quả tương lai.\n\n"
+            "4. <b>Chơi Có Trách Nhiệm:</b> Chỉ dành cho người từ đủ 18 tuổi trở lên. Tuyệt đối không vay mượn để tham gia các trò chơi may rủi.\n\n"
+            "📄 Xem toàn văn: https://github.com/thieucong98/vietnam-lottery-hub/blob/main/LEGAL_DISCLAIMER.md"
+        )
+
+    # 3. /web
     if cmd in ["/web", "/link"]:
         return (
             "🌐 <b>NỀN TẢNG TRA CỨU & PHÂN TÍCH XỔ SỐ CHUYÊN NGHIỆP</b>\n\n"

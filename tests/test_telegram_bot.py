@@ -37,3 +37,11 @@ def test_telegram_commands():
     assert "POWER 6/55" in check_combo
     assert "Jackpot 1" in check_combo
     assert "Giải Ba" in check_combo
+
+    # 8. /legal
+    legal_resp = handle_telegram_command("/legal", data_dir=data_dir)
+    assert "CHÍNH SÁCH PHÁP LÝ" in legal_resp
+    assert "18+" in legal_resp
+    assert "Điều 321" in legal_resp
+    assert "LEGAL_DISCLAIMER.md" in legal_resp
+
