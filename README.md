@@ -5,7 +5,7 @@
 
 Nền tảng Tự Động Thu Thập, Phân Tích & Tra Cứu Kết Quả Xổ Số Kiến Thiết (XSMB) và Vietlott (Power 6/55, Mega 6/45, Max 3D, Keno).
 
-> **Cập nhật tự động lần cuối:** 04/10/2026 22:51:51 (Giờ Việt Nam)  
+> **Cập nhật tự động lần cuối:** 04/10/2026 22:54:30 (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
 ---
