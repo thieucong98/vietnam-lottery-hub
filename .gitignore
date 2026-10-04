@@ -1,0 +1,32 @@
+# Python virtual environments & bytecode
+.venv/
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+
+# Node & Frontend dependencies & build artifacts
+web/node_modules/
+web/dist/
+web/.vite/
+node_modules/
+dist/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IDE & Editor configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

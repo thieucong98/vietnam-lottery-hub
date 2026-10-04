@@ -1,0 +1,53 @@
+name: Daily Lottery Crawler & Analytics Pipeline
+
+on:
+  schedule:
+    # 11:35 UTC = 18:35 Giờ Việt Nam (Ngay sau khi XSMB quay xong lúc 18h30)
+    - cron: '35 11 * * *'
+    # 11:45 UTC = 18:45 Giờ Việt Nam (Ngay sau khi Vietlott 6/55 & 6/45 quay xong)
+    - cron: '45 11 * * *'
+  workflow_dispatch: # Cho phép bấm chạy thủ công từ tab Actions
+
+permissions:
+  contents: write
+
+jobs:
+  crawl-and-process:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Cài đặt Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 3. Cài đặt astral-sh/setup-uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: 4. Cài đặt thư viện dự án
+        run: |
+          uv sync
+
+      - name: 5. Chạy toàn bộ Pipeline (Cào dữ liệu -> Xử lý ma trận -> Chỉ mục JSON -> AI -> README)
+        run: |
+          uv run python scripts/run_pipeline.py
+
+      - name: 6. Kiểm tra toàn vẹn dữ liệu với Pytest
+        run: |
+          uv run pytest
+
+      - name: 7. Tự động Commit & Push dữ liệu mới nhất
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(data): auto-sync lottery results & indexes [skip ci]"
+          file_pattern: "data/* web/public/data/* README.md"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"

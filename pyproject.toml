@@ -1,0 +1,39 @@
+[project]
+name = "vietnam-lottery"
+version = "1.0.0"
+description = "Nền tảng Tự động thu thập, Phân tích & Tra cứu Kết quả Xổ số Kiến thiết (XSMB) và Vietlott"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12.0",
+    "cattrs>=23.2.3",
+    "cloudscraper>=1.2.71",
+    "jinja2>=3.1.4",
+    "loguru>=0.7.2",
+    "lxml>=5.2.2",
+    "numpy>=1.26.4",
+    "pandas>=2.2.2",
+    "polars>=1.0.0",
+    "pyarrow>=16.1.0",
+    "pydantic>=2.7.0",
+    "requests>=2.32.0",
+    "scipy>=1.13.0",
+    "tenacity>=8.3.0",
+    "typer>=0.12.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "ruff>=0.4.0",
+]
+
+[project.scripts]
+lottery = "engine.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["engine"]
