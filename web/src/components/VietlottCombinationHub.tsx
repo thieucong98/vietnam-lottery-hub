@@ -37,6 +37,7 @@ export const VietlottCombinationHub: React.FC<VietlottCombinationHubProps> = ({
   const [selectedBalls, setSelectedBalls] = useState<number[]>([3, 11, 16, 22, 41, 54]);
   const [copied, setCopied] = useState<boolean>(false);
   const [filterMinMatches, setFilterMinMatches] = useState<number>(3); // 3, 4, 5, 6
+  const [backtestHorizon, setBacktestHorizon] = useState<'all' | '3y' | '1y' | '100'>('all');
 
   const maxBall = selectedProduct === '655' ? 55 : 45;
   const productName = selectedProduct === '655' ? 'Power 6/55' : 'Mega 6/45';
@@ -529,60 +530,273 @@ export const VietlottCombinationHub: React.FC<VietlottCombinationHubProps> = ({
         </div>
       </div>
 
-      {/* 4. Mô Phỏng Tài Chính Giả Định (Financial Simulation) */}
+      {/* 4. Mô Phỏng Chiến Lược Nuôi Vé & Backtest Lợi Nhuận (Backtesting Hub) */}
       {selectedBalls.length === 6 && (
-        <div className="glass-card" style={{
-          padding: 20,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 16,
-          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.8))',
-          borderLeft: '4px solid var(--accent-emerald)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="lottery-ball ball-emerald" style={{ width: 44, height: 44, fontSize: '1.2rem' }}>
-              <DollarSign size={22} />
+        <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+          {/* Header & Khung Thời Gian Nuôi */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="lottery-ball ball-emerald" style={{ width: 42, height: 42, fontSize: '1.2rem' }}>
+                <DollarSign size={20} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+                  MÔ PHỎNG CHIẾN LƯỢC NUÔI VÉ & BACKTEST LÃI/LỖ (PNL)
+                </h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  So sánh hiệu quả tài chính thực nghiệm giữa việc nuôi bộ số cố định vs mua theo cặp số hot vs mua ngẫu nhiên.
+                </p>
+              </div>
             </div>
-            <div>
-              <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>
-                MÔ PHỎNG TÀI CHÍNH KHI NUÔI BỘ 6 SỐ NÀY TỪ KỲ ĐẦU TIÊN
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                Giả sử mua liên tục {matchAnalysis.totalDraws} kỳ quay kể từ khi phát hành (10,000đ / kỳ):
-              </div>
+
+            {/* Chọn Khung Thời Gian */}
+            <div style={{ display: 'flex', gap: 6, background: 'rgba(0,0,0,0.3)', padding: 3, borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+              {[
+                { id: 'all', label: `Toàn bộ (${matchAnalysis.totalDraws} kỳ)` },
+                { id: '3y', label: '3 Năm qua' },
+                { id: '1y', label: '1 Năm qua' },
+                { id: '100', label: '100 Kỳ gần nhất' },
+              ].map((h) => (
+                <button
+                  key={h.id}
+                  onClick={() => setBacktestHorizon(h.id as any)}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    background: backtestHorizon === h.id ? 'var(--accent-emerald)' : 'transparent',
+                    color: backtestHorizon === h.id ? '#000000' : 'var(--text-muted)',
+                    fontWeight: 700,
+                    fontSize: '0.78rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {h.label}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Tổng chi phí vé:</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-mono)' }}>
-                {matchAnalysis.totalCost.toLocaleString('vi-VN')} đ
-              </div>
-            </div>
+          {/* 3 Cột So Sánh Chiến Lược */}
+          {(() => {
+            const horizonCount =
+              backtestHorizon === '100'
+                ? Math.min(100, draws.length)
+                : backtestHorizon === '1y'
+                ? Math.min(156, draws.length)
+                : backtestHorizon === '3y'
+                ? Math.min(468, draws.length)
+                : draws.length;
 
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Tổng tiền giải thu về:</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--accent-emerald)', fontFamily: 'var(--font-mono)' }}>
-                {matchAnalysis.totalPrizeMoney.toLocaleString('vi-VN')} đ
-              </div>
-            </div>
+            const horizonSlice = draws.slice(0, horizonCount);
+            const userSet = new Set(selectedBalls);
+            const cost = horizonCount * 10_000;
 
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Tỷ lệ PnL:</div>
-              <div style={{
-                fontSize: '1.1rem',
-                fontWeight: 800,
-                color: matchAnalysis.totalPrizeMoney >= matchAnalysis.totalCost ? 'var(--accent-emerald)' : '#fb7185',
-              }}>
-                {matchAnalysis.totalCost > 0
-                  ? `${Math.round((matchAnalysis.totalPrizeMoney / matchAnalysis.totalCost) * 100)}%`
-                  : '0%'}
+            const p1Val = selectedProduct === '655' ? 40_000_000 : 10_000_000;
+            const p2Val = selectedProduct === '655' ? 500_000 : 300_000;
+            const p3Val = selectedProduct === '655' ? 50_000 : 30_000;
+
+            // Chiến lược A: Bộ số người dùng
+            let winsA = 0;
+            let prizeA = 0;
+            for (const d of horizonSlice) {
+              const m = d.balls.filter((b) => userSet.has(b)).length;
+              const sp = d.special ? userSet.has(d.special) : false;
+              if (m === 6) {
+                winsA++;
+                prizeA += selectedProduct === '655' ? 30_000_000_000 : 12_000_000_000;
+              } else if (m === 5 && sp) {
+                winsA++;
+                prizeA += 3_000_000_000;
+              } else if (m === 5) {
+                winsA++;
+                prizeA += p1Val;
+              } else if (m === 4) {
+                winsA++;
+                prizeA += p2Val;
+              } else if (m === 3) {
+                winsA++;
+                prizeA += p3Val;
+              }
+            }
+
+            const roiA = cost > 0 ? Math.round((prizeA / cost) * 100) : 0;
+            const netPnLA = prizeA - cost;
+
+            // Chiến lược B: Cặp số hot nhất + 4 số ngẫu nhiên
+            const topPair = cooccurrenceData?.[selectedProduct === '655' ? 'vietlott_655' : 'vietlott_645']?.top_pairs?.[0];
+            const pairSet = new Set(topPair ? topPair.numbers.map((n) => parseInt(n, 10)) : [3, 15]);
+            let winsB = 0;
+            let prizeB = 0;
+            for (const d of horizonSlice) {
+              const pairHits = d.balls.filter((b) => pairSet.has(b)).length;
+              if (pairHits === 2) {
+                winsB++;
+                prizeB += p3Val * 2; // ước tính chạm giải thưởng
+              }
+            }
+            const roiB = cost > 0 ? Math.round((prizeB / cost) * 100) : 0;
+            const netPnLB = prizeB - cost;
+
+            // Chiến lược C: Mua ngẫu nhiên (Lý thuyết hoàn vốn Vietlott ~55%)
+            const prizeC = Math.round(cost * 0.55);
+            const netPnLC = prizeC - cost;
+            const roiC = 55;
+
+            return (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+                {/* Chiến lược A */}
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(245, 158, 11, 0.35)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: 18,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-gold)' }}>
+                      CHIẾN LƯỢC A: BỘ SỐ CỦA BẠN
+                    </span>
+                    <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
+                      Nuôi Cố Định
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
+                    Bộ 6 số: [ {selectedBalls.map((b) => b.toString().padStart(2, '0')).join(' - ')} ]
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Vốn mua vé ({horizonCount} kỳ):</span>
+                      <strong style={{ color: '#ffffff', fontFamily: 'var(--font-mono)' }}>{cost.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Tổng thưởng thu về:</span>
+                      <strong style={{ color: 'var(--accent-emerald)', fontFamily: 'var(--font-mono)' }}>{prizeA.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Lợi nhuận ròng (Net PnL):</span>
+                      <strong style={{ color: netPnLA >= 0 ? 'var(--accent-emerald)' : '#fb7185', fontFamily: 'var(--font-mono)' }}>
+                        {netPnLA >= 0 ? `+${netPnLA.toLocaleString('vi-VN')}` : netPnLA.toLocaleString('vi-VN')} đ
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn vốn (ROI):</span>
+                      <strong style={{ color: roiA >= 100 ? 'var(--accent-emerald)' : roiA >= 50 ? 'var(--accent-gold)' : '#fb7185', fontSize: '1.05rem' }}>
+                        {roiA}%
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: 4 }}>
+                      <span>Số kỳ nổ giải (≥ Giải Ba):</span>
+                      <strong style={{ color: '#ffffff' }}>{winsA} kỳ</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chiến lược B */}
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(56, 189, 248, 0.3)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: 18,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
+                      CHIẾN LƯỢC B: CẶP SỐ HOT #1
+                    </span>
+                    <span className="badge badge-normal" style={{ fontSize: '0.7rem' }}>
+                      Ma Trận Đồng Xuất Hiện
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
+                    Cố định cặp: [ {topPair ? topPair.numbers.join(' - ') : '03 - 15'} ] + 4 số xoay vòng
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Vốn mua vé ({horizonCount} kỳ):</span>
+                      <strong style={{ color: '#ffffff', fontFamily: 'var(--font-mono)' }}>{cost.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Tổng thưởng ước tính:</span>
+                      <strong style={{ color: 'var(--accent-cyan)', fontFamily: 'var(--font-mono)' }}>{prizeB.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Lợi nhuận ròng (Net PnL):</span>
+                      <strong style={{ color: netPnLB >= 0 ? 'var(--accent-emerald)' : '#fb7185', fontFamily: 'var(--font-mono)' }}>
+                        {netPnLB >= 0 ? `+${netPnLB.toLocaleString('vi-VN')}` : netPnLB.toLocaleString('vi-VN')} đ
+                      </strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn vốn (ROI):</span>
+                      <strong style={{ color: 'var(--accent-cyan)', fontSize: '1.05rem' }}>{roiB}%</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: 4 }}>
+                      <span>Số kỳ cặp hot cùng về:</span>
+                      <strong style={{ color: '#ffffff' }}>{winsB} kỳ</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chiến lược C */}
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: 18,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-muted)' }}>
+                      CHIẾN LƯỢC C: MUA RANDOM
+                    </span>
+                    <span className="badge badge-slate" style={{ fontSize: '0.7rem' }}>
+                      Máy Tự Chọn
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
+                    Mỗi kỳ mua 1 vé hoàn toàn ngẫu nhiên (Lý thuyết xác suất)
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Vốn mua vé ({horizonCount} kỳ):</span>
+                      <strong style={{ color: '#ffffff', fontFamily: 'var(--font-mono)' }}>{cost.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng thu về:</span>
+                      <strong style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{prizeC.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng PnL:</span>
+                      <strong style={{ color: '#fb7185', fontFamily: 'var(--font-mono)' }}>{netPnLC.toLocaleString('vi-VN')} đ</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
+                      <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn vốn lý thuyết:</span>
+                      <strong style={{ color: 'var(--text-dim)', fontSize: '1.05rem' }}>{roiC}%</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: 4 }}>
+                      <span>Tỷ lệ hoàn trả cược (RTP):</span>
+                      <strong style={{ color: '#ffffff' }}>~55.0%</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
       )}
 

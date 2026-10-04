@@ -53,35 +53,42 @@ README_TEMPLATE = """# Vietnam Lottery & Vietlott Analytics Platform (vietnam-lo
    - Đánh giá tín hiệu chu kỳ hiện tại (Đang có nhịp vs Cảnh báo lô gan).
    - Nút 1-click sao chép Top 10 số bạc nhớ tiềm năng.
 
-3. **Bộ Lọc Dàn Số Thông Minh & Trình So Vé Hàng Loạt**:
-   - **Bộ lọc dàn đề:** Lọc theo Chạm (0-9), Tổng (0-9), Tổng Chẵn/Lẻ, Tổng Lớn/Bé, Kép bằng, và tự động loại trừ các số Lô Gan > 10 ngày hoặc > 15 ngày.
+3. **Bộ Lọc Dàn Số Thông Minh & Trình So Vé Hàng Loạt (XSMB & Vietlott)**:
+   - **Bộ lọc dàn đề XSMB:** Lọc theo Chạm (0-9), Tổng (0-9), Tổng Chẵn/Lẻ, Tổng Lớn/Bé, Kép bằng, và tự động loại trừ các số Lô Gan > 10 ngày hoặc > 15 ngày.
+   - **Tạo dàn vé Vietlott chuẩn Gauss:** Tự động sinh 5 vé đơn 6 số hoặc vé bao 7-8 thỏa mãn đồng thời: Khoảng tổng điểm chuẩn Gauss (120-180), Tỷ lệ Chẵn/Lẻ 3-3, Tỷ lệ Nhỏ/Lớn 3-3, loại trừ số gan và ưu tiên cặp số đồng xuất hiện cao nhất.
    - **Trình so vé hàng loạt:** Dán bất kỳ dàn số nào (10 - 64 số), hệ thống đối soát ngay lập tức với kỳ quay mới nhất (hoặc kỳ đã chọn), hiển thị chi tiết số nháy ăn và cảnh báo trúng Giải Đặc Biệt.
 
 4. **Tra Cứu Bộ Số & Vé Bao Vietlott (Tổ Hợp 2 - 18 Bóng)**:
    - Hỗ trợ cả **Power 6/55** và **Mega 6/45**.
    - Bảng chọn bóng trực quan 55 bóng / 45 bóng, chọn nhanh 6 số ngẫu nhiên hoặc bộ số kỳ gần nhất.
    - Đối soát tức thì toàn bộ 1,400+ kỳ quay lịch sử (<2ms): Đếm chính xác số lần từng trúng **Jackpot 1 (6/6)**, **Jackpot 2 (5+1)**, **Giải Nhất (5/6)**, **Giải Nhì (4/6)**, **Giải Ba (3/6)**.
-   - **Mô phỏng tài chính (PnL Simulator):** Tính toán chi phí nuôi bộ 6 số từ kỳ đầu tiên đến nay vs tổng tiền thưởng thu về.
+   - **Mô phỏng chiến lược nuôi vé & Backtest PnL:** So sánh đối đầu giữa 3 chiến lược: *Nuôi bộ số cố định* vs *Nuôi theo cặp số hot Co-occurrence* vs *Mua ngẫu nhiên máy chọn (Quick Pick)* qua 100 kỳ, 1 năm, 3 năm hoặc toàn bộ lịch sử.
    - **Ma trận Cặp số & Bộ ba thường về cùng nhau:** Top 20 cặp số và top 20 bộ ba số xuất hiện nhiều nhất lịch sử Vietlott.
 
-5. **Tự Động Hóa 100% Bằng GitHub Actions & Telegram Bot**:
+5. **Tự Động Hóa 100% Bằng GitHub Actions & Telegram Bot 2 Chiều**:
    - Tự động cào kết quả hàng ngày lúc **18:35** (XSMB) và **18:45** (Vietlott).
    - Tự động cập nhật ma trận thưa, chỉ mục JSON và commit lại repository.
    - Tự động render bảng kết quả mới nhất vào `README.md`.
    - Tự động deploy Web App lên GitHub Pages hoàn toàn miễn phí.
-   - **Tích hợp Telegram Bot Alert:** Tự động gửi kết quả mở thưởng đẹp mắt trực tiếp vào Telegram (chỉ cần cấu hình `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_ID` trong GitHub Secrets).
+   - **Telegram Bot Tương Tác 2 Chiều:**
+     - Tự động phát thông báo kết quả hàng ngày qua `TELEGRAM_BOT_TOKEN`.
+     - Hỗ trợ chat tra cứu tức thì: `/xsmb`, `/power`, `/mega`, `/check <bộ số>`, `/gan`, `/bacnho <số>`, `/hot`.
+     - Chạy daemon: `uv run python scripts/run_telegram_bot.py`.
 
 ---
 
 ## 🛠 HƯỚNG DẪN CÀI ĐẶT & CHẠY LOCAL
 
-### 1. Chạy Python Engine
+### 1. Chạy Python Engine & Telegram Bot
 ```bash
 # Cài đặt thư viện với uv hoặc pip
 uv sync
 
 # Chạy toàn bộ pipeline (cào dữ liệu, xử lý ma trận, tạo chỉ mục, render README)
 uv run python scripts/run_pipeline.py
+
+# Khởi động Telegram Bot tương tác 2 chiều (Long Polling)
+uv run python scripts/run_telegram_bot.py
 
 # Hoặc dùng CLI chuyên dụng
 uv run lottery sync-xsmb

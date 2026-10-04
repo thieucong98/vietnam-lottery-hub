@@ -295,7 +295,14 @@ export function App() {
             {currentTab === 'filter' && (
               <SmartFilterAndChecker
                 xsmbData={xsmbData}
+                vietlott655Data={vietlott655Data}
+                vietlott645Data={vietlott645Data}
+                fullDrawsData={fullDrawsData}
+                cooccurrenceData={cooccurrenceData}
                 onSelectNumber={handleSelectNumber}
+                onSwitchToVietlottCombo={(_balls) => {
+                  setCurrentTab('vietlott_combo');
+                }}
               />
             )}
 
