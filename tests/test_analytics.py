@@ -24,3 +24,23 @@ def test_strategies_prediction():
         assert len(set(pred)) == 6, f"{strat.name} không được có số trùng lặp"
         for num in pred:
             assert 1 <= num <= 55, f"{strat.name}: số {num} phải nằm trong khoảng 1 đến 55"
+
+def test_bac_nho_analysis():
+    from engine.analytics.bac_nho_analyzer import BacNhoAnalyzer
+    import tempfile
+    import os
+    
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+        tmp_path = tmp.name
+
+    try:
+        analyzer = BacNhoAnalyzer(output_path=tmp_path)
+        data = analyzer.analyze()
+        assert "metadata" in data
+        assert "by_loto" in data
+        assert "by_special" in data
+        assert "00" in data["by_loto"]
+        assert len(data["by_loto"]["00"]["top_followers"]) > 0
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)

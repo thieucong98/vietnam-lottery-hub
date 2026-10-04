@@ -55,16 +55,26 @@ def main():
     except Exception as e:
         logger.error(f"Lỗi khi xây dựng chỉ mục: {e}")
 
-    # 5. ML Insights & Backtest
-    logger.info("Bước 5/6: Phân tích chiến lược AI/ML và đo lường Backtest...")
+    # 5. Bac Nho 20 years
+    logger.info("Bước 5/7: Phân tích ma trận Bạc Nhớ 20 năm...")
+    try:
+        from engine.analytics.bac_nho_analyzer import BacNhoAnalyzer
+        analyzer = BacNhoAnalyzer()
+        analyzer.analyze()
+        logger.info("-> Xuất dữ liệu Bạc Nhớ 20 năm thành công.")
+    except Exception as e:
+        logger.error(f"Lỗi khi phân tích Bạc Nhớ: {e}")
+
+    # 6. ML Insights & Backtest
+    logger.info("Bước 6/7: Phân tích chiến lược AI/ML và đo lường Backtest...")
     try:
         generate_ml_insights()
         logger.info("-> Xuất báo cáo AI & Backtest thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi tạo dự đoán ML: {e}")
 
-    # 6. Render README
-    logger.info("Bước 6/6: Cập nhật bảng kết quả sống động vào README.md...")
+    # 7. Render README
+    logger.info("Bước 7/7: Cập nhật bảng kết quả sống động vào README.md...")
     try:
         from engine.render_readme import render_readme
         render_readme()

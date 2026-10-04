@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github } from 'lucide-react';
+import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: string;
@@ -100,6 +100,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <BarChart3 size={18} />
             <span>Lô Gan & Tần Suất</span>
+          </button>
+
+          <button
+            className={`tab-btn ${currentTab === 'bacnho' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('bacnho')}
+          >
+            <Sparkles size={18} color="#a855f7" />
+            <span>Bạc Nhớ 20 Năm</span>
+          </button>
+
+          <button
+            className={`tab-btn ${currentTab === 'filter' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('filter')}
+          >
+            <Filter size={18} color="#10b981" />
+            <span>Lọc & So Vé</span>
           </button>
 
           <button

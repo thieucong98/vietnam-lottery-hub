@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > 🌐 **Live Web Demo:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> **Cập nhật tự động lần cuối:** 04/10/2026 23:10:51 (Giờ Việt Nam)  
+> **Cập nhật tự động lần cuối:** 04/10/2026 23:35:17 (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
 ---
@@ -40,18 +40,22 @@
    - **Tra cứu Cặp Lô Xiên (Xiên 2)**: Kiểm tra xem 2 số đã từng cùng về ngày nào chưa, tần suất xuất hiện và ngày về gần nhất.
    - **Phím tắt toàn cục:** Bấm `Ctrl + K` (hoặc `Cmd + K`) hoặc phím `/` để mở ngay ô tra cứu.
 
-2. **Phân Tích Thống Kê & Bạc Nhớ Khoa Học**:
-   - Bảng xếp hạng Lô Gan cực đại lịch sử và thước đo nguy cơ gan (Risk Gauge).
-   - Ma trận đồng xuất hiện (Co-occurrence Matrix): Tìm 5 cặp số hay về cùng nhau nhất trên dữ liệu 1 năm qua.
-   - Bản đồ nhiệt (Heatmap Matrix) 100 số trực quan.
-   - Chiến lược xác suất thống kê (Markov Chain, Exponential Decay, Mean Reversion) kèm báo cáo Backtest khách quan.
-   - Bảng kết quả đồng hành thời gian thực cho **Vietlott Max 3D** & **Keno** quay nhanh.
+2. **Bạc Nhớ Ma Trận 20 Năm (Data-Driven Bac Nho Engine)**:
+   - Dựa trên ma trận 7,500+ kỳ quay XSMB từ năm 2005 đến nay.
+   - Thống kê xác suất có điều kiện chính xác: *Khi hôm trước về số X (hoặc Đề về Y), thì hôm sau con số nào nổ nhiều nhất và tần suất bao nhiêu %*.
+   - Đánh giá tín hiệu chu kỳ hiện tại (Đang có nhịp vs Cảnh báo lô gan).
+   - Nút 1-click sao chép Top 10 số bạc nhớ tiềm năng.
 
-3. **Tự Động Hóa 100% Bằng GitHub Actions**:
+3. **Bộ Lọc Dàn Số Thông Minh & Trình So Vé Hàng Loạt**:
+   - **Bộ lọc dàn đề:** Lọc theo Chạm (0-9), Tổng (0-9), Tổng Chẵn/Lẻ, Tổng Lớn/Bé, Kép bằng, và tự động loại trừ các số Lô Gan > 10 ngày hoặc > 15 ngày.
+   - **Trình so vé hàng loạt:** Dán bất kỳ dàn số nào (10 - 64 số), hệ thống đối soát ngay lập tức với kỳ quay mới nhất (hoặc kỳ đã chọn), hiển thị chi tiết số nháy ăn và cảnh báo trúng Giải Đặc Biệt.
+
+4. **Tự Động Hóa 100% Bằng GitHub Actions & Telegram Bot**:
    - Tự động cào kết quả hàng ngày lúc **18:35** (XSMB) và **18:45** (Vietlott).
    - Tự động cập nhật ma trận thưa, chỉ mục JSON và commit lại repository.
    - Tự động render bảng kết quả mới nhất vào `README.md`.
    - Tự động deploy Web App lên GitHub Pages hoàn toàn miễn phí.
+   - **Tích hợp Telegram Bot Alert:** Tự động gửi kết quả mở thưởng đẹp mắt trực tiếp vào Telegram (chỉ cần cấu hình `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_ID` trong GitHub Secrets).
 
 ---
 

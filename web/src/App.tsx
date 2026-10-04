@@ -5,7 +5,9 @@ import { InstantLookupModal } from './components/InstantLookupModal';
 import { HeatmapMatrix } from './components/HeatmapMatrix';
 import { GanRankingView } from './components/GanRankingView';
 import { AIStrategyHub } from './components/AIStrategyHub';
-import { LotteryIndexData, MLInsightsData, SummaryData } from './types';
+import { BacNhoHub } from './components/BacNhoHub';
+import { SmartFilterAndChecker } from './components/SmartFilterAndChecker';
+import { LotteryIndexData, MLInsightsData, SummaryData, BacNhoData } from './types';
 import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw } from 'lucide-react';
 
 export function App() {
@@ -18,6 +20,7 @@ export function App() {
   const [vietlott645Data, setVietlott645Data] = useState<LotteryIndexData | null>(null);
   const [mlData, setMlData] = useState<MLInsightsData | null>(null);
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
+  const [bacNhoData, setBacNhoData] = useState<BacNhoData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Phím tắt toàn cục: Ctrl+K / Cmd+K hoặc phím '/' để mở tra cứu tức thì
@@ -48,12 +51,13 @@ export function App() {
       try {
         setLoading(true);
         // Tải song song tất cả các file chỉ mục và tóm tắt
-        const [resXsmb, res655, res645, resMl, resSummary] = await Promise.all([
+        const [resXsmb, res655, res645, resMl, resSummary, resBacNho] = await Promise.all([
           fetch('./data/xsmb_index.json'),
           fetch('./data/vietlott_655_index.json'),
           fetch('./data/vietlott_645_index.json'),
           fetch('./data/ml_insights.json'),
           fetch('./data/summary.json'),
+          fetch('./data/bac_nho.json'),
         ]);
 
         if (resXsmb.ok) setXsmbData(await resXsmb.json());
@@ -61,6 +65,7 @@ export function App() {
         if (res645.ok) setVietlott645Data(await res645.json());
         if (resMl.ok) setMlData(await resMl.json());
         if (resSummary.ok) setSummaryData(await resSummary.json());
+        if (resBacNho.ok) setBacNhoData(await resBacNho.json());
       } catch (err) {
         console.error('Lỗi tải dữ liệu chỉ mục:', err);
       } finally {
@@ -255,7 +260,23 @@ export function App() {
               />
             )}
 
-            {/* TAB 6: AI & BACKTEST */}
+            {/* TAB 6: BẠC NHỚ MA TRẬN 20 NĂM */}
+            {currentTab === 'bacnho' && (
+              <BacNhoHub
+                bacNhoData={bacNhoData}
+                onSelectNumber={handleSelectNumber}
+              />
+            )}
+
+            {/* TAB 7: BỘ LỌC DÀN SỐ & SO VÉ */}
+            {currentTab === 'filter' && (
+              <SmartFilterAndChecker
+                xsmbData={xsmbData}
+                onSelectNumber={handleSelectNumber}
+              />
+            )}
+
+            {/* TAB 8: AI & BACKTEST */}
             {currentTab === 'ai' && (
               <AIStrategyHub
                 mlData={mlData}

@@ -131,3 +131,28 @@ export interface MLInsightsData {
   predictions: MLPrediction[];
   backtest_report: BacktestItem[];
 }
+
+export interface BacNhoFollower {
+  number: string;
+  hits: number;
+  rate: number;
+  days_since_last: number;
+}
+
+export interface BacNhoItem {
+  number?: string;
+  special_number?: string;
+  total_triggers: number;
+  top_followers: BacNhoFollower[];
+}
+
+export interface BacNhoData {
+  metadata: {
+    generated_at: string;
+    latest_date: string;
+    latest_special_2d: string;
+    total_draws_analyzed: number;
+  };
+  by_loto: Record<string, BacNhoItem>;
+  by_special: Record<string, BacNhoItem>;
+}
