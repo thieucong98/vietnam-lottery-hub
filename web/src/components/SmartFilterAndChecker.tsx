@@ -14,6 +14,7 @@ import {
   Layers,
   Award,
   AlertCircle,
+  AlertTriangle,
   Trophy,
   Dices,
   ArrowRight,
@@ -157,6 +158,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
   const [vExcludeGanLimit, setVExcludeGanLimit] = useState<number>(20);
   const [vSelectedPair, setVSelectedPair] = useState<string[] | null>(null);
   const [generatedTickets, setGeneratedTickets] = useState<GeneratedVietlottTicket[]>([]);
+  const [vGenerationEmpty, setVGenerationEmpty] = useState<boolean>(false);
   const [vCopiedNotice, setVCopiedNotice] = useState<boolean>(false);
 
   // ==========================================
@@ -264,6 +266,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
     overrideCount?: number,
     overrideType?: VietlottTicketType
   ) => {
+    setVGenerationEmpty(false);
     const targetType = overrideType || vTicketType;
     const targetCount = overrideCount || vTicketCount;
     const spec = getVietlottTicketSpec(vietlottProduct, targetType);
@@ -383,6 +386,9 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
     }
 
     setGeneratedTickets(tickets);
+    if (tickets.length === 0) {
+      setVGenerationEmpty(true);
+    }
   };
 
   const handleCopyAllVietlottTickets = () => {
@@ -553,6 +559,8 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   onClick={() => {
                     setVietlottProduct('655');
                     setGeneratedTickets([]);
+                    setVSelectedPair(null);
+                    setVGenerationEmpty(false);
                   }}
                   style={{ fontSize: '0.82rem', padding: '6px 14px' }}
                 >
@@ -563,6 +571,8 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   onClick={() => {
                     setVietlottProduct('645');
                     setGeneratedTickets([]);
+                    setVSelectedPair(null);
+                    setVGenerationEmpty(false);
                   }}
                   style={{ fontSize: '0.82rem', padding: '6px 14px' }}
                 >
@@ -1026,6 +1036,35 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
               )}
             </div>
           </div>
+
+          {/* Thông Báo Không Tìm Thấy Vé Phù Hợp */}
+          {vGenerationEmpty && (
+            <div
+              className="glass-card animate-fade-in"
+              style={{
+                padding: '18px 22px',
+                borderRadius: 'var(--radius-md)',
+                background: 'rgba(239, 68, 68, 0.08)',
+                border: '1px solid rgba(239, 68, 68, 0.35)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 14,
+              }}
+            >
+              <AlertTriangle size={22} color="var(--accent-red)" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#fca5a5', marginBottom: 6 }}>
+                  Không tìm thấy vé thỏa mãn đồng thời các điều kiện lọc (sau 4.000 lần thử ngẫu nhiên)
+                </h4>
+                <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
+                  Các tiêu chí bạn đang chọn (Tổng Gauss, tỷ lệ Chẵn/Lẻ, Nhỏ/Lớn, Lọc số gan hoặc Cặp số bắt buộc) có thể quá hẹp hoặc xung đột với nhau.
+                </p>
+                <div style={{ marginTop: 8, fontSize: '0.82rem', color: 'var(--accent-gold)' }}>
+                  💡 <strong>Gợi ý:</strong> Hãy nới lỏng các bộ lọc (chọn phân bổ <em>Cân Bằng</em>, giữ <em>Chuẩn Gauss</em> hoặc bỏ cặp số bắt buộc) rồi bấm tạo lại dàn vé.
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Danh Sách Vé Đã Sinh */}
           {generatedTickets.length > 0 && (

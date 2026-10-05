@@ -28,6 +28,9 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
 
   return (
     <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
       style={{
         position: 'fixed',
         inset: 0,
