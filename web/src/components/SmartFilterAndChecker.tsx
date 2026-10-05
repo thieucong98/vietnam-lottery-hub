@@ -21,6 +21,98 @@ import {
   Flame,
 } from 'lucide-react';
 
+export type VietlottTicketType =
+  | 'single'
+  | 'bao5'
+  | 'bao7'
+  | 'bao8'
+  | 'bao9'
+  | 'bao10'
+  | 'bao11'
+  | 'bao12'
+  | 'bao13'
+  | 'bao14'
+  | 'bao15'
+  | 'bao18';
+
+export interface VietlottTicketSpec {
+  type: VietlottTicketType;
+  label: string;
+  size: number;
+  subTickets: number;
+  cost: number;
+}
+
+export interface GeneratedVietlottTicket {
+  id: number;
+  balls: number[];
+  sum: number;
+  evenCount: number;
+  lowCount: number;
+  ticketTypeLabel: string;
+  ticketSize: number;
+  subTickets: number;
+  cost: number;
+}
+
+export function calcCombinations(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  let c = 1;
+  for (let i = 1; i <= k; i++) {
+    c = (c * (n - (k - i))) / i;
+  }
+  return Math.round(c);
+}
+
+export function formatVND(amount: number): string {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(amount);
+}
+
+export function getVietlottTicketSpec(product: '655' | '645', type: VietlottTicketType): VietlottTicketSpec {
+  const maxBall = product === '655' ? 55 : 45;
+  if (type === 'single') {
+    return { type, label: 'Vé Đơn (6 Số)', size: 6, subTickets: 1, cost: 10_000 };
+  }
+  if (type === 'bao5') {
+    const subTickets = maxBall - 5;
+    return { type, label: 'Bao 5 (5 Số)', size: 5, subTickets, cost: subTickets * 10_000 };
+  }
+  const sizeMap: Record<string, number> = {
+    bao7: 7,
+    bao8: 8,
+    bao9: 9,
+    bao10: 10,
+    bao11: 11,
+    bao12: 12,
+    bao13: 13,
+    bao14: 14,
+    bao15: 15,
+    bao18: 18,
+  };
+  const size = sizeMap[type] || 6;
+  const subTickets = calcCombinations(size, 6);
+  return {
+    type,
+    label: `Bao ${size} (${size} Số)`,
+    size,
+    subTickets,
+    cost: subTickets * 10_000,
+  };
+}
+
+export function getGaussSumRange(product: '655' | '645', size: number): { min: number; max: number; mean: number } {
+  const maxBall = product === '655' ? 55 : 45;
+  const mean1 = (maxBall + 1) / 2;
+  const meanTotal = size * mean1;
+  const var1 = (maxBall * maxBall - 1) / 12;
+  const correction = (maxBall - size) / (maxBall - 1);
+  const stdTotal = Math.sqrt(size * var1 * Math.max(0.1, correction));
+  const min = Math.max(Math.round((size * (size + 1)) / 2), Math.round(meanTotal - 1.35 * stdTotal));
+  const max = Math.min(Math.round(size * maxBall - (size * (size - 1)) / 2), Math.round(meanTotal + 1.35 * stdTotal));
+  return { min, max, mean: Math.round(meanTotal) };
+}
+
 interface SmartFilterAndCheckerProps {
   xsmbData: LotteryIndexData | null;
   vietlott655Data?: LotteryIndexData | null;
@@ -57,12 +149,14 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
   // STATE CHO TẠO DÀN & LỌC VÉ VIETLOTT
   // ==========================================
   const [vietlottProduct, setVietlottProduct] = useState<'655' | '645'>('655');
+  const [vTicketType, setVTicketType] = useState<VietlottTicketType>('single');
+  const [vTicketCount, setVTicketCount] = useState<number>(5);
   const [vSumRange, setVSumRange] = useState<'gauss' | 'low' | 'high' | 'all'>('gauss');
-  const [vParityRatio, setVParityRatio] = useState<'3_3' | '2_4' | '4_2' | 'all'>('3_3');
-  const [vLowHighRatio, setVLowHighRatio] = useState<'3_3' | '2_4' | '4_2' | 'all'>('3_3');
+  const [vParityRatio, setVParityRatio] = useState<string>('balanced');
+  const [vLowHighRatio, setVLowHighRatio] = useState<string>('balanced');
   const [vExcludeGanLimit, setVExcludeGanLimit] = useState<number>(20);
   const [vSelectedPair, setVSelectedPair] = useState<string[] | null>(null);
-  const [generatedTickets, setGeneratedTickets] = useState<{ id: number; balls: number[]; sum: number; evenCount: number; lowCount: number }[]>([]);
+  const [generatedTickets, setGeneratedTickets] = useState<GeneratedVietlottTicket[]>([]);
   const [vCopiedNotice, setVCopiedNotice] = useState<boolean>(false);
 
   // ==========================================
@@ -158,7 +252,24 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
     ? cooccurrenceData[vietlottProduct === '655' ? 'vietlott_655' : 'vietlott_645']?.top_pairs || []
     : [];
 
-  const handleGenerateVietlottTickets = (count: number = 5, ticketSize: number = 6) => {
+  const currentTicketSpec = useMemo(() => {
+    return getVietlottTicketSpec(vietlottProduct, vTicketType);
+  }, [vietlottProduct, vTicketType]);
+
+  const currentGaussRange = useMemo(() => {
+    return getGaussSumRange(vietlottProduct, currentTicketSpec.size);
+  }, [vietlottProduct, currentTicketSpec.size]);
+
+  const handleGenerateVietlottTickets = (
+    overrideCount?: number,
+    overrideType?: VietlottTicketType
+  ) => {
+    const targetType = overrideType || vTicketType;
+    const targetCount = overrideCount || vTicketCount;
+    const spec = getVietlottTicketSpec(vietlottProduct, targetType);
+    const ticketSize = spec.size;
+    const gauss = getGaussSumRange(vietlottProduct, ticketSize);
+
     const ganSet = new Set<number>();
     if (vExcludeGanLimit > 0 && activeVietlottIdx?.top_gan) {
       activeVietlottIdx.top_gan.forEach((g) => {
@@ -169,14 +280,29 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
     }
 
     const availablePool = Array.from({ length: maxBall }, (_, i) => i + 1).filter((n) => !ganSet.has(n));
-    const tickets: { id: number; balls: number[]; sum: number; evenCount: number; lowCount: number }[] = [];
+    if (availablePool.length < ticketSize) {
+      alert(`Số lượng bóng khả dụng sau khi lọc gan (${availablePool.length}) không đủ để tạo vé cỡ ${ticketSize}! Hãy giảm bớt giới hạn lọc số gan.`);
+      return;
+    }
 
-    // Min/Max tổng điểm theo chuẩn Gauss
-    const minSum = vSumRange === 'gauss' ? (vietlottProduct === '655' ? 120 : 100) : vSumRange === 'high' ? (vietlottProduct === '655' ? 180 : 160) : 0;
-    const maxSum = vSumRange === 'gauss' ? (vietlottProduct === '655' ? 180 : 160) : vSumRange === 'low' ? (vietlottProduct === '655' ? 120 : 100) : 999;
+    const tickets: GeneratedVietlottTicket[] = [];
+
+    // Min/Max tổng điểm theo chuẩn Gauss động
+    let minSum = 0;
+    let maxSum = 9999;
+    if (vSumRange === 'gauss') {
+      minSum = gauss.min;
+      maxSum = gauss.max;
+    } else if (vSumRange === 'low') {
+      minSum = 0;
+      maxSum = gauss.min - 1;
+    } else if (vSumRange === 'high') {
+      minSum = gauss.max + 1;
+      maxSum = 9999;
+    }
 
     let attempts = 0;
-    while (tickets.length < count && attempts < 2000) {
+    while (tickets.length < targetCount && attempts < 4000) {
       attempts++;
       const currentCombo: number[] = [];
 
@@ -184,7 +310,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
       if (vSelectedPair && vSelectedPair.length === 2) {
         const p1 = parseInt(vSelectedPair[0], 10);
         const p2 = parseInt(vSelectedPair[1], 10);
-        if (p1 <= maxBall && p2 <= maxBall) {
+        if (p1 <= maxBall && p2 <= maxBall && !ganSet.has(p1) && !ganSet.has(p2)) {
           currentCombo.push(p1, p2);
         }
       }
@@ -205,17 +331,39 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
       const sum = currentCombo.reduce((a, b) => a + b, 0);
       if (sum < minSum || sum > maxSum) continue;
 
-      // Kiểm tra Chẵn/Lẻ
+      // Kiểm tra Chẵn / Lẻ
       const evenCount = currentCombo.filter((n) => n % 2 === 0).length;
-      if (vParityRatio === '3_3' && ticketSize === 6 && evenCount !== 3) continue;
-      if (vParityRatio === '2_4' && ticketSize === 6 && evenCount !== 2) continue;
-      if (vParityRatio === '4_2' && ticketSize === 6 && evenCount !== 4) continue;
+      const oddCount = ticketSize - evenCount;
 
-      // Kiểm tra Nhỏ/Lớn
+      if (vParityRatio === 'balanced' || vParityRatio === '3_3') {
+        if (ticketSize % 2 === 0) {
+          if (evenCount !== ticketSize / 2) continue;
+        } else {
+          const half = Math.floor(ticketSize / 2);
+          if (evenCount !== half && evenCount !== half + 1) continue;
+        }
+      } else if (vParityRatio === 'even_heavy' || vParityRatio === '4_2') {
+        if (evenCount <= oddCount) continue;
+      } else if (vParityRatio === 'odd_heavy' || vParityRatio === '2_4') {
+        if (oddCount <= evenCount) continue;
+      }
+
+      // Kiểm tra Nhỏ / Lớn
       const lowCount = currentCombo.filter((n) => n <= midBall).length;
-      if (vLowHighRatio === '3_3' && ticketSize === 6 && lowCount !== 3) continue;
-      if (vLowHighRatio === '2_4' && ticketSize === 6 && lowCount !== 2) continue;
-      if (vLowHighRatio === '4_2' && ticketSize === 6 && lowCount !== 4) continue;
+      const highCount = ticketSize - lowCount;
+
+      if (vLowHighRatio === 'balanced' || vLowHighRatio === '3_3') {
+        if (ticketSize % 2 === 0) {
+          if (lowCount !== ticketSize / 2) continue;
+        } else {
+          const half = Math.floor(ticketSize / 2);
+          if (lowCount !== half && lowCount !== half + 1) continue;
+        }
+      } else if (vLowHighRatio === 'even_heavy' || vLowHighRatio === 'low_heavy' || vLowHighRatio === '4_2') {
+        if (lowCount <= highCount) continue;
+      } else if (vLowHighRatio === 'odd_heavy' || vLowHighRatio === 'high_heavy' || vLowHighRatio === '2_4') {
+        if (highCount <= lowCount) continue;
+      }
 
       // Đảm bảo không trùng vé
       const key = currentCombo.join('-');
@@ -227,6 +375,10 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
         sum,
         evenCount,
         lowCount,
+        ticketTypeLabel: spec.label,
+        ticketSize,
+        subTickets: spec.subTickets,
+        cost: spec.cost,
       });
     }
 
@@ -236,7 +388,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
   const handleCopyAllVietlottTickets = () => {
     if (generatedTickets.length === 0) return;
     const text = generatedTickets
-      .map((t) => `Vé #${t.id}: [ ${t.balls.map((b) => b.toString().padStart(2, '0')).join(' - ')} ] (Tổng ${t.sum})`)
+      .map((t) => `Vé #${t.id} [${t.ticketTypeLabel}]: [ ${t.balls.map((b) => b.toString().padStart(2, '0')).join(' - ')} ] (Tổng ${t.sum} | ${t.subTickets} vé con | ${formatVND(t.cost)})`)
       .join('\n');
     navigator.clipboard.writeText(text);
     setVCopiedNotice(true);
@@ -419,12 +571,174 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
               </div>
             </div>
 
+            {/* BỘ CHỌN LOẠI VÉ VIETLOTT & SỐ LƯỢNG VÉ */}
+            <div
+              style={{
+                background: 'rgba(15, 23, 42, 0.75)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid rgba(245, 158, 11, 0.25)',
+                padding: '16px 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 14,
+              }}
+            >
+              {/* Row 1: Danh sách loại vé */}
+              <div>
+                <div
+                  style={{
+                    fontSize: '0.82rem',
+                    fontWeight: 800,
+                    color: 'var(--accent-gold)',
+                    marginBottom: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <Layers size={16} />
+                  <span>CHỌN LOẠI VÉ VIETLOTT:</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-dim)' }}>
+                    (Hệ thống tự động tính toán tổ hợp & dự toán giá theo chuẩn Vietlott)
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {(
+                    [
+                      'single',
+                      'bao5',
+                      'bao7',
+                      'bao8',
+                      'bao9',
+                      'bao10',
+                      'bao11',
+                      'bao12',
+                      'bao13',
+                      'bao14',
+                      'bao15',
+                      'bao18',
+                    ] as VietlottTicketType[]
+                  ).map((tType) => {
+                    const spec = getVietlottTicketSpec(vietlottProduct, tType);
+                    const isSelected = vTicketType === tType;
+                    return (
+                      <button
+                        key={tType}
+                        onClick={() => {
+                          setVTicketType(tType);
+                          setGeneratedTickets([]);
+                        }}
+                        style={{
+                          padding: '7px 13px',
+                          borderRadius: 'var(--radius-sm)',
+                          background: isSelected
+                            ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.2))'
+                            : 'rgba(255, 255, 255, 0.04)',
+                          border: isSelected ? '1px solid var(--accent-gold)' : '1px solid var(--border-subtle)',
+                          color: isSelected ? '#ffffff' : 'var(--text-muted)',
+                          fontWeight: isSelected ? 800 : 600,
+                          fontSize: '0.8rem',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        <span>{spec.label}</span>
+                        <span
+                          style={{
+                            fontSize: '0.68rem',
+                            padding: '1px 5px',
+                            borderRadius: 3,
+                            background: isSelected ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.08)',
+                            color: isSelected ? '#000000' : 'var(--text-dim)',
+                            fontWeight: 700,
+                          }}
+                        >
+                          {formatVND(spec.cost)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Row 2: Chọn Số Lượng Vé & Thông Số Loại Vé */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 12,
+                  paddingTop: 10,
+                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                    Số lượng vé cần sinh:
+                  </span>
+                  {[1, 3, 5, 10].map((cnt) => (
+                    <button
+                      key={cnt}
+                      onClick={() => setVTicketCount(cnt)}
+                      style={{
+                        padding: '4px 12px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: vTicketCount === cnt ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
+                        color: vTicketCount === cnt ? '#000000' : 'var(--text-main)',
+                        border: '1px solid var(--border-subtle)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {cnt} Vé
+                    </button>
+                  ))}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: '0.78rem',
+                    color: 'var(--text-muted)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <span>
+                    Quy mô:{' '}
+                    <strong style={{ color: 'var(--accent-cyan)' }}>{currentTicketSpec.subTickets} vé con 6 số</strong>
+                  </span>
+                  <span>•</span>
+                  <span>
+                    Tổng tiền mua {vTicketCount} vé:{' '}
+                    <strong style={{ color: 'var(--accent-emerald)' }}>
+                      {formatVND(currentTicketSpec.cost * vTicketCount)}
+                    </strong>
+                  </span>
+                  <span>•</span>
+                  <span>
+                    Khoảng Gauss chuẩn:{' '}
+                    <strong style={{ color: 'var(--accent-gold)' }}>
+                      [{currentGaussRange.min} - {currentGaussRange.max} điểm]
+                    </strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Các Tiêu Chí Lọc Thông Minh */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
               {/* 1. Tổng điểm */}
               <div style={{ background: 'rgba(255,255,255,0.02)', padding: 14, borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
                 <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-gold)', marginBottom: 8 }}>
-                  1. KHOẢNG TỔNG 6 BÓNG:
+                  1. KHOẢNG TỔNG {currentTicketSpec.size} BÓNG:
                 </div>
                 <select
                   value={vSumRange}
@@ -441,10 +755,10 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   }}
                 >
                   <option value="gauss">
-                    {vietlottProduct === '655' ? 'Chuẩn Gauss (120 - 180 điểm) [Chiếm 78%]' : 'Chuẩn Gauss (100 - 160 điểm) [Chiếm 80%]'}
+                    Chuẩn Gauss ({currentGaussRange.min} - {currentGaussRange.max} điểm) [Chiếm ~80%]
                   </option>
-                  <option value="low">Tổng thấp (&lt; {vietlottProduct === '655' ? '120' : '100'} điểm)</option>
-                  <option value="high">Tổng cao (&gt; {vietlottProduct === '655' ? '180' : '160'} điểm)</option>
+                  <option value="low">Tổng thấp (&lt; {currentGaussRange.min} điểm)</option>
+                  <option value="high">Tổng cao (&gt; {currentGaussRange.max} điểm)</option>
                   <option value="all">Tất cả khoảng tổng</option>
                 </select>
               </div>
@@ -456,7 +770,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                 </div>
                 <select
                   value={vParityRatio}
-                  onChange={(e) => setVParityRatio(e.target.value as any)}
+                  onChange={(e) => setVParityRatio(e.target.value)}
                   style={{
                     width: '100%',
                     padding: '8px 10px',
@@ -468,9 +782,15 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                     outline: 'none',
                   }}
                 >
-                  <option value="3_3">Cân bằng: 3 Chẵn - 3 Lẻ (Tần suất cao nhất 33%)</option>
-                  <option value="2_4">2 Chẵn - 4 Lẻ</option>
-                  <option value="4_2">4 Chẵn - 2 Lẻ</option>
+                  <option value="balanced">
+                    {currentTicketSpec.size === 6
+                      ? 'Cân bằng: 3 Chẵn - 3 Lẻ (Tần suất cao nhất 33%)'
+                      : currentTicketSpec.size % 2 === 0
+                      ? `Cân bằng: ${currentTicketSpec.size / 2} Chẵn - ${currentTicketSpec.size / 2} Lẻ`
+                      : `Cân bằng: ${Math.ceil(currentTicketSpec.size / 2)} - ${Math.floor(currentTicketSpec.size / 2)} (Tỷ lệ cao nhất)`}
+                  </option>
+                  <option value="even_heavy">Thiên Chẵn (Đa số bóng chẵn)</option>
+                  <option value="odd_heavy">Thiên Lẻ (Đa số bóng lẻ)</option>
                   <option value="all">Bất kỳ tỷ lệ nào</option>
                 </select>
               </div>
@@ -482,7 +802,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                 </div>
                 <select
                   value={vLowHighRatio}
-                  onChange={(e) => setVLowHighRatio(e.target.value as any)}
+                  onChange={(e) => setVLowHighRatio(e.target.value)}
                   style={{
                     width: '100%',
                     padding: '8px 10px',
@@ -494,11 +814,15 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                     outline: 'none',
                   }}
                 >
-                  <option value="3_3">
-                    3 Nhỏ (01-{midBall}) - 3 Lớn ({midBall + 1}-{maxBall})
+                  <option value="balanced">
+                    {currentTicketSpec.size === 6
+                      ? `3 Nhỏ (01-${midBall}) - 3 Lớn (${midBall + 1}-${maxBall})`
+                      : currentTicketSpec.size % 2 === 0
+                      ? `Cân bằng: ${currentTicketSpec.size / 2} Nhỏ - ${currentTicketSpec.size / 2} Lớn`
+                      : `Cân bằng: ${Math.ceil(currentTicketSpec.size / 2)} - ${Math.floor(currentTicketSpec.size / 2)}`}
                   </option>
-                  <option value="2_4">2 Nhỏ - 4 Lớn</option>
-                  <option value="4_2">4 Nhỏ - 2 Lớn</option>
+                  <option value="low_heavy">Thiên Nhỏ (Nhiều bóng 01-{midBall})</option>
+                  <option value="high_heavy">Thiên Lớn (Nhiều bóng {midBall + 1}-{maxBall})</option>
                   <option value="all">Bất kỳ</option>
                 </select>
               </div>
@@ -580,66 +904,102 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
             )}
 
             {/* Các Nút Bấm Tạo Dàn */}
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', paddingTop: 8, borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', paddingTop: 8, borderTop: '1px solid var(--border-subtle)' }}>
               <button
-                onClick={() => handleGenerateVietlottTickets(5, 6)}
+                onClick={() => handleGenerateVietlottTickets()}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
-                  padding: '10px 20px',
+                  padding: '11px 24px',
                   borderRadius: 'var(--radius-sm)',
                   background: 'linear-gradient(135deg, #f59e0b, #d97706)',
                   color: '#000000',
                   fontWeight: 800,
-                  fontSize: '0.88rem',
+                  fontSize: '0.92rem',
                   border: 'none',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
+                  boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)',
+                  transition: 'transform 0.15s',
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = 'none')}
               >
-                <Dices size={18} />
-                <span>🎲 Tạo Dàn 5 Vé Đơn (6 Số Chuẩn)</span>
+                <Dices size={19} />
+                <span>
+                  🎲 Tạo {vTicketCount} {currentTicketSpec.label} Chuẩn Bộ Lọc
+                </span>
               </button>
 
               <button
-                onClick={() => handleGenerateVietlottTickets(1, 7)}
+                onClick={() => {
+                  setVTicketType('single');
+                  setVTicketCount(5);
+                  handleGenerateVietlottTickets(5, 'single');
+                }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 18px',
+                  gap: 6,
+                  padding: '10px 16px',
                   borderRadius: 'var(--radius-sm)',
-                  background: 'rgba(56, 189, 248, 0.15)',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid var(--border-subtle)',
+                  color: 'var(--text-main)',
+                  fontWeight: 700,
+                  fontSize: '0.82rem',
+                  cursor: 'pointer',
+                }}
+              >
+                <span>5 Vé Đơn (6 Số)</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setVTicketType('bao7');
+                  setVTicketCount(1);
+                  handleGenerateVietlottTickets(1, 'bao7');
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '10px 16px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(56, 189, 248, 0.12)',
                   border: '1px solid var(--accent-cyan)',
                   color: 'var(--accent-cyan)',
                   fontWeight: 700,
-                  fontSize: '0.85rem',
+                  fontSize: '0.82rem',
                   cursor: 'pointer',
                 }}
               >
-                <Award size={16} />
-                <span>⭐ Tạo 1 Vé Bao 7</span>
+                <Award size={15} />
+                <span>1 Vé Bao 7</span>
               </button>
 
               <button
-                onClick={() => handleGenerateVietlottTickets(1, 8)}
+                onClick={() => {
+                  setVTicketType('bao8');
+                  setVTicketCount(1);
+                  handleGenerateVietlottTickets(1, 'bao8');
+                }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 18px',
+                  gap: 6,
+                  padding: '10px 16px',
                   borderRadius: 'var(--radius-sm)',
-                  background: 'rgba(16, 185, 129, 0.15)',
+                  background: 'rgba(16, 185, 129, 0.12)',
                   border: '1px solid var(--accent-emerald)',
                   color: 'var(--accent-emerald)',
                   fontWeight: 700,
-                  fontSize: '0.85rem',
+                  fontSize: '0.82rem',
                   cursor: 'pointer',
                 }}
               >
-                <Trophy size={16} />
-                <span>⭐ Tạo 1 Vé Bao 8</span>
+                <Trophy size={15} />
+                <span>1 Vé Bao 8</span>
               </button>
 
               {generatedTickets.length > 0 && (
@@ -670,12 +1030,12 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
           {/* Danh Sách Vé Đã Sinh */}
           {generatedTickets.length > 0 && (
             <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
                 <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
                   DÀN VÉ VỪA SINH ({generatedTickets.length} Vé Thỏa Mãn Tất Cả Tiêu Chí)
                 </h4>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
-                  Bấm "Kiểm tra lịch sử" để xem từng vé đã ăn giải gì trong 1.400 kỳ qua!
+                  Bấm "Kiểm tra lịch sử" để đối soát từng vé với toàn bộ 1.400+ kỳ quay!
                 </span>
               </div>
 
@@ -695,10 +1055,54 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                       gap: 12,
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                      <span style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--accent-gold)' }}>
-                        Vé #{t.id}
-                      </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <span style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--accent-gold)' }}>
+                          Vé #{t.id}
+                        </span>
+                        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                          <span
+                            style={{
+                              fontSize: '0.68rem',
+                              background: 'rgba(245, 158, 11, 0.15)',
+                              color: 'var(--accent-gold)',
+                              border: '1px solid rgba(245, 158, 11, 0.3)',
+                              padding: '1px 6px',
+                              borderRadius: 3,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {t.ticketTypeLabel}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: '0.68rem',
+                              background: 'rgba(56, 189, 248, 0.15)',
+                              color: 'var(--accent-cyan)',
+                              border: '1px solid rgba(56, 189, 248, 0.3)',
+                              padding: '1px 6px',
+                              borderRadius: 3,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {t.subTickets} vé con
+                          </span>
+                          <span
+                            style={{
+                              fontSize: '0.68rem',
+                              background: 'rgba(16, 185, 129, 0.15)',
+                              color: '#34d399',
+                              border: '1px solid rgba(16, 185, 129, 0.3)',
+                              padding: '1px 6px',
+                              borderRadius: 3,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {formatVND(t.cost)}
+                          </span>
+                        </div>
+                      </div>
+
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         {t.balls.map((b) => (
                           <div
@@ -714,7 +1118,8 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                        Tổng: <strong style={{ color: '#ffffff' }}>{t.sum}</strong> | {t.evenCount}C - {t.balls.length - t.evenCount}L | {t.lowCount}N - {t.balls.length - t.lowCount}L
+                        Tổng: <strong style={{ color: '#ffffff' }}>{t.sum}</strong> | {t.evenCount}C -{' '}
+                        {t.balls.length - t.evenCount}L | {t.lowCount}N - {t.balls.length - t.lowCount}L
                       </div>
 
                       <button
