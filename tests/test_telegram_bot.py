@@ -10,6 +10,8 @@ def test_telegram_commands():
     assert "/xsmb" in help_resp
     assert "/power" in help_resp
     assert "/check" in help_resp
+    assert "/keno" in help_resp
+    assert "/3d" in help_resp
     
     # 2. /web
     web_resp = handle_telegram_command("/web", data_dir=data_dir)
@@ -44,4 +46,32 @@ def test_telegram_commands():
     assert "18+" in legal_resp
     assert "Điều 321" in legal_resp
     assert "LEGAL_DISCLAIMER.md" in legal_resp
+
+    # 9. /keno
+    keno_resp = handle_telegram_command("/keno", data_dir=data_dir)
+    assert "KENO" in keno_resp
+    assert "20 số mở thưởng" in keno_resp
+    assert "Tổng điểm" in keno_resp
+
+    # 10. /3d và /3d pro
+    d3_resp = handle_telegram_command("/3d", data_dir=data_dir)
+    assert "MAX 3D" in d3_resp
+    assert "Giải Đặc Biệt" in d3_resp
+
+    d3pro_resp = handle_telegram_command("/3d pro", data_dir=data_dir)
+    assert "MAX 3D PRO" in d3pro_resp
+    assert "Giải Đặc Biệt" in d3pro_resp
+
+def test_telegram_broadcast_message():
+    import json
+    data_path = Path("web/public/data/summary.json")
+    if data_path.exists():
+        with open(data_path, "r", encoding="utf-8") as f:
+            summary_data = json.load(f)
+        msg = format_telegram_message(summary_data)
+        assert "XSMB" in msg
+        assert "POWER 6/55" in msg
+        assert "KENO" in msg
+        assert "MAX 3D" in msg
+
 
