@@ -33,8 +33,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   const isHomeActive = currentTab === 'xsmb';
   const isVietlottActive =
     currentTab === 'vietlott_655' ||
-    currentTab === 'vietlott_645' ||
-    currentTab === 'vietlott_combo';
+    currentTab === 'vietlott_645';
   const isKenoActive = currentTab === 'keno_3d';
   const isMoreActive = [
     'heatmap',
@@ -168,54 +167,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
             {/* Drawer Options Grid */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {/* Option: Bộ Số Vietlott */}
-              <button
-                onClick={() => handleSelectTab('vietlott_combo')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '14px 16px',
-                  borderRadius: 'var(--radius-md)',
-                  background:
-                    currentTab === 'vietlott_combo'
-                      ? 'rgba(245, 158, 11, 0.15)'
-                      : 'rgba(255, 255, 255, 0.03)',
-                  border:
-                    currentTab === 'vietlott_combo'
-                      ? '1px solid var(--accent-gold)'
-                      : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: 'rgba(245, 158, 11, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--accent-gold)',
-                    }}
-                  >
-                    <Trophy size={20} />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
-                      Tra Cứu Bộ Số & Vé Bao
-                    </div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      So khớp vé 2 - 18 số với toàn bộ lịch sử Vietlott
-                    </div>
-                  </div>
-                </div>
-                <ChevronRight size={18} color="var(--text-dim)" />
-              </button>
 
               {/* Option: Ma Trận Nhiệt */}
               <button

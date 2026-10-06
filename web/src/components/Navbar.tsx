@@ -164,15 +164,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button
-            className={`tab-btn ${currentTab === 'vietlott_combo' ? 'active' : ''}`}
-            onClick={() => setCurrentTab('vietlott_combo')}
-            style={{ padding: '6px 14px', fontSize: '0.84rem' }}
-          >
-            <Trophy size={15} color="var(--accent-gold)" />
-            <span>Bộ Số</span>
-          </button>
-
-          <button
             className={`tab-btn ${currentTab === 'heatmap' ? 'active' : ''}`}
             onClick={() => setCurrentTab('heatmap')}
             style={{ padding: '6px 14px', fontSize: '0.84rem' }}

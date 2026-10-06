@@ -19,23 +19,39 @@ import {
   Zap,
   Lock,
   Unlock,
+  DollarSign,
+  Layers,
+  Dices,
+  Info,
 } from 'lucide-react';
-import { LotteryIndexData, VietlottHistoricalDraw, SummaryData } from '../types';
+import {
+  LotteryIndexData,
+  VietlottHistoricalDraw,
+  SummaryData,
+  VietlottCooccurrenceItem,
+} from '../types';
 
 interface VietlottProductHubProps {
   gameType: 'vietlott_655' | 'vietlott_645';
   indexData: LotteryIndexData | null;
   historicalDraws: VietlottHistoricalDraw[];
+  cooccurrence?: {
+    top_pairs: VietlottCooccurrenceItem[];
+    top_triplets: VietlottCooccurrenceItem[];
+  } | null;
   summaryData: SummaryData | null;
   onSelectNumber: (num: string) => void;
 }
 
 type GeneratorMode = 'random' | 'balanced' | 'golden_sum' | 'hot_bias';
+type ActiveTool = 'quick_pick' | 'combo_bao' | 'cooccurrence' | 'history';
+type BacktestHorizon = 'all' | '3y' | '1y' | '100';
 
 export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
   gameType,
   indexData,
   historicalDraws,
+  cooccurrence,
   summaryData,
   onSelectNumber,
 }) => {
@@ -46,21 +62,23 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
     ? 'Thứ 3, Thứ 5, Thứ 7 hàng tuần (18:00 - 18:30)'
     : 'Thứ 4, Thứ 6, Chủ Nhật hàng tuần (18:00 - 18:30)';
 
-  // Sub-tabs nội bộ trên màn hình
-  const [activeTool, setActiveTool] = useState<'quick_pick' | 'checker' | 'history'>('quick_pick');
+  // Sub-tabs nội bộ hợp nhất trên màn hình sản phẩm
+  const [activeTool, setActiveTool] = useState<ActiveTool>('quick_pick');
 
   // --- TOOL 1: QUICK PICK PRO STATE ---
   const [generatorMode, setGeneratorMode] = useState<GeneratorMode>('balanced');
   const [pinnedNumbers, setPinnedNumbers] = useState<number[]>([]);
   const [generatedNumbers, setGeneratedNumbers] = useState<number[]>([]);
   const [isRolling, setIsRolling] = useState<boolean>(false);
-  const [copied, setCopied] = useState<boolean>(false);
+  const [quickPickCopied, setQuickPickCopied] = useState<boolean>(false);
 
-  // --- TOOL 2: IN-PAGE CHECKER STATE ---
-  const [checkerNumbers, setCheckerNumbers] = useState<number[]>([]);
-  const [checkerManualInput, setCheckerManualInput] = useState<string>('');
+  // --- TOOL 2: TRA CỨU BỘ SỐ & VÉ BAO STATE ---
+  const [selectedBalls, setSelectedBalls] = useState<number[]>([3, 11, 16, 22, 35, 41]);
+  const [comboCopied, setComboCopied] = useState<boolean>(false);
+  const [filterMinMatches, setFilterMinMatches] = useState<number>(3);
+  const [backtestHorizon, setBacktestHorizon] = useState<BacktestHorizon>('all');
 
-  // --- TOOL 3: HISTORY EXPLORER STATE ---
+  // --- TOOL 4: HISTORY EXPLORER STATE ---
   const [historySearch, setHistorySearch] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 12;
@@ -96,13 +114,14 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
     return indexData?.top_frequent?.slice(0, 10).map((f) => parseInt(f.number, 10)) || [];
   }, [indexData]);
 
-  // Thuật toán Quick Pick thông minh với các tiêu chí tối ưu
+  // ==========================================
+  // THUẬT TOÁN 1: QUICK PICK PRO
+  // ==========================================
   const handleGenerateNumbers = () => {
     setIsRolling(true);
-    setCopied(false);
+    setQuickPickCopied(false);
 
     setTimeout(() => {
-      let candidatePool: number[] = [];
       const availableNumbers = Array.from({ length: maxNumber }, (_, i) => i + 1).filter(
         (n) => !pinnedNumbers.includes(n)
       );
@@ -117,11 +136,8 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
       let selected: number[] = [];
 
       if (generatorMode === 'hot_bias') {
-        // Ưu tiên số trong topHotList
         const hotAvailable = topHotList.filter((n) => availableNumbers.includes(n));
         const regularAvailable = availableNumbers.filter((n) => !topHotList.includes(n));
-
-        // Lấy 3-4 số hot
         const hotCount = Math.min(neededCount, Math.floor(Math.random() * 2) + 2);
         const shuffledHot = [...hotAvailable].sort(() => 0.5 - Math.random());
         const shuffledRegular = [...regularAvailable].sort(() => 0.5 - Math.random());
@@ -132,32 +148,24 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
           if (next && !selected.includes(next)) selected.push(next);
         }
       } else if (generatorMode === 'balanced') {
-        // Cân bằng Chẵn Lẻ (3 chẵn - 3 lẻ)
         const currentOdds = pinnedNumbers.filter((n) => n % 2 !== 0).length;
-        const currentEvens = pinnedNumbers.filter((n) => n % 2 === 0).length;
-
         const targetOdds = 3;
-        const targetEvens = 3;
         const needOdds = Math.max(0, targetOdds - currentOdds);
-        const needEvens = Math.max(0, targetEvens - currentEvens);
+        const needEvens = Math.max(0, 3 - pinnedNumbers.filter((n) => n % 2 === 0).length);
 
         const odds = availableNumbers.filter((n) => n % 2 !== 0).sort(() => 0.5 - Math.random());
         const evens = availableNumbers.filter((n) => n % 2 === 0).sort(() => 0.5 - Math.random());
 
         selected = [...odds.slice(0, needOdds), ...evens.slice(0, needEvens)];
-
-        // Nếu còn thiếu thì lấy thêm bất kỳ
         const remaining = availableNumbers.filter((n) => !selected.includes(n)).sort(() => 0.5 - Math.random());
         while (selected.length < neededCount && remaining.length > 0) {
           const n = remaining.pop();
           if (n) selected.push(n);
         }
       } else if (generatorMode === 'golden_sum') {
-        // Tổng điểm kỳ vọng: 6/55: 140-200, 6/45: 110-165
         const targetMin = is655 ? 140 : 110;
         const targetMax = is655 ? 200 : 165;
         let attempts = 0;
-
         while (attempts < 100) {
           attempts++;
           const shuffled = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
@@ -172,7 +180,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
           selected = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
         }
       } else {
-        // Pure Random
         selected = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
       }
 
@@ -182,7 +189,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
     }, 280);
   };
 
-  // Toggle ghim số
   const handleTogglePin = (num: number) => {
     if (pinnedNumbers.includes(num)) {
       setPinnedNumbers((prev) => prev.filter((n) => n !== num));
@@ -195,128 +201,153 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
     }
   };
 
-  // Sao chép bộ số
-  const handleCopyCombo = () => {
+  const handleCopyQuickPick = () => {
     if (generatedNumbers.length === 0) return;
     const txt = generatedNumbers.map((n) => n.toString().padStart(2, '0')).join(' - ');
     navigator.clipboard.writeText(`${gameName}: ${txt}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setQuickPickCopied(true);
+    setTimeout(() => setQuickPickCopied(false), 2000);
   };
 
-  // Chuyển bộ số sang bộ dò vé
-  const handleTransferToChecker = (numbers: number[]) => {
-    setCheckerNumbers(numbers);
-    setActiveTool('checker');
+  const handleTransferToComboBao = (numbers: number[]) => {
+    setSelectedBalls(numbers);
+    setActiveTool('combo_bao');
   };
 
-  // Xử lý dò vé
-  const toggleCheckerNumber = (num: number) => {
-    if (checkerNumbers.includes(num)) {
-      setCheckerNumbers((prev) => prev.filter((n) => n !== num));
+  // ==========================================
+  // THUẬT TOÁN 2: BỘ SỐ, VÉ BAO & BACKTEST LÃI/LỖ
+  // ==========================================
+  const handleToggleComboBall = (num: number) => {
+    const maxAllowed = is655 ? 18 : 15;
+    if (selectedBalls.includes(num)) {
+      setSelectedBalls((prev) => prev.filter((b) => b !== num));
     } else {
-      if (checkerNumbers.length >= 6) {
-        alert('Một bộ vé tiêu chuẩn gồm đúng 6 số!');
+      if (selectedBalls.length >= maxAllowed) {
+        alert(`Tối đa bạn có thể chọn ${maxAllowed} bóng (Vé Bao ${maxAllowed}).`);
         return;
       }
-      setCheckerNumbers((prev) => [...prev, num].sort((a, b) => a - b));
+      setSelectedBalls((prev) => [...prev, num].sort((a, b) => a - b));
     }
   };
 
-  // Kết quả dò vé với kỳ mới nhất
-  const checkResult = useMemo(() => {
-    if (!latestDraw || checkerNumbers.length === 0) return null;
-    const winningMain = latestDraw.balls;
-    const matchedMain = checkerNumbers.filter((n) => winningMain.includes(n));
-    const matchedCount = matchedMain.length;
+  const handleQuickPickCombo6 = () => {
+    const pool = Array.from({ length: maxNumber }, (_, i) => i + 1);
+    const shuffled = pool.sort(() => 0.5 - Math.random());
+    setSelectedBalls(shuffled.slice(0, 6).sort((a, b) => a - b));
+  };
 
-    let matchedSpecial = false;
-    if (is655 && latestDraw.special) {
-      matchedSpecial = checkerNumbers.includes(latestDraw.special);
+  const handleLoadComboNumbers = (numbers: number[]) => {
+    const filtered = numbers.filter((n) => n <= maxNumber);
+    setSelectedBalls(filtered.sort((a, b) => a - b));
+    setActiveTool('combo_bao');
+  };
+
+  const handleCopyComboBalls = () => {
+    const text = selectedBalls.map((b) => b.toString().padStart(2, '0')).join(' - ');
+    navigator.clipboard.writeText(`${gameName}: ${text}`);
+    setComboCopied(true);
+    setTimeout(() => setComboCopied(false), 2000);
+  };
+
+  // Phân tích đối soát tổ hợp siêu tốc (<2ms) qua toàn bộ lịch sử
+  const matchAnalysis = useMemo(() => {
+    if (!sortedDraws || sortedDraws.length === 0 || selectedBalls.length === 0) {
+      return {
+        totalDraws: 0,
+        matches: [],
+        counts: { 6: 0, jp2: 0, 5: 0, 4: 0, 3: 0 },
+        totalPrizeMoney: 0,
+        totalCost: 0,
+      };
     }
 
-    let prizeName = 'Chưa trúng thưởng';
-    let prizeColor = 'var(--text-muted)';
-    let prizeValue = '0 đ';
-    let isWinner = false;
+    const userSet = new Set(selectedBalls);
+    let c6 = 0;
+    let cJp2 = 0;
+    let c5 = 0;
+    let c4 = 0;
+    let c3 = 0;
 
-    if (is655) {
-      if (matchedCount === 6) {
-        prizeName = '🏆 TRÚNG JACKPOT 1!';
-        prizeColor = '#f59e0b';
-        prizeValue = 'Từ 30+ Tỷ VNĐ';
-        isWinner = true;
-      } else if (matchedCount === 5 && matchedSpecial) {
-        prizeName = '💎 TRÚNG JACKPOT 2!';
-        prizeColor = '#f43f5e';
-        prizeValue = 'Từ 3+ Tỷ VNĐ';
-        isWinner = true;
-      } else if (matchedCount === 5) {
-        prizeName = '🥇 GIẢI NHẤT';
-        prizeColor = '#10b981';
-        prizeValue = '40.000.000 đ';
-        isWinner = true;
-      } else if (matchedCount === 4) {
-        prizeName = '🥈 GIẢI NHÌ';
-        prizeColor = '#06b6d4';
-        prizeValue = '500.000 đ';
-        isWinner = true;
-      } else if (matchedCount === 3) {
-        prizeName = '🥉 GIẢI BA';
-        prizeColor = '#a855f7';
-        prizeValue = '50.000 đ';
-        isWinner = true;
+    const matchedDraws: {
+      draw: VietlottHistoricalDraw;
+      matchCount: number;
+      matchedNumbers: number[];
+      hasSpecial: boolean;
+      prizeTitle: string;
+      prizeAmount: number;
+    }[] = [];
+
+    const prize1Val = is655 ? 40_000_000 : 10_000_000;
+    const prize2Val = is655 ? 500_000 : 300_000;
+    const prize3Val = is655 ? 50_000 : 30_000;
+
+    for (const d of sortedDraws) {
+      const matched = d.balls.filter((b) => userSet.has(b));
+      const matchCount = matched.length;
+
+      let hasSpecial = false;
+      if (is655 && d.special !== undefined && d.special !== null) {
+        hasSpecial = userSet.has(d.special);
       }
-    } else {
-      // 6/45
-      if (matchedCount === 6) {
-        prizeName = '🏆 TRÚNG JACKPOT!';
-        prizeColor = '#f59e0b';
-        prizeValue = 'Từ 12+ Tỷ VNĐ';
-        isWinner = true;
-      } else if (matchedCount === 5) {
-        prizeName = '🥇 GIẢI NHẤT';
-        prizeColor = '#10b981';
-        prizeValue = '10.000.000 đ';
-        isWinner = true;
-      } else if (matchedCount === 4) {
-        prizeName = '🥈 GIẢI NHÌ';
-        prizeColor = '#06b6d4';
-        prizeValue = '300.000 đ';
-        isWinner = true;
-      } else if (matchedCount === 3) {
-        prizeName = '🥉 GIẢI BA';
-        prizeColor = '#a855f7';
-        prizeValue = '30.000 đ';
-        isWinner = true;
+
+      let prizeTitle = '';
+      let prizeAmount = 0;
+
+      if (matchCount === 6) {
+        c6++;
+        prizeTitle = is655 ? 'JACKPOT 1' : 'JACKPOT';
+        prizeAmount = is655 ? 30_000_000_000 : 12_000_000_000;
+      } else if (is655 && matchCount === 5 && hasSpecial) {
+        cJp2++;
+        prizeTitle = 'JACKPOT 2';
+        prizeAmount = 3_000_000_000;
+      } else if (matchCount === 5) {
+        c5++;
+        prizeTitle = 'GIẢI NHẤT';
+        prizeAmount = prize1Val;
+      } else if (matchCount === 4) {
+        c4++;
+        prizeTitle = 'GIẢI NHÌ';
+        prizeAmount = prize2Val;
+      } else if (matchCount === 3) {
+        c3++;
+        prizeTitle = 'GIẢI BA';
+        prizeAmount = prize3Val;
+      }
+
+      if (matchCount >= 2) {
+        matchedDraws.push({
+          draw: d,
+          matchCount,
+          matchedNumbers: matched,
+          hasSpecial,
+          prizeTitle,
+          prizeAmount,
+        });
       }
     }
+
+    const totalPrizeMoney =
+      c3 * prize3Val +
+      c4 * prize2Val +
+      c5 * prize1Val +
+      cJp2 * 3_000_000_000 +
+      c6 * (is655 ? 30_000_000_000 : 12_000_000_000);
+
+    const totalCost = sortedDraws.length * 10_000;
 
     return {
-      matchedMain,
-      matchedCount,
-      matchedSpecial,
-      prizeName,
-      prizeColor,
-      prizeValue,
-      isWinner,
+      totalDraws: sortedDraws.length,
+      matches: matchedDraws,
+      counts: { 6: c6, jp2: cJp2, 5: c5, 4: c4, 3: c3 },
+      totalPrizeMoney,
+      totalCost,
     };
-  }, [checkerNumbers, latestDraw, is655]);
+  }, [sortedDraws, selectedBalls, is655]);
 
-  // Dò vé xuyên suốt lịch sử 1,400+ kỳ
-  const historicalMatches = useMemo(() => {
-    if (checkerNumbers.length < 3) return [];
-    const results: { draw: VietlottHistoricalDraw; matches: number; hasSpecial: boolean }[] = [];
-
-    for (const draw of sortedDraws) {
-      const matchCount = checkerNumbers.filter((n) => draw.balls.includes(n)).length;
-      const hasSpecial = is655 && draw.special ? checkerNumbers.includes(draw.special) : false;
-      if (matchCount >= 3) {
-        results.push({ draw, matches: matchCount, hasSpecial });
-      }
-    }
-    return results;
-  }, [checkerNumbers, sortedDraws, is655]);
+  const filteredTimeline = useMemo(() => {
+    return matchAnalysis.matches.filter((m) => m.matchCount >= filterMinMatches);
+  }, [matchAnalysis.matches, filterMinMatches]);
 
   // Bộ lọc lịch sử
   const filteredHistory = useMemo(() => {
@@ -324,11 +355,8 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
     const q = historySearch.trim().toLowerCase();
 
     return sortedDraws.filter((d) => {
-      // Tìm theo mã kỳ
       if (d.id.includes(q)) return true;
-      // Tìm theo ngày
       if (d.date.includes(q)) return true;
-      // Tìm theo số
       const numMatch = d.balls.some((b) => b.toString().padStart(2, '0') === q || b.toString() === q);
       if (numMatch) return true;
       return false;
@@ -343,7 +371,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* 1. HERO BANNER: KẾT QUẢ MỚI NHẤT & THÔNG TIN LỊCH QUAY */}
+      {/* 1. HERO BANNER: KẾT QUẢ MỚI NHẤT & QUỸ THƯỞNG JACKPOT */}
       <div
         className="glass-card animate-fade-in"
         style={{
@@ -473,10 +501,10 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                 </div>
               )}
 
-              {/* Nút sao chép & dò kỳ này */}
+              {/* Nút hành động nhanh */}
               <div style={{ display: 'flex', gap: 8, marginLeft: 'auto', flexWrap: 'wrap' }}>
                 <button
-                  onClick={() => handleTransferToChecker(latestDraw.balls)}
+                  onClick={() => handleTransferToComboBao(latestDraw.balls)}
                   style={{
                     padding: '8px 14px',
                     borderRadius: 'var(--radius-sm)',
@@ -492,7 +520,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                   }}
                 >
                   <CheckCircle2 size={14} color="var(--accent-emerald)" />
-                  <span>Dò với kỳ này</span>
+                  <span>Dò tổ hợp kỳ này</span>
                 </button>
               </div>
             </div>
@@ -500,7 +528,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
         )}
       </div>
 
-      {/* 2. THANH ĐIỀU HƯỚNG CÔNG CỤ TÍCH HỢP TẠI CHỖ (IN-PAGE TOOLBAR) */}
+      {/* 2. THANH ĐIỀU HƯỚNG CÔNG CỤ TẠI CHỖ (4 MODULAR SEGMENTS) */}
       <div
         className="glass-card"
         style={{
@@ -513,101 +541,123 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
           overflowX: 'auto',
         }}
       >
+        {/* TAB 1: GỢI Ý SỐ */}
         <button
           onClick={() => setActiveTool('quick_pick')}
           style={{
             flex: 1,
-            padding: '12px 18px',
+            padding: '12px 16px',
             borderRadius: 'var(--radius-sm)',
             border: 'none',
             background: activeTool === 'quick_pick' ? 'linear-gradient(135deg, #f59e0b, #ef4444)' : 'transparent',
             color: activeTool === 'quick_pick' ? '#ffffff' : 'var(--text-muted)',
             fontWeight: 700,
-            fontSize: '0.9rem',
+            fontSize: '0.88rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8,
+            gap: 7,
             whiteSpace: 'nowrap',
             transition: 'all 0.2s ease',
           }}
         >
-          <Dice5 size={18} />
-          <span>Gợi Ý Số Nhanh (Quick Pick Pro)</span>
+          <Dice5 size={17} />
+          <span>Gợi Ý Số (Quick Pick)</span>
         </button>
 
+        {/* TAB 2: TRA CỨU BỘ SỐ & VÉ BAO */}
         <button
-          onClick={() => setActiveTool('checker')}
+          onClick={() => setActiveTool('combo_bao')}
           style={{
             flex: 1,
-            padding: '12px 18px',
+            padding: '12px 16px',
             borderRadius: 'var(--radius-sm)',
             border: 'none',
-            background: activeTool === 'checker' ? 'linear-gradient(135deg, #10b981, #06b6d4)' : 'transparent',
-            color: activeTool === 'checker' ? '#ffffff' : 'var(--text-muted)',
+            background: activeTool === 'combo_bao' ? 'linear-gradient(135deg, #10b981, #06b6d4)' : 'transparent',
+            color: activeTool === 'combo_bao' ? '#ffffff' : 'var(--text-muted)',
             fontWeight: 700,
-            fontSize: '0.9rem',
+            fontSize: '0.88rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8,
+            gap: 7,
             whiteSpace: 'nowrap',
             transition: 'all 0.2s ease',
           }}
         >
-          <CheckCircle2 size={18} />
-          <span>Dò Vé Số Trực Tiếp</span>
-          {checkerNumbers.length > 0 && (
-            <span style={{ padding: '1px 6px', borderRadius: 10, background: 'rgba(0,0,0,0.3)', fontSize: '0.75rem' }}>
-              {checkerNumbers.length}/6
-            </span>
-          )}
+          <Layers size={17} />
+          <span>Bộ Số & Vé Bao ({selectedBalls.length} bóng)</span>
         </button>
 
+        {/* TAB 3: MA TRẬN CẶP & BỘ BA */}
+        <button
+          onClick={() => setActiveTool('cooccurrence')}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: 'var(--radius-sm)',
+            border: 'none',
+            background: activeTool === 'cooccurrence' ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'transparent',
+            color: activeTool === 'cooccurrence' ? '#ffffff' : 'var(--text-muted)',
+            fontWeight: 700,
+            fontSize: '0.88rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 7,
+            whiteSpace: 'nowrap',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <Flame size={17} />
+          <span>Cặp & Bộ Ba Đi Cùng Nhau</span>
+        </button>
+
+        {/* TAB 4: KHO LỊCH SỬ KỲ QUAY */}
         <button
           onClick={() => setActiveTool('history')}
           style={{
             flex: 1,
-            padding: '12px 18px',
+            padding: '12px 16px',
             borderRadius: 'var(--radius-sm)',
             border: 'none',
             background: activeTool === 'history' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'transparent',
             color: activeTool === 'history' ? '#ffffff' : 'var(--text-muted)',
             fontWeight: 700,
-            fontSize: '0.9rem',
+            fontSize: '0.88rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8,
+            gap: 7,
             whiteSpace: 'nowrap',
             transition: 'all 0.2s ease',
           }}
         >
-          <Calendar size={18} />
-          <span>Bảng Lịch Sử Toàn Bộ Kỳ Quay ({sortedDraws.length})</span>
+          <Calendar size={17} />
+          <span>Kho Lịch Sử ({sortedDraws.length} kỳ)</span>
         </button>
       </div>
 
-      {/* 3. NỘI DUNG CỦA CÔNG CỤ ĐƯỢC CHỌN */}
-
-      {/* --- CÔNG CỤ 1: QUICK PICK PRO --- */}
+      {/* ======================================================== */}
+      {/* MODULE 1: 🎲 QUICK PICK PRO                             */}
+      {/* ======================================================== */}
       {activeTool === 'quick_pick' && (
         <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 20 }}>
             <div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Sparkles size={20} color="var(--accent-gold)" />
-                <span>Trình Tạo Bộ Số Ngẫu Nhiên Thông Minh</span>
+                <span>Trình Tạo Bộ Số Ngẫu Nhiên Thông Minh ({gameName})</span>
               </h3>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                Chọn chiến lược tạo số toán học hoặc ghim những con số may mắn của riêng bạn.
+                Chọn tiêu chuẩn phân phối toán học hoặc ghim những con số may mắn của riêng bạn.
               </p>
             </div>
 
-            {/* Chế độ thuật toán */}
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {[
                 { id: 'balanced', label: '⚖️ Cân Bằng Chẵn Lẻ (3C - 3L)' },
@@ -636,7 +686,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             </div>
           </div>
 
-          {/* Dàn bóng số đã tạo */}
           <div
             style={{
               padding: '24px 20px',
@@ -701,7 +750,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
               </div>
             )}
 
-            {/* Phân tích nhanh bộ số vừa tạo */}
             {generatedNumbers.length === 6 && (
               <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 <span>
@@ -715,17 +763,9 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                     {generatedNumbers.filter((n) => n % 2 !== 0).length} Lẻ
                   </strong>
                 </span>
-                <span>•</span>
-                <span>
-                  Khoảng cách đầu-cuối:{' '}
-                  <strong style={{ color: '#ffffff' }}>
-                    {generatedNumbers[5] - generatedNumbers[0]}
-                  </strong>
-                </span>
               </div>
             )}
 
-            {/* Nút hành động */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
               <button
                 onClick={handleGenerateNumbers}
@@ -752,7 +792,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
               {generatedNumbers.length === 6 && (
                 <>
                   <button
-                    onClick={handleCopyCombo}
+                    onClick={handleCopyQuickPick}
                     style={{
                       padding: '12px 18px',
                       borderRadius: 'var(--radius-full)',
@@ -767,12 +807,12 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                       gap: 6,
                     }}
                   >
-                    {copied ? <Check size={16} color="var(--accent-emerald)" /> : <Copy size={16} />}
-                    <span>{copied ? 'Đã sao chép!' : 'Sao chép'}</span>
+                    {quickPickCopied ? <Check size={16} color="var(--accent-emerald)" /> : <Copy size={16} />}
+                    <span>{quickPickCopied ? 'Đã sao chép!' : 'Sao chép'}</span>
                   </button>
 
                   <button
-                    onClick={() => handleTransferToChecker(generatedNumbers)}
+                    onClick={() => handleTransferToComboBao(generatedNumbers)}
                     style={{
                       padding: '12px 18px',
                       borderRadius: 'var(--radius-full)',
@@ -787,8 +827,8 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                       gap: 6,
                     }}
                   >
-                    <CheckCircle2 size={16} />
-                    <span>Dò vé này ngay</span>
+                    <Layers size={16} />
+                    <span>Nạp Sang Phân Tích Vé Bao</span>
                   </button>
                 </>
               )}
@@ -797,20 +837,36 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
         </div>
       )}
 
-      {/* --- CÔNG CỤ 2: IN-PAGE TICKET CHECKER --- */}
-      {activeTool === 'checker' && (
-        <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
-          <div style={{ marginBottom: 20 }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <CheckCircle2 size={20} color="var(--accent-emerald)" />
-              <span>Dò Vé Số Nhanh (Trực Tiếp Trên Màn Hình)</span>
-            </h3>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
-              Chọn 6 quả bóng dưới đây để đối soát ngay với kết quả mới nhất và kiểm tra lịch sử 8 năm.
-            </p>
+      {/* ======================================================== */}
+      {/* MODULE 2: 🔍 TRA CỨU BỘ SỐ & VÉ BAO (SYSTEM BET & ROI)   */}
+      {/* ======================================================== */}
+      {activeTool === 'combo_bao' && (
+        <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 22 }}>
+          {/* Header Module Vé Bao */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+            <div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Layers size={20} color="var(--accent-emerald)" />
+                <span>Tra Cứu Bộ Số & Vé Bao (Tổ Hợp 2 - {is655 ? '18' : '15'} Bóng)</span>
+              </h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
+                Chọn từ <strong>2 đến 6 bóng</strong> (vé đơn) hoặc lên đến <strong>{is655 ? '18' : '15'} bóng</strong> (vé Bao). Hệ thống đối soát toàn bộ {sortedDraws.length} kỳ quay lịch sử để tính ROI và các cấp giải thưởng!
+              </p>
+            </div>
+
+            {/* Thông tin loại vé */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span className="badge badge-hot" style={{ fontSize: '0.82rem' }}>
+                {selectedBalls.length < 6
+                  ? `Bộ ${selectedBalls.length} Số (Chưa đủ vé đơn)`
+                  : selectedBalls.length === 6
+                  ? 'Vé Đơn Tiêu Chuẩn (6 Bóng)'
+                  : `Vé Bao ${selectedBalls.length} (${selectedBalls.length} Bóng)`}
+              </span>
+            </div>
           </div>
 
-          {/* Dàn số đang chọn */}
+          {/* Dàn bóng đang chọn & Thanh công cụ thao tác nhanh */}
           <div
             style={{
               padding: '16px 20px',
@@ -821,59 +877,122 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: 12,
-              marginBottom: 20,
+              gap: 14,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                Bộ số của bạn ({checkerNumbers.length}/6):
+                Bóng đã chọn ({selectedBalls.length}/{is655 ? '18' : '15'}):
               </span>
-              {checkerNumbers.length === 0 ? (
+              {selectedBalls.length === 0 ? (
                 <span style={{ color: 'var(--text-dim)', fontSize: '0.82rem', fontStyle: 'italic' }}>
-                  Chưa chọn số nào... Bấm vào các quả bóng bên dưới để chọn.
+                  Chưa chọn bóng nào. Bấm vào các quả bóng bên dưới để chọn.
                 </span>
               ) : (
-                checkerNumbers.map((n) => (
-                  <div
-                    key={n}
+                selectedBalls.map((b) => (
+                  <span
+                    key={b}
                     className="lottery-ball ball-gold"
                     style={{ width: 42, height: 42, fontSize: '1.1rem', cursor: 'pointer' }}
-                    onClick={() => toggleCheckerNumber(n)}
-                    title="Bấm để bỏ số này"
+                    onClick={() => handleToggleComboBall(b)}
+                    title={`Bấm để bỏ số ${b}`}
                   >
-                    {n.toString().padStart(2, '0')}
-                  </div>
+                    {b.toString().padStart(2, '0')}
+                  </span>
                 ))
               )}
             </div>
 
-            {checkerNumbers.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
               <button
-                onClick={() => setCheckerNumbers([])}
+                onClick={handleQuickPickCombo6}
                 style={{
-                  padding: '6px 12px',
+                  padding: '7px 14px',
                   borderRadius: 'var(--radius-sm)',
-                  background: 'rgba(239, 68, 68, 0.15)',
-                  border: '1px solid rgba(239, 68, 68, 0.3)',
-                  color: '#f87171',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid var(--accent-gold)',
+                  color: 'var(--accent-gold)',
+                  fontWeight: 700,
+                  fontSize: '0.8rem',
                   cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
                 }}
               >
-                Xóa làm lại
+                <Sparkles size={14} />
+                <span>Ngẫu Nhiên 6 Số</span>
               </button>
-            )}
+
+              {latestDraw && (
+                <button
+                  onClick={() => setSelectedBalls([...latestDraw.balls].sort((a, b) => a - b))}
+                  style={{
+                    padding: '7px 14px',
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-muted)',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                  }}
+                >
+                  <RefreshCw size={14} />
+                  <span>Kỳ Mới Nhất</span>
+                </button>
+              )}
+
+              {selectedBalls.length > 0 && (
+                <>
+                  <button
+                    onClick={handleCopyComboBalls}
+                    style={{
+                      padding: '7px 14px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: comboCopied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                      border: comboCopied ? '1px solid var(--accent-emerald)' : '1px solid var(--border-subtle)',
+                      color: comboCopied ? 'var(--accent-emerald)' : 'var(--text-muted)',
+                      fontWeight: 600,
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                    }}
+                  >
+                    {comboCopied ? <Check size={14} /> : <Copy size={14} />}
+                    <span>{comboCopied ? 'Đã sao chép' : 'Sao chép'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setSelectedBalls([])}
+                    style={{
+                      padding: '7px 12px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: 'transparent',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      color: '#fb7185',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Xóa hết
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Bảng chọn bóng số 01 - 55 / 01 - 45 */}
+          {/* Lưới chọn bóng số 01 - 55 / 01 - 45 */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(42px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(40px, 1fr))',
               gap: 8,
-              marginBottom: 24,
               padding: 16,
               background: 'rgba(255, 255, 255, 0.02)',
               borderRadius: 'var(--radius-md)',
@@ -881,127 +1000,556 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             }}
           >
             {Array.from({ length: maxNumber }, (_, i) => i + 1).map((num) => {
-              const isSelected = checkerNumbers.includes(num);
-              const isLatestWinning = latestDraw?.balls.includes(num);
-              const isSpecial = is655 && latestDraw?.special === num;
-
+              const isSelected = selectedBalls.includes(num);
               return (
-                <div
+                <button
                   key={num}
-                  onClick={() => toggleCheckerNumber(num)}
+                  onClick={() => handleToggleComboBall(num)}
                   style={{
-                    aspectRatio: '1',
-                    borderRadius: 'var(--radius-sm)',
+                    height: 40,
+                    borderRadius: '50%',
                     background: isSelected
                       ? 'linear-gradient(135deg, #f59e0b, #ef4444)'
                       : 'rgba(255, 255, 255, 0.04)',
-                    border: isSelected
-                      ? '1px solid #fbbf24'
-                      : isSpecial
-                      ? '1px solid #f43f5e'
-                      : isLatestWinning
-                      ? '1px solid rgba(245, 158, 11, 0.4)'
-                      : '1px solid var(--border-subtle)',
-                    color: isSelected ? '#ffffff' : '#e2e8f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
+                    border: isSelected ? 'none' : '1px solid var(--border-subtle)',
+                    color: isSelected ? '#ffffff' : 'var(--text-main)',
+                    fontWeight: 800,
+                    fontSize: '0.92rem',
+                    fontFamily: 'var(--font-mono)',
                     cursor: 'pointer',
+                    boxShadow: isSelected ? '0 0 12px rgba(245, 158, 11, 0.5)' : 'none',
                     transition: 'all 0.15s ease',
-                    boxShadow: isSelected ? '0 0 10px rgba(245, 158, 11, 0.5)' : undefined,
                   }}
-                  title={
-                    isSpecial
-                      ? 'Bóng đặc biệt kỳ trước'
-                      : isLatestWinning
-                      ? 'Bóng trúng thưởng kỳ trước'
-                      : `Số ${num}`
-                  }
                 >
                   {num.toString().padStart(2, '0')}
-                </div>
+                </button>
               );
             })}
           </div>
 
-          {/* Kết quả đối soát */}
-          {checkResult && checkerNumbers.length === 6 && (
+          {/* Thẻ Thống Kê Số Lần Trúng Giải Qua Lịch Sử */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14 }}>
+            {/* Jackpot 1 */}
             <div
+              className="glass-card"
               style={{
-                padding: '20px 24px',
-                borderRadius: 'var(--radius-md)',
-                background: checkResult.isWinner
-                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.9))'
-                  : 'rgba(0, 0, 0, 0.3)',
-                border: checkResult.isWinner ? '1px solid #10b981' : '1px solid var(--border-subtle)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
+                padding: 16,
+                border: matchAnalysis.counts[6] > 0 ? '2px solid #ef4444' : '1px solid var(--border-subtle)',
+                background: matchAnalysis.counts[6] > 0 ? 'rgba(239, 68, 68, 0.15)' : 'var(--bg-glass)',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-                <div>
-                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                    Kết quả đối chiếu kỳ mới nhất (#{latestDraw?.id} - {latestDraw?.date}):
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 700 }}>
+                  {is655 ? 'JACKPOT 1 (6/6)' : 'JACKPOT (6/6)'}
+                </span>
+                <Trophy size={15} color="#ef4444" />
+              </div>
+              <div style={{ fontSize: '1.7rem', fontWeight: 900, color: '#ef4444' }}>
+                {matchAnalysis.counts[6]}{' '}
+                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-dim)' }}>lần</span>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 2 }}>
+                {is655 ? 'Từ 30+ Tỷ VNĐ' : 'Từ 12+ Tỷ VNĐ'}
+              </div>
+            </div>
+
+            {/* Jackpot 2 (Chỉ có ở 6/55) */}
+            {is655 && (
+              <div
+                className="glass-card"
+                style={{
+                  padding: 16,
+                  border: matchAnalysis.counts.jp2 > 0 ? '2px solid #f43f5e' : '1px solid var(--border-subtle)',
+                  background: matchAnalysis.counts.jp2 > 0 ? 'rgba(244, 63, 94, 0.15)' : 'var(--bg-glass)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 700 }}>JACKPOT 2 (5+1)</span>
+                  <Award size={15} color="#f43f5e" />
+                </div>
+                <div style={{ fontSize: '1.7rem', fontWeight: 900, color: '#f43f5e' }}>
+                  {matchAnalysis.counts.jp2}{' '}
+                  <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-dim)' }}>lần</span>
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 2 }}>
+                  Từ 3+ Tỷ VNĐ
+                </div>
+              </div>
+            )}
+
+            {/* Giải Nhất (5/6) */}
+            <div className="glass-card" style={{ padding: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 700 }}>GIẢI NHẤT (5/6)</span>
+                <span className="badge badge-normal" style={{ fontSize: '0.7rem' }}>
+                  {is655 ? '40tr' : '10tr'}
+                </span>
+              </div>
+              <div style={{ fontSize: '1.7rem', fontWeight: 900, color: 'var(--accent-gold)' }}>
+                {matchAnalysis.counts[5]}{' '}
+                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-dim)' }}>lần</span>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 2 }}>
+                Trùng 5 bóng chính
+              </div>
+            </div>
+
+            {/* Giải Nhì (4/6) */}
+            <div className="glass-card" style={{ padding: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 700 }}>GIẢI NHÌ (4/6)</span>
+                <span className="badge badge-normal" style={{ fontSize: '0.7rem' }}>
+                  {is655 ? '500k' : '300k'}
+                </span>
+              </div>
+              <div style={{ fontSize: '1.7rem', fontWeight: 900, color: 'var(--accent-emerald)' }}>
+                {matchAnalysis.counts[4]}{' '}
+                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-dim)' }}>lần</span>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 2 }}>
+                Trùng 4 bóng chính
+              </div>
+            </div>
+
+            {/* Giải Ba (3/6) */}
+            <div className="glass-card" style={{ padding: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: 700 }}>GIẢI BA (3/6)</span>
+                <span className="badge badge-normal" style={{ fontSize: '0.7rem' }}>
+                  {is655 ? '50k' : '30k'}
+                </span>
+              </div>
+              <div style={{ fontSize: '1.7rem', fontWeight: 900, color: 'var(--accent-cyan)' }}>
+                {matchAnalysis.counts[3]}{' '}
+                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-dim)' }}>lần</span>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: 2 }}>
+                Trùng 3 bóng chính
+              </div>
+            </div>
+          </div>
+
+          {/* Mô Phỏng Chiến Lược Nuôi Vé & Backtest Lợi Nhuận (PnL) */}
+          {selectedBalls.length === 6 && (
+            <div className="glass-card animate-fade-in" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div className="lottery-ball ball-emerald" style={{ width: 38, height: 38, fontSize: '1.1rem' }}>
+                    <DollarSign size={18} />
                   </div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 900, color: checkResult.prizeColor }}>
-                    {checkResult.prizeName}
+                  <div>
+                    <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                      Mô Phỏng Nuôi Bộ Số & Backtest Hiệu Quả Tài Chính (PnL)
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      So sánh hiệu quả nuôi cố định vs mua theo cặp hot vs mua ngẫu nhiên.
+                    </p>
                   </div>
                 </div>
 
-                {checkResult.isWinner && (
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
-                      Giá trị giải thưởng ước tính
-                    </div>
-                    <div style={{ fontSize: '1.3rem', fontWeight: 900, color: 'var(--accent-gold)' }}>
-                      {checkResult.prizeValue}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div style={{ fontSize: '0.84rem', color: 'var(--text-muted)' }}>
-                Trùng <strong>{checkResult.matchedCount}</strong> số thông thường: [
-                {checkResult.matchedMain.map((n) => n.toString().padStart(2, '0')).join(', ')}]
-                {checkResult.matchedSpecial && (
-                  <span style={{ color: '#fb7185', fontWeight: 700, marginLeft: 6 }}>
-                    + Trùng số đặc biệt Jackpot 2 ({latestDraw?.special})
-                  </span>
-                )}
-              </div>
-
-              {/* Lịch sử trúng thưởng trong 1,400 kỳ */}
-              <div style={{ marginTop: 10, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: 6 }}>
-                  Tra cứu lịch sử 8 năm: Bộ số này đã về từ 3 số trở lên trong{' '}
-                  <strong style={{ color: '#ffffff' }}>{historicalMatches.length}</strong> kỳ quay.
+                <div style={{ display: 'flex', gap: 4, background: 'rgba(0,0,0,0.3)', padding: 3, borderRadius: 'var(--radius-sm)' }}>
+                  {[
+                    { id: 'all', label: `Toàn bộ (${sortedDraws.length} kỳ)` },
+                    { id: '3y', label: '3 Năm' },
+                    { id: '1y', label: '1 Năm' },
+                    { id: '100', label: '100 Kỳ' },
+                  ].map((h) => (
+                    <button
+                      key={h.id}
+                      onClick={() => setBacktestHorizon(h.id as BacktestHorizon)}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: 'var(--radius-sm)',
+                        border: 'none',
+                        background: backtestHorizon === h.id ? 'var(--accent-emerald)' : 'transparent',
+                        color: backtestHorizon === h.id ? '#000000' : 'var(--text-muted)',
+                        fontWeight: 700,
+                        fontSize: '0.76rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {h.label}
+                    </button>
+                  ))}
                 </div>
-                {historicalMatches.length > 0 && (
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', maxHeight: 90, overflowY: 'auto' }}>
-                    {historicalMatches.slice(0, 10).map((h, i) => (
-                      <span
-                        key={i}
-                        className="badge badge-normal"
-                        style={{ fontSize: '0.72rem', background: 'rgba(255,255,255,0.05)' }}
-                      >
-                        Kỳ #{h.draw.id} ({h.draw.date}): Trùng {h.matches} số
-                      </span>
-                    ))}
+              </div>
+
+              {(() => {
+                const horizonCount =
+                  backtestHorizon === '100'
+                    ? Math.min(100, sortedDraws.length)
+                    : backtestHorizon === '1y'
+                    ? Math.min(156, sortedDraws.length)
+                    : backtestHorizon === '3y'
+                    ? Math.min(468, sortedDraws.length)
+                    : sortedDraws.length;
+
+                const horizonSlice = sortedDraws.slice(0, horizonCount);
+                const userSet = new Set(selectedBalls);
+                const cost = horizonCount * 10_000;
+
+                const p1Val = is655 ? 40_000_000 : 10_000_000;
+                const p2Val = is655 ? 500_000 : 300_000;
+                const p3Val = is655 ? 50_000 : 30_000;
+
+                let winsA = 0;
+                let prizeA = 0;
+                for (const d of horizonSlice) {
+                  const m = d.balls.filter((b) => userSet.has(b)).length;
+                  const sp = is655 && d.special ? userSet.has(d.special) : false;
+                  if (m === 6) {
+                    winsA++;
+                    prizeA += is655 ? 30_000_000_000 : 12_000_000_000;
+                  } else if (is655 && m === 5 && sp) {
+                    winsA++;
+                    prizeA += 3_000_000_000;
+                  } else if (m === 5) {
+                    winsA++;
+                    prizeA += p1Val;
+                  } else if (m === 4) {
+                    winsA++;
+                    prizeA += p2Val;
+                  } else if (m === 3) {
+                    winsA++;
+                    prizeA += p3Val;
+                  }
+                }
+
+                const roiA = cost > 0 ? Math.round((prizeA / cost) * 100) : 0;
+                const netPnLA = prizeA - cost;
+
+                return (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(245, 158, 11, 0.35)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: 8 }}>
+                        <strong style={{ color: 'var(--accent-gold)' }}>BỘ SỐ CỦA BẠN</strong>
+                        <span className="badge badge-gold" style={{ fontSize: '0.68rem' }}>Nuôi Cố Định</span>
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Vốn ({horizonCount} kỳ):</span>
+                          <strong>{cost.toLocaleString('vi-VN')} đ</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Thưởng thu về:</span>
+                          <strong style={{ color: 'var(--accent-emerald)' }}>{prizeA.toLocaleString('vi-VN')} đ</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Lợi nhuận ròng:</span>
+                          <strong style={{ color: netPnLA >= 0 ? 'var(--accent-emerald)' : '#fb7185' }}>
+                            {netPnLA >= 0 ? `+${netPnLA.toLocaleString('vi-VN')}` : netPnLA.toLocaleString('vi-VN')} đ
+                          </strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn vốn:</span>
+                          <strong style={{ color: roiA >= 100 ? 'var(--accent-emerald)' : roiA >= 50 ? 'var(--accent-gold)' : '#fb7185' }}>
+                            {roiA}%
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: 8 }}>
+                        <strong style={{ color: 'var(--text-muted)' }}>MUA RANDOM (LÝ THUYẾT)</strong>
+                        <span className="badge badge-slate" style={{ fontSize: '0.68rem' }}>Xác Suất</span>
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Vốn ({horizonCount} kỳ):</span>
+                          <strong>{cost.toLocaleString('vi-VN')} đ</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng thu về:</span>
+                          <strong style={{ color: 'var(--text-dim)' }}>{(cost * 0.55).toLocaleString('vi-VN')} đ</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng PnL:</span>
+                          <strong style={{ color: '#fb7185' }}>{((cost * 0.55) - cost).toLocaleString('vi-VN')} đ</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn trả (RTP):</span>
+                          <strong style={{ color: 'var(--text-dim)' }}>~55.0%</strong>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
+                );
+              })()}
+            </div>
+          )}
+
+          {/* Dòng Thời Gian Các Kỳ Trúng Thưởng (Matched Timeline) */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>
+                Danh Sách Kỳ Quay Từng Trúng Thưởng ({filteredTimeline.length} kỳ)
+              </h4>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                {[
+                  { val: 2, label: '≥ 2 bóng' },
+                  { val: 3, label: '≥ 3 bóng (Có giải)' },
+                  { val: 4, label: '≥ 4 bóng' },
+                  { val: 5, label: '≥ 5 bóng' },
+                ].map((f) => (
+                  <button
+                    key={f.val}
+                    onClick={() => setFilterMinMatches(f.val)}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: filterMinMatches === f.val ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
+                      border: filterMinMatches === f.val ? 'none' : '1px solid var(--border-subtle)',
+                      color: filterMinMatches === f.val ? '#000000' : 'var(--text-muted)',
+                      fontWeight: 700,
+                      fontSize: '0.76rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {filteredTimeline.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--text-dim)', fontSize: '0.84rem' }}>
+                Không có kỳ quay nào trùng khớp từ {filterMinMatches} bóng trở lên với bộ số này.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 360, overflowY: 'auto' }}>
+                {filteredTimeline.slice(0, 50).map((item, idx) => {
+                  const userSet = new Set(selectedBalls);
+                  const isJackpot = item.matchCount === 6 || (item.matchCount === 5 && item.hasSpecial);
+
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: isJackpot ? 'rgba(239, 68, 68, 0.15)' : 'rgba(255, 255, 255, 0.02)',
+                        border: isJackpot ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.05)',
+                        flexWrap: 'wrap',
+                        gap: 10,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ minWidth: 80 }}>
+                          <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#ffffff' }}>
+                            #{item.draw.id}
+                          </div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
+                            {item.draw.date}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                          {item.draw.balls.map((b) => {
+                            const isHit = userSet.has(b);
+                            return (
+                              <span
+                                key={b}
+                                className={`lottery-ball ${isHit ? 'ball-gold' : 'ball-slate'}`}
+                                style={{ width: 30, height: 30, fontSize: '0.8rem', fontWeight: isHit ? 800 : 500 }}
+                              >
+                                {b.toString().padStart(2, '0')}
+                              </span>
+                            );
+                          })}
+                          {is655 && item.draw.special && (
+                            <span
+                              className={`lottery-ball ${userSet.has(item.draw.special) ? 'ball-red' : 'ball-jackpot2'}`}
+                              style={{ width: 30, height: 30, fontSize: '0.8rem' }}
+                            >
+                              {item.draw.special.toString().padStart(2, '0')}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                          Trùng <strong>{item.matchCount}</strong> bóng
+                        </span>
+                        {item.prizeTitle && (
+                          <span className={`badge ${isJackpot ? 'badge-hot' : 'badge-normal'}`} style={{ fontSize: '0.75rem' }}>
+                            {item.prizeTitle}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* MODULE 3: 📊 MA TRẬN CẶP & BỘ BA ĐI CÙNG NHAU           */}
+      {/* ======================================================== */}
+      {activeTool === 'cooccurrence' && (
+        <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+            <div>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Flame size={20} color="var(--accent-gold)" />
+                <span>Ma Trận Đồng Xuất Hiện: Cặp Số & Bộ Ba Thường Về Cùng Nhau ({gameName})</span>
+              </h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
+                Dữ liệu thống kê xác suất toàn diện qua {sortedDraws.length} kỳ quay lịch sử. Bấm nút nạp để đưa trực tiếp vào phân tích Vé Bao!
+              </p>
+            </div>
+          </div>
+
+          {!cooccurrence ? (
+            <div style={{ textAlign: 'center', padding: '30px 0', color: 'var(--text-dim)' }}>
+              Đang tải dữ liệu ma trận đồng xuất hiện...
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 20 }}>
+              {/* TOP CẶP SỐ HAY VỀ CÙNG NHAU */}
+              <div style={{ background: 'rgba(0,0,0,0.3)', padding: 18, borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                  <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>TOP CẶP SỐ</span>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>Cặp 2 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {(cooccurrence.top_pairs || []).slice(0, 10).map((pair, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        gap: 10,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', width: 20 }}>#{idx + 1}</span>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          {pair.numbers.map((n) => (
+                            <span key={n} className="lottery-ball ball-gold" style={{ width: 34, height: 34, fontSize: '0.9rem' }}>
+                              {n.padStart(2, '0')}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--accent-emerald)' }}>
+                            {pair.hits} <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>lần</span>
+                          </div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>
+                            Gần nhất: {pair.last_seen?.date || 'N/A'}
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => handleLoadComboNumbers(pair.numbers.map((n) => parseInt(n, 10)))}
+                          style={{
+                            padding: '5px 10px',
+                            borderRadius: 'var(--radius-sm)',
+                            background: 'rgba(245, 158, 11, 0.15)',
+                            border: '1px solid var(--accent-gold)',
+                            color: 'var(--accent-gold)',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Nạp cặp này
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* TOP BỘ BA HAY VỀ CÙNG NHAU */}
+              <div style={{ background: 'rgba(0,0,0,0.3)', padding: 18, borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                  <span className="badge badge-hot" style={{ fontSize: '0.75rem' }}>TOP BỘ BA</span>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>Bộ 3 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {(cooccurrence.top_triplets || []).slice(0, 10).map((triplet, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        gap: 10,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', width: 20 }}>#{idx + 1}</span>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          {triplet.numbers.map((n) => (
+                            <span key={n} className="lottery-ball ball-gold" style={{ width: 34, height: 34, fontSize: '0.9rem' }}>
+                              {n.padStart(2, '0')}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#38bdf8' }}>
+                            {triplet.hits} <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>lần</span>
+                          </div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>
+                            Gần nhất: {triplet.last_seen?.date || 'N/A'}
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => handleLoadComboNumbers(triplet.numbers.map((n) => parseInt(n, 10)))}
+                          style={{
+                            padding: '5px 10px',
+                            borderRadius: 'var(--radius-sm)',
+                            background: 'rgba(56, 189, 248, 0.15)',
+                            border: '1px solid #38bdf8',
+                            color: '#38bdf8',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Nạp bộ ba này
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
         </div>
       )}
 
-      {/* --- CÔNG CỤ 3: TOÀN BỘ LỊCH SỬ CÁC KỲ QUAY (HISTORICAL DRAWS EXPLORER) --- */}
+      {/* ======================================================== */}
+      {/* MODULE 4: 📜 KHO LỊCH SỬ KỲ QUAY TOÀN DIỆN              */}
+      {/* ======================================================== */}
       {activeTool === 'history' && (
         <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
-          {/* Thanh tìm kiếm & lọc nhanh */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14, marginBottom: 20 }}>
             <div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1047,7 +1595,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             </div>
           </div>
 
-          {/* Bảng danh sách các kỳ quay */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {paginatedHistory.map((draw) => {
               const sum = draw.balls.reduce((a, b) => a + b, 0);
@@ -1071,7 +1618,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                   }}
                   className="history-row"
                 >
-                  {/* Mã kỳ & Ngày */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 180 }}>
                     <span
                       style={{
@@ -1096,7 +1642,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                     </div>
                   </div>
 
-                  {/* Dàn bóng số */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                     {draw.balls.map((num, idx) => (
                       <div
@@ -1125,10 +1670,9 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                     )}
                   </div>
 
-                  {/* Hành động nhanh */}
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button
-                      onClick={() => handleTransferToChecker(draw.balls)}
+                      onClick={() => handleLoadComboNumbers(draw.balls)}
                       style={{
                         padding: '6px 12px',
                         borderRadius: 'var(--radius-sm)',
@@ -1148,7 +1692,6 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             })}
           </div>
 
-          {/* Phân trang */}
           {totalPages > 1 && (
             <div
               style={{

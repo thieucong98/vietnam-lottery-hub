@@ -23,7 +23,6 @@ const GanRankingView = lazy(() => import('./components/GanRankingView').then((m)
 const AIStrategyHub = lazy(() => import('./components/AIStrategyHub').then((m) => ({ default: m.AIStrategyHub })));
 const BacNhoHub = lazy(() => import('./components/BacNhoHub').then((m) => ({ default: m.BacNhoHub })));
 const SmartFilterAndChecker = lazy(() => import('./components/SmartFilterAndChecker').then((m) => ({ default: m.SmartFilterAndChecker })));
-const VietlottCombinationHub = lazy(() => import('./components/VietlottCombinationHub').then((m) => ({ default: m.VietlottCombinationHub })));
 const KenoAndMax3DView = lazy(() => import('./components/KenoAndMax3DView').then((m) => ({ default: m.KenoAndMax3DView })));
 const VietlottProductHub = lazy(() => import('./components/VietlottProductHub').then((m) => ({ default: m.VietlottProductHub })));
 const XSMBProductHub = lazy(() => import('./components/XSMBProductHub').then((m) => ({ default: m.XSMBProductHub })));
@@ -291,6 +290,7 @@ export function App() {
                     gameType="vietlott_655"
                     indexData={vietlott655Data}
                     historicalDraws={fullDrawsData?.vietlott_655 || []}
+                    cooccurrence={cooccurrenceData?.vietlott_655}
                     summaryData={summaryData}
                     onSelectNumber={handleSelectNumber}
                   />
@@ -314,6 +314,7 @@ export function App() {
                     gameType="vietlott_645"
                     indexData={vietlott645Data}
                     historicalDraws={fullDrawsData?.vietlott_645 || []}
+                    cooccurrence={cooccurrenceData?.vietlott_645}
                     summaryData={summaryData}
                     onSelectNumber={handleSelectNumber}
                   />
@@ -327,17 +328,6 @@ export function App() {
                   />
                 </Suspense>
               </div>
-            )}
-
-            {/* TAB: BỘ SỐ & VÉ BAO VIETLOTT */}
-            {currentTab === 'vietlott_combo' && (
-              <Suspense fallback={<TabFallback />}>
-                <VietlottCombinationHub
-                  fullDrawsData={fullDrawsData}
-                  cooccurrenceData={cooccurrenceData}
-                  onSelectNumber={handleSelectNumber}
-                />
-              </Suspense>
             )}
 
             {/* TAB: VIETLOTT KENO & MAX 3D / 3D PRO */}
