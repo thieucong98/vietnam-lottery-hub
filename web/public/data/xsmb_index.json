@@ -1,164 +1,165 @@
 {
   "metadata": {
-    "latest_date": "2026-10-04",
-    "total_draws": 7573,
-    "generated_at": "2026-10-04T23:02:49.604859"
+    "latest_date": "2026-10-05",
+    "total_draws": 7574,
+    "generated_at": "2026-10-06T09:20:18.453887"
   },
   "latest_draw": {
-    "date": "2026-10-04",
+    "date": "2026-10-05",
     "raw_prizes": {
-      "date": "2026-10-04",
-      "special": 82951,
-      "prize1": 28235,
-      "prize2_1": 82614,
-      "prize2_2": 47824,
-      "prize3_1": 33386,
-      "prize3_2": 23385,
-      "prize3_3": 9503,
-      "prize3_4": 43582,
-      "prize3_5": 60243,
-      "prize3_6": 4348,
-      "prize4_1": 2251,
-      "prize4_2": 1053,
-      "prize4_3": 3431,
-      "prize4_4": 9308,
-      "prize5_1": 3969,
-      "prize5_2": 7927,
-      "prize5_3": 5509,
-      "prize5_4": 2889,
-      "prize5_5": 4781,
-      "prize5_6": 1038,
-      "prize6_1": 237,
-      "prize6_2": 580,
-      "prize6_3": 604,
-      "prize7_1": 90,
-      "prize7_2": 89,
-      "prize7_3": 26,
-      "prize7_4": 59
+      "date": "2026-10-05",
+      "special": 19654,
+      "prize1": 62219,
+      "prize2_1": 92501,
+      "prize2_2": 22795,
+      "prize3_1": 67752,
+      "prize3_2": 15062,
+      "prize3_3": 61353,
+      "prize3_4": 69038,
+      "prize3_5": 81889,
+      "prize3_6": 945,
+      "prize4_1": 166,
+      "prize4_2": 4647,
+      "prize4_3": 994,
+      "prize4_4": 1272,
+      "prize5_1": 1025,
+      "prize5_2": 6151,
+      "prize5_3": 9374,
+      "prize5_4": 9380,
+      "prize5_5": 4735,
+      "prize5_6": 9347,
+      "prize6_1": 553,
+      "prize6_2": 648,
+      "prize6_3": 231,
+      "prize7_1": 44,
+      "prize7_2": 70,
+      "prize7_3": 72,
+      "prize7_4": 15
     },
     "loto_numbers": [
-      "03",
-      "04",
-      "08",
-      "09",
-      "14",
-      "24",
-      "26",
-      "27",
+      "01",
+      "15",
+      "19",
+      "25",
       "31",
       "35",
-      "37",
       "38",
-      "43",
+      "44",
+      "45",
+      "47",
+      "47",
       "48",
       "51",
-      "51",
+      "52",
       "53",
-      "59",
-      "69",
+      "53",
+      "54",
+      "62",
+      "66",
+      "70",
+      "72",
+      "72",
+      "74",
       "80",
-      "81",
-      "82",
-      "85",
-      "86",
       "89",
-      "89",
-      "90"
+      "94",
+      "95"
     ],
     "heads": {
       "0": [
-        3,
-        4,
-        8,
-        9
+        1
       ],
       "1": [
-        4
+        5,
+        9
       ],
       "2": [
-        4,
-        6,
-        7
+        5
       ],
       "3": [
         1,
         5,
-        7,
         8
       ],
       "4": [
-        3,
+        4,
+        5,
+        7,
+        7,
         8
       ],
       "5": [
         1,
-        1,
+        2,
         3,
-        9
+        3,
+        4
       ],
       "6": [
-        9
+        2,
+        6
       ],
-      "7": [],
+      "7": [
+        0,
+        2,
+        2,
+        4
+      ],
       "8": [
         0,
-        1,
-        2,
-        5,
-        6,
-        9,
         9
       ],
       "9": [
-        0
+        4,
+        5
       ]
     },
     "tails": {
       "0": [
-        8,
-        9
+        7,
+        8
       ],
       "1": [
+        0,
         3,
-        5,
-        5,
-        8
+        5
       ],
       "2": [
-        8
+        5,
+        6,
+        7,
+        7
       ],
       "3": [
-        0,
-        4,
+        5,
         5
       ],
       "4": [
-        0,
-        1,
-        2
+        4,
+        5,
+        7,
+        9
       ],
       "5": [
+        1,
+        2,
         3,
-        8
+        4,
+        9
       ],
       "6": [
-        2,
-        8
+        6
       ],
       "7": [
-        2,
-        3
+        4,
+        4
       ],
       "8": [
-        0,
         3,
         4
       ],
       "9": [
-        0,
-        5,
-        6,
-        8,
+        1,
         8
       ]
     }
@@ -166,93 +167,93 @@
   "top_gan": [
     {
       "number": "58",
-      "days_since": 19,
+      "days_since": 20,
       "last_date": "2026-09-15",
       "max_gap": 35
     },
     {
       "number": "36",
-      "days_since": 12,
+      "days_since": 13,
       "last_date": "2026-09-22",
       "max_gap": 27
     },
     {
       "number": "78",
-      "days_since": 11,
+      "days_since": 12,
       "last_date": "2026-09-23",
       "max_gap": 33
     },
     {
-      "number": "47",
-      "days_since": 9,
-      "last_date": "2026-09-25",
-      "max_gap": 29
-    },
-    {
       "number": "64",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-09-25",
       "max_gap": 25
     },
     {
       "number": "28",
-      "days_since": 8,
+      "days_since": 9,
       "last_date": "2026-09-26",
       "max_gap": 30
     },
     {
       "number": "32",
-      "days_since": 8,
+      "days_since": 9,
       "last_date": "2026-09-26",
       "max_gap": 26
     },
     {
       "number": "79",
-      "days_since": 8,
+      "days_since": 9,
       "last_date": "2026-09-26",
       "max_gap": 23
     },
     {
       "number": "18",
-      "days_since": 7,
+      "days_since": 8,
       "last_date": "2026-09-27",
       "max_gap": 30
     },
     {
       "number": "20",
-      "days_since": 7,
+      "days_since": 8,
       "last_date": "2026-09-27",
       "max_gap": 25
     },
     {
-      "number": "62",
-      "days_since": 7,
-      "last_date": "2026-09-27",
-      "max_gap": 28
-    },
-    {
       "number": "12",
-      "days_since": 6,
+      "days_since": 7,
       "last_date": "2026-09-28",
       "max_gap": 25
     },
     {
       "number": "22",
-      "days_since": 6,
+      "days_since": 7,
       "last_date": "2026-09-28",
       "max_gap": 30
     },
     {
       "number": "05",
-      "days_since": 5,
+      "days_since": 6,
       "last_date": "2026-09-29",
       "max_gap": 26
     },
     {
       "number": "33",
-      "days_since": 5,
+      "days_since": 6,
       "last_date": "2026-09-29",
       "max_gap": 30
+    },
+    {
+      "number": "11",
+      "days_since": 5,
+      "last_date": "2026-09-30",
+      "max_gap": 27
+    },
+    {
+      "number": "17",
+      "days_since": 5,
+      "last_date": "2026-09-30",
+      "max_gap": 29
     }
   ],
   "top_frequent": [
@@ -268,18 +269,13 @@
     },
     {
       "number": "19",
-      "freq_100d": 35,
-      "total_hits": 2088
+      "freq_100d": 36,
+      "total_hits": 2089
     },
     {
       "number": "32",
       "freq_100d": 35,
       "total_hits": 2098
-    },
-    {
-      "number": "64",
-      "freq_100d": 35,
-      "total_hits": 2115
     },
     {
       "number": "83",
@@ -299,12 +295,22 @@
     {
       "number": "48",
       "freq_100d": 34,
-      "total_hits": 2040
+      "total_hits": 2041
     },
     {
       "number": "50",
       "freq_100d": 34,
       "total_hits": 1945
+    },
+    {
+      "number": "52",
+      "freq_100d": 34,
+      "total_hits": 2133
+    },
+    {
+      "number": "64",
+      "freq_100d": 34,
+      "total_hits": 2115
     },
     {
       "number": "77",
@@ -322,11 +328,6 @@
       "total_hits": 1999
     },
     {
-      "number": "52",
-      "freq_100d": 33,
-      "total_hits": 2132
-    },
-    {
       "number": "11",
       "freq_100d": 32,
       "total_hits": 2054
@@ -339,7 +340,7 @@
       "special_hits": 82,
       "first_seen_date": "2005-10-05",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 28,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -347,7 +348,7 @@
       "freq_100d": 27,
       "freq_365d": 88,
       "is_gan": false,
-      "gan_risk_gauge": 10.7,
+      "gan_risk_gauge": 14.3,
       "top_pairs": [
         {
           "number": "83",
@@ -644,23 +645,23 @@
     },
     "01": {
       "number": "01",
-      "total_hits": 2062,
+      "total_hits": 2063,
       "special_hits": 86,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 24,
       "average_gap": 3.1,
-      "freq_30d": 3,
+      "freq_30d": 4,
       "freq_60d": 7,
-      "freq_100d": 16,
+      "freq_100d": 17,
       "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 16.7,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "72",
-          "co_count": 28
+          "co_count": 29
         },
         {
           "number": "76",
@@ -671,12 +672,12 @@
           "co_count": 26
         },
         {
-          "number": "92",
-          "co_count": 25
+          "number": "52",
+          "co_count": 26
         },
         {
           "number": "35",
-          "co_count": 25
+          "co_count": 26
         }
       ],
       "yearly_distribution": {
@@ -701,9 +702,17 @@
         "2023": 79,
         "2024": 80,
         "2025": 92,
-        "2026": 57
+        "2026": 58
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize2_1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-09-30",
           "prizes": [
@@ -937,14 +946,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-04-22",
-          "prizes": [
-            "prize3_3"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -954,7 +955,7 @@
       "special_hits": 68,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 22,
       "average_gap": 3.2,
       "freq_30d": 7,
@@ -962,7 +963,7 @@
       "freq_100d": 25,
       "freq_365d": 95,
       "is_gan": false,
-      "gan_risk_gauge": 9.1,
+      "gan_risk_gauge": 13.6,
       "top_pairs": [
         {
           "number": "83",
@@ -1261,15 +1262,15 @@
       "special_hits": 77,
       "first_seen_date": "2005-10-05",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 31,
       "average_gap": 3.2,
-      "freq_30d": 7,
+      "freq_30d": 6,
       "freq_60d": 14,
       "freq_100d": 24,
       "freq_365d": 91,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.2,
       "top_pairs": [
         {
           "number": "77",
@@ -1568,15 +1569,15 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-06",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 34,
       "average_gap": 3.2,
-      "freq_30d": 11,
-      "freq_60d": 20,
+      "freq_30d": 10,
+      "freq_60d": 18,
       "freq_100d": 29,
       "freq_365d": 90,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 2.9,
       "top_pairs": [
         {
           "number": "24",
@@ -1875,7 +1876,7 @@
       "special_hits": 83,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-09-29",
-      "days_since_last": 5,
+      "days_since_last": 6,
       "max_gap_historical": 26,
       "average_gap": 3.2,
       "freq_30d": 3,
@@ -1883,7 +1884,7 @@
       "freq_100d": 23,
       "freq_365d": 97,
       "is_gan": false,
-      "gan_risk_gauge": 19.2,
+      "gan_risk_gauge": 23.1,
       "top_pairs": [
         {
           "number": "69",
@@ -2184,30 +2185,30 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 27,
       "average_gap": 3.3,
       "freq_30d": 10,
-      "freq_60d": 19,
+      "freq_60d": 16,
       "freq_100d": 31,
-      "freq_365d": 92,
+      "freq_365d": 91,
       "is_gan": false,
-      "gan_risk_gauge": 7.4,
+      "gan_risk_gauge": 11.1,
       "top_pairs": [
         {
           "number": "83",
-          "co_count": 31
+          "co_count": 30
         },
         {
           "number": "54",
-          "co_count": 29
-        },
-        {
-          "number": "95",
           "co_count": 28
         },
         {
           "number": "91",
+          "co_count": 27
+        },
+        {
+          "number": "95",
           "co_count": 27
         },
         {
@@ -2492,15 +2493,15 @@
       "special_hits": 63,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 28,
       "average_gap": 3.3,
       "freq_30d": 8,
       "freq_60d": 15,
-      "freq_100d": 21,
-      "freq_365d": 88,
+      "freq_100d": 20,
+      "freq_365d": 87,
       "is_gan": false,
-      "gan_risk_gauge": 10.7,
+      "gan_risk_gauge": 14.3,
       "top_pairs": [
         {
           "number": "70",
@@ -2508,7 +2509,7 @@
         },
         {
           "number": "80",
-          "co_count": 27
+          "co_count": 26
         },
         {
           "number": "91",
@@ -2519,7 +2520,7 @@
           "co_count": 25
         },
         {
-          "number": "46",
+          "number": "13",
           "co_count": 25
         }
       ],
@@ -2798,22 +2799,18 @@
       "special_hits": 85,
       "first_seen_date": "2005-10-17",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 27,
       "average_gap": 3.2,
       "freq_30d": 9,
       "freq_60d": 16,
       "freq_100d": 27,
-      "freq_365d": 100,
+      "freq_365d": 99,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.7,
       "top_pairs": [
         {
           "number": "14",
-          "co_count": 28
-        },
-        {
-          "number": "47",
           "co_count": 28
         },
         {
@@ -2821,11 +2818,15 @@
           "co_count": 27
         },
         {
+          "number": "38",
+          "co_count": 27
+        },
+        {
           "number": "31",
           "co_count": 27
         },
         {
-          "number": "38",
+          "number": "47",
           "co_count": 27
         }
       ],
@@ -3105,7 +3106,7 @@
       "special_hits": 90,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 26,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -3113,7 +3114,7 @@
       "freq_100d": 26,
       "freq_365d": 109,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.8,
       "top_pairs": [
         {
           "number": "64",
@@ -3412,7 +3413,7 @@
       "special_hits": 81,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 35,
       "average_gap": 3.1,
       "freq_30d": 5,
@@ -3420,7 +3421,7 @@
       "freq_100d": 26,
       "freq_365d": 99,
       "is_gan": false,
-      "gan_risk_gauge": 2.9,
+      "gan_risk_gauge": 5.7,
       "top_pairs": [
         {
           "number": "75",
@@ -3718,15 +3719,15 @@
       "special_hits": 74,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 27,
       "average_gap": 3.2,
-      "freq_30d": 9,
+      "freq_30d": 8,
       "freq_60d": 20,
       "freq_100d": 32,
-      "freq_365d": 94,
+      "freq_365d": 93,
       "is_gan": false,
-      "gan_risk_gauge": 14.8,
+      "gan_risk_gauge": 18.5,
       "top_pairs": [
         {
           "number": "36",
@@ -3734,18 +3735,18 @@
         },
         {
           "number": "77",
-          "co_count": 28
+          "co_count": 27
         },
         {
           "number": "92",
           "co_count": 26
         },
         {
-          "number": "62",
+          "number": "60",
           "co_count": 25
         },
         {
-          "number": "60",
+          "number": "28",
           "co_count": 25
         }
       ],
@@ -4026,7 +4027,7 @@
       "special_hits": 68,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-28",
-      "days_since_last": 6,
+      "days_since_last": 7,
       "max_gap_historical": 25,
       "average_gap": 3.1,
       "freq_30d": 8,
@@ -4034,7 +4035,7 @@
       "freq_100d": 23,
       "freq_365d": 100,
       "is_gan": false,
-      "gan_risk_gauge": 24.0,
+      "gan_risk_gauge": 28.0,
       "top_pairs": [
         {
           "number": "27",
@@ -4333,15 +4334,15 @@
       "special_hits": 69,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 25,
       "average_gap": 3.2,
-      "freq_30d": 7,
-      "freq_60d": 14,
-      "freq_100d": 30,
+      "freq_30d": 6,
+      "freq_60d": 13,
+      "freq_100d": 29,
       "freq_365d": 118,
       "is_gan": false,
-      "gan_risk_gauge": 8.0,
+      "gan_risk_gauge": 12.0,
       "top_pairs": [
         {
           "number": "31",
@@ -4642,7 +4643,7 @@
       "special_hits": 70,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 33,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -4650,7 +4651,7 @@
       "freq_100d": 24,
       "freq_365d": 119,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.0,
       "top_pairs": [
         {
           "number": "52",
@@ -4947,19 +4948,19 @@
     },
     "15": {
       "number": "15",
-      "total_hits": 2027,
+      "total_hits": 2028,
       "special_hits": 86,
       "first_seen_date": "2005-10-04",
-      "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 27,
       "average_gap": 3.2,
-      "freq_30d": 7,
-      "freq_60d": 12,
-      "freq_100d": 25,
-      "freq_365d": 87,
+      "freq_30d": 8,
+      "freq_60d": 13,
+      "freq_100d": 26,
+      "freq_365d": 88,
       "is_gan": false,
-      "gan_risk_gauge": 11.1,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "91",
@@ -4971,15 +4972,15 @@
         },
         {
           "number": "95",
-          "co_count": 25
+          "co_count": 26
         },
         {
           "number": "89",
-          "co_count": 24
+          "co_count": 25
         },
         {
-          "number": "03",
-          "co_count": 24
+          "number": "52",
+          "co_count": 25
         }
       ],
       "yearly_distribution": {
@@ -5004,9 +5005,17 @@
         "2023": 80,
         "2024": 90,
         "2025": 78,
-        "2026": 56
+        "2026": 57
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize7_4"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-01",
           "prizes": [
@@ -5243,14 +5252,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-07",
-          "prizes": [
-            "prize7_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -5260,15 +5261,15 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-05",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 43,
       "average_gap": 3.2,
       "freq_30d": 7,
       "freq_60d": 14,
       "freq_100d": 17,
-      "freq_365d": 94,
+      "freq_365d": 93,
       "is_gan": false,
-      "gan_risk_gauge": 2.3,
+      "gan_risk_gauge": 4.7,
       "top_pairs": [
         {
           "number": "64",
@@ -5279,15 +5280,15 @@
           "co_count": 29
         },
         {
+          "number": "93",
+          "co_count": 27
+        },
+        {
           "number": "80",
-          "co_count": 28
+          "co_count": 27
         },
         {
           "number": "83",
-          "co_count": 28
-        },
-        {
-          "number": "77",
           "co_count": 27
         }
       ],
@@ -5569,7 +5570,7 @@
       "special_hits": 85,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 29,
       "average_gap": 3.3,
       "freq_30d": 6,
@@ -5577,7 +5578,7 @@
       "freq_100d": 34,
       "freq_365d": 110,
       "is_gan": false,
-      "gan_risk_gauge": 13.8,
+      "gan_risk_gauge": 17.2,
       "top_pairs": [
         {
           "number": "52",
@@ -5880,15 +5881,15 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-09-27",
-      "days_since_last": 7,
+      "days_since_last": 8,
       "max_gap_historical": 30,
       "average_gap": 3.2,
       "freq_30d": 4,
-      "freq_60d": 17,
+      "freq_60d": 16,
       "freq_100d": 28,
       "freq_365d": 82,
       "is_gan": false,
-      "gan_risk_gauge": 23.3,
+      "gan_risk_gauge": 26.7,
       "top_pairs": [
         {
           "number": "69",
@@ -6184,19 +6185,19 @@
     },
     "19": {
       "number": "19",
-      "total_hits": 2088,
+      "total_hits": 2089,
       "special_hits": 76,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 26,
       "average_gap": 3.2,
-      "freq_30d": 11,
+      "freq_30d": 12,
       "freq_60d": 19,
-      "freq_100d": 35,
-      "freq_365d": 91,
+      "freq_100d": 36,
+      "freq_365d": 92,
       "is_gan": false,
-      "gan_risk_gauge": 7.7,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "92",
@@ -6204,19 +6205,19 @@
         },
         {
           "number": "51",
-          "co_count": 27
+          "co_count": 28
         },
         {
           "number": "62",
-          "co_count": 26
+          "co_count": 27
         },
         {
           "number": "73",
           "co_count": 26
         },
         {
-          "number": "42",
-          "co_count": 25
+          "number": "35",
+          "co_count": 26
         }
       ],
       "yearly_distribution": {
@@ -6241,9 +6242,17 @@
         "2023": 90,
         "2024": 84,
         "2025": 97,
-        "2026": 60
+        "2026": 61
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -6480,14 +6489,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-28",
-          "prizes": [
-            "prize3_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -6497,15 +6498,15 @@
       "special_hits": 59,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-09-27",
-      "days_since_last": 7,
+      "days_since_last": 8,
       "max_gap_historical": 25,
       "average_gap": 3.2,
       "freq_30d": 6,
-      "freq_60d": 22,
+      "freq_60d": 20,
       "freq_100d": 30,
       "freq_365d": 87,
       "is_gan": false,
-      "gan_risk_gauge": 28.0,
+      "gan_risk_gauge": 32.0,
       "top_pairs": [
         {
           "number": "50",
@@ -6809,15 +6810,15 @@
       "special_hits": 69,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 28,
       "average_gap": 3.2,
-      "freq_30d": 9,
+      "freq_30d": 7,
       "freq_60d": 20,
       "freq_100d": 25,
       "freq_365d": 104,
       "is_gan": false,
-      "gan_risk_gauge": 3.6,
+      "gan_risk_gauge": 7.1,
       "top_pairs": [
         {
           "number": "90",
@@ -7118,27 +7119,27 @@
       "special_hits": 80,
       "first_seen_date": "2005-10-09",
       "last_seen_date": "2026-09-28",
-      "days_since_last": 6,
+      "days_since_last": 7,
       "max_gap_historical": 30,
       "average_gap": 3.1,
       "freq_30d": 11,
       "freq_60d": 24,
       "freq_100d": 28,
-      "freq_365d": 101,
+      "freq_365d": 100,
       "is_gan": false,
-      "gan_risk_gauge": 20.0,
+      "gan_risk_gauge": 23.3,
       "top_pairs": [
         {
           "number": "13",
           "co_count": 31
         },
         {
-          "number": "83",
+          "number": "49",
           "co_count": 28
         },
         {
-          "number": "49",
-          "co_count": 28
+          "number": "83",
+          "co_count": 27
         },
         {
           "number": "52",
@@ -7428,7 +7429,7 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 37,
       "average_gap": 3.2,
       "freq_30d": 4,
@@ -7436,7 +7437,7 @@
       "freq_100d": 20,
       "freq_365d": 85,
       "is_gan": false,
-      "gan_risk_gauge": 10.8,
+      "gan_risk_gauge": 13.5,
       "top_pairs": [
         {
           "number": "52",
@@ -7737,7 +7738,7 @@
       "special_hits": 91,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 25,
       "average_gap": 3.1,
       "freq_30d": 11,
@@ -7745,7 +7746,7 @@
       "freq_100d": 31,
       "freq_365d": 98,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 4.0,
       "top_pairs": [
         {
           "number": "64",
@@ -8042,23 +8043,23 @@
     },
     "25": {
       "number": "25",
-      "total_hits": 2005,
+      "total_hits": 2006,
       "special_hits": 73,
       "first_seen_date": "2005-10-01",
-      "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 24,
       "average_gap": 3.2,
-      "freq_30d": 2,
-      "freq_60d": 6,
-      "freq_100d": 14,
-      "freq_365d": 91,
+      "freq_30d": 3,
+      "freq_60d": 7,
+      "freq_100d": 15,
+      "freq_365d": 92,
       "is_gan": false,
-      "gan_risk_gauge": 16.7,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "72",
-          "co_count": 29
+          "co_count": 30
         },
         {
           "number": "91",
@@ -8066,15 +8067,15 @@
         },
         {
           "number": "62",
-          "co_count": 26
+          "co_count": 27
         },
         {
           "number": "69",
           "co_count": 25
         },
         {
-          "number": "14",
-          "co_count": 24
+          "number": "38",
+          "co_count": 25
         }
       ],
       "yearly_distribution": {
@@ -8099,9 +8100,17 @@
         "2023": 79,
         "2024": 92,
         "2025": 95,
-        "2026": 54
+        "2026": 55
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize5_1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-09-30",
           "prizes": [
@@ -8336,14 +8345,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-04-21",
-          "prizes": [
-            "prize3_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -8353,15 +8354,15 @@
       "special_hits": 67,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 36,
       "average_gap": 3.2,
-      "freq_30d": 6,
+      "freq_30d": 5,
       "freq_60d": 17,
-      "freq_100d": 28,
+      "freq_100d": 27,
       "freq_365d": 84,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 2.8,
       "top_pairs": [
         {
           "number": "92",
@@ -8660,15 +8661,15 @@
       "special_hits": 71,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 27,
       "average_gap": 3.3,
       "freq_30d": 11,
       "freq_60d": 18,
-      "freq_100d": 31,
+      "freq_100d": 30,
       "freq_365d": 117,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.7,
       "top_pairs": [
         {
           "number": "91",
@@ -8968,15 +8969,15 @@
       "special_hits": 55,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-09-26",
-      "days_since_last": 8,
+      "days_since_last": 9,
       "max_gap_historical": 30,
       "average_gap": 3.4,
-      "freq_30d": 8,
+      "freq_30d": 7,
       "freq_60d": 12,
       "freq_100d": 17,
       "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 26.7,
+      "gan_risk_gauge": 30.0,
       "top_pairs": [
         {
           "number": "83",
@@ -9275,15 +9276,15 @@
       "special_hits": 73,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 25,
       "average_gap": 3.1,
-      "freq_30d": 8,
+      "freq_30d": 7,
       "freq_60d": 16,
       "freq_100d": 26,
       "freq_365d": 86,
       "is_gan": false,
-      "gan_risk_gauge": 4.0,
+      "gan_risk_gauge": 8.0,
       "top_pairs": [
         {
           "number": "14",
@@ -9585,7 +9586,7 @@
       "special_hits": 73,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 29,
       "average_gap": 3.2,
       "freq_30d": 7,
@@ -9593,7 +9594,7 @@
       "freq_100d": 20,
       "freq_365d": 94,
       "is_gan": false,
-      "gan_risk_gauge": 13.8,
+      "gan_risk_gauge": 17.2,
       "top_pairs": [
         {
           "number": "49",
@@ -9890,17 +9891,17 @@
     },
     "31": {
       "number": "31",
-      "total_hits": 2065,
+      "total_hits": 2066,
       "special_hits": 61,
       "first_seen_date": "2005-10-02",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 38,
       "average_gap": 3.2,
       "freq_30d": 9,
       "freq_60d": 16,
       "freq_100d": 28,
-      "freq_365d": 99,
+      "freq_365d": 100,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
@@ -9909,11 +9910,11 @@
           "co_count": 33
         },
         {
-          "number": "92",
-          "co_count": 31
+          "number": "52",
+          "co_count": 32
         },
         {
-          "number": "52",
+          "number": "92",
           "co_count": 31
         },
         {
@@ -9947,9 +9948,17 @@
         "2023": 73,
         "2024": 79,
         "2025": 85,
-        "2026": 69
+        "2026": 70
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize6_3"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -10187,14 +10196,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-28",
-          "prizes": [
-            "prize3_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -10204,15 +10205,15 @@
       "special_hits": 90,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-09-26",
-      "days_since_last": 8,
+      "days_since_last": 9,
       "max_gap_historical": 26,
       "average_gap": 3.1,
       "freq_30d": 9,
-      "freq_60d": 23,
+      "freq_60d": 22,
       "freq_100d": 35,
       "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 30.8,
+      "gan_risk_gauge": 34.6,
       "top_pairs": [
         {
           "number": "21",
@@ -10519,7 +10520,7 @@
       "special_hits": 69,
       "first_seen_date": "2005-10-05",
       "last_seen_date": "2026-09-29",
-      "days_since_last": 5,
+      "days_since_last": 6,
       "max_gap_historical": 30,
       "average_gap": 3.2,
       "freq_30d": 12,
@@ -10527,7 +10528,7 @@
       "freq_100d": 38,
       "freq_365d": 108,
       "is_gan": false,
-      "gan_risk_gauge": 16.7,
+      "gan_risk_gauge": 20.0,
       "top_pairs": [
         {
           "number": "77",
@@ -10835,7 +10836,7 @@
       "special_hits": 84,
       "first_seen_date": "2005-10-10",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 34,
       "average_gap": 3.3,
       "freq_30d": 11,
@@ -10843,7 +10844,7 @@
       "freq_100d": 41,
       "freq_365d": 103,
       "is_gan": false,
-      "gan_risk_gauge": 8.8,
+      "gan_risk_gauge": 11.8,
       "top_pairs": [
         {
           "number": "95",
@@ -11143,17 +11144,17 @@
     },
     "35": {
       "number": "35",
-      "total_hits": 1987,
+      "total_hits": 1988,
       "special_hits": 68,
       "first_seen_date": "2005-10-04",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 35,
       "average_gap": 3.3,
-      "freq_30d": 11,
+      "freq_30d": 12,
       "freq_60d": 20,
       "freq_100d": 32,
-      "freq_365d": 96,
+      "freq_365d": 97,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
@@ -11163,19 +11164,19 @@
         },
         {
           "number": "38",
-          "co_count": 31
+          "co_count": 32
         },
         {
           "number": "92",
           "co_count": 27
         },
         {
-          "number": "64",
-          "co_count": 26
+          "number": "95",
+          "co_count": 27
         },
         {
           "number": "54",
-          "co_count": 26
+          "co_count": 27
         }
       ],
       "yearly_distribution": {
@@ -11200,9 +11201,17 @@
         "2023": 85,
         "2024": 94,
         "2025": 82,
-        "2026": 64
+        "2026": 65
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize5_5"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -11438,14 +11447,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-17",
-          "prizes": [
-            "prize3_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -11455,7 +11456,7 @@
       "special_hits": 104,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-22",
-      "days_since_last": 12,
+      "days_since_last": 13,
       "max_gap_historical": 27,
       "average_gap": 3.1,
       "freq_30d": 5,
@@ -11463,7 +11464,7 @@
       "freq_100d": 24,
       "freq_365d": 102,
       "is_gan": true,
-      "gan_risk_gauge": 44.4,
+      "gan_risk_gauge": 48.1,
       "top_pairs": [
         {
           "number": "11",
@@ -11762,30 +11763,30 @@
       "special_hits": 66,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 25,
       "average_gap": 3.3,
-      "freq_30d": 13,
+      "freq_30d": 12,
       "freq_60d": 18,
       "freq_100d": 31,
-      "freq_365d": 93,
+      "freq_365d": 92,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 4.0,
       "top_pairs": [
         {
           "number": "13",
           "co_count": 25
         },
         {
-          "number": "79",
+          "number": "64",
+          "co_count": 24
+        },
+        {
+          "number": "60",
           "co_count": 24
         },
         {
           "number": "93",
-          "co_count": 24
-        },
-        {
-          "number": "64",
           "co_count": 24
         },
         {
@@ -12064,34 +12065,34 @@
     },
     "38": {
       "number": "38",
-      "total_hits": 2141,
+      "total_hits": 2142,
       "special_hits": 82,
       "first_seen_date": "2005-10-06",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 26,
       "average_gap": 3.0,
-      "freq_30d": 10,
-      "freq_60d": 20,
-      "freq_100d": 29,
-      "freq_365d": 106,
+      "freq_30d": 11,
+      "freq_60d": 21,
+      "freq_100d": 30,
+      "freq_365d": 107,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
+        {
+          "number": "35",
+          "co_count": 32
+        },
+        {
+          "number": "48",
+          "co_count": 32
+        },
         {
           "number": "68",
           "co_count": 31
         },
         {
           "number": "27",
-          "co_count": 31
-        },
-        {
-          "number": "35",
-          "co_count": 31
-        },
-        {
-          "number": "48",
           "co_count": 31
         },
         {
@@ -12121,9 +12122,17 @@
         "2023": 83,
         "2024": 71,
         "2025": 78,
-        "2026": 71
+        "2026": 72
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_4"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -12359,15 +12368,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-15",
-          "prizes": [
-            "prize2_2",
-            "prize5_6"
-          ],
-          "hits": 2,
-          "is_special": false
         }
       ]
     },
@@ -12377,15 +12377,15 @@
       "special_hits": 94,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 38,
       "average_gap": 3.2,
-      "freq_30d": 12,
+      "freq_30d": 11,
       "freq_60d": 17,
-      "freq_100d": 29,
-      "freq_365d": 89,
+      "freq_100d": 27,
+      "freq_365d": 88,
       "is_gan": false,
-      "gan_risk_gauge": 7.9,
+      "gan_risk_gauge": 10.5,
       "top_pairs": [
         {
           "number": "60",
@@ -12396,15 +12396,15 @@
           "co_count": 24
         },
         {
-          "number": "44",
-          "co_count": 24
-        },
-        {
           "number": "12",
           "co_count": 24
         },
         {
-          "number": "62",
+          "number": "67",
+          "co_count": 23
+        },
+        {
+          "number": "64",
           "co_count": 23
         }
       ],
@@ -12687,7 +12687,7 @@
       "special_hits": 57,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 31,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -12695,7 +12695,7 @@
       "freq_100d": 30,
       "freq_365d": 95,
       "is_gan": false,
-      "gan_risk_gauge": 12.9,
+      "gan_risk_gauge": 16.1,
       "top_pairs": [
         {
           "number": "64",
@@ -12998,7 +12998,7 @@
       "special_hits": 66,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 32,
       "average_gap": 3.2,
       "freq_30d": 10,
@@ -13006,7 +13006,7 @@
       "freq_100d": 24,
       "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 3.1,
+      "gan_risk_gauge": 6.2,
       "top_pairs": [
         {
           "number": "52",
@@ -13307,7 +13307,7 @@
       "special_hits": 70,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 25,
       "average_gap": 3.2,
       "freq_30d": 5,
@@ -13315,7 +13315,7 @@
       "freq_100d": 27,
       "freq_365d": 100,
       "is_gan": false,
-      "gan_risk_gauge": 16.0,
+      "gan_risk_gauge": 20.0,
       "top_pairs": [
         {
           "number": "60",
@@ -13616,15 +13616,15 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 30,
       "average_gap": 3.1,
       "freq_30d": 6,
       "freq_60d": 18,
       "freq_100d": 25,
-      "freq_365d": 87,
+      "freq_365d": 86,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.3,
       "top_pairs": [
         {
           "number": "72",
@@ -13635,11 +13635,11 @@
           "co_count": 26
         },
         {
-          "number": "62",
-          "co_count": 26
+          "number": "48",
+          "co_count": 25
         },
         {
-          "number": "48",
+          "number": "62",
           "co_count": 25
         },
         {
@@ -13920,19 +13920,19 @@
     },
     "44": {
       "number": "44",
-      "total_hits": 2106,
+      "total_hits": 2107,
       "special_hits": 74,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 30,
       "average_gap": 3.1,
-      "freq_30d": 10,
-      "freq_60d": 21,
-      "freq_100d": 27,
+      "freq_30d": 11,
+      "freq_60d": 22,
+      "freq_100d": 28,
       "freq_365d": 100,
       "is_gan": false,
-      "gan_risk_gauge": 6.7,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "54",
@@ -13948,10 +13948,10 @@
         },
         {
           "number": "94",
-          "co_count": 26
+          "co_count": 27
         },
         {
-          "number": "13",
+          "number": "27",
           "co_count": 26
         }
       ],
@@ -13977,9 +13977,17 @@
         "2023": 105,
         "2024": 80,
         "2025": 92,
-        "2026": 65
+        "2026": 66
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize7_1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -14218,32 +14226,24 @@
           ],
           "hits": 2,
           "is_special": false
-        },
-        {
-          "date": "2026-05-25",
-          "prizes": [
-            "prize5_3"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
     "45": {
       "number": "45",
-      "total_hits": 1993,
+      "total_hits": 1994,
       "special_hits": 74,
       "first_seen_date": "2005-10-09",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 34,
       "average_gap": 3.3,
-      "freq_30d": 8,
-      "freq_60d": 12,
-      "freq_100d": 20,
-      "freq_365d": 101,
+      "freq_30d": 9,
+      "freq_60d": 13,
+      "freq_100d": 19,
+      "freq_365d": 102,
       "is_gan": false,
-      "gan_risk_gauge": 5.9,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "91",
@@ -14255,14 +14255,14 @@
         },
         {
           "number": "94",
-          "co_count": 28
+          "co_count": 29
         },
         {
           "number": "65",
           "co_count": 28
         },
         {
-          "number": "17",
+          "number": "62",
           "co_count": 28
         }
       ],
@@ -14288,9 +14288,17 @@
         "2023": 71,
         "2024": 93,
         "2025": 86,
-        "2026": 68
+        "2026": 69
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_6"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -14525,14 +14533,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-23",
-          "prizes": [
-            "prize4_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -14542,7 +14542,7 @@
       "special_hits": 71,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 28,
       "average_gap": 3.2,
       "freq_30d": 13,
@@ -14550,7 +14550,7 @@
       "freq_100d": 34,
       "freq_365d": 112,
       "is_gan": false,
-      "gan_risk_gauge": 3.6,
+      "gan_risk_gauge": 7.1,
       "top_pairs": [
         {
           "number": "92",
@@ -14848,38 +14848,38 @@
     },
     "47": {
       "number": "47",
-      "total_hits": 2022,
+      "total_hits": 2024,
       "special_hits": 72,
       "first_seen_date": "2005-10-05",
-      "last_seen_date": "2026-09-25",
-      "days_since_last": 9,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 29,
       "average_gap": 3.2,
-      "freq_30d": 5,
-      "freq_60d": 12,
-      "freq_100d": 25,
-      "freq_365d": 95,
+      "freq_30d": 7,
+      "freq_60d": 14,
+      "freq_100d": 24,
+      "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 31.0,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "64",
           "co_count": 31
         },
         {
-          "number": "77",
-          "co_count": 30
-        },
-        {
           "number": "88",
           "co_count": 29
         },
         {
-          "number": "46",
+          "number": "77",
+          "co_count": 29
+        },
+        {
+          "number": "89",
           "co_count": 28
         },
         {
-          "number": "08",
+          "number": "46",
           "co_count": 28
         }
       ],
@@ -14905,9 +14905,18 @@
         "2023": 80,
         "2024": 84,
         "2025": 86,
-        "2026": 64
+        "2026": 65
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize4_2",
+            "prize5_6"
+          ],
+          "hits": 2,
+          "is_special": false
+        },
         {
           "date": "2026-09-25",
           "prizes": [
@@ -15143,40 +15152,32 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-15",
-          "prizes": [
-            "prize7_2"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
     "48": {
       "number": "48",
-      "total_hits": 2040,
+      "total_hits": 2041,
       "special_hits": 84,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 30,
       "average_gap": 3.2,
-      "freq_30d": 17,
-      "freq_60d": 24,
+      "freq_30d": 18,
+      "freq_60d": 25,
       "freq_100d": 34,
-      "freq_365d": 106,
+      "freq_365d": 107,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "38",
-          "co_count": 31
+          "co_count": 32
         },
         {
           "number": "52",
-          "co_count": 30
+          "co_count": 31
         },
         {
           "number": "60",
@@ -15213,9 +15214,17 @@
         "2023": 93,
         "2024": 73,
         "2025": 84,
-        "2026": 74
+        "2026": 75
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize6_2"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -15450,14 +15459,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-07-02",
-          "prizes": [
-            "prize2_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -15467,7 +15468,7 @@
       "special_hits": 73,
       "first_seen_date": "2005-10-11",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 25,
       "average_gap": 3.1,
       "freq_30d": 6,
@@ -15475,7 +15476,7 @@
       "freq_100d": 28,
       "freq_365d": 98,
       "is_gan": false,
-      "gan_risk_gauge": 12.0,
+      "gan_risk_gauge": 16.0,
       "top_pairs": [
         {
           "number": "73",
@@ -15777,15 +15778,15 @@
       "special_hits": 66,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 26,
       "average_gap": 3.4,
       "freq_30d": 8,
-      "freq_60d": 22,
+      "freq_60d": 21,
       "freq_100d": 34,
       "freq_365d": 101,
       "is_gan": false,
-      "gan_risk_gauge": 7.7,
+      "gan_risk_gauge": 11.5,
       "top_pairs": [
         {
           "number": "09",
@@ -16079,17 +16080,17 @@
     },
     "51": {
       "number": "51",
-      "total_hits": 1916,
+      "total_hits": 1917,
       "special_hits": 69,
       "first_seen_date": "2005-10-05",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 26,
       "average_gap": 3.5,
-      "freq_30d": 9,
-      "freq_60d": 21,
-      "freq_100d": 29,
-      "freq_365d": 106,
+      "freq_30d": 10,
+      "freq_60d": 20,
+      "freq_100d": 30,
+      "freq_365d": 107,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
@@ -16106,8 +16107,8 @@
           "co_count": 28
         },
         {
-          "number": "92",
-          "co_count": 27
+          "number": "19",
+          "co_count": 28
         },
         {
           "number": "13",
@@ -16136,9 +16137,17 @@
         "2023": 78,
         "2024": 71,
         "2025": 84,
-        "2026": 75
+        "2026": 76
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize5_2"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -16375,32 +16384,24 @@
           ],
           "hits": 1,
           "is_special": true
-        },
-        {
-          "date": "2026-06-06",
-          "prizes": [
-            "prize4_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
     "52": {
       "number": "52",
-      "total_hits": 2132,
+      "total_hits": 2133,
       "special_hits": 76,
       "first_seen_date": "2005-10-05",
-      "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 24,
       "average_gap": 3.0,
-      "freq_30d": 8,
-      "freq_60d": 18,
-      "freq_100d": 33,
-      "freq_365d": 121,
+      "freq_30d": 9,
+      "freq_60d": 19,
+      "freq_100d": 34,
+      "freq_365d": 122,
       "is_gan": false,
-      "gan_risk_gauge": 4.2,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "83",
@@ -16415,12 +16416,12 @@
           "co_count": 34
         },
         {
-          "number": "17",
+          "number": "31",
           "co_count": 32
         },
         {
-          "number": "31",
-          "co_count": 31
+          "number": "17",
+          "co_count": 32
         }
       ],
       "yearly_distribution": {
@@ -16445,9 +16446,17 @@
         "2023": 95,
         "2024": 99,
         "2025": 76,
-        "2026": 83
+        "2026": 84
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-03",
           "prizes": [
@@ -16682,39 +16691,31 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-28",
-          "prizes": [
-            "special"
-          ],
-          "hits": 1,
-          "is_special": true
         }
       ]
     },
     "53": {
       "number": "53",
-      "total_hits": 2025,
+      "total_hits": 2027,
       "special_hits": 70,
       "first_seen_date": "2005-10-02",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 30,
       "average_gap": 3.3,
-      "freq_30d": 6,
-      "freq_60d": 14,
-      "freq_100d": 27,
-      "freq_365d": 87,
+      "freq_30d": 8,
+      "freq_60d": 16,
+      "freq_100d": 28,
+      "freq_365d": 88,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
-          "number": "95",
-          "co_count": 27
+          "number": "52",
+          "co_count": 28
         },
         {
-          "number": "52",
+          "number": "95",
           "co_count": 27
         },
         {
@@ -16722,12 +16723,12 @@
           "co_count": 26
         },
         {
-          "number": "14",
+          "number": "72",
           "co_count": 25
         },
         {
-          "number": "72",
-          "co_count": 24
+          "number": "14",
+          "co_count": 25
         }
       ],
       "yearly_distribution": {
@@ -16752,9 +16753,18 @@
         "2023": 78,
         "2024": 92,
         "2025": 98,
-        "2026": 52
+        "2026": 53
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_3",
+            "prize6_1"
+          ],
+          "hits": 2,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -16990,36 +17000,28 @@
           ],
           "hits": 2,
           "is_special": false
-        },
-        {
-          "date": "2026-05-20",
-          "prizes": [
-            "prize5_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
     "54": {
       "number": "54",
-      "total_hits": 2119,
-      "special_hits": 84,
+      "total_hits": 2120,
+      "special_hits": 85,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 25,
       "average_gap": 3.1,
-      "freq_30d": 4,
+      "freq_30d": 5,
       "freq_60d": 14,
-      "freq_100d": 30,
+      "freq_100d": 31,
       "freq_365d": 105,
       "is_gan": false,
-      "gan_risk_gauge": 8.0,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "83",
-          "co_count": 37
+          "co_count": 36
         },
         {
           "number": "44",
@@ -17060,9 +17062,17 @@
         "2023": 82,
         "2024": 72,
         "2025": 94,
-        "2026": 75
+        "2026": 76
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "special"
+          ],
+          "hits": 1,
+          "is_special": true
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -17298,14 +17308,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-19",
-          "prizes": [
-            "prize4_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -17315,7 +17317,7 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 42,
       "average_gap": 3.3,
       "freq_30d": 8,
@@ -17323,7 +17325,7 @@
       "freq_100d": 22,
       "freq_365d": 84,
       "is_gan": false,
-      "gan_risk_gauge": 7.1,
+      "gan_risk_gauge": 9.5,
       "top_pairs": [
         {
           "number": "83",
@@ -17625,15 +17627,15 @@
       "special_hits": 74,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 24,
       "average_gap": 3.2,
       "freq_30d": 7,
       "freq_60d": 14,
       "freq_100d": 24,
-      "freq_365d": 88,
+      "freq_365d": 86,
       "is_gan": false,
-      "gan_risk_gauge": 4.2,
+      "gan_risk_gauge": 8.3,
       "top_pairs": [
         {
           "number": "46",
@@ -17641,11 +17643,11 @@
         },
         {
           "number": "77",
-          "co_count": 27
+          "co_count": 26
         },
         {
-          "number": "79",
-          "co_count": 26
+          "number": "73",
+          "co_count": 25
         },
         {
           "number": "97",
@@ -17932,15 +17934,15 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 30,
       "average_gap": 3.2,
-      "freq_30d": 10,
+      "freq_30d": 9,
       "freq_60d": 13,
-      "freq_100d": 23,
+      "freq_100d": 22,
       "freq_365d": 99,
       "is_gan": false,
-      "gan_risk_gauge": 6.7,
+      "gan_risk_gauge": 10.0,
       "top_pairs": [
         {
           "number": "73",
@@ -18237,15 +18239,15 @@
       "special_hits": 67,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-09-15",
-      "days_since_last": 19,
+      "days_since_last": 20,
       "max_gap_historical": 35,
       "average_gap": 3.3,
-      "freq_30d": 3,
+      "freq_30d": 2,
       "freq_60d": 5,
       "freq_100d": 12,
       "freq_365d": 89,
       "is_gan": true,
-      "gan_risk_gauge": 54.3,
+      "gan_risk_gauge": 57.1,
       "top_pairs": [
         {
           "number": "78",
@@ -18542,15 +18544,15 @@
       "special_hits": 80,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 24,
       "average_gap": 3.1,
-      "freq_30d": 5,
+      "freq_30d": 4,
       "freq_60d": 10,
       "freq_100d": 18,
       "freq_365d": 85,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 4.2,
       "top_pairs": [
         {
           "number": "90",
@@ -18851,15 +18853,15 @@
       "special_hits": 91,
       "first_seen_date": "2005-10-07",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 26,
       "average_gap": 3.3,
       "freq_30d": 8,
-      "freq_60d": 14,
+      "freq_60d": 12,
       "freq_100d": 29,
       "freq_365d": 115,
       "is_gan": false,
-      "gan_risk_gauge": 15.4,
+      "gan_risk_gauge": 19.2,
       "top_pairs": [
         {
           "number": "94",
@@ -19159,7 +19161,7 @@
       "special_hits": 69,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 35,
       "average_gap": 3.2,
       "freq_30d": 5,
@@ -19167,7 +19169,7 @@
       "freq_100d": 31,
       "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 2.9,
+      "gan_risk_gauge": 5.7,
       "top_pairs": [
         {
           "number": "60",
@@ -19462,27 +19464,23 @@
     },
     "62": {
       "number": "62",
-      "total_hits": 2182,
+      "total_hits": 2183,
       "special_hits": 81,
       "first_seen_date": "2005-10-06",
-      "last_seen_date": "2026-09-27",
-      "days_since_last": 7,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 28,
       "average_gap": 3.0,
-      "freq_30d": 7,
-      "freq_60d": 18,
-      "freq_100d": 31,
+      "freq_30d": 8,
+      "freq_60d": 19,
+      "freq_100d": 32,
       "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 25.0,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "13",
           "co_count": 33
-        },
-        {
-          "number": "77",
-          "co_count": 30
         },
         {
           "number": "27",
@@ -19491,6 +19489,10 @@
         {
           "number": "17",
           "co_count": 30
+        },
+        {
+          "number": "77",
+          "co_count": 29
         },
         {
           "number": "93",
@@ -19519,9 +19521,17 @@
         "2023": 102,
         "2024": 85,
         "2025": 96,
-        "2026": 68
+        "2026": 69
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_2"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-09-27",
           "prizes": [
@@ -19757,14 +19767,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-15",
-          "prizes": [
-            "prize7_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -19774,7 +19776,7 @@
       "special_hits": 72,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 30,
       "average_gap": 3.2,
       "freq_30d": 8,
@@ -19782,7 +19784,7 @@
       "freq_100d": 29,
       "freq_365d": 93,
       "is_gan": false,
-      "gan_risk_gauge": 3.3,
+      "gan_risk_gauge": 6.7,
       "top_pairs": [
         {
           "number": "90",
@@ -20082,15 +20084,15 @@
       "special_hits": 80,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-25",
-      "days_since_last": 9,
+      "days_since_last": 10,
       "max_gap_historical": 25,
       "average_gap": 3.1,
       "freq_30d": 10,
       "freq_60d": 24,
-      "freq_100d": 35,
+      "freq_100d": 34,
       "freq_365d": 113,
-      "is_gan": false,
-      "gan_risk_gauge": 36.0,
+      "is_gan": true,
+      "gan_risk_gauge": 40.0,
       "top_pairs": [
         {
           "number": "09",
@@ -20390,15 +20392,15 @@
       "special_hits": 96,
       "first_seen_date": "2005-10-08",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 29,
       "average_gap": 3.2,
       "freq_30d": 8,
       "freq_60d": 11,
-      "freq_100d": 26,
+      "freq_100d": 24,
       "freq_365d": 100,
       "is_gan": false,
-      "gan_risk_gauge": 6.9,
+      "gan_risk_gauge": 10.3,
       "top_pairs": [
         {
           "number": "33",
@@ -20694,19 +20696,19 @@
     },
     "66": {
       "number": "66",
-      "total_hits": 2082,
+      "total_hits": 2083,
       "special_hits": 87,
       "first_seen_date": "2005-10-04",
-      "last_seen_date": "2026-09-29",
-      "days_since_last": 5,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 29,
       "average_gap": 3.1,
-      "freq_30d": 7,
-      "freq_60d": 12,
-      "freq_100d": 22,
-      "freq_365d": 92,
+      "freq_30d": 8,
+      "freq_60d": 13,
+      "freq_100d": 23,
+      "freq_365d": 93,
       "is_gan": false,
-      "gan_risk_gauge": 17.2,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "02",
@@ -20725,7 +20727,7 @@
           "co_count": 25
         },
         {
-          "number": "12",
+          "number": "10",
           "co_count": 25
         }
       ],
@@ -20751,9 +20753,17 @@
         "2023": 88,
         "2024": 100,
         "2025": 86,
-        "2026": 61
+        "2026": 62
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize4_1"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-09-29",
           "prizes": [
@@ -20987,14 +20997,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-26",
-          "prizes": [
-            "prize3_6"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -21004,15 +21006,15 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 26,
       "average_gap": 3.2,
-      "freq_30d": 10,
-      "freq_60d": 19,
+      "freq_30d": 9,
+      "freq_60d": 18,
       "freq_100d": 28,
       "freq_365d": 90,
       "is_gan": false,
-      "gan_risk_gauge": 7.7,
+      "gan_risk_gauge": 11.5,
       "top_pairs": [
         {
           "number": "34",
@@ -21313,15 +21315,15 @@
       "special_hits": 81,
       "first_seen_date": "2005-10-12",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 27,
       "average_gap": 3.1,
       "freq_30d": 8,
       "freq_60d": 17,
-      "freq_100d": 31,
+      "freq_100d": 30,
       "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 3.7,
+      "gan_risk_gauge": 7.4,
       "top_pairs": [
         {
           "number": "61",
@@ -21621,15 +21623,15 @@
       "special_hits": 62,
       "first_seen_date": "2005-10-08",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 32,
       "average_gap": 3.4,
-      "freq_30d": 5,
-      "freq_60d": 14,
+      "freq_30d": 4,
+      "freq_60d": 13,
       "freq_100d": 24,
-      "freq_365d": 106,
+      "freq_365d": 105,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.1,
       "top_pairs": [
         {
           "number": "13",
@@ -21640,11 +21642,11 @@
           "co_count": 30
         },
         {
-          "number": "83",
-          "co_count": 29
+          "number": "05",
+          "co_count": 28
         },
         {
-          "number": "05",
+          "number": "83",
           "co_count": 28
         },
         {
@@ -21924,19 +21926,19 @@
     },
     "70": {
       "number": "70",
-      "total_hits": 2070,
+      "total_hits": 2071,
       "special_hits": 99,
       "first_seen_date": "2005-10-01",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 30,
       "average_gap": 3.1,
       "freq_30d": 8,
-      "freq_60d": 19,
-      "freq_100d": 30,
-      "freq_365d": 91,
+      "freq_60d": 20,
+      "freq_100d": 31,
+      "freq_365d": 92,
       "is_gan": false,
-      "gan_risk_gauge": 6.7,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "07",
@@ -21948,10 +21950,10 @@
         },
         {
           "number": "31",
-          "co_count": 25
+          "co_count": 26
         },
         {
-          "number": "77",
+          "number": "74",
           "co_count": 25
         },
         {
@@ -21981,9 +21983,17 @@
         "2023": 94,
         "2024": 81,
         "2025": 77,
-        "2026": 62
+        "2026": 63
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize7_2"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -22218,14 +22228,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-14",
-          "prizes": [
-            "prize3_2"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -22235,7 +22237,7 @@
       "special_hits": 79,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 30,
       "average_gap": 3.2,
       "freq_30d": 8,
@@ -22243,7 +22245,7 @@
       "freq_100d": 21,
       "freq_365d": 87,
       "is_gan": false,
-      "gan_risk_gauge": 13.3,
+      "gan_risk_gauge": 16.7,
       "top_pairs": [
         {
           "number": "28",
@@ -22536,35 +22538,35 @@
     },
     "72": {
       "number": "72",
-      "total_hits": 2095,
+      "total_hits": 2097,
       "special_hits": 63,
       "first_seen_date": "2005-10-01",
-      "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 29,
       "average_gap": 3.1,
-      "freq_30d": 8,
-      "freq_60d": 17,
-      "freq_100d": 25,
-      "freq_365d": 100,
+      "freq_30d": 10,
+      "freq_60d": 19,
+      "freq_100d": 27,
+      "freq_365d": 102,
       "is_gan": false,
-      "gan_risk_gauge": 13.8,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
+        {
+          "number": "25",
+          "co_count": 30
+        },
         {
           "number": "75",
           "co_count": 29
         },
         {
-          "number": "25",
+          "number": "01",
           "co_count": 29
         },
         {
-          "number": "01",
+          "number": "62",
           "co_count": 28
-        },
-        {
-          "number": "92",
-          "co_count": 27
         },
         {
           "number": "13",
@@ -22593,9 +22595,18 @@
         "2023": 91,
         "2024": 92,
         "2025": 82,
-        "2026": 63
+        "2026": 64
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize4_4",
+            "prize7_3"
+          ],
+          "hits": 2,
+          "is_special": false
+        },
         {
           "date": "2026-09-30",
           "prizes": [
@@ -22832,14 +22843,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-27",
-          "prizes": [
-            "prize5_5"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -22849,7 +22852,7 @@
       "special_hits": 69,
       "first_seen_date": "2005-10-03",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 36,
       "average_gap": 3.2,
       "freq_30d": 6,
@@ -22857,7 +22860,7 @@
       "freq_100d": 26,
       "freq_365d": 105,
       "is_gan": false,
-      "gan_risk_gauge": 2.8,
+      "gan_risk_gauge": 5.6,
       "top_pairs": [
         {
           "number": "52",
@@ -23153,35 +23156,35 @@
     },
     "74": {
       "number": "74",
-      "total_hits": 2012,
+      "total_hits": 2013,
       "special_hits": 63,
       "first_seen_date": "2005-10-05",
-      "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 36,
       "average_gap": 3.3,
-      "freq_30d": 8,
-      "freq_60d": 13,
-      "freq_100d": 23,
+      "freq_30d": 9,
+      "freq_60d": 14,
+      "freq_100d": 24,
       "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 2.8,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "83",
-          "co_count": 32
+          "co_count": 31
         },
         {
           "number": "64",
           "co_count": 30
         },
         {
-          "number": "99",
+          "number": "80",
           "co_count": 27
         },
         {
-          "number": "80",
-          "co_count": 27
+          "number": "99",
+          "co_count": 26
         },
         {
           "number": "92",
@@ -23210,9 +23213,17 @@
         "2023": 91,
         "2024": 80,
         "2025": 87,
-        "2026": 62
+        "2026": 63
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize5_3"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-03",
           "prizes": [
@@ -23448,14 +23459,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-21",
-          "prizes": [
-            "prize7_4"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -23465,7 +23468,7 @@
       "special_hits": 71,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 24,
       "average_gap": 3.1,
       "freq_30d": 11,
@@ -23473,7 +23476,7 @@
       "freq_100d": 26,
       "freq_365d": 95,
       "is_gan": false,
-      "gan_risk_gauge": 8.3,
+      "gan_risk_gauge": 12.5,
       "top_pairs": [
         {
           "number": "10",
@@ -23772,15 +23775,15 @@
       "special_hits": 75,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 25,
       "average_gap": 3.1,
       "freq_30d": 5,
       "freq_60d": 14,
-      "freq_100d": 21,
+      "freq_100d": 20,
       "freq_365d": 93,
       "is_gan": false,
-      "gan_risk_gauge": 4.0,
+      "gan_risk_gauge": 8.0,
       "top_pairs": [
         {
           "number": "88",
@@ -24079,35 +24082,35 @@
       "special_hits": 79,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 27,
       "average_gap": 3.3,
       "freq_30d": 8,
       "freq_60d": 21,
       "freq_100d": 34,
-      "freq_365d": 105,
+      "freq_365d": 104,
       "is_gan": false,
-      "gan_risk_gauge": 3.7,
+      "gan_risk_gauge": 7.4,
       "top_pairs": [
         {
           "number": "33",
           "co_count": 31
         },
         {
-          "number": "95",
+          "number": "13",
           "co_count": 30
         },
         {
-          "number": "62",
-          "co_count": 30
+          "number": "95",
+          "co_count": 29
         },
         {
           "number": "47",
-          "co_count": 30
+          "co_count": 29
         },
         {
-          "number": "13",
-          "co_count": 30
+          "number": "62",
+          "co_count": 29
         }
       ],
       "yearly_distribution": {
@@ -24385,7 +24388,7 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-23",
-      "days_since_last": 11,
+      "days_since_last": 12,
       "max_gap_historical": 33,
       "average_gap": 3.2,
       "freq_30d": 5,
@@ -24393,7 +24396,7 @@
       "freq_100d": 19,
       "freq_365d": 86,
       "is_gan": true,
-      "gan_risk_gauge": 33.3,
+      "gan_risk_gauge": 36.4,
       "top_pairs": [
         {
           "number": "95",
@@ -24691,35 +24694,35 @@
       "special_hits": 75,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-09-26",
-      "days_since_last": 8,
+      "days_since_last": 9,
       "max_gap_historical": 23,
       "average_gap": 3.1,
       "freq_30d": 10,
       "freq_60d": 14,
       "freq_100d": 25,
-      "freq_365d": 98,
+      "freq_365d": 97,
       "is_gan": false,
-      "gan_risk_gauge": 34.8,
+      "gan_risk_gauge": 39.1,
       "top_pairs": [
         {
           "number": "83",
-          "co_count": 28
-        },
-        {
-          "number": "77",
           "co_count": 27
         },
         {
-          "number": "99",
-          "co_count": 26
-        },
-        {
-          "number": "56",
+          "number": "77",
           "co_count": 26
         },
         {
           "number": "42",
           "co_count": 26
+        },
+        {
+          "number": "99",
+          "co_count": 25
+        },
+        {
+          "number": "56",
+          "co_count": 25
         }
       ],
       "yearly_distribution": {
@@ -24994,17 +24997,17 @@
     },
     "80": {
       "number": "80",
-      "total_hits": 1991,
+      "total_hits": 1992,
       "special_hits": 72,
       "first_seen_date": "2005-10-01",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 40,
       "average_gap": 3.3,
-      "freq_30d": 5,
-      "freq_60d": 15,
-      "freq_100d": 29,
-      "freq_365d": 99,
+      "freq_30d": 6,
+      "freq_60d": 16,
+      "freq_100d": 28,
+      "freq_365d": 98,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
@@ -25021,11 +25024,11 @@
           "co_count": 28
         },
         {
-          "number": "16",
-          "co_count": 28
+          "number": "91",
+          "co_count": 27
         },
         {
-          "number": "07",
+          "number": "74",
           "co_count": 27
         }
       ],
@@ -25051,9 +25054,17 @@
         "2023": 78,
         "2024": 79,
         "2025": 85,
-        "2026": 68
+        "2026": 69
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize5_4"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -25289,15 +25300,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-08",
-          "prizes": [
-            "prize4_2",
-            "prize5_1"
-          ],
-          "hits": 2,
-          "is_special": false
         }
       ]
     },
@@ -25307,7 +25309,7 @@
       "special_hits": 75,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 27,
       "average_gap": 3.2,
       "freq_30d": 5,
@@ -25315,7 +25317,7 @@
       "freq_100d": 30,
       "freq_365d": 103,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.7,
       "top_pairs": [
         {
           "number": "13",
@@ -25618,7 +25620,7 @@
       "special_hits": 85,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 26,
       "average_gap": 3.3,
       "freq_30d": 8,
@@ -25626,7 +25628,7 @@
       "freq_100d": 24,
       "freq_365d": 87,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.8,
       "top_pairs": [
         {
           "number": "92",
@@ -25925,35 +25927,35 @@
       "special_hits": 75,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 27,
       "average_gap": 3.2,
       "freq_30d": 9,
       "freq_60d": 18,
       "freq_100d": 35,
-      "freq_365d": 122,
+      "freq_365d": 121,
       "is_gan": false,
-      "gan_risk_gauge": 7.4,
+      "gan_risk_gauge": 11.1,
       "top_pairs": [
-        {
-          "number": "54",
-          "co_count": 37
-        },
         {
           "number": "52",
           "co_count": 37
         },
         {
-          "number": "74",
-          "co_count": 32
+          "number": "54",
+          "co_count": 36
         },
         {
           "number": "91",
           "co_count": 32
         },
         {
-          "number": "06",
+          "number": "74",
           "co_count": 31
+        },
+        {
+          "number": "17",
+          "co_count": 30
         }
       ],
       "yearly_distribution": {
@@ -26235,15 +26237,15 @@
       "special_hits": 68,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 29,
       "average_gap": 3.2,
-      "freq_30d": 8,
-      "freq_60d": 16,
+      "freq_30d": 7,
+      "freq_60d": 15,
       "freq_100d": 27,
       "freq_365d": 96,
       "is_gan": false,
-      "gan_risk_gauge": 6.9,
+      "gan_risk_gauge": 10.3,
       "top_pairs": [
         {
           "number": "95",
@@ -26541,15 +26543,15 @@
       "special_hits": 76,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 32,
       "average_gap": 3.2,
       "freq_30d": 13,
       "freq_60d": 17,
       "freq_100d": 25,
-      "freq_365d": 95,
+      "freq_365d": 94,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.1,
       "top_pairs": [
         {
           "number": "92",
@@ -26568,8 +26570,8 @@
           "co_count": 26
         },
         {
-          "number": "99",
-          "co_count": 25
+          "number": "51",
+          "co_count": 24
         }
       ],
       "yearly_distribution": {
@@ -26848,7 +26850,7 @@
       "special_hits": 74,
       "first_seen_date": "2005-10-06",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 28,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -26856,7 +26858,7 @@
       "freq_100d": 27,
       "freq_365d": 87,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.6,
       "top_pairs": [
         {
           "number": "92",
@@ -27155,15 +27157,15 @@
       "special_hits": 68,
       "first_seen_date": "2005-10-05",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 23,
       "average_gap": 3.2,
       "freq_30d": 9,
-      "freq_60d": 17,
-      "freq_100d": 28,
+      "freq_60d": 16,
+      "freq_100d": 27,
       "freq_365d": 106,
       "is_gan": false,
-      "gan_risk_gauge": 4.3,
+      "gan_risk_gauge": 8.7,
       "top_pairs": [
         {
           "number": "95",
@@ -27464,15 +27466,15 @@
       "special_hits": 78,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 26,
       "average_gap": 3.1,
-      "freq_30d": 9,
-      "freq_60d": 20,
-      "freq_100d": 28,
+      "freq_30d": 7,
+      "freq_60d": 19,
+      "freq_100d": 27,
       "freq_365d": 102,
       "is_gan": false,
-      "gan_risk_gauge": 3.8,
+      "gan_risk_gauge": 7.7,
       "top_pairs": [
         {
           "number": "68",
@@ -27770,38 +27772,38 @@
     },
     "89": {
       "number": "89",
-      "total_hits": 2011,
+      "total_hits": 2012,
       "special_hits": 77,
       "first_seen_date": "2005-10-05",
-      "last_seen_date": "2026-10-04",
+      "last_seen_date": "2026-10-05",
       "days_since_last": 0,
       "max_gap_historical": 31,
       "average_gap": 3.3,
-      "freq_30d": 12,
+      "freq_30d": 13,
       "freq_60d": 18,
-      "freq_100d": 30,
-      "freq_365d": 101,
+      "freq_100d": 31,
+      "freq_365d": 102,
       "is_gan": false,
       "gan_risk_gauge": 0.0,
       "top_pairs": [
+        {
+          "number": "47",
+          "co_count": 28
+        },
         {
           "number": "14",
           "co_count": 28
         },
         {
           "number": "38",
-          "co_count": 27
+          "co_count": 28
         },
         {
-          "number": "47",
+          "number": "48",
           "co_count": 27
         },
         {
           "number": "83",
-          "co_count": 26
-        },
-        {
-          "number": "50",
           "co_count": 26
         }
       ],
@@ -27827,9 +27829,17 @@
         "2023": 88,
         "2024": 101,
         "2025": 82,
-        "2026": 66
+        "2026": 67
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize3_5"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-04",
           "prizes": [
@@ -28066,14 +28076,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-15",
-          "prizes": [
-            "prize3_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -28083,15 +28085,15 @@
       "special_hits": 71,
       "first_seen_date": "2005-10-09",
       "last_seen_date": "2026-10-04",
-      "days_since_last": 0,
+      "days_since_last": 1,
       "max_gap_historical": 24,
       "average_gap": 3.2,
-      "freq_30d": 11,
+      "freq_30d": 10,
       "freq_60d": 16,
       "freq_100d": 34,
       "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 4.2,
       "top_pairs": [
         {
           "number": "27",
@@ -28389,15 +28391,15 @@
       "special_hits": 87,
       "first_seen_date": "2005-10-14",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 31,
       "average_gap": 3.3,
-      "freq_30d": 7,
+      "freq_30d": 6,
       "freq_60d": 12,
-      "freq_100d": 21,
+      "freq_100d": 20,
       "freq_365d": 122,
       "is_gan": false,
-      "gan_risk_gauge": 9.7,
+      "gan_risk_gauge": 12.9,
       "top_pairs": [
         {
           "number": "27",
@@ -28699,7 +28701,7 @@
       "special_hits": 74,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 31,
       "average_gap": 3.1,
       "freq_30d": 12,
@@ -28707,7 +28709,7 @@
       "freq_100d": 30,
       "freq_365d": 120,
       "is_gan": false,
-      "gan_risk_gauge": 9.7,
+      "gan_risk_gauge": 12.9,
       "top_pairs": [
         {
           "number": "46",
@@ -29011,15 +29013,15 @@
       "special_hits": 72,
       "first_seen_date": "2005-10-01",
       "last_seen_date": "2026-10-03",
-      "days_since_last": 1,
+      "days_since_last": 2,
       "max_gap_historical": 23,
       "average_gap": 3.1,
-      "freq_30d": 13,
+      "freq_30d": 11,
       "freq_60d": 21,
       "freq_100d": 29,
       "freq_365d": 97,
       "is_gan": false,
-      "gan_risk_gauge": 4.3,
+      "gan_risk_gauge": 8.7,
       "top_pairs": [
         {
           "number": "62",
@@ -29316,19 +29318,19 @@
     },
     "94": {
       "number": "94",
-      "total_hits": 2081,
+      "total_hits": 2082,
       "special_hits": 77,
       "first_seen_date": "2005-10-03",
-      "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 32,
       "average_gap": 3.1,
       "freq_30d": 7,
-      "freq_60d": 17,
-      "freq_100d": 28,
-      "freq_365d": 106,
+      "freq_60d": 18,
+      "freq_100d": 29,
+      "freq_365d": 107,
       "is_gan": false,
-      "gan_risk_gauge": 6.2,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "60",
@@ -29343,12 +29345,12 @@
           "co_count": 31
         },
         {
-          "number": "61",
+          "number": "95",
           "co_count": 30
         },
         {
-          "number": "92",
-          "co_count": 29
+          "number": "61",
+          "co_count": 30
         }
       ],
       "yearly_distribution": {
@@ -29373,9 +29375,17 @@
         "2023": 80,
         "2024": 86,
         "2025": 90,
-        "2026": 73
+        "2026": 74
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize4_3"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-02",
           "prizes": [
@@ -29610,32 +29620,24 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-05-27",
-          "prizes": [
-            "prize5_6"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
     "95": {
       "number": "95",
-      "total_hits": 2085,
+      "total_hits": 2086,
       "special_hits": 66,
       "first_seen_date": "2005-10-01",
-      "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "last_seen_date": "2026-10-05",
+      "days_since_last": 0,
       "max_gap_historical": 34,
       "average_gap": 3.1,
-      "freq_30d": 4,
+      "freq_30d": 5,
       "freq_60d": 16,
       "freq_100d": 29,
       "freq_365d": 108,
       "is_gan": false,
-      "gan_risk_gauge": 8.8,
+      "gan_risk_gauge": 0.0,
       "top_pairs": [
         {
           "number": "87",
@@ -29650,7 +29652,7 @@
           "co_count": 31
         },
         {
-          "number": "77",
+          "number": "94",
           "co_count": 30
         },
         {
@@ -29680,9 +29682,17 @@
         "2023": 86,
         "2024": 88,
         "2025": 93,
-        "2026": 72
+        "2026": 73
       },
       "recent_history": [
+        {
+          "date": "2026-10-05",
+          "prizes": [
+            "prize2_2"
+          ],
+          "hits": 1,
+          "is_special": false
+        },
         {
           "date": "2026-10-01",
           "prizes": [
@@ -29916,14 +29926,6 @@
           ],
           "hits": 1,
           "is_special": false
-        },
-        {
-          "date": "2026-06-21",
-          "prizes": [
-            "prize6_1"
-          ],
-          "hits": 1,
-          "is_special": false
         }
       ]
     },
@@ -29933,7 +29935,7 @@
       "special_hits": 84,
       "first_seen_date": "2005-10-02",
       "last_seen_date": "2026-10-01",
-      "days_since_last": 3,
+      "days_since_last": 4,
       "max_gap_historical": 28,
       "average_gap": 3.2,
       "freq_30d": 9,
@@ -29941,7 +29943,7 @@
       "freq_100d": 26,
       "freq_365d": 91,
       "is_gan": false,
-      "gan_risk_gauge": 10.7,
+      "gan_risk_gauge": 14.3,
       "top_pairs": [
         {
           "number": "14",
@@ -30242,15 +30244,15 @@
       "special_hits": 82,
       "first_seen_date": "2005-10-04",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 25,
       "average_gap": 3.2,
-      "freq_30d": 6,
+      "freq_30d": 5,
       "freq_60d": 14,
       "freq_100d": 24,
       "freq_365d": 98,
       "is_gan": false,
-      "gan_risk_gauge": 16.0,
+      "gan_risk_gauge": 20.0,
       "top_pairs": [
         {
           "number": "68",
@@ -30551,7 +30553,7 @@
       "special_hits": 77,
       "first_seen_date": "2005-10-06",
       "last_seen_date": "2026-09-30",
-      "days_since_last": 4,
+      "days_since_last": 5,
       "max_gap_historical": 26,
       "average_gap": 3.3,
       "freq_30d": 6,
@@ -30559,7 +30561,7 @@
       "freq_100d": 20,
       "freq_365d": 83,
       "is_gan": false,
-      "gan_risk_gauge": 15.4,
+      "gan_risk_gauge": 19.2,
       "top_pairs": [
         {
           "number": "84",
@@ -30863,27 +30865,19 @@
       "special_hits": 74,
       "first_seen_date": "2005-10-06",
       "last_seen_date": "2026-10-02",
-      "days_since_last": 2,
+      "days_since_last": 3,
       "max_gap_historical": 26,
       "average_gap": 3.2,
       "freq_30d": 14,
       "freq_60d": 25,
       "freq_100d": 34,
-      "freq_365d": 98,
+      "freq_365d": 97,
       "is_gan": false,
-      "gan_risk_gauge": 7.7,
+      "gan_risk_gauge": 11.5,
       "top_pairs": [
         {
           "number": "68",
           "co_count": 29
-        },
-        {
-          "number": "83",
-          "co_count": 27
-        },
-        {
-          "number": "74",
-          "co_count": 27
         },
         {
           "number": "52",
@@ -30892,6 +30886,14 @@
         {
           "number": "46",
           "co_count": 27
+        },
+        {
+          "number": "64",
+          "co_count": 26
+        },
+        {
+          "number": "75",
+          "co_count": 26
         }
       ],
       "yearly_distribution": {

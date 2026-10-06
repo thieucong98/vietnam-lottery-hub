@@ -6,16 +6,16 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web Demo:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> **Cập nhật tự động lần cuối:** 05/10/2026 00:10:07 (Giờ Việt Nam)  
+> **Cập nhật tự động lần cuối:** 06/10/2026 09:20:24 (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
 ---
 
-## 🏆 KẾT QUẢ XSMB MỚI NHẤT (2026-10-04)
+## 🏆 KẾT QUẢ XSMB MỚI NHẤT (2026-10-05)
 
 | Xổ Số Kiến Thiết Miền Bắc | Thống Kê Đầu - Đuôi Lô Tô |
 | :--- | :--- |
-| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-10-04</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:red; font-size:1.15em;">82951</strong></td></tr><tr><td>Giải Nhất</td><td><strong>28235</strong></td></tr><tr><td>Giải Nhì</td><td>82614, 47824</td></tr><tr><td>Giải Ba</td><td>33386, 23385, 09503<br>43582, 60243, 04348</td></tr><tr><td>Giải Tư</td><td>2251, 1053, 3431, 9308</td></tr><tr><td>Giải Năm</td><td>3969, 7927, 5509<br>2889, 4781, 1038</td></tr><tr><td>Giải Sáu</td><td>237, 580, 604</td></tr><tr><td>Giải Bảy</td><td>90, 89, 26, 59</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>3, 4, 8, 9</td></tr><tr><td><strong>1</strong></td><td>4</td></tr><tr><td><strong>2</strong></td><td>4, 6, 7</td></tr><tr><td><strong>3</strong></td><td>1, 5, 7, 8</td></tr><tr><td><strong>4</strong></td><td>3, 8</td></tr><tr><td><strong>5</strong></td><td>1, 1, 3, 9</td></tr><tr><td><strong>6</strong></td><td>9</td></tr><tr><td><strong>7</strong></td><td>—</td></tr><tr><td><strong>8</strong></td><td>0, 1, 2, 5, 6, 9, 9</td></tr><tr><td><strong>9</strong></td><td>0</td></tr></table> |
+| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-10-05</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:red; font-size:1.15em;">19654</strong></td></tr><tr><td>Giải Nhất</td><td><strong>62219</strong></td></tr><tr><td>Giải Nhì</td><td>92501, 22795</td></tr><tr><td>Giải Ba</td><td>67752, 15062, 61353<br>69038, 81889, 00945</td></tr><tr><td>Giải Tư</td><td>0166, 4647, 0994, 1272</td></tr><tr><td>Giải Năm</td><td>1025, 6151, 9374<br>9380, 4735, 9347</td></tr><tr><td>Giải Sáu</td><td>553, 648, 231</td></tr><tr><td>Giải Bảy</td><td>44, 70, 72, 15</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>1</td></tr><tr><td><strong>1</strong></td><td>5, 9</td></tr><tr><td><strong>2</strong></td><td>5</td></tr><tr><td><strong>3</strong></td><td>1, 5, 8</td></tr><tr><td><strong>4</strong></td><td>4, 5, 7, 7, 8</td></tr><tr><td><strong>5</strong></td><td>1, 2, 3, 3, 4</td></tr><tr><td><strong>6</strong></td><td>2, 6</td></tr><tr><td><strong>7</strong></td><td>0, 2, 2, 4</td></tr><tr><td><strong>8</strong></td><td>0, 9</td></tr><tr><td><strong>9</strong></td><td>4, 5</td></tr></table> |
 
 ---
 
