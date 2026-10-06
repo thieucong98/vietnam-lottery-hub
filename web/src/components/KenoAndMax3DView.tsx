@@ -333,6 +333,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                   background: 'rgba(15, 23, 42, 0.7)',
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--border-subtle)',
+                  overflowX: 'auto',
                 }}
               >
                 {Array.from({ length: 80 }, (_, i) => i + 1).map((n) => {
