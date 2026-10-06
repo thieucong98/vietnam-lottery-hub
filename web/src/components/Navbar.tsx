@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter, Trophy, ShieldCheck } from 'lucide-react';
+import { Search, Flame, BarChart3, Brain, Dices, Calendar, Github, Sparkles, Filter, Trophy, ShieldCheck, Zap } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: string;
@@ -94,6 +94,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Trophy size={18} color="var(--accent-gold)" />
             <span>Bộ Số Vietlott</span>
+          </button>
+
+          <button
+            className={`tab-btn ${currentTab === 'keno_3d' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('keno_3d')}
+          >
+            <Zap size={18} color="var(--accent-gold)" />
+            <span>Keno & Max 3D</span>
           </button>
 
           <button

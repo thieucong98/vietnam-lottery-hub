@@ -9,6 +9,7 @@ import { BacNhoHub } from './components/BacNhoHub';
 import { SmartFilterAndChecker } from './components/SmartFilterAndChecker';
 import { VietlottCombinationHub } from './components/VietlottCombinationHub';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
+import { KenoAndMax3DView } from './components/KenoAndMax3DView';
 import {
   LotteryIndexData,
   MLInsightsData,
@@ -265,6 +266,16 @@ export function App() {
               <VietlottCombinationHub
                 fullDrawsData={fullDrawsData}
                 cooccurrenceData={cooccurrenceData}
+                onSelectNumber={handleSelectNumber}
+              />
+            )}
+
+            {/* TAB: VIETLOTT KENO & MAX 3D / 3D PRO */}
+            {currentTab === 'keno_3d' && (
+              <KenoAndMax3DView
+                latestKeno={summaryData?.vietlott_keno_latest}
+                latest3D={summaryData?.vietlott_3d_latest}
+                latest3DPro={summaryData?.vietlott_3d_pro_latest}
                 onSelectNumber={handleSelectNumber}
               />
             )}
