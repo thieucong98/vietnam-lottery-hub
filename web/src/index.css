@@ -271,3 +271,131 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ========================================================
+   RESPONSIVE DESIGN UTILITIES & DUAL NAVIGATION SYSTEM
+   ======================================================== */
+@media (max-width: 899px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 900px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Bottom Navigation Bar for Mobile (< 900px) */
+.mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(8, 12, 20, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 10px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 90;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.mobile-nav-item.active {
+  color: var(--accent-gold);
+}
+
+.mobile-nav-item.active .nav-icon-wrapper {
+  color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+/* Center Highlight Action (Dò Vé) on Mobile */
+.mobile-nav-center-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #0f172a;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  margin-top: -24px;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-center-action:active {
+  transform: scale(0.92);
+}
+
+/* Mobile Drawer (Menu Mở Rộng Thống Kê) */
+.mobile-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+
+.mobile-drawer-content {
+  background: #0f172a;
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  border-bottom: none;
+  padding: 24px 20px 40px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Main Content Wrapper Padding */
+@media (max-width: 899px) {
+  .app-main-content {
+    padding-bottom: 88px !important;
+  }
+}
+

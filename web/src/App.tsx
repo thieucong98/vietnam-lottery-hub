@@ -10,6 +10,7 @@ import { SmartFilterAndChecker } from './components/SmartFilterAndChecker';
 import { VietlottCombinationHub } from './components/VietlottCombinationHub';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { KenoAndMax3DView } from './components/KenoAndMax3DView';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import {
   LotteryIndexData,
   MLInsightsData,
@@ -25,6 +26,7 @@ export function App() {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [selectedSearchNumber, setSelectedSearchNumber] = useState<string>('');
+  const [heroSearchInput, setHeroSearchInput] = useState<string>('');
 
   const [xsmbData, setXsmbData] = useState<LotteryIndexData | null>(null);
   const [vietlott655Data, setVietlott655Data] = useState<LotteryIndexData | null>(null);
@@ -57,6 +59,11 @@ export function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
+
+  // Tự động cuộn trang lên đầu mượt mà khi người dùng chuyển tab
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentTab]);
 
   // Tải dữ liệu chỉ mục JSON khi khởi động ứng dụng
   useEffect(() => {
@@ -115,7 +122,7 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <main style={{ flex: 1, maxWidth: 1400, width: '100%', margin: '0 auto', padding: '24px 20px' }}>
+      <main className="app-main-content" style={{ flex: 1, maxWidth: 1400, width: '100%', margin: '0 auto', padding: '24px 20px' }}>
         {loading ? (
           <div style={{
             display: 'flex',
@@ -158,40 +165,65 @@ export function App() {
                 </div>
               </div>
 
-              {/* Nút hành động nhanh */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <button
-                  onClick={() => {
-                    setSelectedSearchNumber('68');
-                    setIsSearchOpen(true);
+              {/* Ô Dò Vé Siêu Tốc 3 Giây Ngay Trang Chủ */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (heroSearchInput.trim()) {
+                      setSelectedSearchNumber(heroSearchInput.trim());
+                      setIsSearchOpen(true);
+                    }
                   }}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-sm)',
-                    background: 'rgba(245, 158, 11, 0.15)',
-                    border: '1px solid var(--accent-gold)',
-                    color: 'var(--accent-gold)',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8 }}
                 >
-                  <Search size={15} />
-                  <span>Tra Cứu Số 68 Ngay</span>
-                </button>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      placeholder="Dò số vé (VD: 68 hoặc 07 18...)"
+                      value={heroSearchInput}
+                      onChange={(e) => setHeroSearchInput(e.target.value)}
+                      style={{
+                        padding: '8px 14px 8px 34px',
+                        borderRadius: 'var(--radius-full)',
+                        background: 'rgba(0, 0, 0, 0.45)',
+                        border: '1px solid var(--accent-gold)',
+                        color: '#ffffff',
+                        fontSize: '0.84rem',
+                        outline: 'none',
+                        width: 220,
+                      }}
+                    />
+                    <Search size={15} color="var(--accent-gold)" style={{ position: 'absolute', left: 11, top: 10 }} />
+                  </div>
+                  <button
+                    type="submit"
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: 'var(--radius-full)',
+                      background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontWeight: 700,
+                      fontSize: '0.84rem',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Dò Ngay
+                  </button>
+                </form>
 
                 <button
                   onClick={() => setCurrentTab('heatmap')}
+                  className="hide-mobile"
                   style={{
                     padding: '8px 16px',
-                    borderRadius: 'var(--radius-sm)',
+                    borderRadius: 'var(--radius-full)',
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid var(--border-subtle)',
                     color: '#ffffff',
-                    fontSize: '0.85rem',
+                    fontSize: '0.84rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -200,7 +232,7 @@ export function App() {
                   }}
                 >
                   <Flame size={15} color="var(--accent-gold)" />
-                  <span>Xem Ma Trận Nhiệt</span>
+                  <span>Ma Trận Nhiệt</span>
                 </button>
               </div>
             </div>
@@ -331,12 +363,13 @@ export function App() {
         )}
       </main>
 
-      {/* Floating Quick Search Button */}
+      {/* Floating Quick Search Button (Ẩn trên mobile, mobile dùng nút giữa của Bottom Nav) */}
       <button
         onClick={() => {
           setSelectedSearchNumber('');
           setIsSearchOpen(true);
         }}
+        className="hide-mobile"
         style={{
           position: 'fixed',
           bottom: 28,
@@ -530,6 +563,17 @@ export function App() {
           </div>
         </div>
       </footer>
+
+      {/* THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO DI ĐỘNG (MOBILE BOTTOM NAVIGATION) */}
+      <MobileBottomNav
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        onOpenSearch={() => {
+          setSelectedSearchNumber('');
+          setIsSearchOpen(true);
+        }}
+        onOpenLegal={() => setIsLegalModalOpen(true)}
+      />
     </div>
   );
 }
