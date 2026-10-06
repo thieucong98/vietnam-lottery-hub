@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { LiveResultsBoard } from './components/LiveResultsBoard';
 import { InstantLookupModal } from './components/InstantLookupModal';
-import { HeatmapMatrix } from './components/HeatmapMatrix';
-import { GanRankingView } from './components/GanRankingView';
-import { AIStrategyHub } from './components/AIStrategyHub';
-import { BacNhoHub } from './components/BacNhoHub';
-import { SmartFilterAndChecker } from './components/SmartFilterAndChecker';
-import { VietlottCombinationHub } from './components/VietlottCombinationHub';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
-import { KenoAndMax3DView } from './components/KenoAndMax3DView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { UniversalQuickChecker } from './components/UniversalQuickChecker';
+import { BentoInsightsGrid } from './components/BentoInsightsGrid';
+import { SkeletonLoader } from './components/SkeletonLoader';
 import {
   LotteryIndexData,
   MLInsightsData,
@@ -21,6 +16,26 @@ import {
   VietlottCooccurrenceData,
 } from './types';
 import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw, Scale, AlertTriangle } from 'lucide-react';
+
+// Code Splitting & Lazy Loading cho các Tab phân tích dữ liệu chuyên sâu
+const HeatmapMatrix = lazy(() => import('./components/HeatmapMatrix').then((m) => ({ default: m.HeatmapMatrix })));
+const GanRankingView = lazy(() => import('./components/GanRankingView').then((m) => ({ default: m.GanRankingView })));
+const AIStrategyHub = lazy(() => import('./components/AIStrategyHub').then((m) => ({ default: m.AIStrategyHub })));
+const BacNhoHub = lazy(() => import('./components/BacNhoHub').then((m) => ({ default: m.BacNhoHub })));
+const SmartFilterAndChecker = lazy(() => import('./components/SmartFilterAndChecker').then((m) => ({ default: m.SmartFilterAndChecker })));
+const VietlottCombinationHub = lazy(() => import('./components/VietlottCombinationHub').then((m) => ({ default: m.VietlottCombinationHub })));
+const KenoAndMax3DView = lazy(() => import('./components/KenoAndMax3DView').then((m) => ({ default: m.KenoAndMax3DView })));
+
+// Component Fallback Loading khi chuyển tab nặng
+const TabFallback: React.FC = () => (
+  <div className="glass-card animate-fade-in" style={{ padding: '48px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, minHeight: 340 }}>
+    <div className="lottery-ball ball-gold" style={{ width: 48, height: 48, fontSize: '1.2rem', animation: 'pulse-ring 1.5s infinite' }}>
+      88
+    </div>
+    <div className="skeleton-box" style={{ width: 220, height: 16 }} />
+    <div className="skeleton-box" style={{ width: 140, height: 12 }} />
+  </div>
+);
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('xsmb');
@@ -124,21 +139,7 @@ export function App() {
       {/* Main Content Area */}
       <main className="app-main-content" style={{ flex: 1, maxWidth: 1400, width: '100%', margin: '0 auto', padding: '24px 20px' }}>
         {loading ? (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '50vh',
-            gap: 16,
-          }}>
-            <div className="lottery-ball ball-gold" style={{ width: 64, height: 64, fontSize: '1.6rem', animation: 'pulse-ring 1.5s infinite' }}>
-              88
-            </div>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 600 }}>
-              Đang tải chỉ mục dữ liệu 20 năm xổ số...
-            </p>
-          </div>
+          <SkeletonLoader />
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             {/* Quick Hero Banner */}
@@ -252,10 +253,23 @@ export function App() {
                   latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
-                <HeatmapMatrix
-                  data={xsmbData}
+                {/* Bento Grid Layout 2.0: Cầu Nóng, Cảnh Báo Lô Gan & Phân Tích Dữ Liệu */}
+                <BentoInsightsGrid
+                  xsmbData={xsmbData}
+                  summaryData={summaryData}
+                  mlData={mlData}
                   onSelectNumber={handleSelectNumber}
+                  onViewAllGan={() => setCurrentTab('gan')}
+                  onViewAllHeatmap={() => setCurrentTab('heatmap')}
+                  onViewAI={() => setCurrentTab('ai')}
                 />
+
+                <Suspense fallback={<TabFallback />}>
+                  <HeatmapMatrix
+                    data={xsmbData}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
               </div>
             )}
 
@@ -270,11 +284,13 @@ export function App() {
                   latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
-                <GanRankingView
-                  xsmbData={xsmbData}
-                  vietlottData={vietlott655Data}
-                  onSelectNumber={handleSelectNumber}
-                />
+                <Suspense fallback={<TabFallback />}>
+                  <GanRankingView
+                    xsmbData={xsmbData}
+                    vietlottData={vietlott655Data}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
               </div>
             )}
 
@@ -289,79 +305,95 @@ export function App() {
                   latestKeno={summaryData?.vietlott_keno_latest}
                 />
 
-                <GanRankingView
-                  xsmbData={xsmbData}
-                  vietlottData={vietlott645Data}
-                  onSelectNumber={handleSelectNumber}
-                />
+                <Suspense fallback={<TabFallback />}>
+                  <GanRankingView
+                    xsmbData={xsmbData}
+                    vietlottData={vietlott645Data}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
               </div>
             )}
 
             {/* TAB: BỘ SỐ & VÉ BAO VIETLOTT */}
             {currentTab === 'vietlott_combo' && (
-              <VietlottCombinationHub
-                fullDrawsData={fullDrawsData}
-                cooccurrenceData={cooccurrenceData}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <VietlottCombinationHub
+                  fullDrawsData={fullDrawsData}
+                  cooccurrenceData={cooccurrenceData}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
 
             {/* TAB: VIETLOTT KENO & MAX 3D / 3D PRO */}
             {currentTab === 'keno_3d' && (
-              <KenoAndMax3DView
-                latestKeno={summaryData?.vietlott_keno_latest}
-                latest3D={summaryData?.vietlott_3d_latest}
-                latest3DPro={summaryData?.vietlott_3d_pro_latest}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <KenoAndMax3DView
+                  latestKeno={summaryData?.vietlott_keno_latest}
+                  latest3D={summaryData?.vietlott_3d_latest}
+                  latest3DPro={summaryData?.vietlott_3d_pro_latest}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
 
             {/* TAB 4: MA TRẬN NHIỆT (HEATMAP) */}
             {currentTab === 'heatmap' && (
-              <HeatmapMatrix
-                data={xsmbData}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <HeatmapMatrix
+                  data={xsmbData}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
 
             {/* TAB 5: LÔ GAN & TẦN SUẤT */}
             {currentTab === 'gan' && (
-              <GanRankingView
-                xsmbData={xsmbData}
-                vietlottData={vietlott655Data}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <GanRankingView
+                  xsmbData={xsmbData}
+                  vietlottData={vietlott655Data}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
 
             {/* TAB 6: BẠC NHỚ MA TRẬN 20 NĂM */}
             {currentTab === 'bacnho' && (
-              <BacNhoHub
-                bacNhoData={bacNhoData}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <BacNhoHub
+                  bacNhoData={bacNhoData}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
 
             {/* TAB 7: BỘ LỌC DÀN SỐ & SO VÉ */}
             {currentTab === 'filter' && (
-              <SmartFilterAndChecker
-                xsmbData={xsmbData}
-                vietlott655Data={vietlott655Data}
-                vietlott645Data={vietlott645Data}
-                fullDrawsData={fullDrawsData}
-                cooccurrenceData={cooccurrenceData}
-                onSelectNumber={handleSelectNumber}
-                onSwitchToVietlottCombo={(_balls) => {
-                  setCurrentTab('vietlott_combo');
-                }}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <SmartFilterAndChecker
+                  xsmbData={xsmbData}
+                  vietlott655Data={vietlott655Data}
+                  vietlott645Data={vietlott645Data}
+                  fullDrawsData={fullDrawsData}
+                  cooccurrenceData={cooccurrenceData}
+                  onSelectNumber={handleSelectNumber}
+                  onSwitchToVietlottCombo={(_balls) => {
+                    setCurrentTab('vietlott_combo');
+                  }}
+                />
+              </Suspense>
             )}
 
             {/* TAB 8: AI & BACKTEST */}
             {currentTab === 'ai' && (
-              <AIStrategyHub
-                mlData={mlData}
-                onSelectNumber={handleSelectNumber}
-              />
+              <Suspense fallback={<TabFallback />}>
+                <AIStrategyHub
+                  mlData={mlData}
+                  onSelectNumber={handleSelectNumber}
+                />
+              </Suspense>
             )}
           </div>
         )}
