@@ -67,6 +67,34 @@ def main():
     total_new = n_xsmb + n_viet + filled
     has_summary = summary_file.exists()
 
+    # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18:15 - 19:30 GMT+7):
+    # Nếu chưa có kết quả mới và hôm nay chưa cập nhật xong, kích hoạt chế độ Live Polling.
+    # Runner sẽ giữ luồng và thăm dò mỗi 40s (tối đa 15 phút) để bắt kết quả ngay khi đài xuất bản!
+    if total_new == 0 and not force_run:
+        from zoneinfo import ZoneInfo
+        from datetime import datetime, time
+        import time as pytime
+        tz = ZoneInfo("Asia/Ho_Chi_Minh")
+        now_vn = datetime.now(tz)
+        last_xsmb = xsmb_crawler.get_last_date()
+
+        if time(18, 15) <= now_vn.time() <= time(19, 30) and last_xsmb < now_vn.date():
+            logger.info(f"⏳ Khung giờ vàng quay thưởng ({now_vn.strftime('%H:%M:%S')} GMT+7). Hôm nay ({now_vn.date()}) chưa có kết quả đầy đủ.")
+            logger.info("-> Kích hoạt chế độ Live Polling: Giữ runner hoạt động, thăm dò định kỳ mỗi 40s (tối đa 15 phút)...")
+            for attempt in range(1, 23):  # 22 lần * 40s = ~14.6 phút
+                pytime.sleep(40)
+                cur_vn = datetime.now(tz)
+                logger.info(f"-> Thăm dò lần {attempt}/22 ({cur_vn.strftime('%H:%M:%S')})...")
+                try:
+                    n_xsmb = xsmb_crawler.sync_latest()
+                    n_viet = viet_crawler.sync_latest()
+                    total_new = n_xsmb + n_viet
+                    if total_new > 0:
+                        logger.info(f"🎉 Đã bắt được kết quả quay thưởng mới: XSMB={n_xsmb}, Vietlott={n_viet}!")
+                        break
+                except Exception as poll_err:
+                    logger.warning(f"Lỗi thăm dò lần {attempt}: {poll_err}")
+
     if total_new == 0 and not force_run and has_summary:
         logger.info("⚡ Không có kỳ quay mới nào phát sinh và tệp chỉ mục đã đầy đủ.")
         logger.info("-> Tự động dừng sớm (Fast Exit) để tiết kiệm thời gian & tài nguyên.")

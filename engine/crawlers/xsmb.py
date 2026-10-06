@@ -110,8 +110,8 @@ class XSMBCrawler(BaseLotteryCrawler):
         tz = ZoneInfo("Asia/Ho_Chi_Minh")
         now = datetime.now(tz)
         target_date = now.date()
-        # Nếu chưa tới 18h28 thì ngày hôm nay chưa có kết quả quay xong
-        if now.time() < time(18, 28):
+        # Nếu chưa tới 18h15 thì ngày hôm nay chưa bắt đầu quay thưởng
+        if now.time() < time(18, 15):
             target_date -= timedelta(days=1)
 
         delta_days = (target_date - begin_date).days
@@ -124,12 +124,12 @@ class XSMBCrawler(BaseLotteryCrawler):
         for i in range(1, delta_days + 1):
             cur_date = begin_date + timedelta(days=i)
             row = self.fetch_date(cur_date)
-            # Nếu là ngày hôm nay và đang trong khung giờ quay thưởng (18h28 - 18h50), retry 3 lần mỗi 15s nếu web nguồn chưa kịp xuất bản
-            if not row and cur_date == now.date() and time(18, 28) <= now.time() <= time(18, 50):
+            # Nếu là ngày hôm nay và đang trong khung giờ quay thưởng (18h15 - 18h50), retry nhẹ nếu web nguồn chưa kịp xuất bản
+            if not row and cur_date == now.date() and time(18, 15) <= now.time() <= time(18, 50):
                 import time as pytime
                 for retry_idx in range(1, 4):
-                    logger.info(f"Đang trong khung giờ quay thưởng ({now.strftime('%H:%M')}). Đợi 15s thăm dò lại lần {retry_idx}/3...")
-                    pytime.sleep(15)
+                    logger.info(f"Đang trong khung giờ quay thưởng ({now.strftime('%H:%M')}). Đợi 10s thăm dò lại lần {retry_idx}/3...")
+                    pytime.sleep(10)
                     row = self.fetch_date(cur_date)
                     if row:
                         logger.info("-> Đã bắt được kết quả XSMB hôm nay thành công!")
@@ -137,6 +137,8 @@ class XSMBCrawler(BaseLotteryCrawler):
 
             if row:
                 new_rows.append(row)
+            elif cur_date == now.date():
+                logger.info(f"Kỳ quay hôm nay ({cur_date}) đang diễn ra hoặc chưa có kết quả đầy đủ trên nguồn.")
 
         if not new_rows:
             return 0

@@ -1,7 +1,7 @@
 {
   "product": "Power 6/55",
-  "latest_id": "01406",
-  "latest_date": "2026-10-03",
+  "latest_id": "01407",
+  "latest_date": "2026-10-06",
   "predictions": [
     {
       "name": "Tần suất cao (Hot Numbers)",
@@ -9,7 +9,7 @@
         "01",
         "02",
         "05",
-        "08",
+        "07",
         "11",
         "18"
       ],
@@ -20,9 +20,9 @@
       "predicted_numbers": [
         "12",
         "19",
-        "20",
         "30",
         "39",
+        "40",
         "50"
       ],
       "description": "Dự đoán dựa trên thuật toán Long Absence (Lô Gan)"
@@ -42,11 +42,11 @@
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "predicted_numbers": [
+        "01",
+        "09",
         "11",
-        "22",
-        "23",
-        "29",
-        "46",
+        "32",
+        "49",
         "51"
       ],
       "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
@@ -56,7 +56,7 @@
     {
       "strategy_name": "Long Absence (Lô Gan)",
       "test_draws": 50,
-      "average_matches": 0.74,
+      "average_matches": 0.76,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -64,7 +64,7 @@
     {
       "strategy_name": "Random Baseline",
       "test_draws": 50,
-      "average_matches": 0.68,
+      "average_matches": 0.62,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -72,15 +72,15 @@
     {
       "strategy_name": "Frequency (N=30)",
       "test_draws": 50,
-      "average_matches": 0.56,
-      "max_match_in_one_draw": 2,
-      "hit_rate_at_least_3": "0.0%",
+      "average_matches": 0.6,
+      "max_match_in_one_draw": 3,
+      "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
       "strategy_name": "Frequency (N=100)",
       "test_draws": 50,
-      "average_matches": 0.56,
+      "average_matches": 0.58,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -88,7 +88,7 @@
     {
       "strategy_name": "Exponential Decay (λ=0.97)",
       "test_draws": 50,
-      "average_matches": 0.54,
+      "average_matches": 0.56,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"

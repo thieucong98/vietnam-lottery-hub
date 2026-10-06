@@ -2,17 +2,19 @@ name: Daily Lottery Crawler & Analytics Pipeline
 
 on:
   schedule:
-    # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18h30 - 19h05 GMT+7 = 11h30 - 12h05 UTC)
-    # Áp dụng phút lẻ (Jittered Minutes) để tránh tắc nghẽn queue trên GitHub Actions:
-    # 1. 11:33 UTC = 18:33 VN (Bắt tức thì sau khi XSMB quay xong giải Đặc Biệt lúc 18h28-18h30)
-    - cron: '33 11 * * *'
-    # 2. 11:42 UTC = 18:42 VN (Bắt Vietlott 6/55 & 6/45 và quét lại XSMB nếu đài lên trễ)
-    - cron: '42 11 * * *'
-    # 3. 11:52 UTC = 18:52 VN (Chốt giải thưởng Jackpot & tiền tích lũy Vietlott)
-    - cron: '52 11 * * *'
-    # 4. 12:05 UTC = 19:05 VN (Lần quét an toàn chốt sổ toàn bộ kết quả trong ngày)
-    - cron: '5 12 * * *'
-    # 5. 04:30 UTC = 11:30 VN (Quét kiểm tra và cào bù kỳ thiếu ban ngày)
+    # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18h15 - 19h30 GMT+7 = 11h15 - 12h30 UTC)
+    # Kết hợp Live Polling Mode trong runner để đảm bảo cập nhật ngay trong 1-5 phút sau khi có kết quả:
+    # 1. 11:20 UTC = 18:20 VN (Đầu giờ quay, runner Live Poll giữ kết nối thăm dò đến khi có giải)
+    - cron: '20 11 * * *'
+    # 2. 11:35 UTC = 18:35 VN (Ngay sau khi XSMB & Vietlott hoàn tất quay thưởng)
+    - cron: '35 11 * * *'
+    # 3. 11:50 UTC = 18:50 VN (Chốt tiền tích lũy Jackpot & đài phụ)
+    - cron: '50 11 * * *'
+    # 4. 12:15 UTC = 19:15 VN (Quét an toàn chốt sổ buổi tối)
+    - cron: '15 12 * * *'
+    # 5. 13:00 UTC = 20:00 VN (Quét rà soát chốt đêm)
+    - cron: '0 13 * * *'
+    # 6. 04:30 UTC = 11:30 VN (Quét kiểm tra và cào bù kỳ thiếu ban ngày)
     - cron: '30 4 * * *'
   workflow_dispatch: # Cho phép bấm chạy thủ công tức thì từ tab Actions
 
