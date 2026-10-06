@@ -30,3 +30,11 @@ desktop.ini
 *.njsproj
 *.sln
 *.swp
+
+# Security & Secrets
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.cert

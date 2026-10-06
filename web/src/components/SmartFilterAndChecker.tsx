@@ -56,19 +56,8 @@ export interface GeneratedVietlottTicket {
   cost: number;
 }
 
-export function calcCombinations(n: number, k: number): number {
-  if (k < 0 || k > n) return 0;
-  if (k === 0 || k === n) return 1;
-  let c = 1;
-  for (let i = 1; i <= k; i++) {
-    c = (c * (n - (k - i))) / i;
-  }
-  return Math.round(c);
-}
-
-export function formatVND(amount: number): string {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(amount);
-}
+import { calcCombinations, formatVND } from '../utils/lotteryUtils';
+export { calcCombinations, formatVND };
 
 export function getVietlottTicketSpec(product: '655' | '645', type: VietlottTicketType): VietlottTicketSpec {
   const maxBall = product === '655' ? 55 : 45;

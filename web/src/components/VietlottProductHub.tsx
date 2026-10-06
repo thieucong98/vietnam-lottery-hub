@@ -30,6 +30,7 @@ import {
   SummaryData,
   VietlottCooccurrenceItem,
 } from '../types';
+import { getVietlottBaoCost } from '../utils/lotteryUtils';
 
 interface VietlottProductHubProps {
   gameType: 'vietlott_655' | 'vietlott_645';
@@ -334,7 +335,8 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
       cJp2 * 3_000_000_000 +
       c6 * (is655 ? 30_000_000_000 : 12_000_000_000);
 
-    const totalCost = sortedDraws.length * 10_000;
+    const costPerDraw = getVietlottBaoCost(selectedBalls.length, maxNumber);
+    const totalCost = sortedDraws.length * costPerDraw;
 
     return {
       totalDraws: sortedDraws.length,
@@ -343,7 +345,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
       totalPrizeMoney,
       totalCost,
     };
-  }, [sortedDraws, selectedBalls, is655]);
+  }, [sortedDraws, selectedBalls, is655, maxNumber]);
 
   const filteredTimeline = useMemo(() => {
     return matchAnalysis.matches.filter((m) => m.matchCount >= filterMinMatches);

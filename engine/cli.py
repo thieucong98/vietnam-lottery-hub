@@ -14,7 +14,10 @@ from engine.crawlers.xsmb import XSMBCrawler
 from engine.crawlers.vietlott import VietlottCrawler
 from engine.missing_detector import MissingDetector
 from engine.analytics.index_builder import IndexBuilder
+from engine.analytics.bac_nho_analyzer import BacNhoAnalyzer
+from engine.analytics.vietlott_combination_analyzer import VietlottCombinationAnalyzer
 from engine.ml.render_insights import generate_ml_insights
+from engine.render_readme import render_readme
 
 app = typer.Typer(help="CLI quản lý hệ thống dữ liệu Xổ số Việt Nam & Vietlott")
 
@@ -51,17 +54,28 @@ def build_index():
     """Xây dựng lại toàn bộ ma trận, phân tích lô gan và xuất chỉ mục tra cứu JSON."""
     builder = IndexBuilder()
     builder.build_all_indexes()
+    
+    logger.info("Phân tích Bạc Nhớ 20 năm...")
+    BacNhoAnalyzer().analyze()
+    
+    logger.info("Phân tích Ma trận Bộ số & Đồng xuất hiện Vietlott...")
+    VietlottCombinationAnalyzer().run()
+    
+    logger.info("Sinh dự đoán AI & Báo cáo Backtest...")
     generate_ml_insights()
+    
     typer.echo("Đã hoàn tất xây dựng ma trận và xuất chỉ mục tra cứu!")
 
 @app.command()
 def run_all():
-    """Chạy toàn bộ pipeline: Cào XSMB -> Cào Vietlott -> Bù thiếu -> Xây dựng chỉ mục & AI."""
+    """Chạy toàn bộ pipeline: Cào XSMB -> Cào Vietlott -> Bù thiếu -> Xây dựng chỉ mục & AI -> Render README."""
     logger.info("=== BẮT ĐẦU CHẠY TOÀN BỘ PIPELINE ===")
     sync_xsmb()
     sync_vietlott("all")
     backfill()
     build_index()
+    logger.info("Cập nhật README.md...")
+    render_readme()
     logger.info("=== HOÀN TẤT TOÀN BỘ PIPELINE ===")
 
 if __name__ == "__main__":

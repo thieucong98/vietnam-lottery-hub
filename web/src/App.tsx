@@ -81,18 +81,29 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentTab]);
 
-  // Tải dữ liệu chỉ mục JSON khi khởi động ứng dụng
+  // Tải dữ liệu 2 giai đoạn: Tải summary.json trước (<10KB, <50ms) sau đó nạp các chỉ mục chuyên sâu
   useEffect(() => {
     async function loadAllData() {
       try {
         setLoading(true);
-        // Tải song song tất cả các file chỉ mục và tóm tắt
-        const [resXsmb, res655, res645, resMl, resSummary, resBacNho, resFullDraws, resCooc] = await Promise.all([
+        // Giai đoạn 1: Nạp ngay summary.json để hiển thị tức thì kết quả mới nhất
+        try {
+          const resSummary = await fetch('./data/summary.json');
+          if (resSummary.ok) {
+            const sumJson = await resSummary.json();
+            setSummaryData(sumJson);
+            setLoading(false);
+          }
+        } catch (sumErr) {
+          console.warn('Lỗi tải summary.json:', sumErr);
+        }
+
+        // Giai đoạn 2: Nạp các tệp chỉ mục và ma trận chuyên sâu ở background
+        const [resXsmb, res655, res645, resMl, resBacNho, resFullDraws, resCooc] = await Promise.all([
           fetch('./data/xsmb_index.json'),
           fetch('./data/vietlott_655_index.json'),
           fetch('./data/vietlott_645_index.json'),
           fetch('./data/ml_insights.json'),
-          fetch('./data/summary.json'),
           fetch('./data/bac_nho.json'),
           fetch('./data/vietlott_full_draws.json'),
           fetch('./data/vietlott_cooccurrence.json'),
@@ -102,12 +113,11 @@ export function App() {
         if (res655.ok) setVietlott655Data(await res655.json());
         if (res645.ok) setVietlott645Data(await res645.json());
         if (resMl.ok) setMlData(await resMl.json());
-        if (resSummary.ok) setSummaryData(await resSummary.json());
         if (resBacNho.ok) setBacNhoData(await resBacNho.json());
         if (resFullDraws.ok) setFullDrawsData(await resFullDraws.json());
         if (resCooc.ok) setCooccurrenceData(await resCooc.json());
       } catch (err) {
-        console.error('Lỗi tải dữ liệu chỉ mục:', err);
+        console.error('Lỗi tải dữ liệu chỉ mục chuyên sâu:', err);
       } finally {
         setLoading(false);
       }

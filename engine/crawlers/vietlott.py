@@ -8,7 +8,7 @@ import polars as pl
 import requests
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from engine.crawlers.base import BaseLotteryCrawler
+from engine.crawlers.base import DrawIndexedCrawler
 
 HEADERS = {
     "Accept": "text/html, */*; q=0.01",
@@ -80,7 +80,7 @@ PRODUCT_CONFIGS = {
     },
 }
 
-class VietlottCrawler(BaseLotteryCrawler):
+class VietlottCrawler(DrawIndexedCrawler):
     def __init__(self, data_dir: Optional[Path] = None):
         self.data_dir = data_dir or Path("data/vietlott")
 
@@ -173,10 +173,6 @@ class VietlottCrawler(BaseLotteryCrawler):
                         "process_time": datetime.now().isoformat(),
                     })
         return rows
-
-    def fetch_date(self, selected_date) -> Optional[Dict[str, Any]]:
-        # Vietlott lưu theo kỳ quay (Draw ID) và PageIndex
-        return None
 
     def sync_product(self, product: str, max_pages: int = 2) -> int:
         """Đồng bộ các kỳ mới nhất của một sản phẩm Vietlott."""

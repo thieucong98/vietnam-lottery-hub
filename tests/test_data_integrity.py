@@ -49,3 +49,20 @@ def test_lookup_indexes_integrity():
     assert len(records_68) > 0, "Lịch sử của số 68 không được rỗng"
     assert "date" in records_68[0]
     assert "prizes" in records_68[0]
+
+def test_crawler_architecture():
+    from engine.crawlers.base import BaseLotteryCrawler, DateIndexedCrawler, DrawIndexedCrawler
+    from engine.crawlers.xsmb import XSMBCrawler
+    from engine.crawlers.vietlott import VietlottCrawler
+
+    xsmb = XSMBCrawler()
+    viet = VietlottCrawler()
+
+    assert isinstance(xsmb, BaseLotteryCrawler)
+    assert isinstance(xsmb, DateIndexedCrawler)
+    assert hasattr(xsmb, "fetch_date")
+
+    assert isinstance(viet, BaseLotteryCrawler)
+    assert isinstance(viet, DrawIndexedCrawler)
+    assert hasattr(viet, "fetch_page")
+    assert not hasattr(viet, "fetch_date")

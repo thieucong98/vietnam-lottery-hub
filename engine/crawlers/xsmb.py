@@ -9,7 +9,7 @@ from loguru import logger
 import pandas as pd
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from engine.crawlers.base import BaseLotteryCrawler
+from engine.crawlers.base import DateIndexedCrawler
 
 XSMB_COLUMNS = [
     "date", "special", "prize1",
@@ -21,7 +21,7 @@ XSMB_COLUMNS = [
     "prize7_1", "prize7_2", "prize7_3", "prize7_4"
 ]
 
-class XSMBCrawler(BaseLotteryCrawler):
+class XSMBCrawler(DateIndexedCrawler):
     def __init__(self, data_dir: Optional[Path] = None):
         self.data_dir = data_dir or Path("data/xsmb")
         self.csv_path = self.data_dir / "xsmb.csv"

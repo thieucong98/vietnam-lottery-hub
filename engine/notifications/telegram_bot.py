@@ -1,3 +1,4 @@
+import html
 import os
 import sys
 import json
@@ -329,6 +330,9 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
     if cmd in ["/bacnho", "bacnho"]:
         if not args:
             return "⚠️ Vui lòng nhập số cần tra cứu bạc nhớ. Ví dụ: <code>/bacnho 68</code>"
+        if not args[0].isdigit():
+            escaped_val = html.escape(args[0])
+            return f"⚠️ Giá trị '<code>{escaped_val}</code>' không hợp lệ. Vui lòng chỉ nhập số từ 00 đến 99!"
         target_num = args[0].zfill(2)
         bn_data = _load_json_data(base_dir / "bac_nho.json")
         if not bn_data or "by_loto" not in bn_data:
@@ -336,7 +340,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
 
         item = bn_data["by_loto"].get(target_num)
         if not item:
-            return f"⚠️ Không có dữ liệu bạc nhớ cho số {target_num}."
+            return f"⚠️ Không có dữ liệu bạc nhớ cho số <b>{target_num}</b>."
 
         resp = f"🧠 <b>BẠC NHỚ 20 NĂM: KHI LÔ {target_num} VỀ HÔM NAY</b>\n"
         resp += f"📊 Đã ghi nhận {item.get('total_triggers', 0)} lần xuất hiện trong lịch sử.\n\n"
