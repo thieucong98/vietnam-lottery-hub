@@ -91,9 +91,34 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
   // Đồng bộ số tìm kiếm khi mở từ ngoài vào
   useEffect(() => {
-    if (initialNumber) {
-      setSearchQuery(initialNumber);
+    if (!initialNumber) return;
+
+    const tokens = initialNumber
+      .replace(/[,.-]/g, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter((t) => /^\d+$/.test(t));
+
+    if (tokens.length >= 3) {
+      const nums = tokens
+        .map((t) => parseInt(t, 10))
+        .filter((n) => !isNaN(n) && n >= 1 && n <= 55);
+      if (nums.length >= 3) {
+        setActiveTabMode('combination');
+        setComboBalls(nums);
+        setComboInputText(nums.map((n) => n.toString().padStart(2, '0')).join(', '));
+        return;
+      }
+    } else if (tokens.length === 2) {
+      setActiveTabMode('xien');
+      setXienNum1(tokens[0].padStart(2, '0'));
+      setXienNum2(tokens[1].padStart(2, '0'));
+      return;
     }
+
+    // Đơn số (1 số)
+    setActiveTabMode('single');
+    setSearchQuery(initialNumber.trim());
   }, [initialNumber]);
 
   const isVietlott = selectedGame !== 'xsmb';

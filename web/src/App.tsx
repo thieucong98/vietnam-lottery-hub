@@ -11,6 +11,7 @@ import { VietlottCombinationHub } from './components/VietlottCombinationHub';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { KenoAndMax3DView } from './components/KenoAndMax3DView';
 import { MobileBottomNav } from './components/MobileBottomNav';
+import { UniversalQuickChecker } from './components/UniversalQuickChecker';
 import {
   LotteryIndexData,
   MLInsightsData,
@@ -26,7 +27,6 @@ export function App() {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [selectedSearchNumber, setSelectedSearchNumber] = useState<string>('');
-  const [heroSearchInput, setHeroSearchInput] = useState<string>('');
 
   const [xsmbData, setXsmbData] = useState<LotteryIndexData | null>(null);
   const [vietlott655Data, setVietlott655Data] = useState<LotteryIndexData | null>(null);
@@ -165,54 +165,32 @@ export function App() {
                 </div>
               </div>
 
-              {/* Ô Dò Vé Siêu Tốc 3 Giây Ngay Trang Chủ */}
+              {/* Hành Động Nhanh Trên Hero Banner */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (heroSearchInput.trim()) {
-                      setSelectedSearchNumber(heroSearchInput.trim());
-                      setIsSearchOpen(true);
-                    }
+                <button
+                  onClick={() => {
+                    setSelectedSearchNumber('');
+                    setIsSearchOpen(true);
                   }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 'var(--radius-full)',
+                    background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+                    border: 'none',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.84rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
+                  }}
                 >
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="text"
-                      placeholder="Dò số vé (VD: 68 hoặc 07 18...)"
-                      value={heroSearchInput}
-                      onChange={(e) => setHeroSearchInput(e.target.value)}
-                      style={{
-                        padding: '8px 14px 8px 34px',
-                        borderRadius: 'var(--radius-full)',
-                        background: 'rgba(0, 0, 0, 0.45)',
-                        border: '1px solid var(--accent-gold)',
-                        color: '#ffffff',
-                        fontSize: '0.84rem',
-                        outline: 'none',
-                        width: 220,
-                      }}
-                    />
-                    <Search size={15} color="var(--accent-gold)" style={{ position: 'absolute', left: 11, top: 10 }} />
-                  </div>
-                  <button
-                    type="submit"
-                    style={{
-                      padding: '8px 16px',
-                      borderRadius: 'var(--radius-full)',
-                      background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-                      border: 'none',
-                      color: '#ffffff',
-                      fontWeight: 700,
-                      fontSize: '0.84rem',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    Dò Ngay
-                  </button>
-                </form>
+                  <Search size={15} />
+                  <span>Tra Cứu 20 Năm</span>
+                  <span className="hide-mobile" style={{ fontSize: '0.72rem', opacity: 0.8, padding: '1px 5px', background: 'rgba(0,0,0,0.3)', borderRadius: 4 }}>Ctrl K</span>
+                </button>
 
                 <button
                   onClick={() => setCurrentTab('heatmap')}
@@ -234,12 +212,38 @@ export function App() {
                   <Flame size={15} color="var(--accent-gold)" />
                   <span>Ma Trận Nhiệt</span>
                 </button>
+
+                <button
+                  onClick={() => setIsLegalModalOpen(true)}
+                  className="hide-mobile"
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: 'var(--radius-full)',
+                    background: 'rgba(16, 185, 129, 0.1)',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    color: '#34d399',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 5,
+                  }}
+                >
+                  <ShieldCheck size={14} />
+                  <span>Pháp Lý 18+</span>
+                </button>
               </div>
             </div>
 
             {/* TAB 1: XSMB */}
             {currentTab === 'xsmb' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                <UniversalQuickChecker
+                  summaryData={summaryData}
+                  onOpenDeepLookup={handleSelectNumber}
+                />
+
                 <LiveResultsBoard
                   gameType="xsmb"
                   drawData={xsmbData?.latest_draw}
