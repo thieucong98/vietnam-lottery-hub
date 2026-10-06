@@ -6,7 +6,7 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web Demo:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> **Cập nhật tự động lần cuối:** 06/10/2026 21:10:46 (Giờ Việt Nam)  
+> **Cập nhật tự động lần cuối:** 06/10/2026 22:38:51 (Giờ Việt Nam)  
 > **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay).
 
 ---
@@ -24,8 +24,8 @@
 ### 1. Vietlott Power 6/55 (Kỳ #01407 - Ngày 2026-10-06)
 `[06]` `[07]` `[18]` `[20]` `[24]` `[27]` | `★ [01]` (Số Đặc Biệt)
 
-### 2. Vietlott Mega 6/45 (Kỳ #01568 - Ngày 2026-09-27)
-`[02]` `[04]` `[13]` `[25]` `[31]` `[39]`
+### 2. Vietlott Mega 6/45 (Kỳ #01571 - Ngày 2026-10-04)
+`[15]` `[20]` `[29]` `[37]` `[40]` `[45]`
 
 ---
 

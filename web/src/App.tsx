@@ -25,6 +25,8 @@ const BacNhoHub = lazy(() => import('./components/BacNhoHub').then((m) => ({ def
 const SmartFilterAndChecker = lazy(() => import('./components/SmartFilterAndChecker').then((m) => ({ default: m.SmartFilterAndChecker })));
 const VietlottCombinationHub = lazy(() => import('./components/VietlottCombinationHub').then((m) => ({ default: m.VietlottCombinationHub })));
 const KenoAndMax3DView = lazy(() => import('./components/KenoAndMax3DView').then((m) => ({ default: m.KenoAndMax3DView })));
+const VietlottProductHub = lazy(() => import('./components/VietlottProductHub').then((m) => ({ default: m.VietlottProductHub })));
+const XSMBProductHub = lazy(() => import('./components/XSMBProductHub').then((m) => ({ default: m.XSMBProductHub })));
 
 // Component Fallback Loading khi chuyển tab nặng
 const TabFallback: React.FC = () => (
@@ -240,6 +242,14 @@ export function App() {
             {/* TAB 1: XSMB */}
             {currentTab === 'xsmb' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                <Suspense fallback={<TabFallback />}>
+                  <XSMBProductHub
+                    xsmbData={xsmbData}
+                    summaryData={summaryData}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
+
                 <UniversalQuickChecker
                   summaryData={summaryData}
                   onOpenDeepLookup={handleSelectNumber}
@@ -276,13 +286,15 @@ export function App() {
             {/* TAB 2: VIETLOTT POWER 6/55 */}
             {currentTab === 'vietlott_655' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <LiveResultsBoard
-                  gameType="vietlott_655"
-                  drawData={vietlott655Data?.latest_draw}
-                  onSelectNumber={handleSelectNumber}
-                  latest3D={summaryData?.vietlott_3d_latest}
-                  latestKeno={summaryData?.vietlott_keno_latest}
-                />
+                <Suspense fallback={<TabFallback />}>
+                  <VietlottProductHub
+                    gameType="vietlott_655"
+                    indexData={vietlott655Data}
+                    historicalDraws={fullDrawsData?.vietlott_655 || []}
+                    summaryData={summaryData}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
 
                 <Suspense fallback={<TabFallback />}>
                   <GanRankingView
@@ -297,13 +309,15 @@ export function App() {
             {/* TAB 3: VIETLOTT MEGA 6/45 */}
             {currentTab === 'vietlott_645' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <LiveResultsBoard
-                  gameType="vietlott_645"
-                  drawData={vietlott645Data?.latest_draw}
-                  onSelectNumber={handleSelectNumber}
-                  latest3D={summaryData?.vietlott_3d_latest}
-                  latestKeno={summaryData?.vietlott_keno_latest}
-                />
+                <Suspense fallback={<TabFallback />}>
+                  <VietlottProductHub
+                    gameType="vietlott_645"
+                    indexData={vietlott645Data}
+                    historicalDraws={fullDrawsData?.vietlott_645 || []}
+                    summaryData={summaryData}
+                    onSelectNumber={handleSelectNumber}
+                  />
+                </Suspense>
 
                 <Suspense fallback={<TabFallback />}>
                   <GanRankingView

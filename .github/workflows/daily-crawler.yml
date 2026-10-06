@@ -2,19 +2,26 @@ name: Daily Lottery Crawler & Analytics Pipeline
 
 on:
   schedule:
-    # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18h15 - 19h30 GMT+7 = 11h15 - 12h30 UTC)
-    # Kết hợp Live Polling Mode trong runner để đảm bảo cập nhật ngay trong 1-5 phút sau khi có kết quả:
-    # 1. 11:20 UTC = 18:20 VN (Đầu giờ quay, runner Live Poll giữ kết nối thăm dò đến khi có giải)
+    # LỊCH QUAY THƯỞNG CHÍNH THỨC (THEO QUY CHẾ BỘ TÀI CHÍNH & VIETLOTT):
+    # - XSMB (Xổ số miền Bắc): 18:15 - 18:30 hàng ngày (Thứ 2 - CN)
+    # - Mega 6/45: 18:00 - 18:30 Thứ 4, Thứ 6, Chủ Nhật
+    # - Power 6/55: 18:00 - 18:30 Thứ 3, Thứ 5, Thứ 7
+    # - Max 3D / 3D Pro: 18:00 - 18:30 (Max 3D: T2, T4, T6 | Max 3D Pro: T3, T5, T7)
+    # - Keno: 06:00 - 21:52 hàng ngày, tần suất 8 phút/kỳ
+    # (Quy đổi giờ VN sang UTC = VN - 7 giờ):
+    # 1. 11:20 UTC = 18:20 VN (Bắt đầu quay XSMB & Vietlott, Live Polling giữ luồng đón kết quả sớm)
     - cron: '20 11 * * *'
-    # 2. 11:35 UTC = 18:35 VN (Ngay sau khi XSMB & Vietlott hoàn tất quay thưởng)
+    # 2. 11:35 UTC = 18:35 VN (Thời điểm vàng: Ngay khi giải Đặc biệt XSMB & Vietlott hoàn tất)
     - cron: '35 11 * * *'
-    # 3. 11:50 UTC = 18:50 VN (Chốt tiền tích lũy Jackpot & đài phụ)
+    # 3. 11:50 UTC = 18:50 VN (Chốt tiền tích lũy giải Jackpot kỳ kế tiếp & đài phụ)
     - cron: '50 11 * * *'
     # 4. 12:15 UTC = 19:15 VN (Quét an toàn chốt sổ buổi tối)
     - cron: '15 12 * * *'
     # 5. 13:00 UTC = 20:00 VN (Quét rà soát chốt đêm)
     - cron: '0 13 * * *'
-    # 6. 04:30 UTC = 11:30 VN (Quét kiểm tra và cào bù kỳ thiếu ban ngày)
+    # 6. 15:00 UTC = 22:00 VN (Chốt trọn gói toàn bộ các kỳ quay Keno trong ngày sau khi Keno đóng lúc 21h52)
+    - cron: '0 15 * * *'
+    # 7. 04:30 UTC = 11:30 VN (Quét kiểm tra, đồng bộ buổi trưa và cào bù kỳ thiếu nếu có)
     - cron: '30 4 * * *'
   workflow_dispatch: # Cho phép bấm chạy thủ công tức thì từ tab Actions
 

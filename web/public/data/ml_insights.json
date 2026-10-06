@@ -62,14 +62,6 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Random Baseline",
-      "test_draws": 50,
-      "average_matches": 0.62,
-      "max_match_in_one_draw": 3,
-      "hit_rate_at_least_3": "2.0%",
-      "hit_rate_at_least_4": "0.0%"
-    },
-    {
       "strategy_name": "Frequency (N=30)",
       "test_draws": 50,
       "average_matches": 0.6,
@@ -95,6 +87,14 @@
     },
     {
       "strategy_name": "Markov Chain (Bậc 1)",
+      "test_draws": 50,
+      "average_matches": 0.54,
+      "max_match_in_one_draw": 2,
+      "hit_rate_at_least_3": "0.0%",
+      "hit_rate_at_least_4": "0.0%"
+    },
+    {
+      "strategy_name": "Random Baseline",
       "test_draws": 50,
       "average_matches": 0.54,
       "max_match_in_one_draw": 2,

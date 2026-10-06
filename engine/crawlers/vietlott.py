@@ -90,16 +90,28 @@ class VietlottCrawler(BaseLotteryCrawler):
         if not cfg:
             raise ValueError(f"Sản phẩm không hỗ trợ: {product}")
 
-        body = {
-            "ORenderInfo": DEFAULT_ORENDER_INFO,
-            "Key": cfg["key"],
-            "GameDrawId": "",
-            "ArrayNumbers": [["" for _ in range(18)] for _ in range(5)],
-            "CheckMulti": False,
-            "PageIndex": page_index,
-        }
         if cfg["type"] == "keno":
-            body.update({"TotalRow": 10, "DrawDate": "", "GameDrawNo": ""})
+            body = {
+                "ORenderInfo": DEFAULT_ORENDER_INFO,
+                "GameId": "",
+                "GameDrawNo": "",
+                "number": "",
+                "DrawDate": "",
+                "ProcessType": 0,
+                "OddEven": 0,
+                "UpperLower": 0,
+                "PageIndex": page_index,
+                "TotalRow": 10,
+            }
+        else:
+            body = {
+                "ORenderInfo": DEFAULT_ORENDER_INFO,
+                "Key": cfg["key"],
+                "GameDrawId": "",
+                "ArrayNumbers": [["" for _ in range(18)] for _ in range(6)],
+                "CheckMulti": False,
+                "PageIndex": page_index,
+            }
 
         resp = requests.post(cfg["url"], data=json.dumps(body), headers=HEADERS, timeout=15)
         resp.raise_for_status()
@@ -115,29 +127,51 @@ class VietlottCrawler(BaseLotteryCrawler):
             if i == 0:
                 continue
             tds = tr.find_all("td")
-            if len(tds) < 3:
+            if len(tds) < 2:
                 continue
 
-            try:
-                date_str = datetime.strptime(tds[0].text.strip(), "%d/%m/%Y").strftime("%Y-%m-%d")
-            except Exception:
-                date_str = tds[0].text.strip()
+            if cfg["type"] == "keno":
+                parts = tds[0].text.strip().split("#")
+                raw_date = parts[0].strip()
+                draw_id = parts[1].strip() if len(parts) > 1 else ""
+                try:
+                    date_str = datetime.strptime(raw_date, "%d/%m/%Y").strftime("%Y-%m-%d")
+                except Exception:
+                    date_str = raw_date
+                raw_nums = tds[1].text.strip().split()
+                nums = [int(x) for x in raw_nums if x.isdigit()]
+                if nums:
+                    rows.append({
+                        "date": date_str,
+                        "id": draw_id,
+                        "result": nums,
+                        "odd_even": tds[2].text.strip() if len(tds) > 2 else "",
+                        "big_small": tds[3].text.strip() if len(tds) > 3 else "",
+                        "process_time": datetime.now().isoformat(),
+                    })
+            else:
+                if len(tds) < 3:
+                    continue
+                try:
+                    date_str = datetime.strptime(tds[0].text.strip(), "%d/%m/%Y").strftime("%Y-%m-%d")
+                except Exception:
+                    date_str = tds[0].text.strip()
 
-            draw_id = tds[1].text.strip()
-            spans = tds[2].find_all("span")
-            nums = []
-            for s in spans:
-                txt = s.text.strip()
-                if txt and txt != "|" and txt.isdigit():
-                    nums.append(int(txt))
+                draw_id = tds[1].text.strip()
+                spans = tds[2].find_all("span")
+                nums = []
+                for s in spans:
+                    txt = s.text.strip()
+                    if txt and txt != "|" and txt.isdigit():
+                        nums.append(int(txt))
 
-            if nums:
-                rows.append({
-                    "date": date_str,
-                    "id": draw_id,
-                    "result": nums,
-                    "process_time": datetime.now().isoformat(),
-                })
+                if nums:
+                    rows.append({
+                        "date": date_str,
+                        "id": draw_id,
+                        "result": nums,
+                        "process_time": datetime.now().isoformat(),
+                    })
         return rows
 
     def fetch_date(self, selected_date) -> Optional[Dict[str, Any]]:
@@ -189,7 +223,7 @@ class VietlottCrawler(BaseLotteryCrawler):
         if target_file.exists():
             df_old = pl.read_ndjson(target_file)
             df_old = df_old.with_columns(pl.col("id").cast(pl.Utf8), pl.col("date").cast(pl.Utf8))
-            df_combined = pl.concat([df_old, df_new]).unique(subset=["id"], keep="last")
+            df_combined = pl.concat([df_old, df_new], how="diagonal").unique(subset=["id"], keep="last")
         else:
             df_combined = df_new
 
