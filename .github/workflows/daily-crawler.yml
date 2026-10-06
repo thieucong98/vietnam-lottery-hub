@@ -2,17 +2,31 @@ name: Daily Lottery Crawler & Analytics Pipeline
 
 on:
   schedule:
-    # 11:35 UTC = 18:35 Giờ Việt Nam (Ngay sau khi XSMB quay xong lúc 18h30)
-    - cron: '35 11 * * *'
-    # 11:45 UTC = 18:45 Giờ Việt Nam (Ngay sau khi Vietlott 6/55 & 6/45 quay xong)
-    - cron: '45 11 * * *'
-  workflow_dispatch: # Cho phép bấm chạy thủ công từ tab Actions
+    # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18h30 - 19h05 GMT+7 = 11h30 - 12h05 UTC)
+    # Áp dụng phút lẻ (Jittered Minutes) để tránh tắc nghẽn queue trên GitHub Actions:
+    # 1. 11:33 UTC = 18:33 VN (Bắt tức thì sau khi XSMB quay xong giải Đặc Biệt lúc 18h28-18h30)
+    - cron: '33 11 * * *'
+    # 2. 11:42 UTC = 18:42 VN (Bắt Vietlott 6/55 & 6/45 và quét lại XSMB nếu đài lên trễ)
+    - cron: '42 11 * * *'
+    # 3. 11:52 UTC = 18:52 VN (Chốt giải thưởng Jackpot & tiền tích lũy Vietlott)
+    - cron: '52 11 * * *'
+    # 4. 12:05 UTC = 19:05 VN (Lần quét an toàn chốt sổ toàn bộ kết quả trong ngày)
+    - cron: '5 12 * * *'
+    # 5. 04:30 UTC = 11:30 VN (Quét kiểm tra và cào bù kỳ thiếu ban ngày)
+    - cron: '30 4 * * *'
+  workflow_dispatch: # Cho phép bấm chạy thủ công tức thì từ tab Actions
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "lottery-pipeline"
+  cancel-in-progress: false
 
 jobs:
-  crawl-and-process:
+  crawl-process-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,30 +45,71 @@ jobs:
         with:
           enable-cache: true
 
-      - name: 4. Cài đặt thư viện dự án
+      - name: 4. Cài đặt thư viện dự án (Full Extras gồm Pytest & Ruff)
         run: |
-          uv sync
+          uv sync --all-extras
 
-      - name: 5. Chạy toàn bộ Pipeline (Cào dữ liệu -> Xử lý ma trận -> Chỉ mục JSON -> AI -> README)
+      - name: 5. Chạy Pipeline (Cào dữ liệu -> Xử lý ma trận -> Chỉ mục JSON -> ML -> README)
+        id: run_pipeline
         run: |
-          uv run python scripts/run_pipeline.py
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Kích hoạt thủ công: Chạy ép buộc toàn bộ pipeline..."
+            uv run python scripts/run_pipeline.py --force
+          else
+            uv run python scripts/run_pipeline.py
+          fi
 
       - name: 6. Kiểm tra toàn vẹn dữ liệu với Pytest
         run: |
           uv run pytest
 
       - name: 7. Tự động Commit & Push dữ liệu mới nhất
+        id: auto_commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(data): auto-sync lottery results & indexes [skip ci]"
+          commit_message: "chore(data): auto-sync lottery results & indexes"
           file_pattern: "data/* web/public/data/* README.md"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-      - name: 8. Gửi thông báo kết quả qua Telegram (nếu cấu hình Secrets)
+      - name: 8. Gửi thông báo kết quả qua Telegram (nếu có kỳ mới hoặc chạy thủ công)
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           uv run python -m engine.notifications.telegram_bot
+
+      # ========================================================
+      # BƯỚC BUILD & DEPLOY SIÊU TỐC TRỰC TIẾP LÊN GITHUB PAGES
+      # ========================================================
+      - name: 9. Cài đặt Node.js 20 (cho Frontend Build)
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: 10. Build Ứng Dụng Web React với dữ liệu mới
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd web
+          npm ci
+          npm run build
+
+      - name: 11. Cấu hình GitHub Pages
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/configure-pages@v5
+
+      - name: 12. Upload Artifact Web Lên GitHub Pages
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'web/dist'
+
+      - name: 13. Xuất Bản Trực Tiếp Lên GitHub Pages (Zero Delay)
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        id: deployment
+        uses: actions/deploy-pages@v4
