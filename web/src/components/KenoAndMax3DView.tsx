@@ -32,6 +32,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
 }) => {
   const [subTab, setSubTab] = useState<'keno' | 'max3d' | 'max3d_pro'>('keno');
   const [userKenoPicks, setUserKenoPicks] = useState<number[]>([]);
+  const [kenoPickWarning, setKenoPickWarning] = useState<string | null>(null);
 
   // ========================================================
   // KENO ANALYTICS LOGIC
@@ -80,11 +81,12 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
 
   // Bộ chọn số thử vé Keno (Tối đa 10 số)
   const toggleKenoPick = (num: number) => {
+    setKenoPickWarning(null);
     if (userKenoPicks.includes(num)) {
       setUserKenoPicks(userKenoPicks.filter((n) => n !== num));
     } else {
       if (userKenoPicks.length >= 10) {
-        alert('Bạn chỉ có thể chọn tối đa 10 số cho một vé Keno (Bậc 1 đến Bậc 10)!');
+        setKenoPickWarning('Bạn chỉ có thể chọn tối đa 10 số cho một vé Keno (Bậc 1 đến Bậc 10)!');
         return;
       }
       setUserKenoPicks([...userKenoPicks, num].sort((a, b) => a - b));
@@ -97,9 +99,13 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
   }, [userKenoPicks, kenoBalls]);
 
   const quickPickKeno = (count: number) => {
+    setKenoPickWarning(null);
     const pool = Array.from({ length: 80 }, (_, i) => i + 1);
-    const shuffled = pool.sort(() => 0.5 - Math.random());
-    setUserKenoPicks(shuffled.slice(0, count).sort((a, b) => a - b));
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    setUserKenoPicks(pool.slice(0, count).sort((a, b) => a - b));
   };
 
   // ========================================================
@@ -201,7 +207,9 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                   <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
                     KẾT QUẢ VIETLOTT KENO MỚI NHẤT
                   </h3>
-                  <span className="badge badge-hot">KỲ #{latestKeno?.id || '#0297327'}</span>
+                  <span className="badge badge-hot">
+                    KỲ {latestKeno?.id?.startsWith('#') ? latestKeno.id : `#${latestKeno?.id || '0297327'}`}
+                  </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <Calendar size={14} />
@@ -266,12 +274,12 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                 borderBottom: '1px solid var(--border-subtle)',
               }}
             >
-              {kenoBalls.map((num, idx) => {
+              {kenoBalls.map((num) => {
                 const numStr = num.toString().padStart(2, '0');
                 const isEven = num % 2 === 0;
                 return (
                   <div
-                    key={idx}
+                    key={num}
                     className={`lottery-ball ${isEven ? 'ball-gold' : 'ball-cyan'}`}
                     style={{
                       width: 54,
@@ -467,6 +475,12 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                         </div>
                       );
                     })}
+                  </div>
+                )}
+
+                {kenoPickWarning && (
+                  <div style={{ fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: 600 }}>
+                    ⚠️ {kenoPickWarning}
                   </div>
                 )}
               </div>
