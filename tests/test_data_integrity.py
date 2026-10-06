@@ -1,8 +1,6 @@
 from pathlib import Path
 import json
-import pandas as pd
 import polars as pl
-import pytest
 
 def test_xsmb_data_integrity():
     csv_file = Path("data/xsmb/xsmb.csv")

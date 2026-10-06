@@ -469,7 +469,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
             cursor: 'pointer',
           }}
         >
-          Lô đề <strong>68</strong>
+          Lô tô <strong>68</strong>
         </button>
         <button
           type="button"
@@ -731,7 +731,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                   </div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 2 }}>
                     {evaluation.inKeno ? '• Có mặt trong 20 số Keno kỳ mới nhất. ' : ''}
-                    {evaluation.xsmbHits > 0 ? `• Về ${evaluation.xsmbHits} lần trong 27 giải miền Bắc.` : '• Tiếp tục nuôi hoặc xem thống kê gan 20 năm bên dưới.'}
+                    {evaluation.xsmbHits > 0 ? `• Về ${evaluation.xsmbHits} lần trong 27 giải miền Bắc.` : '• Theo dõi chu kỳ gan hoặc xem thống kê 20 năm bên dưới.'}
                   </div>
                 </div>
               </div>

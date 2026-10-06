@@ -70,7 +70,7 @@ def format_telegram_message(summary_data: dict, gan_data: dict = None) -> str:
         if p_special:
             msg += f"🎲 <b>VIETLOTT MAX 3D:</b> ĐB <code>{' - '.join(p_special)}</code>\n\n"
 
-    msg += "👉 <b>Tra cứu 20 năm & Soi cầu:</b> https://thieucong98.github.io/vietnam-lottery-hub/\n"
+    msg += "👉 <b>Tra cứu 20 năm & Thống kê xác suất:</b> https://thieucong98.github.io/vietnam-lottery-hub/\n"
     msg += "⚖️ <i>Dữ liệu thống kê XSKT & Vietlott hợp pháp. Chơi có trách nhiệm (18+).</i>"
     return msg
 
@@ -144,7 +144,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             "🔴 <b>/xsmb</b> - Kết quả XSMB hôm nay & đầu đuôi\n"
             "🟡 <b>/power</b> hoặc <b>/655</b> - Kết quả Vietlott Power 6/55 mới nhất\n"
             "🔵 <b>/mega</b> hoặc <b>/645</b> - Kết quả Vietlott Mega 6/45 mới nhất\n"
-            "🟢 <b>/keno</b> - Kết quả Vietlott Keno 20 số & kèo Chẵn/Lẻ, Tài/Xỉu\n"
+            "🟢 <b>/keno</b> - Kết quả Vietlott Keno 20 số & Thuộc tính Chẵn/Lẻ, Lớn/Nhỏ\n"
             "🎲 <b>/3d</b> hoặc <b>/max3d</b> - Kết quả Vietlott Max 3D & Max 3D Pro\n"
             "🎯 <b>/check &lt;các số&gt;</b> - So khớp vé tức thì (VD: <code>/check 68</code> hoặc <code>/check 07 18 24 35 41 55</code>)\n"
             "⏳ <b>/gan [xsmb|655|645]</b> - Top 10 số gan lì chưa về lâu nhất\n"
@@ -262,11 +262,11 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         resp = f"🟢 <b>VIETLOTT KENO - KỲ {k.get('id', '')}</b>\n"
         resp += f"📅 Ngày mở thưởng: {k.get('date', '')}\n\n"
         resp += f"🎯 <b>20 số mở thưởng:</b>\n<code>{' '.join(balls)}</code>\n\n"
-        resp += f"📊 <b>Thống kê kèo nhanh:</b>\n"
+        resp += f"📊 <b>Thuộc tính kỳ quay:</b>\n"
         resp += f"• Tổng điểm 20 bóng: <b>{total_sum}</b> ➔ <b>{sum_verdict}</b>\n"
         resp += f"• Phân bố Chẵn/Lẻ: <b>{cl_verdict}</b>\n"
         resp += f"• Tỷ lệ Lớn/Nhỏ: <b>{small_cnt} số (01-40)</b> | <b>{big_cnt} số (41-80)</b>\n\n"
-        resp += f"👉 <i>Thử vé Bậc 1-10 & Soi cầu Keno: https://thieucong98.github.io/vietnam-lottery-hub/</i>"
+        resp += f"👉 <i>Thử vé Bậc 1-10 & Thống kê Keno: https://thieucong98.github.io/vietnam-lottery-hub/</i>"
         return resp
 
     # 7. /3d hoặc /max3d [pro]

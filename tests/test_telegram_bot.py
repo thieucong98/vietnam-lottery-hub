@@ -1,4 +1,3 @@
-import pytest
 from pathlib import Path
 from engine.notifications.telegram_bot import handle_telegram_command, format_telegram_message
 

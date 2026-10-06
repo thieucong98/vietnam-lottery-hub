@@ -154,7 +154,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
               style={{ fontSize: '1.75rem', fontWeight: 900, color: '#ef4444', letterSpacing: '0.12em', cursor: 'pointer' }}
               onClick={() => onSelectNumber((p.special % 100).toString().padStart(2, '0'))}
             >
-              {p.special}
+              {p.special.toString().padStart(5, '0')}
             </span>
           </div>
 
@@ -392,8 +392,9 @@ const PrizeRow: React.FC<PrizeRowProps> = ({
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'flex-end', flex: 1 }}>
         {prizes.map((val, idx) => {
           if (val === undefined || val === null) return null;
-          const str = val.toString();
-          const last2 = str.slice(-2);
+          const expectedLen = label === 'Giải Bảy' ? 2 : label === 'Giải Sáu' ? 3 : (label === 'Giải Tư' || label === 'Giải Năm') ? 4 : 5;
+          const displayVal = val.toString().padStart(expectedLen, '0');
+          const last2 = displayVal.slice(-2);
           const isHighlighted = hoveredNumber === last2;
 
           return (
@@ -412,7 +413,7 @@ const PrizeRow: React.FC<PrizeRowProps> = ({
               }}
               title={`Số đuôi: ${last2} (bấm để xem phân tích)`}
             >
-              {val}
+              {displayVal}
             </span>
           );
         })}

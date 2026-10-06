@@ -232,7 +232,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                     fontWeight: 700,
                   }}
                 >
-                  Kèo Chẵn/Lẻ: {latestKeno?.odd_even || kenoStats.chanLeVerdict}
+                  Thuộc Tính Chẵn/Lẻ: {latestKeno?.odd_even || kenoStats.chanLeVerdict}
                 </div>
                 <div
                   style={{
@@ -245,7 +245,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                     fontWeight: 700,
                   }}
                 >
-                  Kèo Lớn/Nhỏ: {latestKeno?.big_small || kenoStats.taiXiuVerdict}
+                  Thuộc Tính Lớn/Nhỏ: {latestKeno?.big_small || kenoStats.taiXiuVerdict}
                 </div>
                 <div
                   style={{
