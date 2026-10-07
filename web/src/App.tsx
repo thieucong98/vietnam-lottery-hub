@@ -39,7 +39,13 @@ const TabFallback: React.FC = () => (
 );
 
 export function App() {
-  const [currentTab, setCurrentTab] = useState<string>('xsmb');
+  const [currentTab, setCurrentTab] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('tab');
+      if (p) return p;
+    }
+    return 'xsmb';
+  });
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [selectedSearchNumber, setSelectedSearchNumber] = useState<string>('');
@@ -76,9 +82,18 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
 
-  // Tự động cuộn trang lên đầu mượt mà khi người dùng chuyển tab
+  // Tự động cuộn trang lên đầu mượt mà & cập nhật URL khi người dùng chuyển tab
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (currentTab === 'xsmb') {
+        url.searchParams.delete('tab');
+      } else {
+        url.searchParams.set('tab', currentTab);
+      }
+      window.history.replaceState(null, '', url.toString());
+    }
   }, [currentTab]);
 
   // Tải dữ liệu 2 giai đoạn: Tải summary.json trước (<10KB, <50ms) sau đó nạp các chỉ mục chuyên sâu

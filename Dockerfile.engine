@@ -1,0 +1,38 @@
+# ==========================================
+# Dockerfile for Python Analytics & Crawler Engine
+# ==========================================
+FROM python:3.12-slim-bookworm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Astral uv package manager
+COPY --from=ghcr.io/astral-sh/uv:0.6.14 /uv /uvx /bin/
+
+WORKDIR /app
+
+# Enable bytecode compilation & copy uv dependencies
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    PYTHONUNBUFFERED=1
+
+# Copy dependency manifests and README required by hatchling metadata
+COPY pyproject.toml uv.lock README.md ./
+
+# Install third-party dependencies first for optimal Docker layer caching
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Copy application source code
+COPY engine/ /app/engine/
+COPY scripts/ /app/scripts/
+COPY data/ /app/data/
+COPY web/public/data/ /app/web/public/data/
+
+# Complete sync to install project package
+RUN uv sync --frozen --no-dev
+
+# Default entrypoint: Run complete lottery pipeline
+CMD ["uv", "run", "python", "scripts/run_pipeline.py"]

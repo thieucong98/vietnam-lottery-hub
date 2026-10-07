@@ -1,0 +1,56 @@
+services:
+  # 1. Dịch vụ Ứng Dụng Web Trực Tuyến (React + Nginx Alpine)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vietnam-lottery-web:latest
+    container_name: lottery_web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      # Mount thư mục dữ liệu để cập nhật kết quả tức thì không cần build lại image
+      - ./web/public/data:/usr/share/nginx/html/data:ro
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # 2. Pipeline Cào Dữ Liệu & Phân Tích (Chạy theo lệnh hoặc Cron)
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.engine
+    image: vietnam-lottery-engine:latest
+    container_name: lottery_pipeline
+    volumes:
+      - ./data:/app/data
+      - ./web/public/data:/app/web/public/data
+      - ./README.md:/app/README.md
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    command: ["uv", "run", "python", "scripts/run_pipeline.py"]
+    profiles:
+      - manual
+      - cron
+
+  # 3. Telegram Bot Tương Tác 2 Chiều (Chạy 24/7 Long Polling)
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.engine
+    image: vietnam-lottery-engine:latest
+    container_name: lottery_telegram_bot
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data:ro
+      - ./web/public/data:/app/web/public/data:ro
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    command: ["uv", "run", "python", "scripts/run_telegram_bot.py"]
+    profiles:
+      - bot
