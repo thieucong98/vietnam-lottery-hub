@@ -328,252 +328,252 @@
     }
   ],
   "vietlott_655_latest": {
-    "date": "2026-10-06",
-    "id": "01407",
+    "date": "2026-10-10",
+    "id": "01409",
     "result": [
-      6,
-      7,
-      18,
-      20,
+      14,
+      17,
+      21,
+      23,
       24,
-      27,
-      1
+      39,
+      30
     ],
-    "process_time": "2026-10-06T21:02:42.274752"
+    "process_time": "2026-10-11T11:45:26.806111"
   },
   "vietlott_655_top_gan": [
     {
-      "number": "12",
-      "days_since": 29,
-      "last_date": "2026-07-30",
-      "max_gap": 32
-    },
-    {
-      "number": "30",
-      "days_since": 21,
-      "last_date": "2026-08-18",
-      "max_gap": 35
-    },
-    {
-      "number": "39",
-      "days_since": 20,
-      "last_date": "2026-08-20",
-      "max_gap": 56
-    },
-    {
       "number": "19",
-      "days_since": 19,
+      "days_since": 21,
       "last_date": "2026-08-22",
       "max_gap": 45
     },
     {
       "number": "40",
-      "days_since": 18,
+      "days_since": 20,
       "last_date": "2026-08-25",
       "max_gap": 41
     },
     {
       "number": "29",
-      "days_since": 16,
+      "days_since": 18,
       "last_date": "2026-08-29",
       "max_gap": 56
     },
     {
       "number": "44",
-      "days_since": 15,
+      "days_since": 17,
       "last_date": "2026-09-01",
       "max_gap": 34
     },
     {
       "number": "42",
-      "days_since": 14,
+      "days_since": 16,
       "last_date": "2026-09-03",
       "max_gap": 44
     },
     {
       "number": "33",
-      "days_since": 13,
+      "days_since": 15,
       "last_date": "2026-09-05",
       "max_gap": 36
     },
     {
       "number": "08",
-      "days_since": 12,
+      "days_since": 14,
       "last_date": "2026-09-08",
       "max_gap": 38
+    },
+    {
+      "number": "51",
+      "days_since": 13,
+      "last_date": "2026-09-10",
+      "max_gap": 34
+    },
+    {
+      "number": "53",
+      "days_since": 13,
+      "last_date": "2026-09-10",
+      "max_gap": 34
+    },
+    {
+      "number": "43",
+      "days_since": 12,
+      "last_date": "2026-09-12",
+      "max_gap": 28
     }
   ],
   "vietlott_645_latest": {
-    "date": "2026-10-04",
-    "id": "01571",
+    "date": "2026-10-09",
+    "id": "01573",
     "result": [
-      15,
-      20,
-      29,
-      37,
-      40,
-      45
+      5,
+      7,
+      12,
+      23,
+      32,
+      41
     ],
-    "process_time": "2026-10-06T22:33:38.579567"
+    "process_time": "2026-10-11T11:45:27.223227"
   },
   "vietlott_645_top_gan": [
     {
-      "number": "05",
-      "days_since": 39,
-      "last_date": "2026-07-05",
-      "max_gap": 39
-    },
-    {
       "number": "42",
-      "days_since": 37,
+      "days_since": 39,
       "last_date": "2026-07-10",
       "max_gap": 46
     },
     {
       "number": "08",
-      "days_since": 25,
+      "days_since": 27,
       "last_date": "2026-08-07",
       "max_gap": 37
     },
     {
       "number": "19",
-      "days_since": 21,
+      "days_since": 23,
       "last_date": "2026-08-16",
       "max_gap": 35
     },
     {
-      "number": "32",
-      "days_since": 18,
-      "last_date": "2026-08-23",
-      "max_gap": 33
-    },
-    {
       "number": "35",
-      "days_since": 14,
+      "days_since": 16,
       "last_date": "2026-09-02",
       "max_gap": 44
     },
     {
       "number": "44",
-      "days_since": 14,
+      "days_since": 16,
       "last_date": "2026-09-02",
       "max_gap": 37
     },
     {
       "number": "22",
-      "days_since": 12,
+      "days_since": 14,
       "last_date": "2026-09-06",
       "max_gap": 33
     },
     {
       "number": "17",
-      "days_since": 11,
+      "days_since": 13,
       "last_date": "2026-09-09",
       "max_gap": 41
     },
     {
-      "number": "14",
-      "days_since": 10,
+      "number": "21",
+      "days_since": 12,
       "last_date": "2026-09-11",
-      "max_gap": 47
+      "max_gap": 37
+    },
+    {
+      "number": "34",
+      "days_since": 11,
+      "last_date": "2026-09-13",
+      "max_gap": 34
+    },
+    {
+      "number": "11",
+      "days_since": 10,
+      "last_date": "2026-09-16",
+      "max_gap": 51
     }
   ],
-  "generated_at": "2026-10-10T16:15:10.653827",
+  "generated_at": "2026-10-11T11:49:56.170768",
   "vietlott_3d_latest": {
-    "date": "2026-09-25",
-    "id": "01137",
+    "date": "2026-10-09",
+    "id": "01143",
     "result": {
       "Giải Đặc biệt": [
-        "710",
-        "292"
+        "787",
+        "766"
       ],
       "Giải Nhất": [
-        "971",
-        "152",
-        "999",
-        "418"
+        "325",
+        "609",
+        "023",
+        "752"
       ],
       "Giải Nhì": [
-        "428",
-        "987",
-        "474",
-        "361",
-        "095",
-        "465"
+        "683",
+        "996",
+        "524",
+        "970",
+        "478",
+        "895"
       ],
       "Giải ba": [
-        "967",
-        "101",
-        "913",
-        "596",
-        "597",
-        "132",
-        "514",
-        "155"
+        "098",
+        "564",
+        "375",
+        "177",
+        "916",
+        "593",
+        "291",
+        "006"
       ]
     }
   },
   "vietlott_3d_pro_latest": {
-    "date": "2026-09-26",
-    "id": "00784",
+    "date": "2026-10-10",
+    "id": "00790",
     "result": {
       "Giải Đặc biệt": [
-        "448",
-        "959"
+        "166",
+        "530"
       ],
       "Giải Nhất": [
-        "845",
-        "198",
-        "629",
-        "993"
+        "770",
+        "817",
+        "857",
+        "706"
       ],
       "Giải Nhì": [
-        "223",
-        "883",
-        "474",
-        "655",
-        "934",
-        "700"
+        "385",
+        "482",
+        "158",
+        "870",
+        "754",
+        "550"
       ],
       "Giải ba": [
-        "367",
-        "343",
-        "235",
-        "266",
-        "004",
-        "730",
-        "846",
-        "841"
+        "856",
+        "134",
+        "135",
+        "337",
+        "950",
+        "880",
+        "667",
+        "821"
       ]
     }
   },
   "vietlott_keno_latest": {
-    "date": "2026-10-06",
-    "id": "0298331",
+    "date": "2026-10-11",
+    "id": "0298868",
     "result": [
+      1,
       2,
-      7,
+      3,
+      5,
       11,
+      13,
       15,
-      16,
       17,
-      21,
-      27,
-      32,
-      37,
-      47,
-      55,
+      20,
+      26,
+      46,
+      50,
+      52,
+      53,
       62,
+      63,
       66,
-      67,
       68,
-      70,
       72,
-      76,
-      78
+      73
     ],
     "big_small": "Hòa",
     "odd_even": "Hòa",
-    "process_time": "2026-10-06T22:34:38.052998"
+    "process_time": "2026-10-11T11:46:53.461981"
   }
 }

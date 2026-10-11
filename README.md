@@ -9,7 +9,7 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web App:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 10/10/2026 16:15:13 (Giờ Việt Nam)  
+> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 11/10/2026 11:49:58 (Giờ Việt Nam)  
 > 📊 **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay) từ Hội đồng Xổ số Kiến thiết & Vietlott.
 
 ---
@@ -90,11 +90,11 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
 
 ### 2. Vietlott Power 6/55 & Mega 6/45
 
-* **Vietlott Power 6/55 (Kỳ #01407 - Ngày 2026-10-06):**  
-  `[06]` `[07]` `[18]` `[20]` `[24]` `[27]` | `★ [01]` (Số Đặc Biệt)
+* **Vietlott Power 6/55 (Kỳ #01409 - Ngày 2026-10-10):**  
+  `[14]` `[17]` `[21]` `[23]` `[24]` `[39]` | `★ [30]` (Số Đặc Biệt)
 
-* **Vietlott Mega 6/45 (Kỳ #01571 - Ngày 2026-10-04):**  
-  `[15]` `[20]` `[29]` `[37]` `[40]` `[45]`
+* **Vietlott Mega 6/45 (Kỳ #01573 - Ngày 2026-10-09):**  
+  `[05]` `[07]` `[12]` `[23]` `[32]` `[41]`
 
 ---
 
