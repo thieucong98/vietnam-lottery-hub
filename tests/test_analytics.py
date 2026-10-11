@@ -74,3 +74,32 @@ def test_vietlott_combination_analysis():
             os.remove(tmp_draws_path)
         if os.path.exists(tmp_cooc_path):
             os.remove(tmp_cooc_path)
+
+def test_xsmb_recent_draws_export():
+    from engine.analytics.index_builder import IndexBuilder
+    from pathlib import Path
+    import tempfile
+    import json
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        builder = IndexBuilder(
+            data_dir_xsmb=Path("data/xsmb"),
+            data_dir_vietlott=Path("data/vietlott"),
+            web_data_dir=Path(tmp_dir),
+        )
+        builder.export_xsmb_recent_draws(limit=10)
+        output_file = Path(tmp_dir) / "xsmb_recent_draws.json"
+        assert output_file.exists(), "Tệp xsmb_recent_draws.json phải được tạo"
+        with open(output_file, "r", encoding="utf-8") as f:
+            draws = json.load(f)
+        assert len(draws) == 10, "Phải xuất đúng 10 kỳ quay"
+        first = draws[0]
+        assert "date" in first
+        assert "special" in first
+        assert "special_2d" in first
+        assert "raw_prizes" in first
+        assert "heads" in first
+        assert "tails" in first
+        assert len(first["raw_prizes"]) == 27
+        assert len(first["loto_numbers"]) == 27
+

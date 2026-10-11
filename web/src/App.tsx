@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { LiveResultsBoard } from './components/LiveResultsBoard';
 import { InstantLookupModal } from './components/InstantLookupModal';
@@ -14,6 +14,7 @@ import {
   BacNhoData,
   VietlottFullDrawsData,
   VietlottCooccurrenceData,
+  XSMBHistoricalDraw,
 } from './types';
 import { Search, Flame, BarChart3, Database, ShieldCheck, Sparkles, RefreshCw, Scale, AlertTriangle } from 'lucide-react';
 
@@ -58,6 +59,8 @@ export function App() {
   const [bacNhoData, setBacNhoData] = useState<BacNhoData | null>(null);
   const [fullDrawsData, setFullDrawsData] = useState<VietlottFullDrawsData | null>(null);
   const [cooccurrenceData, setCooccurrenceData] = useState<VietlottCooccurrenceData | null>(null);
+  const [xsmbHistoricalDraws, setXsmbHistoricalDraws] = useState<XSMBHistoricalDraw[]>([]);
+  const [selectedXSMBDate, setSelectedXSMBDate] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Phím tắt toàn cục: Ctrl+K / Cmd+K hoặc phím '/' để mở tra cứu tức thì
@@ -114,7 +117,7 @@ export function App() {
         }
 
         // Giai đoạn 2: Nạp các tệp chỉ mục và ma trận chuyên sâu ở background
-        const [resXsmb, res655, res645, resMl, resBacNho, resFullDraws, resCooc] = await Promise.all([
+        const [resXsmb, res655, res645, resMl, resBacNho, resFullDraws, resCooc, resXsmbRecent] = await Promise.all([
           fetch('./data/xsmb_index.json'),
           fetch('./data/vietlott_655_index.json'),
           fetch('./data/vietlott_645_index.json'),
@@ -122,6 +125,7 @@ export function App() {
           fetch('./data/bac_nho.json'),
           fetch('./data/vietlott_full_draws.json'),
           fetch('./data/vietlott_cooccurrence.json'),
+          fetch('./data/xsmb_recent_draws.json'),
         ]);
 
         if (resXsmb.ok) setXsmbData(await resXsmb.json());
@@ -131,6 +135,7 @@ export function App() {
         if (resBacNho.ok) setBacNhoData(await resBacNho.json());
         if (resFullDraws.ok) setFullDrawsData(await resFullDraws.json());
         if (resCooc.ok) setCooccurrenceData(await resCooc.json());
+        if (resXsmbRecent.ok) setXsmbHistoricalDraws(await resXsmbRecent.json());
       } catch (err) {
         console.error('Lỗi tải dữ liệu chỉ mục chuyên sâu:', err);
       } finally {
@@ -141,12 +146,36 @@ export function App() {
     loadAllData();
   }, []);
 
+  // Lấy kỳ quay XSMB hiển thị trên Bảng chính (kỳ lịch sử chọn hoặc kỳ mới nhất)
+  const activeXSMBDraw = useMemo(() => {
+    if (selectedXSMBDate && xsmbHistoricalDraws.length > 0) {
+      const found = xsmbHistoricalDraws.find((d) => d.date === selectedXSMBDate);
+      if (found) {
+        return {
+          date: found.date,
+          day_of_week: found.day_of_week,
+          province: found.province,
+          raw_prizes: found.raw_prizes,
+          loto_numbers: found.loto_numbers,
+          heads: found.heads,
+          tails: found.tails,
+        };
+      }
+    }
+    return xsmbData?.latest_draw || summaryData?.xsmb_latest;
+  }, [selectedXSMBDate, xsmbHistoricalDraws, xsmbData, summaryData]);
+
+  const xsmbAvailableDates = useMemo(() => {
+    return xsmbHistoricalDraws.map((d) => d.date);
+  }, [xsmbHistoricalDraws]);
+
   const handleSelectNumber = (num: string) => {
     setSelectedSearchNumber(num);
     setIsSearchOpen(true);
   };
 
   const latestDate = xsmbData?.metadata?.latest_date;
+
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -270,7 +299,16 @@ export function App() {
                   <XSMBProductHub
                     xsmbData={xsmbData}
                     summaryData={summaryData}
+                    historicalDraws={xsmbHistoricalDraws}
                     onSelectNumber={handleSelectNumber}
+                    onSelectHistoricalDraw={(draw) => {
+                      setSelectedXSMBDate(draw.date);
+                      const el = document.getElementById('xsmb-live-results');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    selectedDrawDate={activeXSMBDraw?.date}
                   />
                 </Suspense>
 
@@ -281,10 +319,15 @@ export function App() {
 
                 <LiveResultsBoard
                   gameType="xsmb"
-                  drawData={xsmbData?.latest_draw}
+                  drawData={activeXSMBDraw}
                   onSelectNumber={handleSelectNumber}
                   latest3D={summaryData?.vietlott_3d_latest}
                   latestKeno={summaryData?.vietlott_keno_latest}
+                  availableDates={xsmbAvailableDates}
+                  currentDate={activeXSMBDraw?.date}
+                  onNavigateDate={(date) => setSelectedXSMBDate(date)}
+                  isHistorical={Boolean(selectedXSMBDate && selectedXSMBDate !== (xsmbData?.latest_draw?.date || summaryData?.xsmb_latest?.date))}
+                  onResetToLatest={() => setSelectedXSMBDate(null)}
                 />
 
                 {/* Bento Grid Layout 2.0: Cầu Nóng, Cảnh Báo Lô Gan & Phân Tích Dữ Liệu */}

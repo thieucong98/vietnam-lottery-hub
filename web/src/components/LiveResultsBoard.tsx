@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Trophy, Sparkles, ChevronRight, Award, Flame, Dice5 } from 'lucide-react';
+import { Calendar, Trophy, Sparkles, ChevronRight, ChevronLeft, Award, Flame, Dice5 } from 'lucide-react';
 import { LatestDrawXSMB, LatestDrawVietlott, LatestDraw3D, LatestDrawKeno } from '../types';
 
 interface LiveResultsBoardProps {
@@ -8,6 +8,11 @@ interface LiveResultsBoardProps {
   onSelectNumber: (num: string) => void;
   latest3D?: LatestDraw3D;
   latestKeno?: LatestDrawKeno;
+  availableDates?: string[];
+  currentDate?: string;
+  onNavigateDate?: (date: string) => void;
+  isHistorical?: boolean;
+  onResetToLatest?: () => void;
 }
 
 export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
@@ -16,8 +21,32 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
   onSelectNumber,
   latest3D,
   latestKeno,
+  availableDates,
+  currentDate,
+  onNavigateDate,
+  isHistorical,
+  onResetToLatest,
 }) => {
   const [hoveredNumber, setHoveredNumber] = useState<string | null>(null);
+
+  const currentIndex = availableDates && currentDate
+    ? availableDates.indexOf(currentDate)
+    : -1;
+  const canGoPrev = currentIndex >= 0 && currentIndex < (availableDates?.length || 0) - 1;
+  const canGoNext = currentIndex > 0;
+
+  const handlePrevDate = () => {
+    if (canGoPrev && availableDates && onNavigateDate) {
+      onNavigateDate(availableDates[currentIndex + 1]);
+    }
+  };
+
+  const handleNextDate = () => {
+    if (canGoNext && availableDates && onNavigateDate) {
+      onNavigateDate(availableDates[currentIndex - 1]);
+    }
+  };
+
 
   if (!drawData) {
     return (
@@ -122,18 +151,113 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 20 }}>
       {/* Cột 1: Bảng 27 giải thưởng truyền thống */}
-      <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div id="xsmb-live-results" className="glass-card animate-fade-in" style={{ padding: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Trophy size={20} color="var(--accent-gold)" />
             <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>
               BẢNG MỞ THƯỞNG XSMB
             </h2>
+            {isHistorical && (
+              <span
+                style={{
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(139, 92, 246, 0.2)',
+                  color: '#c084fc',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  border: '1px solid rgba(139, 92, 246, 0.4)',
+                }}
+              >
+                LỊCH SỬ
+              </span>
+            )}
           </div>
-          <span className="badge badge-normal" style={{ fontSize: '0.8rem' }}>
-            {xsmb.date}
-          </span>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {availableDates && availableDates.length > 0 && onNavigateDate && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <button
+                  disabled={!canGoPrev}
+                  onClick={handlePrevDate}
+                  title="Xem kỳ trước (Lùi ngày)"
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid var(--border-subtle)',
+                    color: canGoPrev ? '#ffffff' : 'var(--text-dim)',
+                    cursor: canGoPrev ? 'pointer' : 'not-allowed',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ChevronLeft size={15} />
+                </button>
+              </div>
+            )}
+
+            <span
+              className="badge badge-normal"
+              style={{
+                fontSize: '0.82rem',
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 700,
+                background: isHistorical ? 'rgba(139, 92, 246, 0.2)' : undefined,
+                color: isHistorical ? '#c084fc' : undefined,
+                border: isHistorical ? '1px solid rgba(139, 92, 246, 0.4)' : undefined,
+              }}
+            >
+              {xsmb.date}
+            </span>
+
+            {availableDates && availableDates.length > 0 && onNavigateDate && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <button
+                  disabled={!canGoNext}
+                  onClick={handleNextDate}
+                  title="Xem kỳ kế tiếp (Tiến ngày)"
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid var(--border-subtle)',
+                    color: canGoNext ? '#ffffff' : 'var(--text-dim)',
+                    cursor: canGoNext ? 'pointer' : 'not-allowed',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ChevronRight size={15} />
+                </button>
+              </div>
+            )}
+
+            {isHistorical && onResetToLatest && (
+              <button
+                onClick={onResetToLatest}
+                style={{
+                  padding: '3px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid rgba(245, 158, 11, 0.4)',
+                  color: 'var(--accent-gold)',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  marginLeft: 4,
+                }}
+                title="Quay về kết quả kỳ mới nhất hôm nay"
+              >
+                Về hôm nay
+              </button>
+            )}
+          </div>
         </div>
+
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {/* Giải Đặc Biệt */}

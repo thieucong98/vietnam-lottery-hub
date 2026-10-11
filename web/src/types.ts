@@ -62,6 +62,22 @@ export interface LatestDrawXSMB {
   tails: Record<string, number[]>;
 }
 
+export interface XSMBHistoricalDraw {
+  date: string;
+  day_of_week: string;
+  province: string;
+  special: string;
+  special_2d: string;
+  prize1: string;
+  raw_prizes: Record<string, any>;
+  loto_numbers: string[];
+  heads: Record<string, number[]>;
+  tails: Record<string, number[]>;
+  silent_heads: number[];
+  silent_tails: number[];
+}
+
+
 export interface LatestDrawVietlott {
   date: string;
   id: string;

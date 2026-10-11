@@ -108,7 +108,89 @@ class IndexBuilder:
             except Exception as e:
                 logger.warning(f"Lỗi đọc keno.jsonl: {e}")
 
+        # Bổ sung xuất danh sách kỳ quay gần nhất XSMB phục vụ tab Lịch Sử
+        self.export_xsmb_recent_draws(limit=365)
+
         with open(self.web_data_dir / "summary.json", "w", encoding="utf-8") as f:
             json.dump(summary_payload, f, ensure_ascii=False, indent=2)
 
         logger.info(f"Hoàn thành xuất chỉ mục JSON và {len(xsmb_full)} tệp lịch sử chi tiết vào {self.web_data_dir}!")
+
+    def export_xsmb_recent_draws(self, limit: int = 365) -> None:
+        """Xuất danh sách các kỳ mở thưởng gần nhất kèm đầy đủ 27 giải và đầu đuôi loto phục vụ tab Lịch Sử."""
+        csv_file = self.data_dir_xsmb / "xsmb.csv"
+        if not csv_file.exists():
+            logger.warning(f"Không tìm thấy file {csv_file}")
+            return
+
+        try:
+            import pandas as pd
+            from datetime import datetime
+
+            self.web_data_dir.mkdir(parents=True, exist_ok=True)
+            df = pd.read_csv(csv_file)
+            if df.empty:
+                return
+
+            recent = df.tail(limit)
+            prize_cols = [c for c in df.columns if c != "date"]
+
+            province_map = {
+                0: ("Thứ Hai", "Hà Nội"),
+                1: ("Thứ Ba", "Quảng Ninh"),
+                2: ("Thứ Tư", "Bắc Ninh"),
+                3: ("Thứ Năm", "Hà Nội"),
+                4: ("Thứ Sáu", "Hải Phòng"),
+                5: ("Thứ Bảy", "Nam Định"),
+                6: ("Chủ Nhật", "Thái Bình"),
+            }
+
+            draws = []
+            for _, row in recent.iterrows():
+                date_str = str(row["date"])
+                dt = datetime.strptime(date_str, "%Y-%m-%d")
+                dow, prov = province_map[dt.weekday()]
+
+                loto_nums = []
+                raw = {}
+                for col in prize_cols:
+                    val = int(row[col])
+                    raw[col] = val
+                    loto_nums.append(val % 100)
+
+                loto_sorted = [f"{n:02d}" for n in sorted(loto_nums)]
+                heads = {str(i): sorted([d % 10 for d in loto_nums if d // 10 == i]) for i in range(10)}
+                tails = {str(i): sorted([d // 10 for d in loto_nums if d % 10 == i]) for i in range(10)}
+                silent_heads = [i for i in range(10) if len(heads[str(i)]) == 0]
+                silent_tails = [i for i in range(10) if len(tails[str(i)]) == 0]
+
+                sp_val = int(row["special"])
+                sp_str = f"{sp_val:05d}"
+                p1_val = int(row["prize1"])
+                p1_str = f"{p1_val:05d}"
+
+                draws.append({
+                    "date": date_str,
+                    "day_of_week": dow,
+                    "province": prov,
+                    "special": sp_str,
+                    "special_2d": sp_str[-2:],
+                    "prize1": p1_str,
+                    "raw_prizes": raw,
+                    "loto_numbers": loto_sorted,
+                    "heads": heads,
+                    "tails": tails,
+                    "silent_heads": silent_heads,
+                    "silent_tails": silent_tails,
+                })
+
+            draws.reverse()
+
+            output_file = self.web_data_dir / "xsmb_recent_draws.json"
+            with open(output_file, "w", encoding="utf-8") as f:
+                json.dump(draws, f, ensure_ascii=False)
+
+            logger.info(f"Đã xuất {len(draws)} kỳ quay XSMB gần nhất vào {output_file}")
+        except Exception as e:
+            logger.error(f"Lỗi khi xuất xsmb_recent_draws.json: {e}")
+
