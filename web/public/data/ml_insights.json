@@ -62,14 +62,6 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Random Baseline",
-      "test_draws": 50,
-      "average_matches": 0.64,
-      "max_match_in_one_draw": 2,
-      "hit_rate_at_least_3": "0.0%",
-      "hit_rate_at_least_4": "0.0%"
-    },
-    {
       "strategy_name": "Frequency (N=100)",
       "test_draws": 50,
       "average_matches": 0.62,
@@ -89,6 +81,14 @@
       "strategy_name": "Exponential Decay (λ=0.97)",
       "test_draws": 50,
       "average_matches": 0.56,
+      "max_match_in_one_draw": 2,
+      "hit_rate_at_least_3": "0.0%",
+      "hit_rate_at_least_4": "0.0%"
+    },
+    {
+      "strategy_name": "Random Baseline",
+      "test_draws": 50,
+      "average_matches": 0.54,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
