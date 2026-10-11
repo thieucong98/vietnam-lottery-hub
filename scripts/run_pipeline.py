@@ -56,15 +56,21 @@ def main():
 
     # 3. Missing backfill
     logger.info("Bước 3/8: Kiểm tra và cào bù các kỳ bị thiếu...")
-    filled = 0
+    filled_xsmb = 0
+    filled_viet = 0
     try:
         detector = MissingDetector()
-        filled = detector.backfill_xsmb(max_days=5)
-        logger.info(f"-> Đã bù {filled} kỳ.")
+        filled_xsmb = detector.backfill_xsmb(max_days=5)
+        for prod in ["power_655", "power_645", "3d", "3d_pro", "keno"]:
+            try:
+                filled_viet += detector.backfill_vietlott(prod)
+            except Exception as e_v:
+                logger.warning(f"Lỗi bù {prod}: {e_v}")
+        logger.info(f"-> Đã bù: XSMB={filled_xsmb} ngày, Vietlott={filled_viet} kỳ.")
     except Exception as e:
         logger.warning(f"Lỗi kiểm tra kỳ thiếu: {e}")
 
-    total_new = n_xsmb + n_viet + filled
+    total_new = n_xsmb + n_viet + filled_xsmb + filled_viet
     has_summary = summary_file.exists()
 
     # KHUNG GIỜ VÀNG QUAY THƯỞNG VIỆT NAM (18:15 - 19:30 GMT+7):

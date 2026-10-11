@@ -80,11 +80,42 @@ PRODUCT_CONFIGS = {
     },
 }
 
+MIRROR_BASE_URL = "https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data"
+
 class VietlottCrawler(DrawIndexedCrawler):
     def __init__(self, data_dir: Optional[Path] = None):
         self.data_dir = data_dir or Path("data/vietlott")
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
+    def fetch_from_mirror(self, product: str) -> List[Dict[str, Any]]:
+        """Lấy dữ liệu từ Upstream Mirror (GitHub Raw) khi cổng vietlott.vn bị geo-block."""
+        cfg = PRODUCT_CONFIGS.get(product)
+        if not cfg:
+            return []
+        url = f"{MIRROR_BASE_URL}/{cfg['file']}"
+        logger.info(f"Đang đồng bộ {product} từ Upstream Mirror: {url}")
+        resp = requests.get(url, timeout=25)
+        resp.raise_for_status()
+
+        rows = []
+        for line in resp.text.strip().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                item = json.loads(line)
+                norm_id = str(item.get("id", "")).lstrip("#").strip()
+                if not norm_id:
+                    continue
+                if product not in ["3d", "3d_pro"] and "process_time" not in item:
+                    item["process_time"] = datetime.now().isoformat()
+                elif product in ["3d", "3d_pro"] and "process_time" in item:
+                    del item["process_time"]
+                rows.append(item)
+            except Exception:
+                continue
+        return rows
+
+    @retry(stop=stop_after_attempt(2), wait=wait_exponential(min=1, max=3))
     def fetch_page(self, product: str, page_index: int = 0) -> List[Dict[str, Any]]:
         cfg = PRODUCT_CONFIGS.get(product)
         if not cfg:
@@ -113,7 +144,7 @@ class VietlottCrawler(DrawIndexedCrawler):
                 "PageIndex": page_index,
             }
 
-        resp = requests.post(cfg["url"], data=json.dumps(body), headers=HEADERS, timeout=15)
+        resp = requests.post(cfg["url"], data=json.dumps(body), headers=HEADERS, timeout=12)
         resp.raise_for_status()
         res_json = resp.json()
 
@@ -174,62 +205,98 @@ class VietlottCrawler(DrawIndexedCrawler):
                     })
         return rows
 
-    def sync_product(self, product: str, max_pages: int = 2) -> int:
-        """Đồng bộ các kỳ mới nhất của một sản phẩm Vietlott."""
+    def sync_product(self, product: str, max_pages: int = 3, force_mirror: bool = False) -> int:
+        """Đồng bộ các kỳ mới nhất của một sản phẩm Vietlott theo cơ chế Đa tầng (Direct + Mirror Fallback)."""
         cfg = PRODUCT_CONFIGS.get(product)
         if not cfg:
             return 0
 
         target_file = self.data_dir / cfg["file"]
+        existing_items = []
         existing_ids = set()
         if target_file.exists():
             try:
-                df_curr = pl.read_ndjson(target_file)
-                if not df_curr.is_empty() and "id" in df_curr.columns:
-                    existing_ids = set(df_curr["id"].cast(pl.Utf8).to_list())
+                with open(target_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            obj = json.loads(line)
+                            norm_id = str(obj.get("id", "")).lstrip("#").strip()
+                            if norm_id:
+                                obj["id"] = norm_id
+                                existing_ids.add(norm_id)
+                                existing_items.append(obj)
+                        except Exception:
+                            continue
             except Exception as e:
                 logger.warning(f"Không thể đọc file {target_file}: {e}")
 
         new_items = []
-        for page in range(max_pages):
+        tier1_attempted = False
+        tier1_success = False
+
+        # TẦNG 1: Thử cào trực tiếp từ vietlott.vn (hoạt động tốt khi chạy tại VN hoặc local)
+        if not force_mirror:
+            tier1_attempted = True
             try:
-                items = self.fetch_page(product, page_index=page)
-                if not items:
-                    break
-                added_any = False
-                for item in items:
-                    if str(item["id"]) not in existing_ids:
-                        new_items.append(item)
-                        existing_ids.add(str(item["id"]))
-                        added_any = True
-                if not added_any and page > 0:
-                    break
+                for page in range(max_pages):
+                    items = self.fetch_page(product, page_index=page)
+                    if not items:
+                        break
+                    tier1_success = True
+                    added_any = False
+                    for item in items:
+                        norm_id = str(item["id"]).lstrip("#").strip()
+                        if norm_id not in existing_ids:
+                            item["id"] = norm_id
+                            new_items.append(item)
+                            existing_ids.add(norm_id)
+                            added_any = True
+                    if not added_any and page > 0:
+                        break
             except Exception as e:
-                logger.error(f"Lỗi khi cào {product} page {page}: {e}")
-                break
+                logger.warning(f"Tier 1 (vietlott.vn direct) không khả dụng cho {product} ({e}). Tự động kích hoạt Tier 2 (Upstream Mirror)...")
+
+        # TẦNG 2: Fallback Upstream Mirror (GitHub Raw)
+        # Kích hoạt khi: force_mirror=True, HOẶC Tier 1 thất bại, HOẶC Tier 1 không tìm thấy kỳ mới (đảm bảo không bị lọt kỳ)
+        if force_mirror or not tier1_success or not new_items:
+            try:
+                mirror_items = self.fetch_from_mirror(product)
+                added_from_mirror = 0
+                for item in mirror_items:
+                    norm_id = str(item["id"]).lstrip("#").strip()
+                    if norm_id not in existing_ids:
+                        item["id"] = norm_id
+                        new_items.append(item)
+                        existing_ids.add(norm_id)
+                        added_from_mirror += 1
+                if added_from_mirror > 0:
+                    logger.info(f"-> Tier 2 (Mirror) đã bù được {added_from_mirror} kỳ quay mới cho {product}!")
+            except Exception as e:
+                logger.error(f"Lỗi khi tải từ Tier 2 (Mirror) cho {product}: {e}")
 
         if not new_items:
             logger.info(f"{product}: Dữ liệu đã là mới nhất.")
             return 0
 
-        logger.info(f"{product}: Cào được {len(new_items)} kỳ quay mới.")
-        df_new = pl.DataFrame(new_items)
-        df_new = df_new.with_columns(pl.col("id").cast(pl.Utf8), pl.col("date").cast(pl.Utf8))
+        logger.info(f"{product}: Đồng bộ thành công {len(new_items)} kỳ quay mới.")
+        combined_dict = {str(item["id"]).lstrip("#").strip(): item for item in existing_items}
+        for item in new_items:
+            norm_id = str(item["id"]).lstrip("#").strip()
+            item["id"] = norm_id
+            combined_dict[norm_id] = item
 
-        if target_file.exists():
-            df_old = pl.read_ndjson(target_file)
-            df_old = df_old.with_columns(pl.col("id").cast(pl.Utf8), pl.col("date").cast(pl.Utf8))
-            df_combined = pl.concat([df_old, df_new], how="diagonal").unique(subset=["id"], keep="last")
-        else:
-            df_combined = df_new
-
-        df_combined = df_combined.sort(["date", "id"])
+        sorted_items = sorted(combined_dict.values(), key=lambda x: (str(x.get("date", "")), str(x.get("id", ""))))
         target_file.parent.mkdir(parents=True, exist_ok=True)
-        df_combined.write_ndjson(target_file)
+        with open(target_file, "w", encoding="utf-8") as f:
+            for item in sorted_items:
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
         return len(new_items)
 
     def sync_latest(self) -> int:
-        """Đồng bộ tất cả sản phẩm chính của Vietlott."""
+        """Đồng bộ tất cả sản phẩm chính của Vietlott theo cơ chế Đa tầng."""
         total_new = 0
         for prod in ["power_655", "power_645", "3d", "3d_pro", "keno"]:
             try:

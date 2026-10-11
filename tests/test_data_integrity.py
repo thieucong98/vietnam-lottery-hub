@@ -65,4 +65,27 @@ def test_crawler_architecture():
     assert isinstance(viet, BaseLotteryCrawler)
     assert isinstance(viet, DrawIndexedCrawler)
     assert hasattr(viet, "fetch_page")
+    assert hasattr(viet, "fetch_from_mirror")
     assert not hasattr(viet, "fetch_date")
+
+def test_vietlott_hybrid_crawler_and_backfill():
+    from engine.crawlers.vietlott import VietlottCrawler
+    from engine.missing_detector import MissingDetector
+
+    crawler = VietlottCrawler()
+    # Kiểm tra fetch_from_mirror tải dữ liệu chuẩn
+    mirror_draws = crawler.fetch_from_mirror("power_655")
+    assert len(mirror_draws) > 0, "Mirror Vietlott 6/55 không được rỗng"
+    latest = mirror_draws[-1]
+    assert "date" in latest
+    assert "id" in latest
+    assert "result" in latest
+    assert len(latest["result"]) >= 6
+
+    # Kiểm tra MissingDetector hỗ trợ Vietlott
+    detector = MissingDetector()
+    assert hasattr(detector, "detect_missing_vietlott_ids")
+    assert hasattr(detector, "backfill_vietlott")
+    missing_655 = detector.detect_missing_vietlott_ids("power_655")
+    assert isinstance(missing_655, list)
+

@@ -81,27 +81,30 @@ class IndexBuilder:
         p3d_file = self.data_dir_vietlott / "3d.jsonl"
         if p3d_file.exists():
             try:
-                df_3d = pl.read_ndjson(p3d_file)
-                if not df_3d.is_empty():
-                    summary_payload["vietlott_3d_latest"] = df_3d.sort(["date", "id"]).to_dicts()[-1]
+                with open(p3d_file, "r", encoding="utf-8") as f:
+                    lines = [ln.strip() for ln in f if ln.strip()]
+                    if lines:
+                        summary_payload["vietlott_3d_latest"] = json.loads(lines[-1])
             except Exception as e:
                 logger.warning(f"Lỗi đọc 3d.jsonl: {e}")
 
         p3d_pro_file = self.data_dir_vietlott / "3d_pro.jsonl"
         if p3d_pro_file.exists():
             try:
-                df_3d_pro = pl.read_ndjson(p3d_pro_file)
-                if not df_3d_pro.is_empty():
-                    summary_payload["vietlott_3d_pro_latest"] = df_3d_pro.sort(["date", "id"]).to_dicts()[-1]
+                with open(p3d_pro_file, "r", encoding="utf-8") as f:
+                    lines = [ln.strip() for ln in f if ln.strip()]
+                    if lines:
+                        summary_payload["vietlott_3d_pro_latest"] = json.loads(lines[-1])
             except Exception as e:
                 logger.warning(f"Lỗi đọc 3d_pro.jsonl: {e}")
 
         keno_file = self.data_dir_vietlott / "keno.jsonl"
         if keno_file.exists():
             try:
-                df_keno = pl.read_ndjson(keno_file)
-                if not df_keno.is_empty():
-                    summary_payload["vietlott_keno_latest"] = df_keno.sort(["date", "id"]).to_dicts()[-1]
+                with open(keno_file, "r", encoding="utf-8") as f:
+                    lines = [ln.strip() for ln in f if ln.strip()]
+                    if lines:
+                        summary_payload["vietlott_keno_latest"] = json.loads(lines[-1])
             except Exception as e:
                 logger.warning(f"Lỗi đọc keno.jsonl: {e}")
 

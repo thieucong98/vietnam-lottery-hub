@@ -85,9 +85,9 @@ class MissingDetector:
             return []
 
         try:
-            ids = set(df["id"].cast(pl.Int64).to_list())
+            ids = set(df["id"].cast(pl.Utf8).str.strip_prefix("#").cast(pl.Int64).to_list())
         except Exception:
-            ids = set(int(x) for x in df["id"].to_list() if str(x).isdigit())
+            ids = set(int(str(x).lstrip("#")) for x in df["id"].to_list() if str(x).lstrip("#").isdigit())
 
         if not ids:
             return []
@@ -95,5 +95,16 @@ class MissingDetector:
         min_id, max_id = min(ids), max(ids)
         all_ids = set(range(min_id, max_id + 1))
         missing = sorted(list(all_ids - ids))
-        logger.info(f"{product}: Phát hiện {len(missing)} kỳ quay thiếu từ ID {min_id} đến {max_id}")
+        if missing:
+            logger.info(f"{product}: Phát hiện {len(missing)} kỳ quay thiếu từ ID {min_id} đến {max_id}")
         return missing
+
+    def backfill_vietlott(self, product: str) -> int:
+        """Cào bù các kỳ quay Vietlott bị thiếu thông qua Dual-Source Crawler."""
+        missing = self.detect_missing_vietlott_ids(product)
+        if not missing:
+            return 0
+
+        logger.info(f"{product}: Bắt đầu bù {len(missing)} kỳ quay thiếu...")
+        return self.vietlott_crawler.sync_product(product, force_mirror=True)
+
