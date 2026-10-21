@@ -1,91 +1,96 @@
 {
   "product": "power_645",
   "metadata": {
-    "latest_date": "2026-10-18",
-    "latest_id": "01577",
-    "total_draws": 1380,
+    "latest_date": "2026-10-21",
+    "latest_id": "01578",
+    "total_draws": 1381,
     "max_number": 45
   },
   "latest_draw": {
-    "date": "2026-10-18",
-    "id": "01577",
+    "date": "2026-10-21",
+    "id": "01578",
     "result": [
+      4,
       10,
-      11,
-      31,
-      38,
-      40,
+      14,
+      22,
+      25,
       44
     ],
-    "process_time": "2026-10-18T12:01:34.453471"
+    "process_time": "2026-10-21T12:01:38.555611"
   },
   "top_gan": [
     {
       "number": "42",
-      "days_since": 43,
+      "days_since": 44,
       "last_date": "2026-07-10",
       "max_gap": 46
     },
     {
       "number": "08",
-      "days_since": 31,
+      "days_since": 32,
       "last_date": "2026-08-07",
       "max_gap": 37
     },
     {
-      "number": "22",
-      "days_since": 18,
-      "last_date": "2026-09-06",
-      "max_gap": 33
-    },
-    {
       "number": "17",
-      "days_since": 17,
+      "days_since": 18,
       "last_date": "2026-09-09",
       "max_gap": 41
     },
     {
       "number": "18",
-      "days_since": 10,
+      "days_since": 11,
       "last_date": "2026-09-25",
       "max_gap": 35
     },
     {
       "number": "28",
-      "days_since": 10,
+      "days_since": 11,
       "last_date": "2026-09-25",
       "max_gap": 35
     },
     {
-      "number": "04",
-      "days_since": 9,
-      "last_date": "2026-09-27",
-      "max_gap": 40
-    },
-    {
       "number": "13",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-09-27",
       "max_gap": 29
     },
     {
-      "number": "25",
-      "days_since": 9,
-      "last_date": "2026-09-27",
-      "max_gap": 43
-    },
-    {
       "number": "39",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-09-27",
       "max_gap": 38
+    },
+    {
+      "number": "02",
+      "days_since": 9,
+      "last_date": "2026-09-30",
+      "max_gap": 47
+    },
+    {
+      "number": "24",
+      "days_since": 9,
+      "last_date": "2026-09-30",
+      "max_gap": 30
+    },
+    {
+      "number": "33",
+      "days_since": 9,
+      "last_date": "2026-09-30",
+      "max_gap": 36
     }
   ],
   "top_frequent": [
     {
       "number": "10",
-      "total_hits": 203,
-      "freq_100d": 13
+      "total_hits": 204,
+      "freq_100d": 14
+    },
+    {
+      "number": "22",
+      "total_hits": 202,
+      "freq_100d": 16
     },
     {
       "number": "07",
@@ -93,9 +98,9 @@
       "freq_100d": 12
     },
     {
-      "number": "22",
+      "number": "44",
       "total_hits": 201,
-      "freq_100d": 16
+      "freq_100d": 17
     },
     {
       "number": "19",
@@ -106,11 +111,6 @@
       "number": "24",
       "total_hits": 200,
       "freq_100d": 10
-    },
-    {
-      "number": "44",
-      "total_hits": 200,
-      "freq_100d": 17
     },
     {
       "number": "37",
@@ -129,22 +129,22 @@
     },
     {
       "number": "04",
-      "total_hits": 193,
-      "freq_100d": 12
+      "total_hits": 194,
+      "freq_100d": 13
     }
   ],
   "numbers": {
     "01": {
       "number": "01",
       "total_hits": 180,
-      "days_since_last": 7,
+      "days_since_last": 8,
       "first_seen_date": "2017-10-29",
       "last_seen_date": "2026-10-02",
       "max_gap_historical": 60,
       "average_gap": 6.6,
       "freq_30d": 3,
       "freq_100d": 8,
-      "gan_risk_gauge": 11.7,
+      "gan_risk_gauge": 13.3,
       "yearly_distribution": {
         "2017": 5,
         "2018": 16,
@@ -463,14 +463,14 @@
     "02": {
       "number": "02",
       "total_hits": 173,
-      "days_since_last": 8,
+      "days_since_last": 9,
       "first_seen_date": "2017-12-08",
       "last_seen_date": "2026-09-30",
       "max_gap_historical": 47,
       "average_gap": 6.9,
       "freq_30d": 3,
       "freq_100d": 13,
-      "gan_risk_gauge": 17.0,
+      "gan_risk_gauge": 19.1,
       "yearly_distribution": {
         "2017": 2,
         "2018": 16,
@@ -789,14 +789,14 @@
     "03": {
       "number": "03",
       "total_hits": 170,
-      "days_since_last": 3,
+      "days_since_last": 4,
       "first_seen_date": "2017-11-05",
       "last_seen_date": "2026-10-11",
       "max_gap_historical": 70,
       "average_gap": 7.1,
       "freq_30d": 6,
       "freq_100d": 15,
-      "gan_risk_gauge": 4.3,
+      "gan_risk_gauge": 5.7,
       "yearly_distribution": {
         "2017": 4,
         "2018": 19,
@@ -1114,15 +1114,15 @@
     },
     "04": {
       "number": "04",
-      "total_hits": 193,
-      "days_since_last": 9,
+      "total_hits": 194,
+      "days_since_last": 0,
       "first_seen_date": "2017-10-27",
-      "last_seen_date": "2026-09-27",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 40,
       "average_gap": 6.1,
-      "freq_30d": 3,
-      "freq_100d": 12,
-      "gan_risk_gauge": 22.5,
+      "freq_30d": 4,
+      "freq_100d": 13,
+      "gan_risk_gauge": 0.0,
       "yearly_distribution": {
         "2017": 6,
         "2018": 15,
@@ -1133,9 +1133,21 @@
         "2023": 26,
         "2024": 20,
         "2025": 16,
-        "2026": 17
+        "2026": 18
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-09-27",
           "id": "01568",
@@ -1423,32 +1435,20 @@
             32,
             38
           ]
-        },
-        {
-          "date": "2025-08-29",
-          "id": "01399",
-          "result": [
-            2,
-            4,
-            10,
-            24,
-            35,
-            36
-          ]
         }
       ]
     },
     "05": {
       "number": "05",
       "total_hits": 178,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-10-29",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 40,
       "average_gap": 6.7,
       "freq_30d": 1,
       "freq_100d": 8,
-      "gan_risk_gauge": 10.0,
+      "gan_risk_gauge": 12.5,
       "yearly_distribution": {
         "2017": 3,
         "2018": 15,
@@ -1767,14 +1767,14 @@
     "06": {
       "number": "06",
       "total_hits": 185,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-11-22",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 36,
       "average_gap": 6.4,
       "freq_30d": 6,
       "freq_100d": 18,
-      "gan_risk_gauge": 5.6,
+      "gan_risk_gauge": 8.3,
       "yearly_distribution": {
         "2017": 1,
         "2018": 29,
@@ -2093,14 +2093,14 @@
     "07": {
       "number": "07",
       "total_hits": 201,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-11-03",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 45,
       "average_gap": 5.8,
       "freq_30d": 5,
       "freq_100d": 12,
-      "gan_risk_gauge": 8.9,
+      "gan_risk_gauge": 11.1,
       "yearly_distribution": {
         "2017": 4,
         "2018": 20,
@@ -2419,14 +2419,14 @@
     "08": {
       "number": "08",
       "total_hits": 177,
-      "days_since_last": 31,
+      "days_since_last": 32,
       "first_seen_date": "2017-12-03",
       "last_seen_date": "2026-08-07",
       "max_gap_historical": 37,
       "average_gap": 6.8,
       "freq_30d": 0,
       "freq_100d": 9,
-      "gan_risk_gauge": 83.8,
+      "gan_risk_gauge": 86.5,
       "yearly_distribution": {
         "2017": 3,
         "2018": 20,
@@ -2745,14 +2745,14 @@
     "09": {
       "number": "09",
       "total_hits": 177,
-      "days_since_last": 1,
+      "days_since_last": 2,
       "first_seen_date": "2017-11-15",
       "last_seen_date": "2026-10-16",
       "max_gap_historical": 51,
       "average_gap": 6.8,
       "freq_30d": 6,
       "freq_100d": 17,
-      "gan_risk_gauge": 2.0,
+      "gan_risk_gauge": 3.9,
       "yearly_distribution": {
         "2017": 6,
         "2018": 15,
@@ -3070,14 +3070,14 @@
     },
     "10": {
       "number": "10",
-      "total_hits": 203,
+      "total_hits": 204,
       "days_since_last": 0,
       "first_seen_date": "2017-10-27",
-      "last_seen_date": "2026-10-18",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 46,
-      "average_gap": 5.8,
-      "freq_30d": 5,
-      "freq_100d": 13,
+      "average_gap": 5.7,
+      "freq_30d": 6,
+      "freq_100d": 14,
       "gan_risk_gauge": 0.0,
       "yearly_distribution": {
         "2017": 2,
@@ -3089,9 +3089,21 @@
         "2023": 28,
         "2024": 24,
         "2025": 22,
-        "2026": 16
+        "2026": 17
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-10-18",
           "id": "01577",
@@ -3379,32 +3391,20 @@
             35,
             36
           ]
-        },
-        {
-          "date": "2025-08-22",
-          "id": "01396",
-          "result": [
-            1,
-            9,
-            10,
-            13,
-            37,
-            39
-          ]
         }
       ]
     },
     "11": {
       "number": "11",
       "total_hits": 186,
-      "days_since_last": 0,
+      "days_since_last": 1,
       "first_seen_date": "2017-11-17",
       "last_seen_date": "2026-10-18",
       "max_gap_historical": 51,
       "average_gap": 6.4,
       "freq_30d": 3,
       "freq_100d": 14,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 2.0,
       "yearly_distribution": {
         "2017": 2,
         "2018": 24,
@@ -3723,14 +3723,14 @@
     "12": {
       "number": "12",
       "total_hits": 169,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-10-25",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 42,
       "average_gap": 7.1,
       "freq_30d": 6,
       "freq_100d": 15,
-      "gan_risk_gauge": 9.5,
+      "gan_risk_gauge": 11.9,
       "yearly_distribution": {
         "2017": 3,
         "2018": 24,
@@ -4049,14 +4049,14 @@
     "13": {
       "number": "13",
       "total_hits": 184,
-      "days_since_last": 9,
+      "days_since_last": 10,
       "first_seen_date": "2017-10-27",
       "last_seen_date": "2026-09-27",
       "max_gap_historical": 29,
       "average_gap": 6.5,
       "freq_30d": 3,
       "freq_100d": 13,
-      "gan_risk_gauge": 31.0,
+      "gan_risk_gauge": 34.5,
       "yearly_distribution": {
         "2017": 6,
         "2018": 16,
@@ -4374,15 +4374,15 @@
     },
     "14": {
       "number": "14",
-      "total_hits": 177,
-      "days_since_last": 5,
+      "total_hits": 178,
+      "days_since_last": 0,
       "first_seen_date": "2017-11-19",
-      "last_seen_date": "2026-10-07",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 47,
-      "average_gap": 6.8,
-      "freq_30d": 3,
-      "freq_100d": 13,
-      "gan_risk_gauge": 10.6,
+      "average_gap": 6.7,
+      "freq_30d": 4,
+      "freq_100d": 14,
+      "gan_risk_gauge": 0.0,
       "yearly_distribution": {
         "2017": 5,
         "2018": 18,
@@ -4393,9 +4393,21 @@
         "2023": 20,
         "2024": 22,
         "2025": 23,
-        "2026": 14
+        "2026": 15
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-10-07",
           "id": "01572",
@@ -4683,32 +4695,20 @@
             34,
             41
           ]
-        },
-        {
-          "date": "2025-05-25",
-          "id": "01358",
-          "result": [
-            5,
-            14,
-            23,
-            24,
-            28,
-            44
-          ]
         }
       ]
     },
     "15": {
       "number": "15",
       "total_hits": 173,
-      "days_since_last": 6,
+      "days_since_last": 7,
       "first_seen_date": "2017-11-15",
       "last_seen_date": "2026-10-04",
       "max_gap_historical": 34,
       "average_gap": 6.9,
-      "freq_30d": 9,
+      "freq_30d": 8,
       "freq_100d": 15,
-      "gan_risk_gauge": 17.6,
+      "gan_risk_gauge": 20.6,
       "yearly_distribution": {
         "2017": 3,
         "2018": 9,
@@ -5027,14 +5027,14 @@
     "16": {
       "number": "16",
       "total_hits": 191,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-12-17",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 37,
       "average_gap": 6.2,
       "freq_30d": 6,
-      "freq_100d": 22,
-      "gan_risk_gauge": 5.4,
+      "freq_100d": 21,
+      "gan_risk_gauge": 8.1,
       "yearly_distribution": {
         "2017": 1,
         "2018": 18,
@@ -5353,14 +5353,14 @@
     "17": {
       "number": "17",
       "total_hits": 161,
-      "days_since_last": 17,
+      "days_since_last": 18,
       "first_seen_date": "2017-10-25",
       "last_seen_date": "2026-09-09",
       "max_gap_historical": 41,
       "average_gap": 7.5,
-      "freq_30d": 3,
+      "freq_30d": 2,
       "freq_100d": 12,
-      "gan_risk_gauge": 41.5,
+      "gan_risk_gauge": 43.9,
       "yearly_distribution": {
         "2017": 7,
         "2018": 15,
@@ -5679,14 +5679,14 @@
     "18": {
       "number": "18",
       "total_hits": 183,
-      "days_since_last": 10,
+      "days_since_last": 11,
       "first_seen_date": "2017-11-08",
       "last_seen_date": "2026-09-25",
       "max_gap_historical": 35,
       "average_gap": 6.5,
       "freq_30d": 4,
       "freq_100d": 10,
-      "gan_risk_gauge": 28.6,
+      "gan_risk_gauge": 31.4,
       "yearly_distribution": {
         "2017": 3,
         "2018": 33,
@@ -6005,14 +6005,14 @@
     "19": {
       "number": "19",
       "total_hits": 200,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-11-10",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 35,
       "average_gap": 5.9,
       "freq_30d": 2,
       "freq_100d": 10,
-      "gan_risk_gauge": 5.7,
+      "gan_risk_gauge": 8.6,
       "yearly_distribution": {
         "2017": 7,
         "2018": 26,
@@ -6331,14 +6331,14 @@
     "20": {
       "number": "20",
       "total_hits": 197,
-      "days_since_last": 1,
+      "days_since_last": 2,
       "first_seen_date": "2017-11-03",
       "last_seen_date": "2026-10-16",
       "max_gap_historical": 34,
       "average_gap": 6.0,
       "freq_30d": 5,
       "freq_100d": 14,
-      "gan_risk_gauge": 2.9,
+      "gan_risk_gauge": 5.9,
       "yearly_distribution": {
         "2017": 3,
         "2018": 17,
@@ -6657,14 +6657,14 @@
     "21": {
       "number": "21",
       "total_hits": 168,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-10-27",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 37,
       "average_gap": 7.2,
       "freq_30d": 4,
       "freq_100d": 11,
-      "gan_risk_gauge": 5.4,
+      "gan_risk_gauge": 8.1,
       "yearly_distribution": {
         "2017": 3,
         "2018": 12,
@@ -6982,15 +6982,15 @@
     },
     "22": {
       "number": "22",
-      "total_hits": 201,
-      "days_since_last": 18,
+      "total_hits": 202,
+      "days_since_last": 0,
       "first_seen_date": "2017-10-27",
-      "last_seen_date": "2026-09-06",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 33,
       "average_gap": 5.8,
       "freq_30d": 4,
       "freq_100d": 16,
-      "gan_risk_gauge": 54.5,
+      "gan_risk_gauge": 0.0,
       "yearly_distribution": {
         "2017": 4,
         "2018": 29,
@@ -7001,9 +7001,21 @@
         "2023": 26,
         "2024": 21,
         "2025": 24,
-        "2026": 20
+        "2026": 21
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-09-06",
           "id": "01559",
@@ -7291,32 +7303,20 @@
             41,
             43
           ]
-        },
-        {
-          "date": "2025-08-15",
-          "id": "01393",
-          "result": [
-            5,
-            22,
-            27,
-            36,
-            43,
-            45
-          ]
         }
       ]
     },
     "23": {
       "number": "23",
       "total_hits": 184,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-10-25",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 33,
       "average_gap": 6.5,
       "freq_30d": 3,
-      "freq_100d": 10,
-      "gan_risk_gauge": 12.1,
+      "freq_100d": 9,
+      "gan_risk_gauge": 15.2,
       "yearly_distribution": {
         "2017": 5,
         "2018": 18,
@@ -7635,14 +7635,14 @@
     "24": {
       "number": "24",
       "total_hits": 200,
-      "days_since_last": 8,
+      "days_since_last": 9,
       "first_seen_date": "2017-11-08",
       "last_seen_date": "2026-09-30",
       "max_gap_historical": 30,
       "average_gap": 5.9,
       "freq_30d": 1,
       "freq_100d": 10,
-      "gan_risk_gauge": 26.7,
+      "gan_risk_gauge": 30.0,
       "yearly_distribution": {
         "2017": 5,
         "2018": 26,
@@ -7960,15 +7960,15 @@
     },
     "25": {
       "number": "25",
-      "total_hits": 179,
-      "days_since_last": 9,
+      "total_hits": 180,
+      "days_since_last": 0,
       "first_seen_date": "2017-10-25",
-      "last_seen_date": "2026-09-27",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 43,
-      "average_gap": 6.7,
-      "freq_30d": 2,
-      "freq_100d": 10,
-      "gan_risk_gauge": 20.9,
+      "average_gap": 6.6,
+      "freq_30d": 3,
+      "freq_100d": 11,
+      "gan_risk_gauge": 0.0,
       "yearly_distribution": {
         "2017": 3,
         "2018": 23,
@@ -7979,9 +7979,21 @@
         "2023": 17,
         "2024": 28,
         "2025": 16,
-        "2026": 12
+        "2026": 13
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-09-27",
           "id": "01568",
@@ -8269,32 +8281,20 @@
             25,
             32
           ]
-        },
-        {
-          "date": "2025-02-19",
-          "id": "01317",
-          "result": [
-            1,
-            6,
-            10,
-            11,
-            25,
-            29
-          ]
         }
       ]
     },
     "26": {
       "number": "26",
       "total_hits": 185,
-      "days_since_last": 1,
+      "days_since_last": 2,
       "first_seen_date": "2017-11-12",
       "last_seen_date": "2026-10-16",
       "max_gap_historical": 38,
       "average_gap": 6.4,
       "freq_30d": 6,
       "freq_100d": 15,
-      "gan_risk_gauge": 2.6,
+      "gan_risk_gauge": 5.3,
       "yearly_distribution": {
         "2017": 4,
         "2018": 27,
@@ -8613,14 +8613,14 @@
     "27": {
       "number": "27",
       "total_hits": 189,
-      "days_since_last": 7,
+      "days_since_last": 8,
       "first_seen_date": "2017-11-15",
       "last_seen_date": "2026-10-02",
       "max_gap_historical": 39,
       "average_gap": 6.3,
       "freq_30d": 7,
       "freq_100d": 15,
-      "gan_risk_gauge": 17.9,
+      "gan_risk_gauge": 20.5,
       "yearly_distribution": {
         "2017": 6,
         "2018": 25,
@@ -8939,14 +8939,14 @@
     "28": {
       "number": "28",
       "total_hits": 197,
-      "days_since_last": 10,
+      "days_since_last": 11,
       "first_seen_date": "2017-10-29",
       "last_seen_date": "2026-09-25",
       "max_gap_historical": 35,
       "average_gap": 6.0,
       "freq_30d": 1,
       "freq_100d": 10,
-      "gan_risk_gauge": 28.6,
+      "gan_risk_gauge": 31.4,
       "yearly_distribution": {
         "2017": 2,
         "2018": 29,
@@ -9265,14 +9265,14 @@
     "29": {
       "number": "29",
       "total_hits": 188,
-      "days_since_last": 3,
+      "days_since_last": 4,
       "first_seen_date": "2017-11-03",
       "last_seen_date": "2026-10-11",
       "max_gap_historical": 33,
       "average_gap": 6.3,
-      "freq_30d": 5,
+      "freq_30d": 4,
       "freq_100d": 12,
-      "gan_risk_gauge": 9.1,
+      "gan_risk_gauge": 12.1,
       "yearly_distribution": {
         "2017": 3,
         "2018": 25,
@@ -9591,14 +9591,14 @@
     "30": {
       "number": "30",
       "total_hits": 193,
-      "days_since_last": 3,
+      "days_since_last": 4,
       "first_seen_date": "2017-11-19",
       "last_seen_date": "2026-10-11",
       "max_gap_historical": 64,
       "average_gap": 6.1,
       "freq_30d": 2,
       "freq_100d": 13,
-      "gan_risk_gauge": 4.7,
+      "gan_risk_gauge": 6.2,
       "yearly_distribution": {
         "2017": 6,
         "2018": 22,
@@ -9917,14 +9917,14 @@
     "31": {
       "number": "31",
       "total_hits": 192,
-      "days_since_last": 0,
+      "days_since_last": 1,
       "first_seen_date": "2017-10-29",
       "last_seen_date": "2026-10-18",
       "max_gap_historical": 30,
       "average_gap": 6.2,
       "freq_30d": 6,
       "freq_100d": 20,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 3.3,
       "yearly_distribution": {
         "2017": 4,
         "2018": 22,
@@ -10243,14 +10243,14 @@
     "32": {
       "number": "32",
       "total_hits": 164,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-11-24",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 33,
       "average_gap": 7.4,
       "freq_30d": 2,
       "freq_100d": 12,
-      "gan_risk_gauge": 12.1,
+      "gan_risk_gauge": 15.2,
       "yearly_distribution": {
         "2017": 3,
         "2018": 15,
@@ -10569,14 +10569,14 @@
     "33": {
       "number": "33",
       "total_hits": 181,
-      "days_since_last": 8,
+      "days_since_last": 9,
       "first_seen_date": "2017-11-15",
       "last_seen_date": "2026-09-30",
       "max_gap_historical": 36,
       "average_gap": 6.6,
-      "freq_30d": 6,
+      "freq_30d": 5,
       "freq_100d": 15,
-      "gan_risk_gauge": 22.2,
+      "gan_risk_gauge": 25.0,
       "yearly_distribution": {
         "2017": 3,
         "2018": 19,
@@ -10895,14 +10895,14 @@
     "34": {
       "number": "34",
       "total_hits": 185,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-10-25",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 34,
       "average_gap": 6.4,
       "freq_30d": 3,
       "freq_100d": 8,
-      "gan_risk_gauge": 5.9,
+      "gan_risk_gauge": 8.8,
       "yearly_distribution": {
         "2017": 5,
         "2018": 31,
@@ -11221,14 +11221,14 @@
     "35": {
       "number": "35",
       "total_hits": 187,
-      "days_since_last": 1,
+      "days_since_last": 2,
       "first_seen_date": "2017-11-10",
       "last_seen_date": "2026-10-16",
       "max_gap_historical": 44,
-      "average_gap": 6.3,
+      "average_gap": 6.4,
       "freq_30d": 3,
-      "freq_100d": 16,
-      "gan_risk_gauge": 2.3,
+      "freq_100d": 15,
+      "gan_risk_gauge": 4.5,
       "yearly_distribution": {
         "2017": 3,
         "2018": 17,
@@ -11547,14 +11547,14 @@
     "36": {
       "number": "36",
       "total_hits": 181,
-      "days_since_last": 1,
+      "days_since_last": 2,
       "first_seen_date": "2017-11-24",
       "last_seen_date": "2026-10-16",
       "max_gap_historical": 33,
       "average_gap": 6.6,
       "freq_30d": 6,
       "freq_100d": 21,
-      "gan_risk_gauge": 3.0,
+      "gan_risk_gauge": 6.1,
       "yearly_distribution": {
         "2017": 2,
         "2018": 19,
@@ -11873,14 +11873,14 @@
     "37": {
       "number": "37",
       "total_hits": 198,
-      "days_since_last": 5,
+      "days_since_last": 6,
       "first_seen_date": "2017-11-12",
       "last_seen_date": "2026-10-07",
       "max_gap_historical": 27,
       "average_gap": 5.9,
       "freq_30d": 3,
       "freq_100d": 15,
-      "gan_risk_gauge": 18.5,
+      "gan_risk_gauge": 22.2,
       "yearly_distribution": {
         "2017": 3,
         "2018": 22,
@@ -12199,14 +12199,14 @@
     "38": {
       "number": "38",
       "total_hits": 164,
-      "days_since_last": 0,
+      "days_since_last": 1,
       "first_seen_date": "2017-10-25",
       "last_seen_date": "2026-10-18",
       "max_gap_historical": 70,
       "average_gap": 7.4,
       "freq_30d": 5,
       "freq_100d": 15,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 1.4,
       "yearly_distribution": {
         "2017": 5,
         "2018": 19,
@@ -12525,14 +12525,14 @@
     "39": {
       "number": "39",
       "total_hits": 172,
-      "days_since_last": 9,
+      "days_since_last": 10,
       "first_seen_date": "2017-11-01",
       "last_seen_date": "2026-09-27",
       "max_gap_historical": 38,
       "average_gap": 7.0,
       "freq_30d": 3,
       "freq_100d": 11,
-      "gan_risk_gauge": 23.7,
+      "gan_risk_gauge": 26.3,
       "yearly_distribution": {
         "2017": 5,
         "2018": 19,
@@ -12851,14 +12851,14 @@
     "40": {
       "number": "40",
       "total_hits": 170,
-      "days_since_last": 0,
+      "days_since_last": 1,
       "first_seen_date": "2017-11-08",
       "last_seen_date": "2026-10-18",
       "max_gap_historical": 46,
       "average_gap": 7.1,
-      "freq_30d": 6,
+      "freq_30d": 5,
       "freq_100d": 9,
-      "gan_risk_gauge": 0.0,
+      "gan_risk_gauge": 2.2,
       "yearly_distribution": {
         "2017": 5,
         "2018": 23,
@@ -13177,14 +13177,14 @@
     "41": {
       "number": "41",
       "total_hits": 193,
-      "days_since_last": 4,
+      "days_since_last": 5,
       "first_seen_date": "2017-11-05",
       "last_seen_date": "2026-10-09",
       "max_gap_historical": 40,
       "average_gap": 6.1,
       "freq_30d": 6,
       "freq_100d": 17,
-      "gan_risk_gauge": 10.0,
+      "gan_risk_gauge": 12.5,
       "yearly_distribution": {
         "2017": 5,
         "2018": 19,
@@ -13503,14 +13503,14 @@
     "42": {
       "number": "42",
       "total_hits": 178,
-      "days_since_last": 43,
+      "days_since_last": 44,
       "first_seen_date": "2017-11-01",
       "last_seen_date": "2026-07-10",
       "max_gap_historical": 46,
       "average_gap": 6.7,
       "freq_30d": 0,
       "freq_100d": 10,
-      "gan_risk_gauge": 93.5,
+      "gan_risk_gauge": 95.7,
       "yearly_distribution": {
         "2017": 3,
         "2018": 22,
@@ -13829,14 +13829,14 @@
     "43": {
       "number": "43",
       "total_hits": 184,
-      "days_since_last": 2,
+      "days_since_last": 3,
       "first_seen_date": "2017-11-15",
       "last_seen_date": "2026-10-14",
       "max_gap_historical": 45,
       "average_gap": 6.5,
       "freq_30d": 6,
       "freq_100d": 14,
-      "gan_risk_gauge": 4.4,
+      "gan_risk_gauge": 6.7,
       "yearly_distribution": {
         "2017": 5,
         "2018": 16,
@@ -14154,13 +14154,13 @@
     },
     "44": {
       "number": "44",
-      "total_hits": 200,
+      "total_hits": 201,
       "days_since_last": 0,
       "first_seen_date": "2017-10-29",
-      "last_seen_date": "2026-10-18",
+      "last_seen_date": "2026-10-21",
       "max_gap_historical": 37,
-      "average_gap": 5.9,
-      "freq_30d": 4,
+      "average_gap": 5.8,
+      "freq_30d": 5,
       "freq_100d": 17,
       "gan_risk_gauge": 0.0,
       "yearly_distribution": {
@@ -14173,9 +14173,21 @@
         "2023": 27,
         "2024": 15,
         "2025": 22,
-        "2026": 20
+        "2026": 21
       },
       "recent_history": [
+        {
+          "date": "2026-10-21",
+          "id": "01578",
+          "result": [
+            4,
+            10,
+            14,
+            22,
+            25,
+            44
+          ]
+        },
         {
           "date": "2026-10-18",
           "id": "01577",
@@ -14463,32 +14475,20 @@
             40,
             44
           ]
-        },
-        {
-          "date": "2025-11-02",
-          "id": "01427",
-          "result": [
-            3,
-            7,
-            12,
-            20,
-            30,
-            44
-          ]
         }
       ]
     },
     "45": {
       "number": "45",
       "total_hits": 189,
-      "days_since_last": 6,
+      "days_since_last": 7,
       "first_seen_date": "2017-10-29",
       "last_seen_date": "2026-10-04",
       "max_gap_historical": 39,
       "average_gap": 6.3,
       "freq_30d": 4,
-      "freq_100d": 15,
-      "gan_risk_gauge": 15.4,
+      "freq_100d": 14,
+      "gan_risk_gauge": 17.9,
       "yearly_distribution": {
         "2017": 5,
         "2018": 21,
