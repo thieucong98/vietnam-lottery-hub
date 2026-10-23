@@ -1,254 +1,253 @@
 {
   "xsmb_latest": {
-    "date": "2026-10-22",
+    "date": "2026-10-23",
     "raw_prizes": {
-      "date": "2026-10-22",
-      "special": 25814,
-      "prize1": 12613,
-      "prize2_1": 2537,
-      "prize2_2": 15905,
-      "prize3_1": 19974,
-      "prize3_2": 68554,
-      "prize3_3": 91512,
-      "prize3_4": 60166,
-      "prize3_5": 90697,
-      "prize3_6": 22343,
-      "prize4_1": 9631,
-      "prize4_2": 5856,
-      "prize4_3": 6546,
-      "prize4_4": 2861,
-      "prize5_1": 2064,
-      "prize5_2": 8820,
-      "prize5_3": 1891,
-      "prize5_4": 7956,
-      "prize5_5": 7998,
-      "prize5_6": 8415,
-      "prize6_1": 759,
-      "prize6_2": 199,
-      "prize6_3": 732,
-      "prize7_1": 75,
-      "prize7_2": 17,
-      "prize7_3": 82,
-      "prize7_4": 21
+      "date": "2026-10-23",
+      "special": 97067,
+      "prize1": 19688,
+      "prize2_1": 87440,
+      "prize2_2": 68563,
+      "prize3_1": 98237,
+      "prize3_2": 96450,
+      "prize3_3": 34516,
+      "prize3_4": 92414,
+      "prize3_5": 41011,
+      "prize3_6": 49196,
+      "prize4_1": 840,
+      "prize4_2": 7322,
+      "prize4_3": 9978,
+      "prize4_4": 7001,
+      "prize5_1": 664,
+      "prize5_2": 1595,
+      "prize5_3": 8514,
+      "prize5_4": 6342,
+      "prize5_5": 2372,
+      "prize5_6": 724,
+      "prize6_1": 953,
+      "prize6_2": 200,
+      "prize6_3": 521,
+      "prize7_1": 70,
+      "prize7_2": 16,
+      "prize7_3": 53,
+      "prize7_4": 3
     },
     "loto_numbers": [
-      "05",
-      "12",
-      "13",
+      "00",
+      "01",
+      "03",
+      "11",
       "14",
-      "15",
-      "17",
-      "20",
+      "14",
+      "16",
+      "16",
       "21",
-      "31",
-      "32",
+      "22",
+      "24",
       "37",
-      "43",
-      "46",
-      "54",
-      "56",
-      "56",
-      "59",
-      "61",
+      "40",
+      "40",
+      "42",
+      "50",
+      "53",
+      "53",
+      "63",
       "64",
-      "66",
-      "74",
-      "75",
-      "82",
-      "91",
-      "97",
-      "98",
-      "99"
+      "67",
+      "70",
+      "72",
+      "78",
+      "88",
+      "95",
+      "96"
     ],
     "heads": {
       "0": [
-        5
+        0,
+        1,
+        3
       ],
       "1": [
-        2,
-        3,
+        1,
         4,
-        5,
-        7
+        4,
+        6,
+        6
       ],
       "2": [
-        0,
-        1
-      ],
-      "3": [
         1,
         2,
+        4
+      ],
+      "3": [
         7
       ],
       "4": [
-        3,
-        6
-      ],
-      "5": [
-        4,
-        6,
-        6,
-        9
-      ],
-      "6": [
-        1,
-        4,
-        6
-      ],
-      "7": [
-        4,
-        5
-      ],
-      "8": [
+        0,
+        0,
         2
       ],
+      "5": [
+        0,
+        3,
+        3
+      ],
+      "6": [
+        3,
+        4,
+        7
+      ],
+      "7": [
+        0,
+        2,
+        8
+      ],
+      "8": [
+        8
+      ],
       "9": [
-        1,
-        7,
-        8,
-        9
+        5,
+        6
       ]
     },
     "tails": {
       "0": [
-        2
+        0,
+        4,
+        4,
+        5,
+        7
       ],
       "1": [
-        2,
-        3,
-        6,
-        9
-      ],
-      "2": [
-        1,
-        3,
-        8
-      ],
-      "3": [
-        1,
-        4
-      ],
-      "4": [
-        1,
-        5,
-        6,
-        7
-      ],
-      "5": [
         0,
         1,
+        2
+      ],
+      "2": [
+        2,
+        4,
         7
       ],
-      "6": [
-        4,
+      "3": [
+        0,
         5,
         5,
         6
       ],
-      "7": [
+      "4": [
         1,
-        3,
+        1,
+        2,
+        6
+      ],
+      "5": [
         9
+      ],
+      "6": [
+        1,
+        1,
+        9
+      ],
+      "7": [
+        3,
+        6
       ],
       "8": [
-        9
+        7,
+        8
       ],
-      "9": [
-        5,
-        9
-      ]
+      "9": []
     }
   },
   "xsmb_top_gan": [
     {
-      "number": "00",
-      "days_since": 21,
-      "last_date": "2026-10-01",
-      "max_gap": 28
-    },
-    {
       "number": "29",
-      "days_since": 19,
+      "days_since": 20,
       "last_date": "2026-10-03",
       "max_gap": 25
     },
     {
       "number": "25",
-      "days_since": 17,
+      "days_since": 18,
       "last_date": "2026-10-05",
       "max_gap": 24
     },
     {
-      "number": "22",
-      "days_since": 12,
-      "last_date": "2026-10-10",
-      "max_gap": 30
-    },
-    {
       "number": "36",
-      "days_since": 12,
+      "days_since": 13,
       "last_date": "2026-10-10",
       "max_gap": 27
     },
     {
       "number": "80",
-      "days_since": 10,
+      "days_since": 11,
       "last_date": "2026-10-12",
       "max_gap": 40
     },
     {
       "number": "51",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-10-13",
       "max_gap": 26
     },
     {
-      "number": "78",
-      "days_since": 9,
-      "last_date": "2026-10-13",
-      "max_gap": 33
-    },
-    {
       "number": "84",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-10-13",
       "max_gap": 29
     },
     {
       "number": "65",
-      "days_since": 8,
+      "days_since": 9,
       "last_date": "2026-10-14",
       "max_gap": 29
     },
     {
       "number": "79",
-      "days_since": 8,
+      "days_since": 9,
       "last_date": "2026-10-14",
       "max_gap": 23
     },
     {
       "number": "27",
-      "days_since": 7,
+      "days_since": 8,
       "last_date": "2026-10-15",
       "max_gap": 27
     },
     {
       "number": "76",
-      "days_since": 7,
+      "days_since": 8,
       "last_date": "2026-10-15",
       "max_gap": 25
     },
     {
       "number": "93",
-      "days_since": 7,
+      "days_since": 8,
       "last_date": "2026-10-15",
       "max_gap": 23
     },
     {
       "number": "30",
-      "days_since": 6,
+      "days_since": 7,
       "last_date": "2026-10-16",
       "max_gap": 29
+    },
+    {
+      "number": "81",
+      "days_since": 7,
+      "last_date": "2026-10-16",
+      "max_gap": 27
+    },
+    {
+      "number": "92",
+      "days_since": 7,
+      "last_date": "2026-10-16",
+      "max_gap": 31
+    },
+    {
+      "number": "33",
+      "days_since": 6,
+      "last_date": "2026-10-17",
+      "max_gap": 30
     }
   ],
   "xsmb_top_frequent": [
@@ -259,12 +258,12 @@
     },
     {
       "number": "33",
-      "freq_100d": 38,
+      "freq_100d": 37,
       "total_hits": 2035
     },
     {
       "number": "35",
-      "freq_100d": 38,
+      "freq_100d": 37,
       "total_hits": 1996
     },
     {
@@ -278,9 +277,9 @@
       "total_hits": 2016
     },
     {
-      "number": "77",
+      "number": "63",
       "freq_100d": 35,
-      "total_hits": 2020
+      "total_hits": 2051
     },
     {
       "number": "17",
@@ -293,24 +292,19 @@
       "total_hits": 2137
     },
     {
-      "number": "63",
-      "freq_100d": 34,
-      "total_hits": 2050
-    },
-    {
       "number": "70",
       "freq_100d": 34,
-      "total_hits": 2078
+      "total_hits": 2079
+    },
+    {
+      "number": "77",
+      "freq_100d": 34,
+      "total_hits": 2020
     },
     {
       "number": "04",
       "freq_100d": 33,
       "total_hits": 2042
-    },
-    {
-      "number": "44",
-      "freq_100d": 33,
-      "total_hits": 2114
     },
     {
       "number": "48",
@@ -321,6 +315,11 @@
       "number": "51",
       "freq_100d": 33,
       "total_hits": 1924
+    },
+    {
+      "number": "53",
+      "freq_100d": 33,
+      "total_hits": 2037
     },
     {
       "number": "32",
@@ -405,112 +404,112 @@
     }
   ],
   "vietlott_645_latest": {
-    "date": "2026-10-21",
-    "id": "01578",
+    "date": "2026-10-23",
+    "id": "01579",
     "result": [
-      4,
-      10,
-      14,
+      2,
+      5,
+      11,
       22,
-      25,
-      44
+      32,
+      40
     ],
-    "process_time": "2026-10-21T12:01:38.555611"
+    "process_time": "2026-10-23T12:01:35.551326"
   },
   "vietlott_645_top_gan": [
     {
       "number": "42",
-      "days_since": 44,
+      "days_since": 45,
       "last_date": "2026-07-10",
       "max_gap": 46
     },
     {
       "number": "08",
-      "days_since": 32,
+      "days_since": 33,
       "last_date": "2026-08-07",
       "max_gap": 37
     },
     {
       "number": "17",
-      "days_since": 18,
+      "days_since": 19,
       "last_date": "2026-09-09",
       "max_gap": 41
     },
     {
       "number": "18",
-      "days_since": 11,
+      "days_since": 12,
       "last_date": "2026-09-25",
       "max_gap": 35
     },
     {
       "number": "28",
-      "days_since": 11,
+      "days_since": 12,
       "last_date": "2026-09-25",
       "max_gap": 35
     },
     {
       "number": "13",
-      "days_since": 10,
+      "days_since": 11,
       "last_date": "2026-09-27",
       "max_gap": 29
     },
     {
       "number": "39",
-      "days_since": 10,
+      "days_since": 11,
       "last_date": "2026-09-27",
       "max_gap": 38
     },
     {
-      "number": "02",
-      "days_since": 9,
-      "last_date": "2026-09-30",
-      "max_gap": 47
-    },
-    {
       "number": "24",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-09-30",
       "max_gap": 30
     },
     {
       "number": "33",
-      "days_since": 9,
+      "days_since": 10,
       "last_date": "2026-09-30",
       "max_gap": 36
+    },
+    {
+      "number": "01",
+      "days_since": 9,
+      "last_date": "2026-10-02",
+      "max_gap": 60
     }
   ],
-  "generated_at": "2026-10-23T09:27:36.008858",
+  "generated_at": "2026-10-23T15:45:48.379511",
   "vietlott_3d_latest": {
-    "date": "2026-10-21",
-    "id": "01148",
+    "date": "2026-10-23",
+    "id": "01149",
     "result": {
       "Giải Đặc biệt": [
-        "456",
-        "213"
+        "315",
+        "341"
       ],
       "Giải Nhất": [
-        "650",
-        "872",
-        "687",
-        "369"
+        "321",
+        "141",
+        "063",
+        "001"
       ],
       "Giải Nhì": [
-        "671",
-        "563",
-        "220",
-        "419",
-        "023",
-        "222"
+        "603",
+        "835",
+        "778",
+        "750",
+        "310",
+        "966"
       ],
       "Giải ba": [
-        "523",
-        "509",
-        "237",
-        "385",
-        "452",
-        "403",
-        "243",
-        "682"
+        "850",
+        "133",
+        "461",
+        "098",
+        "113",
+        "920",
+        "583",
+        "245"
       ]
     }
   },
@@ -550,31 +549,31 @@
   },
   "vietlott_keno_latest": {
     "date": "2026-10-23",
-    "id": "0300265",
+    "id": "0300355",
     "result": [
-      5,
-      19,
-      26,
-      28,
-      29,
-      31,
-      33,
+      9,
+      18,
+      23,
+      25,
+      27,
+      30,
+      35,
+      36,
       39,
-      50,
-      51,
+      43,
+      45,
+      56,
       57,
-      61,
-      63,
-      64,
-      65,
+      58,
+      62,
       66,
-      67,
-      68,
       73,
-      74
+      74,
+      75,
+      78
     ],
-    "big_small": "Lẻ (13)",
-    "odd_even": "Lớn (12)",
-    "process_time": "2026-10-23T09:27:07.240064"
+    "big_small": "Lẻ (11)",
+    "odd_even": "Lớn (11)",
+    "process_time": "2026-10-23T15:45:30.431070"
   }
 }
