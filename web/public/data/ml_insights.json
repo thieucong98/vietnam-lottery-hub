@@ -1,12 +1,12 @@
 {
   "product": "Power 6/55",
-  "latest_id": "01414",
-  "latest_date": "2026-10-22",
+  "latest_id": "01415",
+  "latest_date": "2026-10-24",
   "predictions": [
     {
       "name": "Tần suất cao (Hot Numbers)",
       "predicted_numbers": [
-        "05",
+        "07",
         "11",
         "14",
         "18",
@@ -22,7 +22,7 @@
         "15",
         "29",
         "33",
-        "44",
+        "43",
         "49"
       ],
       "description": "Dự đoán dựa trên thuật toán Long Absence (Lô Gan)"
@@ -30,10 +30,10 @@
     {
       "name": "Suy giảm số mũ (Exponential)",
       "predicted_numbers": [
-        "01",
         "07",
         "11",
         "14",
+        "18",
         "23",
         "24"
       ],
@@ -42,12 +42,12 @@
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "predicted_numbers": [
-        "08",
-        "22",
+        "11",
+        "18",
+        "24",
+        "29",
         "41",
-        "42",
-        "45",
-        "53"
+        "51"
       ],
       "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
     }
@@ -62,11 +62,11 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Random Baseline",
+      "strategy_name": "Frequency (N=30)",
       "test_draws": 50,
-      "average_matches": 0.64,
-      "max_match_in_one_draw": 2,
-      "hit_rate_at_least_3": "0.0%",
+      "average_matches": 0.62,
+      "max_match_in_one_draw": 3,
+      "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
@@ -78,17 +78,17 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Frequency (N=30)",
+      "strategy_name": "Random Baseline",
       "test_draws": 50,
       "average_matches": 0.58,
-      "max_match_in_one_draw": 3,
-      "hit_rate_at_least_3": "2.0%",
+      "max_match_in_one_draw": 2,
+      "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
       "strategy_name": "Exponential Decay (λ=0.97)",
       "test_draws": 50,
-      "average_matches": 0.52,
+      "average_matches": 0.54,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -96,7 +96,7 @@
     {
       "strategy_name": "Markov Chain (Bậc 1)",
       "test_draws": 50,
-      "average_matches": 0.52,
+      "average_matches": 0.54,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
