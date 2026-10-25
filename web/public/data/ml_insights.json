@@ -64,7 +64,7 @@
     {
       "strategy_name": "Random Baseline",
       "test_draws": 50,
-      "average_matches": 0.66,
+      "average_matches": 0.7,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
