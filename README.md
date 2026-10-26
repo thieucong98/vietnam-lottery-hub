@@ -9,7 +9,7 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web App:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 26/10/2026 10:21:11 (Giờ Việt Nam)  
+> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 26/10/2026 17:24:19 (Giờ Việt Nam)  
 > 📊 **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay) từ Hội đồng Xổ số Kiến thiết & Vietlott.
 
 ---
@@ -80,11 +80,11 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
 
 ## 🏆 KẾT QUẢ MỞ THƯỞNG MỚI NHẤT
 
-### 1. Xổ Số Kiến Thiết Miền Bắc (2026-10-25)
+### 1. Xổ Số Kiến Thiết Miền Bắc (2026-10-26)
 
 | Xổ Số Kiến Thiết Miền Bắc | Thống Kê Đầu - Đuôi Lô Tô |
 | :--- | :--- |
-| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-10-25</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:#ef4444; font-size:1.2em;">30328</strong></td></tr><tr><td>Giải Nhất</td><td><strong>16643</strong></td></tr><tr><td>Giải Nhì</td><td>06745, 79482</td></tr><tr><td>Giải Ba</td><td>00981, 90959, 09681<br>71865, 84063, 92739</td></tr><tr><td>Giải Tư</td><td>3022, 4825, 7901, 2729</td></tr><tr><td>Giải Năm</td><td>3353, 3776, 2498<br>3324, 9116, 0964</td></tr><tr><td>Giải Sáu</td><td>221, 602, 786</td></tr><tr><td>Giải Bảy</td><td>52, 94, 82, 67</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>1, 2</td></tr><tr><td><strong>1</strong></td><td>6</td></tr><tr><td><strong>2</strong></td><td>1, 2, 4, 5, 8, 9</td></tr><tr><td><strong>3</strong></td><td>9</td></tr><tr><td><strong>4</strong></td><td>3, 5</td></tr><tr><td><strong>5</strong></td><td>2, 3, 9</td></tr><tr><td><strong>6</strong></td><td>3, 4, 5, 7</td></tr><tr><td><strong>7</strong></td><td>6</td></tr><tr><td><strong>8</strong></td><td>1, 1, 2, 2, 6</td></tr><tr><td><strong>9</strong></td><td>4, 8</td></tr></table> |
+| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-10-26</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:#ef4444; font-size:1.2em;">13221</strong></td></tr><tr><td>Giải Nhất</td><td><strong>82697</strong></td></tr><tr><td>Giải Nhì</td><td>34264, 74828</td></tr><tr><td>Giải Ba</td><td>56825, 14797, 58426<br>50810, 01089, 62776</td></tr><tr><td>Giải Tư</td><td>5523, 2444, 1938, 6713</td></tr><tr><td>Giải Năm</td><td>0335, 8731, 9947<br>2747, 9934, 9250</td></tr><tr><td>Giải Sáu</td><td>004, 343, 794</td></tr><tr><td>Giải Bảy</td><td>92, 66, 69, 82</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>4</td></tr><tr><td><strong>1</strong></td><td>0, 3</td></tr><tr><td><strong>2</strong></td><td>1, 3, 5, 6, 8</td></tr><tr><td><strong>3</strong></td><td>1, 4, 5, 8</td></tr><tr><td><strong>4</strong></td><td>3, 4, 7, 7</td></tr><tr><td><strong>5</strong></td><td>0</td></tr><tr><td><strong>6</strong></td><td>4, 6, 9</td></tr><tr><td><strong>7</strong></td><td>6</td></tr><tr><td><strong>8</strong></td><td>2, 9</td></tr><tr><td><strong>9</strong></td><td>2, 4, 7, 7</td></tr></table> |
 
 ---
 
