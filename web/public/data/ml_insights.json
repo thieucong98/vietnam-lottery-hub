@@ -1,16 +1,16 @@
 {
   "product": "Power 6/55",
-  "latest_id": "01415",
-  "latest_date": "2026-10-24",
+  "latest_id": "01416",
+  "latest_date": "2026-10-27",
   "predictions": [
     {
       "name": "Tần suất cao (Hot Numbers)",
       "predicted_numbers": [
         "07",
+        "09",
         "11",
         "14",
         "18",
-        "24",
         "27"
       ],
       "description": "Dự đoán dựa trên thuật toán Frequency (N=50)"
@@ -34,20 +34,20 @@
         "11",
         "14",
         "18",
-        "23",
-        "24"
+        "24",
+        "27"
       ],
       "description": "Dự đoán dựa trên thuật toán Exponential Decay (λ=0.97)"
     },
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "predicted_numbers": [
-        "11",
-        "18",
+        "01",
+        "09",
+        "20",
+        "22",
         "24",
-        "29",
-        "41",
-        "51"
+        "34"
       ],
       "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
     }
@@ -62,9 +62,17 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
+      "strategy_name": "Random Baseline",
+      "test_draws": 50,
+      "average_matches": 0.74,
+      "max_match_in_one_draw": 3,
+      "hit_rate_at_least_3": "2.0%",
+      "hit_rate_at_least_4": "0.0%"
+    },
+    {
       "strategy_name": "Frequency (N=30)",
       "test_draws": 50,
-      "average_matches": 0.62,
+      "average_matches": 0.64,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -80,7 +88,7 @@
     {
       "strategy_name": "Exponential Decay (λ=0.97)",
       "test_draws": 50,
-      "average_matches": 0.54,
+      "average_matches": 0.56,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -89,14 +97,6 @@
       "strategy_name": "Markov Chain (Bậc 1)",
       "test_draws": 50,
       "average_matches": 0.54,
-      "max_match_in_one_draw": 2,
-      "hit_rate_at_least_3": "0.0%",
-      "hit_rate_at_least_4": "0.0%"
-    },
-    {
-      "strategy_name": "Random Baseline",
-      "test_draws": 50,
-      "average_matches": 0.46,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
