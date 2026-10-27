@@ -9,7 +9,7 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web App:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 26/10/2026 17:24:19 (Giờ Việt Nam)  
+> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 27/10/2026 09:55:57 (Giờ Việt Nam)  
 > 📊 **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay) từ Hội đồng Xổ số Kiến thiết & Vietlott.
 
 ---
