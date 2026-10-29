@@ -1,7 +1,7 @@
 {
   "product": "Power 6/55",
-  "latest_id": "01416",
-  "latest_date": "2026-10-27",
+  "latest_id": "01417",
+  "latest_date": "2026-10-29",
   "predictions": [
     {
       "name": "Tần suất cao (Hot Numbers)",
@@ -20,9 +20,9 @@
       "predicted_numbers": [
         "08",
         "15",
-        "29",
-        "33",
+        "32",
         "43",
+        "47",
         "49"
       ],
       "description": "Dự đoán dựa trên thuật toán Long Absence (Lô Gan)"
@@ -31,8 +31,8 @@
       "name": "Suy giảm số mũ (Exponential)",
       "predicted_numbers": [
         "07",
+        "09",
         "11",
-        "14",
         "18",
         "24",
         "27"
@@ -42,12 +42,12 @@
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "predicted_numbers": [
-        "01",
-        "09",
-        "20",
+        "08",
         "22",
-        "24",
-        "34"
+        "34",
+        "41",
+        "51",
+        "55"
       ],
       "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
     }
@@ -56,7 +56,7 @@
     {
       "strategy_name": "Long Absence (Lô Gan)",
       "test_draws": 50,
-      "average_matches": 0.78,
+      "average_matches": 0.82,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -72,7 +72,7 @@
     {
       "strategy_name": "Frequency (N=100)",
       "test_draws": 50,
-      "average_matches": 0.6,
+      "average_matches": 0.62,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
