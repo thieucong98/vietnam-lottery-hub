@@ -1,17 +1,17 @@
 {
   "product": "Power 6/55",
-  "latest_id": "01419",
-  "latest_date": "2026-11-03",
+  "latest_id": "01420",
+  "latest_date": "2026-11-05",
   "predictions": [
     {
       "name": "Tần suất cao (Hot Numbers)",
       "predicted_numbers": [
         "07",
-        "09",
         "11",
         "18",
         "24",
-        "27"
+        "27",
+        "45"
       ],
       "description": "Dự đoán dựa trên thuật toán Frequency (N=50)"
     },
@@ -23,7 +23,7 @@
         "15",
         "32",
         "47",
-        "49"
+        "48"
       ],
       "description": "Dự đoán dựa trên thuật toán Long Absence (Lô Gan)"
     },
@@ -44,10 +44,10 @@
       "predicted_numbers": [
         "22",
         "29",
-        "32",
-        "40",
-        "44",
-        "53"
+        "33",
+        "41",
+        "48",
+        "51"
       ],
       "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
     }
@@ -56,7 +56,7 @@
     {
       "strategy_name": "Long Absence (Lô Gan)",
       "test_draws": 50,
-      "average_matches": 0.8,
+      "average_matches": 0.82,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -65,8 +65,8 @@
       "strategy_name": "Random Baseline",
       "test_draws": 50,
       "average_matches": 0.68,
-      "max_match_in_one_draw": 3,
-      "hit_rate_at_least_3": "2.0%",
+      "max_match_in_one_draw": 2,
+      "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
@@ -86,15 +86,15 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Markov Chain (Bậc 1)",
+      "strategy_name": "Exponential Decay (λ=0.97)",
       "test_draws": 50,
-      "average_matches": 0.62,
+      "average_matches": 0.58,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Exponential Decay (λ=0.97)",
+      "strategy_name": "Markov Chain (Bậc 1)",
       "test_draws": 50,
       "average_matches": 0.58,
       "max_match_in_one_draw": 2,
