@@ -5,7 +5,7 @@ from engine.ml.strategies.all_strategies import (
     MarkovChainStrategy,
 )
 
-def test_strategies_prediction():
+def test_strategies_sample_picks():
     mock_history = [
         [1, 5, 12, 23, 34, 45],
         [2, 5, 14, 25, 36, 45],
@@ -19,11 +19,34 @@ def test_strategies_prediction():
         MarkovChainStrategy(),
     ]
     for strat in strategies:
-        pred = strat.predict(mock_history, k=6, max_number=55)
-        assert len(pred) == 6, f"{strat.name} phải trả về 6 số"
-        assert len(set(pred)) == 6, f"{strat.name} không được có số trùng lặp"
-        for num in pred:
+        picks = strat.pick(mock_history, k=6, max_number=55)
+        assert len(picks) == 6, f"{strat.name} phải trả về 6 số"
+        assert len(set(picks)) == 6, f"{strat.name} không được có số trùng lặp"
+        for num in picks:
             assert 1 <= num <= 55, f"{strat.name}: số {num} phải nằm trong khoảng 1 đến 55"
+
+def test_ml_insights_schema_v2():
+    import json
+    import tempfile
+    from pathlib import Path
+    from engine.ml.render_insights import SCHEMA_VERSION, generate_ml_insights
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        generate_ml_insights(out_dir=Path(tmp_dir))
+        out_file = Path(tmp_dir) / "ml_insights.json"
+        assert out_file.exists(), "Tệp ml_insights.json phải được tạo"
+        with open(out_file, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+
+    assert payload["schema_version"] == SCHEMA_VERSION == 2
+    assert "predictions" not in payload
+    assert payload["jackpot_odds"] == "1/28.989.675"
+    assert "không làm tăng xác suất trúng" in payload["disclaimer"]
+    assert len(payload["sample_sets"]) == 4
+    for item in payload["sample_sets"]:
+        assert "predicted_numbers" not in item
+        assert len(item["sample_picks"]) == 6
+        assert "chỉ minh họa" in item["description"]
 
 def test_bac_nho_analysis():
     from engine.analytics.bac_nho_analyzer import BacNhoAnalyzer

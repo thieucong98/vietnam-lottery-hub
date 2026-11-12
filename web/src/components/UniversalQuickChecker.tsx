@@ -226,7 +226,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
       };
     }
 
-    // TRƯỜNG HỢP 3: CẶP SỐ / XIÊN 2 (VD: 68 86) -> So XSMB & Keno
+    // TRƯỜNG HỢP 3: CẶP SỐ CÙNG XUẤT HIỆN (VD: 68 86) -> Thống kê XSMB & Keno
     if (parsedTokens.length === 2) {
       const n1 = parsedTokens[0].padStart(2, '0');
       const n2 = parsedTokens[1].padStart(2, '0');
@@ -268,7 +268,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
       };
     }
 
-    // TRƯỜNG HỢP 4: 1 SỐ 2 CHỮ SỐ (VD: 68) -> So XSMB & Keno & Lô Tô
+    // TRƯỜNG HỢP 4: 1 SỐ 2 CHỮ SỐ (VD: 68) -> Thống kê XSMB & Keno
     const num2d = parsedTokens[0].padStart(2, '0');
     let xsmbSpecial = false;
     let xsmbHits = 0;
@@ -469,7 +469,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
             cursor: 'pointer',
           }}
         >
-          Lô tô <strong>68</strong>
+          Số <strong>68</strong>
         </button>
         <button
           type="button"
@@ -483,7 +483,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
             cursor: 'pointer',
           }}
         >
-          Xiên 2 <strong>68 - 86</strong>
+          Cặp số <strong>68 - 86</strong>
         </button>
         <button
           type="button"
@@ -652,7 +652,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
             </div>
           )}
 
-          {/* 3. KẾT QUẢ CẶP SỐ / XIÊN 2 (XSMB & KENO) */}
+          {/* 3. KẾT QUẢ CẶP SỐ CÙNG XUẤT HIỆN (THỐNG KÊ XSMB & KENO) */}
           {evaluation.type === 'pair' && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -673,18 +673,18 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                 <div>
                   <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#ffffff' }}>
                     {evaluation.bothHits
-                      ? `🎉 CHÚC MỪNG TRÚNG XIÊN 2 XSMB (Cả 2 số [${evaluation.n1} - ${evaluation.n2}] cùng nổ)!`
+                      ? `Cả 2 số [${evaluation.n1} - ${evaluation.n2}] cùng xuất hiện trong 27 giải XSMB kỳ ${evaluation.date}`
                       : evaluation.hits1 > 0 || evaluation.hits2 > 0
-                      ? `🔥 NỔ ${evaluation.hits1 > 0 ? `Số ${evaluation.n1} (${evaluation.hits1} nháy)` : ''}${evaluation.hits1 > 0 && evaluation.hits2 > 0 ? ' & ' : ''}${evaluation.hits2 > 0 ? `Số ${evaluation.n2} (${evaluation.hits2} nháy)` : ''}!`
+                      ? `Xuất hiện trong 27 giải XSMB: ${evaluation.hits1 > 0 ? `số ${evaluation.n1} (${evaluation.hits1} lần)` : ''}${evaluation.hits1 > 0 && evaluation.hits2 > 0 ? ', ' : ''}${evaluation.hits2 > 0 ? `số ${evaluation.n2} (${evaluation.hits2} lần)` : ''}`
                       : evaluation.keno1 || evaluation.keno2
-                      ? `🟢 Có số nổ trong 20 bóng Keno hôm nay!`
-                      : `Cặp số [${evaluation.n1} - ${evaluation.n2}] chưa nổ trong kỳ XSMB hôm nay (${evaluation.date})`}
+                      ? `Có số xuất hiện trong 20 số Keno kỳ mới nhất`
+                      : `Cặp số [${evaluation.n1} - ${evaluation.n2}] không xuất hiện trong 27 giải XSMB kỳ ${evaluation.date}`}
                   </div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                    {evaluation.spec1 ? `• Số ${evaluation.n1} trúng Giải Đặc Biệt! ` : ''}
-                    {evaluation.spec2 ? `• Số ${evaluation.n2} trúng Giải Đặc Biệt! ` : ''}
+                    {evaluation.spec1 ? `• Số ${evaluation.n1} trùng 2 số cuối Giải Đặc Biệt. ` : ''}
+                    {evaluation.spec2 ? `• Số ${evaluation.n2} trùng 2 số cuối Giải Đặc Biệt. ` : ''}
                     {evaluation.keno1 && evaluation.keno2 ? '• Cả 2 số cùng có mặt trong Keno kỳ mới nhất. ' : ''}
-                    • Bấm xem thống kê 20 năm tần suất cặp số này cùng về.
+                    • Đây là thống kê dữ liệu, không phải kết quả trúng thưởng của vé. Bấm xem tần suất 20 năm cặp số này cùng xuất hiện.
                   </div>
                 </div>
               </div>
@@ -722,12 +722,12 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                 <div>
                   <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#ffffff' }}>
                     {evaluation.xsmbSpecial
-                      ? `🎉 TRÚNG GIẢI ĐẶC BIỆT XSMB (Đề: ${evaluation.number})!`
+                      ? `Số ${evaluation.number} trùng 2 số cuối Giải Đặc Biệt XSMB kỳ ${evaluation.date}`
                       : evaluation.xsmbHits > 0
-                      ? `🔥 NỔ ${evaluation.xsmbHits} NHÁY LÔ TÔ XSMB!`
+                      ? `Số ${evaluation.number} xuất hiện ${evaluation.xsmbHits} lần trong 27 giải XSMB kỳ ${evaluation.date}`
                       : evaluation.inKeno
-                      ? `🟢 NỔ TRONG 20 BÓNG KENO HÔM NAY!`
-                      : `Chưa nổ trong kỳ mở thưởng XSMB hôm nay (${evaluation.date})`}
+                      ? `Số ${evaluation.number} có trong 20 số Keno kỳ mới nhất`
+                      : `Số ${evaluation.number} không xuất hiện trong 27 giải XSMB kỳ ${evaluation.date}`}
                   </div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 2 }}>
                     {evaluation.inKeno ? '• Có mặt trong 20 số Keno kỳ mới nhất. ' : ''}

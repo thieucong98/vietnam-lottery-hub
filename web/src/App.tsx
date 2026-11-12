@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { LiveResultsBoard } from './components/LiveResultsBoard';
 import { InstantLookupModal } from './components/InstantLookupModal';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
+import { AgeGate } from './components/AgeGate';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { UniversalQuickChecker } from './components/UniversalQuickChecker';
 import { BentoInsightsGrid } from './components/BentoInsightsGrid';
@@ -330,7 +331,7 @@ export function App() {
                   onResetToLatest={() => setSelectedXSMBDate(null)}
                 />
 
-                {/* Bento Grid Layout 2.0: Cầu Nóng, Cảnh Báo Lô Gan & Phân Tích Dữ Liệu */}
+                {/* Bento Grid Layout 2.0: Số xuất hiện nhiều, Lô Gan & Phân Tích Dữ Liệu */}
                 <BentoInsightsGrid
                   xsmbData={xsmbData}
                   summaryData={summaryData}
@@ -441,7 +442,7 @@ export function App() {
               </Suspense>
             )}
 
-            {/* TAB 7: BỘ LỌC DÀN SỐ & SO VÉ */}
+            {/* TAB 7: BỘ LỌC VÉ VIETLOTT & THỐNG KÊ NHIỀU SỐ */}
             {currentTab === 'filter' && (
               <Suspense fallback={<TabFallback />}>
                 <SmartFilterAndChecker
@@ -458,7 +459,7 @@ export function App() {
               </Suspense>
             )}
 
-            {/* TAB 8: AI & BACKTEST */}
+            {/* TAB 8: THUẬT TOÁN MẪU & BACKTEST */}
             {currentTab === 'ai' && (
               <Suspense fallback={<TabFallback />}>
                 <AIStrategyHub
@@ -527,6 +528,9 @@ export function App() {
         initialNumber={selectedSearchNumber}
       />
 
+      {/* Cổng xác nhận 18+ bắt buộc lần đầu (lưu localStorage) */}
+      <AgeGate onOpenLegal={() => setIsLegalModalOpen(true)} />
+
       {/* Modal Tuân Thủ Pháp Lý & 18+ */}
       <LegalComplianceModal
         isOpen={isLegalModalOpen}
@@ -570,7 +574,7 @@ export function App() {
             </div>
           </div>
 
-          {/* Cột 2: Hành Lang Pháp Lý & Phân Định Lô Đề Bất Hợp Pháp */}
+          {/* Cột 2: Hành Lang Pháp Lý & Phân Định Với Cờ Bạc Bất Hợp Pháp */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
               <Scale size={18} color="var(--accent-emerald)" />

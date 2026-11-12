@@ -47,7 +47,7 @@ class GapAnalyzer:
 
         for num in range(100):
             num_str = f"{num:02d}"
-            # Các index mà số này xuất hiện (nháy > 0)
+            # Các index mà số này xuất hiện (số lần > 0)
             hit_indices = np.where(sparse_matrix[:, num] > 0)[0]
             total_hits = int(sparse_matrix[:, num].sum())
 
@@ -111,7 +111,7 @@ class GapAnalyzer:
             # Lấy 30 lần xuất hiện gần nhất cho summary
             recent_appearances = num_full_history[:30]
 
-            # Đếm số lần trúng giải đặc biệt (Đề)
+            # Đếm số lần là 2 số cuối của Giải Đặc Biệt
             special_hits = int((df_2digits["special"] == num).sum())
 
             item_data = {

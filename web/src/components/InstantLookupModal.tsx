@@ -53,15 +53,15 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
   initialNumber = '',
 }) => {
   // 3 Chế độ tra cứu: Đơn số, Bộ số / Vé bao, Cặp số cùng về
-  const [activeTabMode, setActiveTabMode] = useState<'single' | 'combination' | 'xien'>('single');
+  const [activeTabMode, setActiveTabMode] = useState<'single' | 'combination' | 'pair'>('single');
   const [selectedGame, setSelectedGame] = useState<'xsmb' | 'vietlott_655' | 'vietlott_645'>('vietlott_655');
   const [searchQuery, setSearchQuery] = useState(initialNumber);
 
-  // Tab 2: Xiên 2 / Cặp số cùng về
-  const [xienNum1, setXienNum1] = useState<string>('07');
-  const [xienNum2, setXienNum2] = useState<string>('35');
-  const [xienLoading, setXienLoading] = useState<boolean>(false);
-  const [xienMatches, setXienMatches] = useState<{ date: string; num1Hits: number; num2Hits: number; isSpecial1?: boolean; isSpecial2?: boolean }[] | null>(null);
+  // Tab 2: Cặp số cùng xuất hiện (thống kê)
+  const [pairNum1, setPairNum1] = useState<string>('07');
+  const [pairNum2, setPairNum2] = useState<string>('35');
+  const [pairLoading, setPairLoading] = useState<boolean>(false);
+  const [pairMatches, setPairMatches] = useState<{ date: string; num1Hits: number; num2Hits: number; isSpecial1?: boolean; isSpecial2?: boolean }[] | null>(null);
 
   // Tab 3: Tra cứu Bộ số / Vé Bao
   const [comboBalls, setComboBalls] = useState<number[]>([7, 18, 24, 35, 41, 55]);
@@ -110,9 +110,9 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
         return;
       }
     } else if (tokens.length === 2) {
-      setActiveTabMode('xien');
-      setXienNum1(tokens[0].padStart(2, '0'));
-      setXienNum2(tokens[1].padStart(2, '0'));
+      setActiveTabMode('pair');
+      setPairNum1(tokens[0].padStart(2, '0'));
+      setPairNum2(tokens[1].padStart(2, '0'));
       return;
     }
 
@@ -124,7 +124,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
   const isVietlott = selectedGame !== 'xsmb';
   const minNumber = isVietlott ? 1 : 0;
   const maxNumber = selectedGame === 'xsmb' ? 99 : selectedGame === 'vietlott_655' ? 55 : 45;
-  const gameUnit = isVietlott ? 'kỳ' : 'nháy';
+  const gameUnit = isVietlott ? 'kỳ' : 'lần';
 
   // Danh sách năm hợp lệ theo từng game
   const validYears = useMemo(() => {
@@ -225,7 +225,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
     if (!filteredHistory || filteredHistory.length === 0) return;
     const headers = isVietlott
       ? 'Ngày quay,Kỳ quay,Vị trí bóng,Chi tiết bộ số\n'
-      : 'Ngày quay,Số nháy,Chi tiết giải thưởng,Giải Đặc Biệt\n';
+      : 'Ngày quay,Số lần xuất hiện,Chi tiết giải thưởng,Giải Đặc Biệt\n';
     const rows = filteredHistory
       .map((item) => {
         if (isVietlott) {
@@ -255,19 +255,19 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
     if (!detail) return;
     const text = isVietlott
       ? `Thống kê bóng ${detail.number} (${selectedGame.toUpperCase()}): Đã về ${detail.total_hits} kỳ, lần gần nhất: ${detail.last_seen_date} (${detail.days_since_last} ngày trước), kỷ lục gan: ${detail.max_gap_historical} ngày, chu kỳ trung bình: ${detail.average_gap} ngày/lần.`
-      : `Thống kê số ${detail.number} (XSMB): Đã về ${detail.total_hits} nháy, lần gần nhất: ${detail.last_seen_date} (${detail.days_since_last} ngày trước), kỷ lục gan: ${detail.max_gap_historical} ngày, chu kỳ trung bình: ${detail.average_gap} ngày/lần.`;
+      : `Thống kê số ${detail.number} (XSMB): Đã xuất hiện ${detail.total_hits} lần, lần gần nhất: ${detail.last_seen_date} (${detail.days_since_last} ngày trước), kỷ lục gan: ${detail.max_gap_historical} ngày, chu kỳ trung bình: ${detail.average_gap} ngày/lần.`;
     navigator.clipboard.writeText(text);
     setCopiedNotice(true);
     setTimeout(() => setCopiedNotice(false), 2000);
   };
 
-  // Xử lý tra cứu Cặp số cùng về / Xiên 2
-  const handleCheckXien = async () => {
-    const n1 = xienNum1.trim().padStart(2, '0');
-    const n2 = xienNum2.trim().padStart(2, '0');
+  // Xử lý tra cứu cặp số cùng xuất hiện (thống kê)
+  const handleCheckPair = async () => {
+    const n1 = pairNum1.trim().padStart(2, '0');
+    const n2 = pairNum2.trim().padStart(2, '0');
     if (n1 === n2) return;
 
-    setXienLoading(true);
+    setPairLoading(true);
     try {
       const folder =
         selectedGame === 'xsmb' ? 'xsmb' : selectedGame === 'vietlott_655' ? 'vietlott_655' : 'vietlott_645';
@@ -300,12 +300,12 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
             });
           }
         }
-        setXienMatches(matches);
+        setPairMatches(matches);
       }
     } catch (err) {
       console.error('Lỗi tra cứu cặp số:', err);
     } finally {
-      setXienLoading(false);
+      setPairLoading(false);
     }
   };
 
@@ -530,7 +530,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                 Trung Tâm Tra Cứu Lịch Sử & Kiểm Tra Kết Quả
               </h2>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Tra cứu xem số hoặc bộ vé đã từng về bao giờ chưa, tỷ lệ nổ Jackpot, chu kỳ gan & lịch sử chi tiết (Phím tắt: <kbd style={{ padding: '2px 5px', background: 'rgba(255,255,255,0.1)', borderRadius: 3, border: '1px solid var(--border-subtle)' }}>Esc</kbd>)
+                Tra cứu xem số hoặc bộ vé đã từng về bao giờ chưa, số lần trùng giải Jackpot trong lịch sử, chu kỳ gan & lịch sử chi tiết (Phím tắt: <kbd style={{ padding: '2px 5px', background: 'rgba(255,255,255,0.1)', borderRadius: 3, border: '1px solid var(--border-subtle)' }}>Esc</kbd>)
               </p>
             </div>
           </div>
@@ -585,15 +585,15 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
           </button>
 
           <button
-            className={`tab-btn ${activeTabMode === 'xien' ? 'active' : ''}`}
+            className={`tab-btn ${activeTabMode === 'pair' ? 'active' : ''}`}
             onClick={() => {
-              setActiveTabMode('xien');
-              if (!xienMatches) handleCheckXien();
+              setActiveTabMode('pair');
+              if (!pairMatches) handleCheckPair();
             }}
             style={{ fontSize: '0.85rem' }}
           >
             <Layers size={15} />
-            <span>{isVietlott ? 'Cặp Số Cùng Về (Pairs)' : 'Cặp Lô Xiên 2'}</span>
+            <span>{isVietlott ? 'Cặp Số Cùng Về (Pairs)' : 'Cặp số cùng xuất hiện (thống kê)'}</span>
           </button>
         </div>
 
@@ -817,7 +817,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                       </div>
                       {selectedGame === 'xsmb' && detail.special_hits !== undefined && (
                         <div style={{ fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: 600 }}>
-                          Trúng Giải Đặc Biệt (Đề): {detail.special_hits} lần
+                          Là 2 số cuối Giải Đặc Biệt: {detail.special_hits} lần
                         </div>
                       )}
                       <button
@@ -1198,7 +1198,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                               checked={onlySpecial}
                               onChange={(e) => setOnlySpecial(e.target.checked)}
                             />
-                            Chỉ hiện Giải Đặc Biệt (Đề)
+                            Chỉ hiện 2 số cuối Giải Đặc Biệt
                           </label>
 
                           <label
@@ -1216,7 +1216,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                               checked={onlyMultiHits}
                               onChange={(e) => setOnlyMultiHits(e.target.checked)}
                             />
-                            Chỉ hiện về ≥ 2 nháy
+                            Chỉ hiện xuất hiện ≥ 2 lần
                           </label>
                         </>
                       )}
@@ -1256,7 +1256,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                           >
                             <th style={{ padding: '8px 10px' }}>Ngày quay</th>
                             <th style={{ padding: '8px 10px' }}>
-                              {isVietlott ? 'Vị trí bóng' : 'Số nháy'}
+                              {isVietlott ? 'Vị trí bóng' : 'Số lần'}
                             </th>
                             <th style={{ padding: '8px 10px' }}>
                               {isVietlott ? 'Toàn bộ bộ số kỳ quay' : 'Chi tiết giải trúng'}
@@ -1300,7 +1300,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                                       )
                                     ) : (
                                       <span className="badge badge-hot" style={{ fontSize: '0.72rem' }}>
-                                        {hist.hits || 1} nháy
+                                        {hist.hits || 1} lần
                                       </span>
                                     )}
                                   </td>
@@ -1359,7 +1359,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                                       </div>
                                     ) : (
                                       <div style={{ color: hist.is_special ? 'var(--accent-red)' : 'var(--text-muted)' }}>
-                                        {hist.is_special && '★ GIẢI ĐẶC BIỆT (ĐỀ) • '}
+                                        {hist.is_special && '★ 2 SỐ CUỐI GIẢI ĐẶC BIỆT • '}
                                         {hist.prizes ? hist.prizes.join(', ') : 'Trúng thưởng'}
                                       </div>
                                     )}
@@ -1618,7 +1618,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
 
               {/* BẢNG KẾT QUẢ SO KHỚP TỔ HỢP */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {/* 5 Thẻ tóm tắt số lần nổ các giải */}
+                {/* 5 Thẻ tóm tắt số lần trùng các giải */}
                 <div
                   style={{
                     display: 'grid',
@@ -1867,8 +1867,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
             </div>
           )}
 
-          {/* ===================== TAB 3: TRA CỨU CẶP SỐ CÙNG VỀ / XIÊN 2 ===================== */}
-          {activeTabMode === 'xien' && (
+          {/* ===================== TAB 3: TRA CỨU CẶP SỐ CÙNG XUẤT HIỆN (THỐNG KÊ) ===================== */}
+          {activeTabMode === 'pair' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {/* Chọn trò chơi */}
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -1904,7 +1904,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                 }}
               >
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: 6, color: '#ffffff' }}>
-                  {isVietlott ? 'Kiểm Tra Lịch Sử Cặp Số Cùng Về (Pairs)' : 'Kiểm Tra Cặp Lô Xiên (Xiên 2)'}
+                  {isVietlott ? 'Kiểm Tra Lịch Sử Cặp Số Cùng Về (Pairs)' : 'Cặp số cùng xuất hiện (thống kê)'}
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: 16 }}>
                   Kiểm tra xem 2 số này đã bao giờ cùng xuất hiện trong một kỳ mở thưởng chưa, tổng cộng bao nhiêu lần và lần gần nhất là khi nào.
@@ -1918,8 +1918,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                       <button
                         key={idx}
                         onClick={() => {
-                          setXienNum1(p.numbers[0]);
-                          setXienNum2(p.numbers[1]);
+                          setPairNum1(p.numbers[0]);
+                          setPairNum2(p.numbers[1]);
                         }}
                         style={{
                           padding: '3px 8px',
@@ -1943,8 +1943,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Số 1:</span>
                     <input
                       type="number"
-                      value={xienNum1}
-                      onChange={(e) => setXienNum1(e.target.value)}
+                      value={pairNum1}
+                      onChange={(e) => setPairNum1(e.target.value)}
                       style={{
                         width: 80,
                         padding: '8px 12px',
@@ -1966,8 +1966,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Số 2:</span>
                     <input
                       type="number"
-                      value={xienNum2}
-                      onChange={(e) => setXienNum2(e.target.value)}
+                      value={pairNum2}
+                      onChange={(e) => setPairNum2(e.target.value)}
                       style={{
                         width: 80,
                         padding: '8px 12px',
@@ -1984,8 +1984,8 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                   </div>
 
                   <button
-                    onClick={handleCheckXien}
-                    disabled={xienLoading}
+                    onClick={handleCheckPair}
+                    disabled={pairLoading}
                     style={{
                       padding: '10px 20px',
                       borderRadius: 'var(--radius-sm)',
@@ -1997,13 +1997,13 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                       cursor: 'pointer',
                     }}
                   >
-                    {xienLoading ? 'Đang phân tích...' : 'Kiểm Tra Cặp Số Ngay'}
+                    {pairLoading ? 'Đang phân tích...' : 'Kiểm Tra Cặp Số Ngay'}
                   </button>
                 </div>
               </div>
 
-              {/* Kết quả xiên */}
-              {xienMatches !== null && (
+              {/* Kết quả cặp số cùng xuất hiện */}
+              {pairMatches !== null && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                   <div
                     style={{
@@ -2021,22 +2021,22 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                     <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <div className="lottery-ball ball-gold" style={{ width: 48, height: 48, fontSize: '1.25rem' }}>
-                          {xienNum1.padStart(2, '0')}
+                          {pairNum1.padStart(2, '0')}
                         </div>
                         <div
                           className="lottery-ball ball-gold"
                           style={{ width: 48, height: 48, fontSize: '1.25rem', background: '#3b82f6' }}
                         >
-                          {xienNum2.padStart(2, '0')}
+                          {pairNum2.padStart(2, '0')}
                         </div>
                       </div>
                       <div>
                         <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
-                          Cặp {xienNum1.padStart(2, '0')} - {xienNum2.padStart(2, '0')}
+                          Cặp {pairNum1.padStart(2, '0')} - {pairNum2.padStart(2, '0')}
                         </div>
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                          {xienMatches.length > 0
-                            ? `Lần gần nhất cùng về: ${xienMatches[0].date}`
+                          {pairMatches.length > 0
+                            ? `Lần gần nhất cùng về: ${pairMatches[0].date}`
                             : 'Chưa từng cùng xuất hiện trong một kỳ'}
                         </p>
                       </div>
@@ -2054,15 +2054,15 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                           fontFamily: 'var(--font-mono)',
                         }}
                       >
-                        {xienMatches.length} <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{gameUnit}</span>
+                        {pairMatches.length} <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{gameUnit}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Bảng các ngày cùng nổ */}
+                  {/* Bảng các ngày cùng xuất hiện */}
                   <div className="glass-card" style={{ padding: 16 }}>
                     <div style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: 12 }}>
-                      Danh Sách Các Ngày Cả 2 Số Cùng Xuất Hiện ({xienMatches.length} {gameUnit})
+                      Danh Sách Các Ngày Cả 2 Số Cùng Xuất Hiện ({pairMatches.length} {gameUnit})
                     </div>
                     <div style={{ maxHeight: 240, overflowY: 'auto' }}>
                       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
@@ -2075,12 +2075,12 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                             }}
                           >
                             <th style={{ padding: '8px 10px' }}>Ngày quay</th>
-                            <th style={{ padding: '8px 10px' }}>Số {xienNum1}</th>
-                            <th style={{ padding: '8px 10px' }}>Số {xienNum2}</th>
+                            <th style={{ padding: '8px 10px' }}>Số {pairNum1}</th>
+                            <th style={{ padding: '8px 10px' }}>Số {pairNum2}</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {xienMatches.map((m, idx) => (
+                          {pairMatches.map((m, idx) => (
                             <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                               <td style={{ padding: '8px 10px', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                                 {m.date}
@@ -2098,7 +2098,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                                   )
                                 ) : (
                                   <span className="badge badge-hot" style={{ fontSize: '0.72rem' }}>
-                                    {m.num1Hits} nháy
+                                    {m.num1Hits} lần
                                   </span>
                                 )}
                               </td>
@@ -2115,7 +2115,7 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = ({
                                   )
                                 ) : (
                                   <span className="badge badge-normal" style={{ fontSize: '0.72rem' }}>
-                                    {m.num2Hits} nháy
+                                    {m.num2Hits} lần
                                   </span>
                                 )}
                               </td>

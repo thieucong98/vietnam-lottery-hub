@@ -61,7 +61,7 @@ def build_index():
     logger.info("Phân tích Ma trận Bộ số & Đồng xuất hiện Vietlott...")
     VietlottCombinationAnalyzer().run()
     
-    logger.info("Sinh dự đoán AI & Báo cáo Backtest...")
+    logger.info("Sinh bộ số mẫu theo thuật toán & Báo cáo Backtest...")
     generate_ml_insights()
     
     typer.echo("Đã hoàn tất xây dựng ma trận và xuất chỉ mục tra cứu!")

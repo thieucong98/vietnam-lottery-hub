@@ -16,6 +16,7 @@ import {
   Info,
 } from 'lucide-react';
 import { LatestDrawKeno, LatestDraw3D } from '../types';
+import { OfficialResultsLink } from './OfficialResultsLink';
 
 interface KenoAndMax3DViewProps {
   latestKeno?: LatestDrawKeno;
@@ -320,7 +321,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
                   BÀN CỜ NHIỆT KENO (1 - 80)
                 </h4>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  Highlight 20 bóng vừa nổ
+                  Highlight 20 số vừa quay
                 </span>
               </div>
 
@@ -802,6 +803,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = ({
           </div>
         </div>
       )}
+      <OfficialResultsLink sources={['vietlott']} />
     </div>
   );
 };

@@ -25,16 +25,16 @@ def format_telegram_message(summary_data: dict, gan_data: dict = None) -> str:
         special_2d = special[-2:] if len(special) >= 2 else special
 
         msg += "🔴 <b>XỔ SỐ KIẾN THIẾT MIỀN BẮC (XSMB)</b>\n"
-        msg += f"⭐ <b>Giải Đặc Biệt:</b> <code>{special}</code> (Đề: <b>{special_2d}</b>)\n"
+        msg += f"⭐ <b>Giải Đặc Biệt:</b> <code>{special}</code> (2 số cuối: <b>{special_2d}</b>)\n"
         msg += f"🥇 <b>Giải Nhất:</b> <code>{prize1}</code>\n"
 
         loto_list = xsmb.get("loto_numbers", [])
         counts = {}
         for num in loto_list:
             counts[num] = counts.get(num, 0) + 1
-        multi_hits = [f"{num} ({c} nháy)" for num, c in sorted(counts.items()) if c >= 2]
+        multi_hits = [f"{num} ({c} lần)" for num, c in sorted(counts.items()) if c >= 2]
         if multi_hits:
-            msg += f"🔥 <b>Lô nổ nhiều nháy:</b> {', '.join(multi_hits)}\n"
+            msg += f"🔁 <b>Số xuất hiện từ 2 lần:</b> {', '.join(multi_hits)}\n"
 
         heads = xsmb.get("heads", {})
         cam_heads = [h for h, tails in heads.items() if len(tails) == 0]
@@ -147,14 +147,14 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             "🔵 <b>/mega</b> hoặc <b>/645</b> - Kết quả Vietlott Mega 6/45 mới nhất\n"
             "🟢 <b>/keno</b> - Kết quả Vietlott Keno 20 số & Thuộc tính Chẵn/Lẻ, Lớn/Nhỏ\n"
             "🎲 <b>/3d</b> hoặc <b>/max3d</b> - Kết quả Vietlott Max 3D & Max 3D Pro\n"
-            "🎯 <b>/check &lt;các số&gt;</b> - So khớp vé tức thì (VD: <code>/check 68</code> hoặc <code>/check 07 18 24 35 41 55</code>)\n"
+            "🎯 <b>/check &lt;các số&gt;</b> - Thống kê số / dò vé Vietlott (VD: <code>/check 68</code> hoặc <code>/check 07 18 24 35 41 55</code>)\n"
             "⏳ <b>/gan [xsmb|655|645]</b> - Top 10 số gan lì chưa về lâu nhất\n"
             "🧠 <b>/bacnho &lt;số&gt;</b> - Bạc nhớ 20 năm: những số hay về theo sau số này\n"
             "🔥 <b>/hot [655|645]</b> - Top các cặp số có tần suất về cùng nhau cao nhất\n"
             "🌐 <b>/web</b> - Link truy cập nền tảng trực tuyến\n"
             "⚖️ <b>/legal</b> - Chính sách pháp lý & Chơi có trách nhiệm (18+)\n\n"
             "<i>Dữ liệu được cập nhật tự động 100% sau mỗi giờ quay!</i>\n\n"
-            "⚠️ <b>Lưu ý:</b> Dữ liệu chỉ phục vụ mục đích học thuật xác suất thống kê đối với XSKT & Vietlott hợp pháp. Nghiêm cấm sử dụng cho hoạt động lô đề cờ bạc bất hợp pháp."
+            "⚠️ <b>Lưu ý:</b> Dữ liệu chỉ phục vụ mục đích học thuật xác suất thống kê đối với XSKT & Vietlott hợp pháp. Không có công cụ nào làm tăng xác suất trúng. Nghiêm cấm sử dụng cho hoạt động lô đề, cờ bạc bất hợp pháp.\n\n🔎 Kết quả chính thức: https://vietlott.vn/ • https://xosothudo.com.vn/"
         )
 
     # 2. /legal hoặc /policy
@@ -188,16 +188,16 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         p1 = str(p.get("prize1", "N/A"))
 
         resp = f"🔴 <b>KẾT QUẢ XSMB NGÀY {x.get('date', '')}</b>\n\n"
-        resp += f"⭐ <b>Giải Đặc Biệt:</b> <code>{spec}</code> (Đề: <b>{spec_2d}</b>)\n"
+        resp += f"⭐ <b>Giải Đặc Biệt:</b> <code>{spec}</code> (2 số cuối: <b>{spec_2d}</b>)\n"
         resp += f"🥇 <b>Giải Nhất:</b> <code>{p1}</code>\n\n"
 
         loto = x.get("loto_numbers", [])
         counts = {}
         for num in loto:
             counts[num] = counts.get(num, 0) + 1
-        multi = [f"<b>{num}</b> ({c} nháy)" for num, c in sorted(counts.items()) if c >= 2]
+        multi = [f"<b>{num}</b> ({c} lần)" for num, c in sorted(counts.items()) if c >= 2]
         if multi:
-            resp += f"🔥 <b>Lô nổ nhiều nháy:</b> {', '.join(multi)}\n\n"
+            resp += f"🔁 <b>Số xuất hiện từ 2 lần:</b> {', '.join(multi)}\n\n"
 
         heads = x.get("heads", {})
         cam = [h for h, tails in heads.items() if len(tails) == 0]
@@ -342,12 +342,12 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         if not item:
             return f"⚠️ Không có dữ liệu bạc nhớ cho số <b>{target_num}</b>."
 
-        resp = f"🧠 <b>BẠC NHỚ 20 NĂM: KHI LÔ {target_num} VỀ HÔM NAY</b>\n"
+        resp = f"🧠 <b>BẠC NHỚ 20 NĂM: SAU NHỮNG NGÀY CÓ SỐ {target_num}</b>\n"
         resp += f"📊 Đã ghi nhận {item.get('total_triggers', 0)} lần xuất hiện trong lịch sử.\n\n"
-        resp += "<b>Những số có xác suất nổ cao nhất ngày kế tiếp:</b>\n"
+        resp += "<b>Những số từng xuất hiện nhiều nhất vào ngày kế tiếp (thống kê lịch sử, không cho biết trước kết quả):</b>\n"
         for f in item.get("top_followers", [])[:6]:
             rate_pct = f.get("rate", 0) * 100
-            resp += f"• Số <b>{f['number']}</b>: nổ <b>{f['hits']}</b> lần ({rate_pct:.1f}%)\n"
+            resp += f"• Số <b>{f['number']}</b>: <b>{f['hits']}</b> lần ({rate_pct:.1f}%)\n"
         return resp
 
     # 8. /hot
@@ -384,7 +384,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             if xsmb_idx and "numbers" in xsmb_idx and num in xsmb_idx["numbers"]:
                 xd = xsmb_idx["numbers"][num]
                 resp += f"🔴 <b>XSMB:</b>\n"
-                resp += f"• Tổng lần về: <b>{xd['total_hits']}</b> nháy (Đặc biệt: {xd.get('special_hits', 0)} lần)\n"
+                resp += f"• Tổng lần về: <b>{xd['total_hits']}</b> lần (Đặc biệt: {xd.get('special_hits', 0)} lần)\n"
                 resp += f"• Lần gần nhất: {xd['last_seen_date']} (cách đây <b>{xd['days_since_last']}</b> ngày)\n"
                 resp += f"• Chu kỳ trung bình: <b>{xd['average_gap']}</b> ngày/lần (Kỷ lục gan: {xd['max_gap_historical']} ngày)\n\n"
 

@@ -1,11 +1,14 @@
 {
+  "schema_version": 2,
   "product": "Power 6/55",
   "latest_id": "01422",
   "latest_date": "2026-11-10",
-  "predictions": [
+  "disclaimer": "Bộ số mẫu chỉ minh họa cách thuật toán hoạt động trên dữ liệu lịch sử. Mỗi kỳ quay là biến cố độc lập, nên các bộ số này không làm tăng xác suất trúng.",
+  "jackpot_odds": "1/28.989.675",
+  "sample_sets": [
     {
       "name": "Tần suất cao (Hot Numbers)",
-      "predicted_numbers": [
+      "sample_picks": [
         "07",
         "11",
         "18",
@@ -13,11 +16,11 @@
         "27",
         "55"
       ],
-      "description": "Dự đoán dựa trên thuật toán Frequency (N=50)"
+      "description": "Bộ số mẫu theo thuật toán Frequency (N=50) (chỉ minh họa)"
     },
     {
-      "name": "Cầu gan (Cold Numbers)",
-      "predicted_numbers": [
+      "name": "Số lâu chưa về (Cold Numbers)",
+      "sample_picks": [
         "03",
         "08",
         "15",
@@ -25,11 +28,11 @@
         "47",
         "48"
       ],
-      "description": "Dự đoán dựa trên thuật toán Long Absence (Lô Gan)"
+      "description": "Bộ số mẫu theo thuật toán Long Absence (Số lâu chưa về) (chỉ minh họa)"
     },
     {
       "name": "Suy giảm số mũ (Exponential)",
-      "predicted_numbers": [
+      "sample_picks": [
         "01",
         "07",
         "11",
@@ -37,11 +40,11 @@
         "27",
         "31"
       ],
-      "description": "Dự đoán dựa trên thuật toán Exponential Decay (λ=0.97)"
+      "description": "Bộ số mẫu theo thuật toán Exponential Decay (λ=0.97) (chỉ minh họa)"
     },
     {
       "name": "Chuỗi Markov (Markov Chain)",
-      "predicted_numbers": [
+      "sample_picks": [
         "29",
         "35",
         "41",
@@ -49,12 +52,12 @@
         "48",
         "55"
       ],
-      "description": "Dự đoán dựa trên thuật toán Markov Chain (Bậc 1)"
+      "description": "Bộ số mẫu theo thuật toán Markov Chain (Bậc 1) (chỉ minh họa)"
     }
   ],
   "backtest_report": [
     {
-      "strategy_name": "Long Absence (Lô Gan)",
+      "strategy_name": "Long Absence (Số lâu chưa về)",
       "test_draws": 50,
       "average_matches": 0.78,
       "max_match_in_one_draw": 3,
@@ -86,17 +89,17 @@
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Random Baseline",
+      "strategy_name": "Markov Chain (Bậc 1)",
       "test_draws": 50,
-      "average_matches": 0.54,
+      "average_matches": 0.52,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
     },
     {
-      "strategy_name": "Markov Chain (Bậc 1)",
+      "strategy_name": "Random Baseline",
       "test_draws": 50,
-      "average_matches": 0.52,
+      "average_matches": 0.48,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"

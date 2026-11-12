@@ -30,7 +30,8 @@ import {
   SummaryData,
   VietlottCooccurrenceItem,
 } from '../types';
-import { getVietlottBaoCost } from '../utils/lotteryUtils';
+import { getVietlottBaoCost, getVietlottTicketExpectedValue } from '../utils/lotteryUtils';
+import { OfficialResultsLink } from './OfficialResultsLink';
 
 interface VietlottProductHubProps {
   gameType: 'vietlott_655' | 'vietlott_645';
@@ -526,6 +527,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                 </button>
               </div>
             </div>
+            <OfficialResultsLink sources={['vietlott']} />
           </div>
         )}
       </div>
@@ -658,12 +660,15 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
                 Chọn tiêu chuẩn phân phối toán học hoặc ghim những con số may mắn của riêng bạn.
               </p>
+              <p style={{ fontSize: '0.76rem', color: 'var(--text-dim)', marginTop: 4 }}>
+                Mọi chế độ chọn số đều <strong>không làm tăng xác suất trúng</strong>. Xác suất trúng Jackpot{is655 ? ' 1' : ''} của mọi bộ 6 số: <strong>{is655 ? '1/28.989.675' : '1/8.145.060'}</strong>.
+              </p>
             </div>
 
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {[
                 { id: 'balanced', label: '⚖️ Cân Bằng Chẵn Lẻ (3C - 3L)' },
-                { id: 'golden_sum', label: '🎯 Tổng Điểm Vàng' },
+                { id: 'golden_sum', label: '🎯 Tổng Điểm Trung Bình' },
                 { id: 'hot_bias', label: '🔥 Ưu Tiên Số Nóng (Hot)' },
                 { id: 'random', label: '🎲 Thuần Ngẫu Nhiên' },
               ].map((m) => (
@@ -705,7 +710,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             {generatedNumbers.length === 0 ? (
               <div style={{ textAlign: 'center', color: 'var(--text-dim)' }}>
                 <Dice5 size={40} style={{ margin: '0 auto 10px', opacity: 0.5 }} />
-                <p>Nhấn nút "Tạo Bộ Số Ngẫu Nhiên" bên dưới để nhận gợi ý tối ưu.</p>
+                <p>Nhấn nút "Tạo Bộ Số Ngẫu Nhiên" bên dưới để sinh một bộ số.</p>
               </div>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -840,7 +845,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
       )}
 
       {/* ======================================================== */}
-      {/* MODULE 2: 🔍 TRA CỨU BỘ SỐ & VÉ BAO (SYSTEM BET & ROI)   */}
+      {/* MODULE 2: 🔍 TRA CỨU BỘ SỐ & VÉ BAO (SYSTEM BET)          */}
       {/* ======================================================== */}
       {activeTool === 'combo_bao' && (
         <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 22 }}>
@@ -852,7 +857,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                 <span>Tra Cứu Bộ Số & Vé Bao (Tổ Hợp 2 - {is655 ? '18' : '15'} Bóng)</span>
               </h3>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                Chọn từ <strong>2 đến 6 bóng</strong> (vé đơn) hoặc lên đến <strong>{is655 ? '18' : '15'} bóng</strong> (vé Bao). Hệ thống đối soát toàn bộ {sortedDraws.length} kỳ quay lịch sử để tính ROI và các cấp giải thưởng!
+                Chọn từ <strong>2 đến 6 bóng</strong> (vé đơn) hoặc lên đến <strong>{is655 ? '18' : '15'} bóng</strong> (vé Bao). Hệ thống đối soát toàn bộ {sortedDraws.length} kỳ quay lịch sử để thống kê các cấp giải từng trùng khớp.
               </p>
             </div>
 
@@ -868,7 +873,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             </div>
           </div>
 
-          {/* Dàn bóng đang chọn & Thanh công cụ thao tác nhanh */}
+          {/* Các bóng đang chọn & Thanh công cụ thao tác nhanh */}
           <div
             style={{
               padding: '16px 20px',
@@ -1131,7 +1136,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
             </div>
           </div>
 
-          {/* Mô Phỏng Chiến Lược Nuôi Vé & Backtest Lợi Nhuận (PnL) */}
+          {/* Mô Phỏng Chi Phí: tổng tiền vé, tổng giải nhận được, giá trị kỳ vọng mỗi vé */}
           {selectedBalls.length === 6 && (
             <div className="glass-card animate-fade-in" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
@@ -1141,10 +1146,10 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
                   </div>
                   <div>
                     <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
-                      Mô Phỏng Nuôi Bộ Số & Backtest Hiệu Quả Tài Chính (PnL)
+                      Mô Phỏng Chi Phí
                     </h4>
                     <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                      So sánh hiệu quả nuôi cố định vs mua theo cặp hot vs mua ngẫu nhiên.
+                      Nếu mua bộ 6 số này ở mọi kỳ trong quá khứ thì tốn bao nhiêu tiền vé và nhận lại bao nhiêu tiền giải.
                     </p>
                   </div>
                 </div>
@@ -1188,93 +1193,89 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = ({
 
                 const horizonSlice = sortedDraws.slice(0, horizonCount);
                 const userSet = new Set(selectedBalls);
-                const cost = horizonCount * 10_000;
+                const ev = getVietlottTicketExpectedValue(is655);
+                const totalTicketCost = horizonCount * ev.ticketPrice;
 
                 const p1Val = is655 ? 40_000_000 : 10_000_000;
                 const p2Val = is655 ? 500_000 : 300_000;
                 const p3Val = is655 ? 50_000 : 30_000;
 
-                let winsA = 0;
-                let prizeA = 0;
+                let prizeCount = 0;
+                let totalPrize = 0;
                 for (const d of horizonSlice) {
                   const m = d.balls.filter((b) => userSet.has(b)).length;
                   const sp = is655 && d.special ? userSet.has(d.special) : false;
                   if (m === 6) {
-                    winsA++;
-                    prizeA += is655 ? 30_000_000_000 : 12_000_000_000;
+                    prizeCount++;
+                    totalPrize += is655 ? 30_000_000_000 : 12_000_000_000;
                   } else if (is655 && m === 5 && sp) {
-                    winsA++;
-                    prizeA += 3_000_000_000;
+                    prizeCount++;
+                    totalPrize += 3_000_000_000;
                   } else if (m === 5) {
-                    winsA++;
-                    prizeA += p1Val;
+                    prizeCount++;
+                    totalPrize += p1Val;
                   } else if (m === 4) {
-                    winsA++;
-                    prizeA += p2Val;
+                    prizeCount++;
+                    totalPrize += p2Val;
                   } else if (m === 3) {
-                    winsA++;
-                    prizeA += p3Val;
+                    prizeCount++;
+                    totalPrize += p3Val;
                   }
                 }
 
-                const roiA = cost > 0 ? Math.round((prizeA / cost) * 100) : 0;
-                const netPnLA = prizeA - cost;
+                const roundVND = (v: number) => Math.round(v).toLocaleString('vi-VN');
 
                 return (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(245, 158, 11, 0.35)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: 8 }}>
-                        <strong style={{ color: 'var(--accent-gold)' }}>BỘ SỐ CỦA BẠN</strong>
-                        <span className="badge badge-gold" style={{ fontSize: '0.68rem' }}>Nuôi Cố Định</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+                      <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
+                        <div style={{ fontSize: '0.82rem', marginBottom: 8 }}>
+                          <strong style={{ color: 'var(--accent-gold)' }}>BỘ SỐ ĐANG CHỌN ({horizonCount} KỲ)</strong>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Tổng tiền vé:</span>
+                            <strong>{roundVND(totalTicketCost)} đ</strong>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Tổng giải nhận được:</span>
+                            <strong>{roundVND(totalPrize)} đ</strong>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Số kỳ có giải:</span>
+                            <strong>{prizeCount} / {horizonCount} kỳ</strong>
+                          </div>
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Vốn ({horizonCount} kỳ):</span>
-                          <strong>{cost.toLocaleString('vi-VN')} đ</strong>
+
+                      <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
+                        <div style={{ fontSize: '0.82rem', marginBottom: 8 }}>
+                          <strong style={{ color: 'var(--text-muted)' }}>GIÁ TRỊ KỲ VỌNG MỖI VÉ (LÝ THUYẾT)</strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Thưởng thu về:</span>
-                          <strong style={{ color: 'var(--accent-emerald)' }}>{prizeA.toLocaleString('vi-VN')} đ</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Lợi nhuận ròng:</span>
-                          <strong style={{ color: netPnLA >= 0 ? 'var(--accent-emerald)' : '#fb7185' }}>
-                            {netPnLA >= 0 ? `+${netPnLA.toLocaleString('vi-VN')}` : netPnLA.toLocaleString('vi-VN')} đ
-                          </strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn vốn:</span>
-                          <strong style={{ color: roiA >= 100 ? 'var(--accent-emerald)' : roiA >= 50 ? 'var(--accent-gold)' : '#fb7185' }}>
-                            {roiA}%
-                          </strong>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Giá 1 vé:</span>
+                            <strong>{roundVND(ev.ticketPrice)} đ</strong>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Tiền giải kỳ vọng / vé:</span>
+                            <strong>{roundVND(ev.expectedPrize)} đ</strong>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Giá trị kỳ vọng / vé:</span>
+                            <strong style={{ color: '#fb7185' }}>{roundVND(ev.expectedValue)} đ</strong>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>Xác suất trúng Jackpot{is655 ? ' 1' : ''}:</span>
+                            <strong>1/{ev.totalCombinations.toLocaleString('vi-VN')}</strong>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', padding: 14 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: 8 }}>
-                        <strong style={{ color: 'var(--text-muted)' }}>MUA RANDOM (LÝ THUYẾT)</strong>
-                        <span className="badge badge-slate" style={{ fontSize: '0.68rem' }}>Xác Suất</span>
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: '0.8rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Vốn ({horizonCount} kỳ):</span>
-                          <strong>{cost.toLocaleString('vi-VN')} đ</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng thu về:</span>
-                          <strong style={{ color: 'var(--text-dim)' }}>{(cost * 0.55).toLocaleString('vi-VN')} đ</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Kỳ vọng PnL:</span>
-                          <strong style={{ color: '#fb7185' }}>{((cost * 0.55) - cost).toLocaleString('vi-VN')} đ</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>Tỷ lệ hoàn trả (RTP):</span>
-                          <strong style={{ color: 'var(--text-dim)' }}>~55.0%</strong>
-                        </div>
-                      </div>
-                    </div>
+                    <p style={{ fontSize: '0.76rem', color: 'var(--text-dim)' }}>
+                      Giá trị kỳ vọng âm nghĩa là trung bình mỗi vé mất khoảng {roundVND(-ev.expectedValue)} đ. Tính theo cơ cấu giải với Jackpot ở mức khởi điểm, chưa trừ thuế và chưa tính chia giải. Kết quả quá khứ không ảnh hưởng tới kỳ sau; chọn bộ số nào cũng không làm tăng xác suất trúng.
+                    </p>
                   </div>
                 );
               })()}

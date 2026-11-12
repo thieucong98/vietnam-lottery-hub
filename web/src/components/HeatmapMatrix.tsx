@@ -112,7 +112,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                 borderColor: colors.border,
                 color: colors.text,
               }}
-              title={`Số ${numStr}: Vắng ${item?.days_since_last || 0} ngày, Tần suất 100d: ${item?.freq_100d || 0} nháy`}
+              title={`Số ${numStr}: Vắng ${item?.days_since_last || 0} ngày, Tần suất 100d: ${item?.freq_100d || 0} lần`}
             >
               <span style={{ fontSize: '0.95rem', fontWeight: 800 }}>{numStr}</span>
               <span style={{ fontSize: '0.65rem', opacity: 0.85 }}>

@@ -49,3 +49,48 @@ export function getVietlottBaoSubTickets(size: number, maxBall: number = 55): nu
 export function getVietlottBaoCost(size: number, maxBall: number = 55): number {
   return getVietlottBaoSubTickets(size, maxBall) * 10_000;
 }
+
+/**
+ * Giá trị kỳ vọng của 1 vé đơn 10.000đ (Power 6/55 hoặc Mega 6/45).
+ * Tính chính xác theo tổ hợp từng cấp giải, Jackpot lấy ở mức khởi điểm
+ * (30 tỷ / 12 tỷ), chưa trừ thuế TNCN và chưa tính trường hợp chia Jackpot,
+ * nên giá trị thực tế còn thấp hơn.
+ */
+export function getVietlottTicketExpectedValue(is655: boolean): {
+  ticketPrice: number;
+  expectedPrize: number;
+  expectedValue: number;
+  totalCombinations: number;
+} {
+  const maxBall = is655 ? 55 : 45;
+  const ticketPrice = 10_000;
+  const totalCombinations = calcCombinations(maxBall, 6);
+  const others = maxBall - 6;
+  const ways = (k: number) => calcCombinations(6, k) * calcCombinations(others, 6 - k);
+
+  let expectedSum: number;
+  if (is655) {
+    // Trùng 5 số: 1/49 khả năng số thứ 6 của vé trùng bóng đặc biệt (Jackpot 2)
+    const jackpot2Ways = ways(5) / others;
+    expectedSum =
+      30_000_000_000 * ways(6) +
+      3_000_000_000 * jackpot2Ways +
+      40_000_000 * (ways(5) - jackpot2Ways) +
+      500_000 * ways(4) +
+      50_000 * ways(3);
+  } else {
+    expectedSum =
+      12_000_000_000 * ways(6) +
+      10_000_000 * ways(5) +
+      300_000 * ways(4) +
+      30_000 * ways(3);
+  }
+
+  const expectedPrize = expectedSum / totalCombinations;
+  return {
+    ticketPrice,
+    expectedPrize,
+    expectedValue: expectedPrize - ticketPrice,
+    totalCombinations,
+  };
+}
