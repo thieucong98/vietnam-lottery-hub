@@ -12,6 +12,7 @@ from engine.crawlers.xsmb import XSMBCrawler
 from engine.crawlers.vietlott import VietlottCrawler
 from engine.missing_detector import MissingDetector
 from engine.analytics.index_builder import IndexBuilder
+import json
 import os
 from pathlib import Path
 from engine.ml.render_insights import generate_ml_insights
@@ -26,7 +27,26 @@ def write_github_output(name: str, value: str):
         except Exception as e:
             logger.warning(f"Không thể ghi vào GITHUB_OUTPUT: {e}")
 
+# Lỗi từng bước được ghi ra tệp để engine.monitoring.health_check gửi cảnh báo
+PIPELINE_REPORT = Path(os.environ.get("PIPELINE_REPORT", "pipeline_report.json"))
+_errors: list[dict] = []
+
+def record_error(step: str, err: Exception):
+    _errors.append({"step": step, "message": f"{type(err).__name__}: {err}"})
+
+def write_pipeline_report():
+    try:
+        PIPELINE_REPORT.write_text(json.dumps({"errors": _errors}, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError as e:
+        logger.warning(f"Không thể ghi {PIPELINE_REPORT}: {e}")
+
 def main():
+    try:
+        run()
+    finally:
+        write_pipeline_report()
+
+def run():
     force_run = "--force" in sys.argv
     summary_file = Path("web/public/data/summary.json")
 
@@ -43,6 +63,7 @@ def main():
         logger.info(f"-> XSMB: Đã thêm {n_xsmb} ngày mới.")
     except Exception as e:
         logger.error(f"Lỗi khi cào XSMB: {e}")
+        record_error("crawl_xsmb", e)
 
     # 2. Sync Vietlott
     logger.info("Bước 2/8: Đồng bộ các sản phẩm Vietlott...")
@@ -53,6 +74,7 @@ def main():
         logger.info(f"-> Vietlott: Đã thêm {n_viet} kỳ quay mới.")
     except Exception as e:
         logger.error(f"Lỗi khi cào Vietlott: {e}")
+        record_error("crawl_vietlott", e)
 
     # 3. Missing backfill
     logger.info("Bước 3/8: Kiểm tra và cào bù các kỳ bị thiếu...")
@@ -66,9 +88,11 @@ def main():
                 filled_viet += detector.backfill_vietlott(prod)
             except Exception as e_v:
                 logger.warning(f"Lỗi bù {prod}: {e_v}")
+                record_error(f"backfill_{prod}", e_v)
         logger.info(f"-> Đã bù: XSMB={filled_xsmb} ngày, Vietlott={filled_viet} kỳ.")
     except Exception as e:
         logger.warning(f"Lỗi kiểm tra kỳ thiếu: {e}")
+        record_error("missing_detector", e)
 
     total_new = n_xsmb + n_viet + filled_xsmb + filled_viet
     has_summary = summary_file.exists()
@@ -118,6 +142,7 @@ def main():
         logger.info("-> Xây dựng ma trận và chỉ mục thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi xây dựng chỉ mục: {e}")
+        record_error("index_builder", e)
 
     # 5. Bac Nho 20 years
     logger.info("Bước 5/8: Phân tích ma trận Bạc Nhớ 20 năm...")
@@ -128,6 +153,7 @@ def main():
         logger.info("-> Xuất dữ liệu Bạc Nhớ 20 năm thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi phân tích Bạc Nhớ: {e}")
+        record_error("bac_nho", e)
 
     # 6. Vietlott Full Draws & Combination Matrix
     logger.info("Bước 6/8: Phân tích bộ số và ma trận cặp/bộ ba Vietlott...")
@@ -138,6 +164,7 @@ def main():
         logger.info("-> Xuất dữ liệu bộ số và cặp/bộ ba Vietlott thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi phân tích bộ số Vietlott: {e}")
+        record_error("vietlott_combination", e)
 
     # 7. ML Insights & Backtest
     logger.info("Bước 7/8: Phân tích chiến lược AI/ML và đo lường Backtest...")
@@ -146,6 +173,7 @@ def main():
         logger.info("-> Xuất báo cáo AI & Backtest thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi tạo bộ số mẫu & backtest: {e}")
+        record_error("ml_insights", e)
 
     # 8. Render README
     logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")
@@ -155,6 +183,7 @@ def main():
         logger.info("-> Đã cập nhật README.md thành công.")
     except Exception as e:
         logger.error(f"Lỗi khi cập nhật README: {e}")
+        record_error("render_readme", e)
 
     logger.info("==================================================")
     logger.info("       PIPELINE ĐÃ HOÀN TẤT THÀNH CÔNG!           ")

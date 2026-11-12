@@ -38,3 +38,4 @@ desktop.ini
 *.key
 *.pfx
 *.cert
+pipeline_report.json

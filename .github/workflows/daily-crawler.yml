@@ -29,6 +29,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write # mở/đóng issue cảnh báo dữ liệu (engine/monitoring)
 
 concurrency:
   group: "lottery-pipeline"
@@ -69,12 +70,19 @@ jobs:
           fi
 
       - name: 6. Kiểm tra toàn vẹn dữ liệu với Pytest
+        id: pytest
         run: |
           uv run pytest
 
       - name: 6b. Compliance lint (chặn thuật ngữ lô đề / "dự đoán" trong mã & dữ liệu xuất ra)
+        id: compliance
         run: |
           python scripts/compliance_lint.py
+
+      - name: 6c. Kiểm tra schema JSON dữ liệu xuất bản (chặn commit/deploy nếu sai)
+        id: schema
+        run: |
+          uv run python scripts/validate_data_schema.py
 
       - name: 7. Tự động Commit & Push dữ liệu mới nhất
         id: auto_commit
@@ -85,6 +93,12 @@ jobs:
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+      # Sau bước commit để vượt budget không làm mất dữ liệu vừa cào; chỉ chặn deploy và gửi cảnh báo
+      - name: 7b. Budget kích thước dữ liệu
+        id: budget_data
+        run: |
+          python scripts/check_size_budget.py --only data
 
       - name: 8. Gửi thông báo kết quả qua Telegram (nếu có kỳ mới hoặc chạy thủ công)
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
@@ -107,6 +121,7 @@ jobs:
 
       - name: 10. Build Ứng Dụng Web React với dữ liệu mới
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        id: build
         run: |
           cd web
           npm ci
@@ -116,6 +131,12 @@ jobs:
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
         run: |
           python scripts/compliance_lint.py web/dist
+
+      - name: 10c. Budget kích thước bundle
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        id: budget_bundle
+        run: |
+          python scripts/check_size_budget.py --only bundle
 
       - name: 11. Cấu hình GitHub Pages
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
@@ -131,3 +152,23 @@ jobs:
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Chạy cả khi bước trước lỗi (trừ khi run bị hủy): cảnh báo thiếu kỳ / crawler lỗi qua GitHub issue (nhãn data-alert)
+      # và Telegram admin nếu có TELEGRAM_ADMIN_CHAT_ID. Issue tự đóng khi dữ liệu bình thường trở lại.
+      - name: 14. Kiểm tra thiếu kỳ & gửi cảnh báo
+        if: ${{ !cancelled() }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+        run: |
+          uv run python -m engine.monitoring.health_check \
+            --pipeline-report pipeline_report.json \
+            --step-outcome "pipeline=${{ steps.run_pipeline.outcome }}" \
+            --step-outcome "pytest=${{ steps.pytest.outcome }}" \
+            --step-outcome "compliance=${{ steps.compliance.outcome }}" \
+            --step-outcome "schema=${{ steps.schema.outcome }}" \
+            --step-outcome "budget_data=${{ steps.budget_data.outcome }}" \
+            --step-outcome "build=${{ steps.build.outcome }}" \
+            --step-outcome "budget_bundle=${{ steps.budget_bundle.outcome }}" \
+            --step-outcome "deploy=${{ steps.deployment.outcome }}"

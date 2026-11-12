@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "bac_nho.json (thống kê có điều kiện)",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "generated_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+        },
+        "latest_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "latest_special_2d": {
+          "type": "string",
+          "pattern": "^\\d{2}$"
+        },
+        "total_draws_analyzed": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "generated_at",
+        "latest_date",
+        "latest_special_2d",
+        "total_draws_analyzed"
+      ]
+    },
+    "by_loto": {
+      "type": "object",
+      "patternProperties": {
+        "^\\d{2}$": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string",
+              "pattern": "^\\d{2}$"
+            },
+            "total_triggers": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "top_followers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string",
+                    "pattern": "^\\d{2}$"
+                  },
+                  "hits": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "rate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "days_since_last": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "number",
+                  "hits",
+                  "rate",
+                  "days_since_last"
+                ]
+              }
+            }
+          },
+          "required": [
+            "number",
+            "total_triggers",
+            "top_followers"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 100
+    },
+    "by_special": {
+      "type": "object",
+      "patternProperties": {
+        "^\\d{2}$": {
+          "type": "object",
+          "properties": {
+            "special_number": {
+              "type": "string",
+              "pattern": "^\\d{2}$"
+            },
+            "total_triggers": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "top_followers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string",
+                    "pattern": "^\\d{2}$"
+                  },
+                  "hits": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "rate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "days_since_last": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "number",
+                  "hits",
+                  "rate",
+                  "days_since_last"
+                ]
+              }
+            }
+          },
+          "required": [
+            "special_number",
+            "total_triggers",
+            "top_followers"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "metadata",
+    "by_loto",
+    "by_special"
+  ]
+}
