@@ -3,7 +3,7 @@ import type { InstantLookupModalModel } from './useInstantLookup';
 import styles from './PairPanel.module.css';
 
 export const PairPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model }) => {
-  const { cooccurrenceData, selectedGame, setSelectedGame, pairNum1, setPairNum1, pairNum2, setPairNum2, pairLoading, pairMatches, isVietlott, gameUnit, handleCheckPair } = model;
+  const { cooccurrenceData, selectedGame, setSelectedGame, pairNum1, setPairNum1, pairNum2, setPairNum2, pairLoading, pairError, pairMatches, isVietlott, gameUnit, handleCheckPair } = model;
   return (
         <div className={styles.colGap20}>
           {/* Chọn trò chơi */}
@@ -84,6 +84,12 @@ export const PairPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model 
               </button>
             </div>
           </div>
+
+          {pairError && (
+            <p className={styles.text085Muted} role="alert">
+              Không tải được lịch sử của cặp số này. Kiểm tra kết nối mạng rồi thử lại.
+            </p>
+          )}
 
           {/* Kết quả cặp số cùng xuất hiện */}
           {pairMatches !== null && (

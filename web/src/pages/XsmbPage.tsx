@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LiveResultsBoard } from '../components/LiveResultsBoard';
 import { UniversalQuickChecker } from '../components/UniversalQuickChecker';
@@ -37,7 +37,13 @@ export default function XsmbPage() {
   // Đang xem kỳ cũ nhất trong 30 kỳ: cần 365 kỳ để nút "kỳ trước" đi tiếp
   const atRecentEnd = Boolean(selectedDate && recent.data && recent.data[recent.data.length - 1]?.date === selectedDate);
   // 365 kỳ chỉ tải khi mở tab Lịch Sử, khi ngày trên URL nằm ngoài 30 kỳ gần nhất hoặc khi lùi tới kỳ cuối của 30 kỳ
-  const full = useDataset('xsmbDraws', historyOpen || notInRecent || atRecentEnd);
+  // Đã cần 365 kỳ một lần thì giữ luôn, để danh sách không co lại còn 30 kỳ khi quay về trang chủ
+  const [keepFull, setKeepFull] = useState(false);
+  const wantFull = keepFull || historyOpen || notInRecent || atRecentEnd;
+  useEffect(() => {
+    if (wantFull) setKeepFull(true);
+  }, [wantFull]);
+  const full = useDataset('xsmbDraws', wantFull);
   const draws = useMemo(() => full.data ?? recent.data ?? [], [full.data, recent.data]);
 
   const [mlRef, mlInView] = useInView<HTMLDivElement>();

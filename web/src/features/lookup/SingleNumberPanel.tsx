@@ -4,7 +4,7 @@ import type { InstantLookupModalModel } from './useInstantLookup';
 import styles from './SingleNumberPanel.module.css';
 
 export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model }) => {
-  const { selectedGame, setSelectedGame, searchQuery, setSearchQuery, selectedYear, setSelectedYear, onlySpecial, setOnlySpecial, onlyMultiHits, setOnlyMultiHits, onlyJackpot2Ball, setOnlyJackpot2Ball, loadingFullHistory, copiedNotice, isVietlott, minNumber, maxNumber, gameUnit, validYears, detectedMultiNumbers, formattedNumber, detail, loadFullHistory, loadedFullList, filteredHistory, handleExportCSV, handleCopySummary, handleSwitchToComboFromInput, quickPicks } = model;
+  const { selectedGame, setSelectedGame, searchQuery, setSearchQuery, selectedYear, setSelectedYear, onlySpecial, setOnlySpecial, onlyMultiHits, setOnlyMultiHits, onlyJackpot2Ball, setOnlyJackpot2Ball, loadingFullHistory, copiedNotice, isVietlott, minNumber, maxNumber, gameUnit, validYears, detectedMultiNumbers, formattedNumber, detail, detailLoading, detailError, loadFullHistory, loadedFullList, filteredHistory, handleExportCSV, handleCopySummary, handleSwitchToComboFromInput, quickPicks } = model;
   return (
         <div className={styles.colGap20}>
           {/* Chọn trò chơi (3 game) & Input Search */}
@@ -564,6 +564,15 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                   </table>
                 </div>
               </div>
+            </div>
+          ) : detailLoading ? (
+            <div className={styles.alignCenterPad40x20Dim} role="status">
+              <p className={styles.text085}>Đang tải thống kê số {formattedNumber}...</p>
+            </div>
+          ) : detailError && !detailError.message.includes('HTTP 404') ? (
+            <div className={styles.alignCenterPad40x20Dim} role="alert">
+              <p className={styles.text11Mb8}>Không tải được thống kê số {formattedNumber}</p>
+              <p className={styles.text085}>Kiểm tra kết nối mạng rồi thử lại.</p>
             </div>
           ) : searchQuery ? (
             <div className={styles.alignCenterPad40x20Dim}>
