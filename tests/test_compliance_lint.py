@@ -36,6 +36,9 @@ def _rules(text: str) -> list[str]:
         "Backtest PnL",
         "Lợi nhuận ròng",
         "chắc chắn trúng",
+        "Tạo vé tối ưu xác suất",
+        "Tối ưu hóa xác suất trúng",
+        "Phong độ rất cao",
     ],
 )
 def test_lint_flags_banned_terms(text):

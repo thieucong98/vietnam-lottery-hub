@@ -175,7 +175,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
                       {item.freq_100d ?? item.total_hits} <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>lần</span>
                     </div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--accent-emerald)' }}>
-                      Phong độ rất cao 🔥
+                      Xuất hiện nhiều trong 100 kỳ
                     </div>
                   </div>
                 </div>

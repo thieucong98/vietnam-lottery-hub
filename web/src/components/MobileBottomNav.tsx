@@ -357,7 +357,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       Bộ Lọc Vé Theo Phân Phối Tổng
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      Tạo vé tối ưu xác suất & so hàng loạt
+                      Lọc vé Vietlott & thống kê nhiều số (không làm tăng xác suất trúng)
                     </div>
                   </div>
                 </div>

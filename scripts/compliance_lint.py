@@ -64,6 +64,8 @@ RULES: list[Rule] = [
     Rule("predict", re.compile(r"predict", re.IGNORECASE)),
     Rule("chắc chắn", _p(r"chắc\s+chắn")),
     Rule("xác suất nổ", _p(r"xác\s+suất\s+nổ")),
+    Rule("tối ưu xác suất", _p(r"tối\s+ưu(?:\s+hóa)?\s+xác\s+suất")),
+    Rule("phong độ", _p(r"phong\s+độ")),
     Rule("cầu lô (cầu đẹp/soi cầu/cầu gan...)", _p(r"cầu\s+(?:đẹp|lô|gan|nóng|kèo)|soi\s+cầu|bắt\s+cầu")),
     Rule("bạch thủ", _p(r"bạch\s+thủ|bach_?thu")),
     Rule("song thủ", _p(r"song\s+thủ|song_?thu")),
