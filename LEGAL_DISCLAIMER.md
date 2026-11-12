@@ -72,7 +72,8 @@ Chúng tôi khuyến nghị mạnh mẽ tất cả người dùng tuân thủ c�
 
 * **Chỉ thống kê mô tả:** Nền tảng hiển thị kết quả và thống kê dữ liệu lịch sử của XSKT miền Bắc và Vietlott. Nền tảng không cung cấp công cụ tạo số cho các hình thức lô đề và không hiển thị thông báo "trúng" cho các hình thức không tương ứng với vé hợp pháp.
 * **Không thương mại:** Không bán vé, không có nút mua vé, không liên kết đại lý, không quảng cáo cờ bạc và không thu tiền dưới bất kỳ hình thức nào.
-* **Không thu thập dữ liệu cá nhân:** Không tài khoản, không analytics có định danh. Mọi dữ liệu người dùng (ví dụ xác nhận 18+) chỉ lưu trên máy người dùng.
+* **Không thu thập dữ liệu cá nhân:** Không tài khoản, không analytics có định danh. Mọi dữ liệu người dùng trên web (xác nhận 18+, "Vé của tôi", ngân sách và sổ chi tiêu) chỉ lưu trong trình duyệt trên máy người dùng (localStorage), không gửi về máy chủ nào. Người dùng có thể xuất, nhập file JSON và xóa dữ liệu này ngay trên trang.
+* **Telegram bot:** Bot không lưu số vé; lệnh `/dove` chứa sẵn số vé và chỉ được dùng để trả lời. Nhận kết quả định kỳ là tự chọn: khi gõ `/dangky`, bot lưu mã cuộc trò chuyện (chat_id) và các trò chơi đã chọn trên máy chạy bot để gửi kết quả; `/huydangky` xóa thông tin này. Bot không ghi nội dung tin nhắn vào log.
 * **Nguồn kết quả chính thức:** Dữ liệu được tổng hợp tự động và có thể chậm hoặc sai sót. Luôn đối chiếu với nguồn chính thức: [Vietlott](https://vietlott.vn/) và [XSKT Thủ đô](https://xosothudo.com.vn/).
 
 ---
