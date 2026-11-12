@@ -4,6 +4,7 @@
 - bundle (sau npm run build): dữ liệu tải lúc mở trang chủ (`initial_data_files` trong
   size-budget.json, đường dẫn trong dist/), gói dữ liệu lớn nhất trong dist/bundles, chunk JS
   entry (được dist/index.html tham chiếu), tổng JS và CSS trong dist/assets.
+  Thiếu tệp trong `required_bundle_files`, thư mục rỗng hoặc không có JS/CSS: exit 2.
 
 Ngưỡng `max_*` làm CI fail; `target_*` chỉ in cảnh báo (mục tiêu sẽ siết dần sau Phase 1).
 Kích thước gzip đo ở mức nén 9, xấp xỉ dung lượng truyền qua GitHub Pages.
@@ -50,11 +51,13 @@ def measure_files(name: str, paths: list[Path], detail: str = "") -> Measure:
 def measure_data(cfg: dict, data_dir: Path) -> list[Measure]:
     out: list[Measure] = []
     top = sorted(data_dir.glob("*.json"), key=lambda p: p.stat().st_size, reverse=True)
-    if top:
-        out.append(measure_files("largest_data_file", [top[0]], top[0].name))
+    if not top:
+        raise FileNotFoundError(f"không có tệp JSON nào trong {data_dir}")
+    out.append(measure_files("largest_data_file", [top[0]], top[0].name))
     hist = sorted((data_dir / "history").rglob("*.json"), key=lambda p: p.stat().st_size, reverse=True)
-    if hist:
-        out.append(measure_files("largest_history_file", [hist[0]], str(hist[0].relative_to(data_dir))))
+    if not hist:
+        raise FileNotFoundError(f"không có tệp history nào trong {data_dir / 'history'}")
+    out.append(measure_files("largest_history_file", [hist[0]], str(hist[0].relative_to(data_dir))))
     total = sum(p.stat().st_size for p in data_dir.rglob("*") if p.is_file())
     # Không nén tổng thư mục (chậm, không có ý nghĩa truyền tải)
     out.append(Measure("data_dir_total", total, 0, f"{sum(1 for p in data_dir.rglob('*') if p.is_file())} tệp"))
@@ -75,14 +78,21 @@ def measure_bundle(cfg: dict, dist_dir: Path) -> list[Measure]:
         raise FileNotFoundError(f"thiếu tệp dữ liệu tải lúc mở trang trong dist: {', '.join(missing)}")
     out = [measure_files("initial_data", [dist_dir / n for n in names], f"{len(names)} tệp: {', '.join(names)}")]
 
-    # Gói dữ liệu sinh lúc build (web/build/dataBundles.ts)
+    # Gói dữ liệu sinh lúc build (web/build/dataBundles.ts): build thiếu gói nào thì fail, không đo trên bản build dở
+    required = cfg.get("required_bundle_files", [])
+    missing = [n for n in required if not (dist_dir / n).exists()]
+    if missing:
+        raise FileNotFoundError(f"thiếu gói dữ liệu trong dist: {', '.join(missing)}")
     bundles = sorted((dist_dir / "bundles").rglob("*.json"), key=lambda p: p.stat().st_size, reverse=True)
-    if bundles:
-        out.append(measure_files("largest_bundle_file", [bundles[0]], str(bundles[0].relative_to(dist_dir))))
+    if not bundles:
+        raise FileNotFoundError(f"không có gói dữ liệu nào trong {dist_dir / 'bundles'}")
+    out.append(measure_files("largest_bundle_file", [bundles[0]], str(bundles[0].relative_to(dist_dir))))
 
     assets = dist_dir / "assets"
     js = sorted(assets.glob("*.js"))
     css = sorted(assets.glob("*.css"))
+    if not js or not css:
+        raise FileNotFoundError(f"thiếu JS hoặc CSS trong {assets} ({len(js)} JS, {len(css)} CSS)")
     return out + [
         measure_files("entry_js", [dist_dir / match.group(1)], match.group(1)),
         measure_files("total_js", js, f"{len(js)} chunk"),

@@ -13,20 +13,30 @@ export const test = base.extend<{ page: Page }>({
 
 export { expect };
 
-/** Tổng số byte JSON dữ liệu (./data, ./bundles) trình duyệt đã tải */
+/** Tổng số byte JSON dữ liệu (./data, ./bundles) trình duyệt đã tải. Gọi `await total()` sau khi trang tải xong. */
 export function trackDataBytes(page: Page) {
   const files: { url: string; bytes: number }[] = [];
-  page.on('response', async (res) => {
+  const reads: Promise<void>[] = [];
+  page.on('response', (res) => {
     const url = res.url();
     if (!/\/(data|bundles)\/.+\.json/.test(url)) return;
-    try {
-      files.push({ url, bytes: (await res.body()).length });
-    } catch {
-      // body không đọc được (request bị hủy), bỏ qua
-    }
+    // Giữ promise để total() chờ cả các body đang đọc dở, không bỏ sót file về sau cùng
+    reads.push(
+      res.body().then(
+        (body) => {
+          files.push({ url, bytes: body.length });
+        },
+        () => {
+          // body không đọc được (request bị hủy), bỏ qua
+        }
+      )
+    );
   });
   return {
     files,
-    total: () => files.reduce((sum, f) => sum + f.bytes, 0),
+    total: async () => {
+      await Promise.all(reads);
+      return files.reduce((sum, f) => sum + f.bytes, 0);
+    },
   };
 }

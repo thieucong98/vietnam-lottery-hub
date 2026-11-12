@@ -15,7 +15,7 @@ export default function KenoPage() {
   const summary = useSummary();
 
   if (!view) return <Navigate to={paths.keno()} replace />;
-  if (summary.error) return <LoadError what="kết quả Keno/Max 3D" />;
+  if (summary.error) return <LoadError what="kết quả Keno/Max 3D" onRetry={summary.retry} />;
   if (!summary.data) return <TabFallback />;
   return (
     <KenoAndMax3DView

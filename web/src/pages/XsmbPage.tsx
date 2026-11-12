@@ -58,7 +58,7 @@ export default function XsmbPage() {
 
   const availableDates = useMemo(() => draws.map((d) => d.date), [draws]);
 
-  if (summary.error) return <LoadError what="kết quả mới nhất" />;
+  if (summary.error) return <LoadError what="kết quả mới nhất" onRetry={summary.retry} />;
   if (!summary.data) return <SkeletonLoader />;
 
   return (

@@ -9,7 +9,8 @@
  * - xsmb_draws.json              365 kỳ XSMB, dạng mảng
  * - vietlott_655_draws.json, vietlott_645_draws.json  lịch sử kỳ quay theo sản phẩm
  *
- * Trong dev, plugin phục vụ cùng các đường dẫn qua middleware.
+ * Trong dev, plugin phục vụ cùng các đường dẫn qua middleware. Khi build, dữ liệu nguồn thiếu
+ * hoặc sai làm build thất bại (xem BuildDataBundlesOptions.strict).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,19 +49,34 @@ interface RawXsmbDraw {
   raw_prizes: Record<string, number>;
 }
 
-export function compactXsmbDraws(draws: RawXsmbDraw[]) {
+export function compactXsmbDraws(draws: RawXsmbDraw[], problems: string[] = []) {
   return {
     fields: ['date', ...XSMB_PRIZE_FIELDS],
-    draws: draws.map((d) => [d.date, ...XSMB_PRIZE_FIELDS.map((f) => Number(d.raw_prizes[f]))]),
+    draws: draws.map((d) => [
+      d.date,
+      ...XSMB_PRIZE_FIELDS.map((f) => {
+        const value = Number(d.raw_prizes?.[f]);
+        if (!Number.isFinite(value)) problems.push(`xsmb_recent_draws.json: kỳ ${d.date} thiếu hoặc sai giải ${f}`);
+        return value;
+      }),
+    ]),
   };
 }
 
+export interface BuildDataBundlesOptions {
+  /** true: thiếu file nguồn, thiếu sản phẩm hoặc giải không phải số thì báo lỗi (dùng khi build) */
+  strict?: boolean;
+}
+
 /** Tạo toàn bộ gói từ thư mục dữ liệu. Trả về map: đường dẫn tương đối -> nội dung JSON. */
-export function buildDataBundles(dataDir: string): Map<string, string> {
+export function buildDataBundles(dataDir: string, { strict = false }: BuildDataBundlesOptions = {}): Map<string, string> {
   const out = new Map<string, string>();
+  const problems: string[] = [];
   const read = (name: string): unknown | null => {
     const file = path.join(dataDir, name);
-    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf-8')) : null;
+    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf-8'));
+    problems.push(`thiếu file nguồn ${name}`);
+    return null;
   };
   const put = (name: string, payload: unknown) => out.set(name, JSON.stringify(payload));
 
@@ -75,19 +91,24 @@ export function buildDataBundles(dataDir: string): Map<string, string> {
 
   const recent = read('xsmb_recent_draws.json') as RawXsmbDraw[] | null;
   if (recent) {
-    put('xsmb_draws.json', compactXsmbDraws(recent));
-    put('xsmb_draws_recent.json', compactXsmbDraws(recent.slice(0, XSMB_RECENT_LIMIT)));
+    const compact = compactXsmbDraws(recent, problems);
+    put('xsmb_draws.json', compact);
+    put('xsmb_draws_recent.json', { ...compact, draws: compact.draws.slice(0, XSMB_RECENT_LIMIT) });
   }
 
   const full = read('vietlott_full_draws.json') as Json | null;
   if (full) {
     const meta = (full.metadata as Json) ?? {};
     for (const product of ['vietlott_655', 'vietlott_645'] as const) {
+      if (!Array.isArray(full[product])) problems.push(`vietlott_full_draws.json: thiếu danh sách ${product}`);
       const draws = (full[product] as unknown[]) ?? [];
       put(`${product}_draws.json`, { metadata: { generated_at: meta.generated_at, total: draws.length }, draws });
     }
   }
 
+  if (strict && problems.length) {
+    throw new Error(`Dữ liệu nguồn trong ${dataDir} không đủ để sinh gói:\n- ${problems.join('\n- ')}`);
+  }
   return out;
 }
 
@@ -120,7 +141,14 @@ export function dataBundlesPlugin(options: { dataDir: string }): Plugin {
       });
     },
     generateBundle() {
-      for (const [name, source] of getBundles()) {
+      // Build: thiếu dữ liệu thì dừng build, không deploy trang với gói rỗng
+      let bundles: Map<string, string>;
+      try {
+        bundles = buildDataBundles(options.dataDir, { strict: true });
+      } catch (e) {
+        this.error((e as Error).message);
+      }
+      for (const [name, source] of bundles) {
         this.emitFile({ type: 'asset', fileName: `${BUNDLE_DIR}/${name}`, source });
       }
     },

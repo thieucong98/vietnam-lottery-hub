@@ -4,6 +4,18 @@
     "data/summary.json",
     "bundles/xsmb_draws_recent.json"
   ],
+  "required_bundle_files": [
+    "bundles/xsmb_stats.json",
+    "bundles/vietlott_655_stats.json",
+    "bundles/vietlott_645_stats.json",
+    "bundles/xsmb_draws.json",
+    "bundles/xsmb_draws_recent.json",
+    "bundles/vietlott_655_draws.json",
+    "bundles/vietlott_645_draws.json",
+    "bundles/detail/xsmb/00.json",
+    "bundles/detail/vietlott_655/01.json",
+    "bundles/detail/vietlott_645/01.json"
+  ],
   "budgets": {
     "initial_data": {
       "max_raw": 102400,
