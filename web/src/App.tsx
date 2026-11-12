@@ -9,6 +9,7 @@ import { InstallPrompt } from './components/InstallPrompt';
 import { Button } from './ui';
 import { HeroBanner } from './layout/HeroBanner';
 import { AppFooter } from './layout/AppFooter';
+import { TicketResultsBanner } from './features/tickets/TicketResultsBanner';
 import { OverlayRoutes, PageRoutes } from './app/AppRoutes';
 import { getBackgroundLocation, useAppNavigation } from './app/navigation';
 import { isOverlayPath, TabId, tabFromPath } from './app/routes';
@@ -67,6 +68,7 @@ export function App() {
       />
 
       <main id="main-content" className={`app-main-content ${styles.main}`}>
+        <TicketResultsBanner summary={summary.data} />
         <HeroBanner onOpenSearch={() => nav.openSearch()} onOpenHeatmap={() => nav.goTab('heatmap')} onOpenLegal={nav.openLegal} />
         <PageRoutes />
       </main>
@@ -87,7 +89,7 @@ export function App() {
       {/* Gợi ý "Thêm vào màn hình chính" (PWA), tự ẩn khi đã cài hoặc đã bị từ chối */}
       <InstallPrompt />
 
-      <AppFooter onOpenLegal={nav.openLegal} />
+      <AppFooter onOpenLegal={nav.openLegal} onOpenBudget={() => nav.goTool('budget')} />
 
       <MobileBottomNav
         currentTab={currentTab}
