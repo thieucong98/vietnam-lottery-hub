@@ -64,8 +64,8 @@ Tích hợp: Bộ tạo vé ngẫu nhiên theo phân phối tổng (**Quick Pick
 
 ---
 
-### 3. Bạc Nhớ Ma Trận 20 Năm (Data-Driven Bac Nho Engine)
-Thống kê tần suất có điều kiện $P(A|B)$ trên hơn 7,500 kỳ quay lịch sử (2005 - 2026): sau những ngày có số X (hoặc 2 số cuối Giải Đặc Biệt là Y), số nào từng xuất hiện nhiều nhất vào ngày kế tiếp. Các kỳ quay độc lập nhau, nên đây là thống kê mô tả, không cho biết trước kết quả.
+### 3. Thống Kê Có Điều Kiện & Phân Tích Minh Bạch
+Thống kê tần suất có điều kiện $P(A|B)$ trên hơn 7,500 kỳ quay lịch sử (2005 - 2026): sau những ngày có số X (hoặc 2 số cuối Giải Đặc Biệt là Y), tỷ lệ mỗi số xuất hiện vào ngày kế tiếp, luôn đặt cạnh tần suất nền, khoảng tin cậy 95% và cỡ mẫu. Trang Phân Tích kiểm định tính ngẫu nhiên (chi-square, runs test); Phòng Thí Nghiệm Xác Suất so mọi thuật toán với 1.000 lần chọn ngẫu nhiên kèm p-value. Các kỳ quay độc lập nhau, nên đây là thống kê mô tả, không cho biết trước kết quả. Phương pháp: `docs/analytics-methodology.md`.
 
 ![Bac Nho Engine Preview](docs/images/preview_bacnho.png)
 
@@ -112,12 +112,16 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
   * Hiển thị ngày đầu tiên xuất hiện (First Seen), kỳ quay gần nhất (Last Seen), tổng số lần về trong 20 năm, số lần là 2 số cuối Giải Đặc Biệt.
   * Tra cứu cặp số cùng xuất hiện (thống kê), tần suất xuất hiện cùng nhau, kèm nút xuất file CSV phân tích chi tiết.
 
-* 🧠 **Bạc Nhớ Ma Trận 20 Năm (Data-Driven Bac Nho Engine)**:
-  * Thuật toán thống kê xác suất có điều kiện dựa trên ma trận thưa 7,500+ ngày.
-  * Thống kê các số từng xuất hiện sau một số cho trước, kèm chu kỳ xuất hiện và lô gan. Không cho biết trước kết quả kỳ sau.
+* 🧠 **Thống Kê Có Điều Kiện (XSMB)**:
+  * Tỷ lệ có điều kiện trên ma trận thưa 7,500+ ngày, luôn so với tần suất nền, kèm khoảng tin cậy 95%, cỡ mẫu và p-value đã hiệu chỉnh nhiều phép so sánh.
+  * Không cho biết trước kết quả kỳ sau.
+
+* 🔬 **Phân Tích Minh Bạch & Phòng Thí Nghiệm Xác Suất**:
+  * Tần suất có khoảng tin cậy, khoảng cách giữa các lần về, phân bố tổng, chẵn/lẻ; kiểm định chi-square và runs test kèm giải thích dễ hiểu.
+  * Backtest mọi thuật toán so với 1.000 lần chọn ngẫu nhiên, hiển thị p-value: không thuật toán nào vượt ngẫu nhiên.
 
 * 🎯 **Trung Tâm Phân Tích Vietlott Tích Hợp (Power 6/55 & Mega 6/45)**:
-  * **Quick Pick Pro:** Tạo vé ngẫu nhiên có bộ lọc (tổng điểm 120-180, chẵn/lẻ 3-3, nhỏ/lớn 3-3, cặp số hay đồng xuất hiện). Bộ lọc không làm tăng xác suất trúng.
+  * **Chọn số ngẫu nhiên có tùy chọn:** ghim số, loại số không thích, giới hạn tổng, số lượng số chẵn, tránh bộ số phổ biến (giảm khả năng chia Jackpot, không đổi xác suất trúng). Bộ số là ngẫu nhiên và không làm tăng xác suất trúng.
   * **Vé Bao 5 đến Bao 18:** Hỗ trợ tính toán số tổ hợp, tiền vé và kiểm tra trúng thưởng đa tầng.
   * **Ma Trận Cặp & Bộ Ba:** Xếp hạng 20 cặp và 20 bộ ba bóng số xuất hiện cùng nhau nhiều nhất trong toàn bộ lịch sử Vietlott.
   * **Mô phỏng chi phí:** Tổng tiền vé và tổng giải nhận được nếu mua một bộ số qua 100 kỳ, 1 năm hoặc toàn bộ lịch sử, kèm giá trị kỳ vọng âm của mỗi vé.

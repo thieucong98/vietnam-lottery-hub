@@ -5,10 +5,50 @@ import numpy as np
 import polars as pl
 from loguru import logger
 
+from engine.analytics import stats
+
+# Phiên bản schema của bac_nho.json. v2: mỗi số theo sau có tần suất nền, khoảng tin cậy 95%
+# và p-value đã hiệu chỉnh nhiều phép so sánh.
+SCHEMA_VERSION = 2
+
+DISCLAIMER = (
+    "Thống kê có điều kiện trên dữ liệu lịch sử, luôn so với tần suất nền. Các kỳ quay độc lập "
+    "nên tỷ lệ có điều kiện không cho biết trước kết quả kỳ sau. Top 10 được chọn từ 100 số nên "
+    "luôn cao hơn nền một chút do chọn số cao nhất."
+)
+
+
+def build_followers(next_hits: np.ndarray, total_triggers: int, base_hits: np.ndarray, base_n: int, current_gaps: dict, top: int = 10) -> list[dict]:
+    """Top số theo sau, mỗi số kèm tần suất nền và kiểm định so với nền.
+
+    next_hits[y]: số kỳ T+1 có số y trong các lần điều kiện xảy ra; base_hits[y]: số kỳ có y trên toàn bộ mẫu.
+    p-value nhị thức hai phía nhân với 100 (Bonferroni) vì mỗi điều kiện so sánh 100 số.
+    """
+    followers = []
+    for y in np.argsort(next_hits, kind="stable")[::-1][:top]:
+        y = int(y)
+        hits = int(next_hits[y])
+        base = base_hits[y] / base_n
+        lo, hi = stats.wilson_interval(hits, total_triggers)
+        p = stats.binomial_two_sided_p(hits, total_triggers, base)
+        num = f"{y:02d}"
+        followers.append({
+            "number": num,
+            "hits": hits,
+            "rate": round(hits / total_triggers * 100, 1),
+            "ci_low": round(lo * 100, 1),
+            "ci_high": round(hi * 100, 1),
+            "base_rate": round(base * 100, 1),
+            "p_value_adjusted": round(min(1.0, p * len(next_hits)), 4),
+            "days_since_last": current_gaps.get(num, 0),
+        })
+    return followers
+
+
 class BacNhoAnalyzer:
     """
-    Phân tích Bạc Nhớ Khoa Học dựa trên 20 năm dữ liệu XSMB (7,500+ kỳ quay).
-    Tính toán xác suất có điều kiện: P(Số Y về ngày T+1 | Số X về ngày T)
+    Thống kê có điều kiện trên dữ liệu XSMB (7,500+ kỳ quay):
+    tỷ lệ P(Số Y về ngày T+1 | Số X về ngày T), so với tần suất nền P(Số Y về một ngày bất kỳ).
     """
 
     def __init__(self, data_dir: str = "data/xsmb", output_path: str = "web/public/data/bac_nho.json"):
@@ -62,6 +102,10 @@ class BacNhoAnalyzer:
         matrix_today = sparse_matrix[:-1, :]     # (N-1, 100)
         matrix_next = sparse_matrix[1:, :]       # (N-1, 100)
 
+        # Tần suất nền: tỷ lệ ngày T+1 có số Y, không cần điều kiện gì
+        base_hits = matrix_next.sum(axis=0)
+        base_n = matrix_next.shape[0]
+
         by_loto = {}
         for num_x in range(100):
             num_x_str = f"{num_x:02d}"
@@ -73,29 +117,11 @@ class BacNhoAnalyzer:
                 continue
 
             # Các kỳ T+1 tương ứng
-            next_appearances = matrix_next[t_indices, :]  # (total_triggers, 100)
-            follower_hits = np.sum(next_appearances, axis=0)  # (100,)
-
-            # Sắp xếp top các con số về nhiều nhất ở ngày T+1
-            top_indices = np.argsort(follower_hits)[::-1]
-
-            top_followers = []
-            for rank_idx in top_indices[:10]:
-                follower_num = int(rank_idx)
-                hits = int(follower_hits[follower_num])
-                rate = round((hits / total_triggers) * 100, 1)
-                follower_str = f"{follower_num:02d}"
-                top_followers.append({
-                    "number": follower_str,
-                    "hits": hits,
-                    "rate": rate,
-                    "days_since_last": current_gaps.get(follower_str, 0)
-                })
-
+            follower_hits = matrix_next[t_indices, :].sum(axis=0)  # (100,)
             by_loto[num_x_str] = {
                 "number": num_x_str,
                 "total_triggers": total_triggers,
-                "top_followers": top_followers
+                "top_followers": build_followers(follower_hits, total_triggers, base_hits, base_n, current_gaps),
             }
 
         # 3. Phân tích Bạc Nhớ Theo Giải Đặc Biệt (Special 2D -> Next Day Loto)
@@ -110,35 +136,22 @@ class BacNhoAnalyzer:
             if total_triggers == 0:
                 continue
 
-            next_appearances = matrix_next[t_indices, :]  # (total_triggers, 100)
-            follower_hits = np.sum(next_appearances, axis=0)
-
-            top_indices = np.argsort(follower_hits)[::-1]
-            top_followers = []
-            for rank_idx in top_indices[:10]:
-                follower_num = int(rank_idx)
-                hits = int(follower_hits[follower_num])
-                rate = round((hits / total_triggers) * 100, 1)
-                follower_str = f"{follower_num:02d}"
-                top_followers.append({
-                    "number": follower_str,
-                    "hits": hits,
-                    "rate": rate,
-                    "days_since_last": current_gaps.get(follower_str, 0)
-                })
-
+            follower_hits = matrix_next[t_indices, :].sum(axis=0)
             by_special[special_str] = {
                 "special_number": special_str,
                 "total_triggers": total_triggers,
-                "top_followers": top_followers
+                "top_followers": build_followers(follower_hits, total_triggers, base_hits, base_n, current_gaps),
             }
 
         result = {
+            "schema_version": SCHEMA_VERSION,
+            "disclaimer": DISCLAIMER,
             "metadata": {
                 "generated_at": datetime.now().isoformat(),
                 "latest_date": latest_date,
                 "latest_special_2d": latest_special_val,
-                "total_draws_analyzed": n_draws
+                "total_draws_analyzed": n_draws,
+                "base_sample": int(base_n),
             },
             "by_loto": by_loto,
             "by_special": by_special
@@ -147,7 +160,7 @@ class BacNhoAnalyzer:
         # Lưu file JSON
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
         with open(self.output_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
+            json.dump(result, f, ensure_ascii=False, separators=(",", ":"))
 
         logger.info(f"Đã xuất phân tích Bạc Nhớ 20 năm thành công vào {self.output_path}")
         return result

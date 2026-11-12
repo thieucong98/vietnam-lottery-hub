@@ -342,12 +342,14 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         if not item:
             return f"⚠️ Không có dữ liệu bạc nhớ cho số <b>{target_num}</b>."
 
-        resp = f"🧠 <b>BẠC NHỚ 20 NĂM: SAU NHỮNG NGÀY CÓ SỐ {target_num}</b>\n"
-        resp += f"📊 Đã ghi nhận {item.get('total_triggers', 0)} lần xuất hiện trong lịch sử.\n\n"
-        resp += "<b>Những số từng xuất hiện nhiều nhất vào ngày kế tiếp (thống kê lịch sử, không cho biết trước kết quả):</b>\n"
+        resp = f"🧠 <b>THỐNG KÊ CÓ ĐIỀU KIỆN: SAU NHỮNG NGÀY CÓ SỐ {target_num}</b>\n"
+        resp += f"📊 Cỡ mẫu: {item.get('total_triggers', 0)} ngày có số {target_num}.\n\n"
+        resp += "<b>Tỷ lệ ngày kế tiếp có số (so với tần suất nền của một ngày bất kỳ):</b>\n"
         for f in item.get("top_followers", [])[:6]:
-            rate_pct = f.get("rate", 0) * 100
-            resp += f"• Số <b>{f['number']}</b>: <b>{f['hits']}</b> lần ({rate_pct:.1f}%)\n"
+            # "rate" và "base_rate" đã là phần trăm
+            base = f" | nền {f['base_rate']:.1f}%" if "base_rate" in f else ""
+            resp += f"• Số <b>{f['number']}</b>: {f['hits']} lần ({f.get('rate', 0):.1f}%{base})\n"
+        resp += "\n<i>Thống kê lịch sử. Các kỳ quay độc lập, tỷ lệ có điều kiện không cho biết trước kết quả và không làm tăng xác suất trúng.</i>"
         return resp
 
     # 8. /hot
