@@ -76,7 +76,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
               <Scale size={20} />
             </div>
             <div>
-              <h2 id={titleId} style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
+              <h2 id={titleId} style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 Tuyên Bố Pháp Lý, Miễn Trừ Trách Nhiệm & Chơi Có Trách Nhiệm (18+)
               </h2>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -94,6 +94,11 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
               color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: 6,
+              minWidth: 44,
+              minHeight: 44,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               borderRadius: 'var(--radius-sm)',
             }}
           >
@@ -102,7 +107,12 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: 24, overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Nội dung tuyên bố pháp lý, cuộn để xem thêm"
+          style={{ padding: 24, overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}
+        >
           {/* Banner Cảnh Báo Trọng Tâm */}
           <div
             style={{
@@ -117,7 +127,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
           >
             <ShieldCheck size={26} color="var(--accent-emerald)" style={{ flexShrink: 0, marginTop: 2 }} />
             <div style={{ fontSize: '0.86rem', color: '#e2e8f0', lineHeight: 1.6 }}>
-              <strong style={{ color: '#ffffff' }}>ĐỊNH VỊ HỌC THUẬT & KHOA HỌC DỮ LIỆU:</strong>
+              <strong style={{ color: 'var(--text-main)' }}>ĐỊNH VỊ HỌC THUẬT & KHOA HỌC DỮ LIỆU:</strong>
               <br />
               Nền tảng này được phát triển hoàn toàn vì mục đích <strong>nghiên cứu khoa học dữ liệu (Data Science), thống kê xác suất và kỹ thuật dữ liệu lớn (Data Engineering)</strong>. Nền tảng <strong>CHỈ</strong> thu thập và phân tích kết quả công khai của các sản phẩm xổ số hợp pháp do Nhà nước cấp phép (Xổ số kiến thiết 3 miền và Xổ số điện toán Vietlott).
             </div>
@@ -216,7 +226,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
               padding: '8px 20px',
               borderRadius: 'var(--radius-sm)',
               background: 'var(--accent-emerald)',
-              color: '#000000',
+              color: 'var(--text-on-solid-emerald)',
               fontWeight: 800,
               fontSize: '0.85rem',
               border: 'none',

@@ -3,13 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23ef4444'/><circle cx='50' cy='50' r='36' fill='%23ffffff'/><text x='50' y='64' font-family='Arial, sans-serif' font-weight='bold' font-size='42' fill='%23ef4444' text-anchor='middle'>88</text></svg>" />
+    <!-- rel="manifest" được vite-plugin-pwa tự chèn lúc build -->
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#080c14" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f1f5f9" media="(prefers-color-scheme: light)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="XS & Vietlott Hub" />
     <title>Xổ Số & Vietlott Analytics - Nền Tảng Theo Dõi, Phân Tích & Tra Cứu Kết Quả Siêu Tốc</title>
     <meta name="description" content="Ứng dụng tra cứu kết quả xổ số kiến thiết XSMB và Vietlott Power 6/55, Mega 6/45, thống kê mô tả dữ liệu lịch sử và công cụ chơi có trách nhiệm (18+)." />
+    <script>
+      // Đặt theme/cỡ chữ lên <html> trước khi CSS/React vẽ, tránh hiện sai theme trong một khoảnh khắc lúc tải trang.
+      (function () {
+        try {
+          var theme = localStorage.getItem('vlh_theme_v1');
+          var isDark = theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+          var scale = localStorage.getItem('vlh_font_scale_v1');
+          if (scale === 'sm' || scale === 'lg' || scale === 'xl') {
+            document.documentElement.setAttribute('data-font-scale', scale);
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Bỏ qua tới nội dung chính</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

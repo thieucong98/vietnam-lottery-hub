@@ -93,10 +93,9 @@
   padding: 4px 8px;
   border-radius: 4px;
   background: rgba(30, 41, 59, 0.8);
-  color: #ffffff;
+  color: var(--text-main);
   border: 1px solid var(--border-subtle);
   font-size: 0.8rem;
-  outline: none;
 }
 
 .text078Dim {
@@ -359,7 +358,7 @@
 .text13Weight800White {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .rowCenterGap83 {
@@ -415,7 +414,7 @@
   padding: 6px 14px;
   border-radius: var(--radius-sm);
   background: var(--accent-gold);
-  color: #000000;
+  color: var(--text-on-solid-gold);
   border: none;
   font-size: 0.8rem;
   font-weight: 700;
@@ -427,7 +426,7 @@
 
 .text085White {
   font-size: 0.85rem;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .rowBgTintBorderLineTint {
@@ -448,11 +447,10 @@
   border-radius: var(--radius-md);
   background: rgba(30, 41, 59, 0.7);
   border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 1.1rem;
   font-family: var(--font-mono);
   font-weight: 600;
-  outline: none;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
 

@@ -11,7 +11,7 @@
   animation: fadeIn 0.2s ease;
 }
 .panel {
-  background: #0f172a;
+  background: var(--bg-card-solid);
   border-top-left-radius: var(--radius-lg);
   border-top-right-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);
@@ -35,17 +35,19 @@
 .title {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-main);
 }
 .subtitle {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
 .close {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
   display: flex;

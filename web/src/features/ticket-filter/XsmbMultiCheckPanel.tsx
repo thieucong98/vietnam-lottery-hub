@@ -1,5 +1,6 @@
 import React from 'react';
 import type { SmartFilterAndCheckerModel } from './useTicketFilter';
+import { clickableDivProps } from '../../ui/clickableDiv';
 
 export const XsmbMultiCheckPanel: React.FC<{ model: SmartFilterAndCheckerModel }> = ({ model }) => {
   const { onSelectNumber, ticketInput, setTicketInput, specialPrizeNumber, checkerReport } = model;
@@ -7,7 +8,7 @@ export const XsmbMultiCheckPanel: React.FC<{ model: SmartFilterAndCheckerModel }
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>THỐNG KÊ NHIỀU SỐ TRONG KỲ XSMB MỚI NHẤT</h3>
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>THỐNG KÊ NHIỀU SỐ TRONG KỲ XSMB MỚI NHẤT</h2>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             Nhập nhiều số 2 chữ số để xem mỗi số xuất hiện bao nhiêu lần trong 27 giải của kỳ mới nhất. Đây là thống kê dữ liệu; vé XSKT miền Bắc hợp pháp là vé 5 chữ số, hãy dò vé tại tab XSMB.
           </p>
@@ -28,7 +29,6 @@ export const XsmbMultiCheckPanel: React.FC<{ model: SmartFilterAndCheckerModel }
               color: '#ffffff',
               fontSize: '0.95rem',
               fontFamily: 'var(--font-mono)',
-              outline: 'none',
               resize: 'vertical',
             }}
           />
@@ -84,7 +84,7 @@ export const XsmbMultiCheckPanel: React.FC<{ model: SmartFilterAndCheckerModel }
       <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
           <div>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>KẾT QUẢ THỐNG KÊ</h4>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)' }}>KẾT QUẢ THỐNG KÊ</h2>
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 4 }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 Tổng số đã nhập: <strong>{checkerReport.totalTickets}</strong>
@@ -119,7 +119,7 @@ export const XsmbMultiCheckPanel: React.FC<{ model: SmartFilterAndCheckerModel }
             <div
               key={item.number}
               className="glass-card"
-              onClick={() => onSelectNumber(item.number)}
+              {...clickableDivProps(() => onSelectNumber(item.number))}
               style={{
                 padding: '12px 14px',
                 display: 'flex',

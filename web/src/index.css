@@ -3,30 +3,43 @@
   --font-main: 'Plus Jakarta Sans Variable', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
-  /* Color Palette */
+  /* Color Palette (nền tối, mặc định) */
   --bg-app: #080c14;
   --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-solid: #0f172a;
   --bg-card-hover: rgba(30, 41, 59, 0.85);
+  --bg-card-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.95));
   --bg-glass: rgba(255, 255, 255, 0.03);
+  /* Thanh điều hướng cố định (header, bottom nav): nền mờ theo theme */
+  --bg-sticky-surface: rgba(8, 12, 20, 0.92);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-active: rgba(245, 158, 11, 0.4);
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text-dim: #8491a5;
 
   --accent-gold: #f59e0b;
   --accent-gold-light: #fbbf24;
   --accent-gold-glow: rgba(245, 158, 11, 0.25);
+  --accent-gold-on-tint: #fbbf24;
 
   --accent-red: #ef4444;
   --accent-red-glow: rgba(239, 68, 68, 0.25);
+  --accent-red-on-tint: #f87171;
 
   --accent-emerald: #10b981;
   --accent-emerald-glow: rgba(16, 185, 129, 0.25);
+  --accent-emerald-on-tint: #34d399;
 
   --accent-cyan: #06b6d4;
   --accent-purple: #8b5cf6;
+  --accent-purple-on-tint: #c084fc;
+
+  /* Chữ đặt trên nền --accent-gold/--accent-emerald dạng khối màu đặc (nút, badge).
+     Đổi theo theme vì độ sáng của 2 màu này đổi theo theme: tối dùng chữ đen, sáng dùng chữ trắng. */
+  --text-on-solid-gold: #000000;
+  --text-on-solid-emerald: #000000;
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -35,12 +48,70 @@
 
   --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05);
   --shadow-glow: 0 0 25px -5px var(--accent-gold-glow);
+
+  /* Cỡ chữ gốc: các giá trị rem trong toàn bộ ứng dụng co giãn theo biến này (xem app/theme.ts) */
+  font-size: 100%;
 }
+
+/*
+ * Theme sáng/tối theo hệ thống (mặc định) hoặc theo lựa chọn người dùng.
+ * `app/theme.ts` đặt data-theme="light|dark" lên <html> trước khi React vẽ lần đầu
+ * (dựa trên matchMedia + localStorage), nên không cần @media ở đây.
+ */
+html[data-theme='light'] {
+  --bg-app: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.86);
+  --bg-card-solid: #ffffff;
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 245, 249, 0.86));
+  --bg-glass: rgba(15, 23, 42, 0.035);
+  --bg-sticky-surface: rgba(255, 255, 255, 0.92);
+  --border-subtle: rgba(15, 23, 42, 0.1);
+  --border-active: rgba(180, 83, 9, 0.45);
+
+  --text-main: #0f172a;
+  --text-muted: #334155;
+  --text-dim: #55657a;
+
+  --accent-gold: #b45309;
+  --accent-gold-light: #92400e;
+  --accent-gold-glow: rgba(180, 83, 9, 0.18);
+  --accent-gold-on-tint: #92400e;
+
+  --accent-red: #dc2626;
+  --accent-red-glow: rgba(185, 28, 28, 0.15);
+  --accent-red-on-tint: #b91c1c;
+
+  --accent-emerald: #047857;
+  --accent-emerald-glow: rgba(4, 120, 87, 0.15);
+  --accent-emerald-on-tint: #047857;
+
+  --accent-cyan: #0e7490;
+  --accent-purple: #7c3aed;
+  --accent-purple-on-tint: #7c3aed;
+
+  --text-on-solid-gold: #ffffff;
+  --text-on-solid-emerald: #ffffff;
+
+  --shadow-card: 0 10px 24px -12px rgba(15, 23, 42, 0.18), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+}
+
+/* Cỡ chữ điều chỉnh được (áp lên <html>, mọi rem trong ứng dụng co giãn theo) */
+html[data-font-scale='sm'] { font-size: 93.75%; }
+html[data-font-scale='md'] { font-size: 100%; }
+html[data-font-scale='lg'] { font-size: 112.5%; }
+html[data-font-scale='xl'] { font-size: 125%; }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Trình duyệt không tự kế thừa font cho các control này; không đặt lại dễ vỡ chữ trên hệ thống thiếu font mặc định */
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
 }
 
 body {
@@ -50,11 +121,54 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
-  background-image: 
+  background-image:
     radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.07) 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 60%);
   background-attachment: fixed;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html[data-theme='light'] body {
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(180, 83, 9, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(14, 116, 144, 0.03) 0%, transparent 60%);
+}
+
+/* Tôn trọng lựa chọn "giảm chuyển động" của hệ điều hành (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Chỉ báo focus bàn phím rõ ràng ở mọi nơi (WCAG 2.4.7 Focus Visible) */
+:focus-visible {
+  outline: 2px solid var(--accent-emerald);
+  outline-offset: 2px;
+}
+
+/* Liên kết "Bỏ qua tới nội dung chính" cho người dùng bàn phím/trình đọc màn hình */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--accent-emerald);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: top 0.15s ease;
+}
+.skip-link:focus-visible {
+  top: 12px;
+  outline-offset: 0;
 }
 
 /* Custom Scrollbar */
@@ -66,11 +180,11 @@ body {
   background: var(--bg-app);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--border-active);
   border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--accent-gold);
 }
 
 /* Typography & Utilities */
@@ -106,7 +220,7 @@ body {
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--border-active);
 }
 
 /* Lottery Balls */
@@ -170,8 +284,8 @@ body {
 /* Highlight Animation */
 .highlighted-prize {
   background: rgba(245, 158, 11, 0.25) !important;
-  color: #fbbf24 !important;
-  border-color: #f59e0b !important;
+  color: var(--accent-gold-on-tint) !important;
+  border-color: var(--accent-gold) !important;
   transform: scale(1.08);
   font-weight: 800;
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
@@ -199,10 +313,10 @@ body {
 }
 
 .tab-btn.active {
-  color: #ffffff;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+  color: var(--accent-gold-on-tint);
+  background: linear-gradient(135deg, var(--accent-gold-glow), rgba(245, 158, 11, 0.05));
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 15px var(--accent-gold-glow);
 }
 
 /* Heatmap Grid */
@@ -247,19 +361,19 @@ body {
 
 .badge-gan {
   background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
+  color: var(--accent-red-on-tint);
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .badge-hot {
   background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
+  color: var(--accent-gold-on-tint);
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .badge-normal {
   background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
+  color: var(--accent-emerald-on-tint);
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
@@ -295,7 +409,7 @@ body {
   left: 0;
   right: 0;
   height: 64px;
-  background: rgba(8, 12, 20, 0.94);
+  background: var(--bg-sticky-surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-subtle);
@@ -324,6 +438,7 @@ body {
   border-radius: var(--radius-sm);
   transition: all 0.2s ease;
   min-width: 60px;
+  min-height: 44px;
 }
 
 .mobile-nav-item.active {

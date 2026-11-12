@@ -77,8 +77,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
               style={{
                 background: 'transparent',
                 border: 'none',
-                outline: 'none',
-                color: '#ffffff',
+                color: 'var(--text-main)',
                 fontSize: '0.82rem',
                 width: 250,
               }}
@@ -165,7 +164,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                       {draw.date}
                     </span>
                     <div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         {draw.day_of_week}
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -212,7 +211,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Giải Nhất:</span>
-                      <span className="mono" style={{ fontSize: '0.92rem', fontWeight: 700, color: '#ffffff' }}>
+                      <span className="mono" style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         {draw.prize1}
                       </span>
                     </div>
@@ -246,7 +245,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                           borderRadius: 'var(--radius-sm)',
                           border: '1px solid var(--border-subtle)',
                           background: isSelectedOnBoard ? 'rgba(139, 92, 246, 0.3)' : 'rgba(255, 255, 255, 0.05)',
-                          color: isSelectedOnBoard ? '#ffffff' : 'var(--text-muted)',
+                          color: isSelectedOnBoard ? 'var(--text-main)' : 'var(--text-muted)',
                           fontSize: '0.74rem',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -326,13 +325,13 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                         {/* G1 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Nhất</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700 }}>{draw.prize1}</span>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700 }}>{draw.prize1}</span>
                         </div>
 
                         {/* G2 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Nhì</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700 }}>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700 }}>
                             {[draw.raw_prizes.prize2_1, draw.raw_prizes.prize2_2].map((v) => `${v}`.padStart(5, '0')).join(' - ')}
                           </span>
                         </div>
@@ -340,7 +339,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                         {/* G3 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Ba</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.78rem' }}>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700, fontSize: '0.78rem' }}>
                             {[draw.raw_prizes.prize3_1, draw.raw_prizes.prize3_2, draw.raw_prizes.prize3_3, draw.raw_prizes.prize3_4, draw.raw_prizes.prize3_5, draw.raw_prizes.prize3_6].map((v) => `${v}`.padStart(5, '0')).join(' ')}
                           </span>
                         </div>
@@ -348,7 +347,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                         {/* G4 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Tư</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700 }}>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700 }}>
                             {[draw.raw_prizes.prize4_1, draw.raw_prizes.prize4_2, draw.raw_prizes.prize4_3, draw.raw_prizes.prize4_4].map((v) => `${v}`.padStart(4, '0')).join(' - ')}
                           </span>
                         </div>
@@ -356,7 +355,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                         {/* G5 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Năm</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.78rem' }}>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700, fontSize: '0.78rem' }}>
                             {[draw.raw_prizes.prize5_1, draw.raw_prizes.prize5_2, draw.raw_prizes.prize5_3, draw.raw_prizes.prize5_4, draw.raw_prizes.prize5_5, draw.raw_prizes.prize5_6].map((v) => `${v}`.padStart(4, '0')).join(' ')}
                           </span>
                         </div>
@@ -364,7 +363,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                         {/* G6 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 8px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                           <span style={{ color: 'var(--text-dim)' }}>Giải Sáu</span>
-                          <span className="mono" style={{ color: '#ffffff', fontWeight: 700 }}>
+                          <span className="mono" style={{ color: 'var(--text-main)', fontWeight: 700 }}>
                             {[draw.raw_prizes.prize6_1, draw.raw_prizes.prize6_2, draw.raw_prizes.prize6_3].map((v) => `${v}`.padStart(3, '0')).join(' - ')}
                           </span>
                         </div>
@@ -425,7 +424,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
                                         padding: '1px 5px',
                                         borderRadius: 3,
                                         background: 'rgba(255, 255, 255, 0.06)',
-                                        color: '#ffffff',
+                                        color: 'var(--text-main)',
                                         fontWeight: 700,
                                         cursor: 'pointer',
                                       }}
@@ -461,7 +460,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-subtle)',
               background: 'rgba(255,255,255,0.05)',
-              color: historyPage === 1 ? 'var(--text-dim)' : '#ffffff',
+              color: historyPage === 1 ? 'var(--text-dim)' : 'var(--text-main)',
               fontSize: '0.8rem',
               cursor: historyPage === 1 ? 'not-allowed' : 'pointer',
               display: 'flex',
@@ -474,7 +473,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
           </button>
 
           <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-            Trang <strong style={{ color: '#ffffff' }}>{historyPage}</strong> / {totalHistoryPages}
+            Trang <strong style={{ color: 'var(--text-main)' }}>{historyPage}</strong> / {totalHistoryPages}
           </span>
 
           <button
@@ -485,7 +484,7 @@ export const XsmbHistoryPanel: React.FC<{ model: XSMBProductHubModel }> = ({ mod
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-subtle)',
               background: 'rgba(255,255,255,0.05)',
-              color: historyPage >= totalHistoryPages ? 'var(--text-dim)' : '#ffffff',
+              color: historyPage >= totalHistoryPages ? 'var(--text-dim)' : 'var(--text-main)',
               fontSize: '0.8rem',
               cursor: historyPage >= totalHistoryPages ? 'not-allowed' : 'pointer',
               display: 'flex',

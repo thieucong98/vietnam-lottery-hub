@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Trophy, Dice5, CheckCircle2, Clock, Flame, Layers } from 'lucide-react';
 import { OfficialResultsLink } from '../../components/OfficialResultsLink';
+import { Ball } from '../../ui';
 import { useVietlottHub } from './useVietlottHub';
 import { QuickPickPanel } from './QuickPickPanel';
 import { ComboBaoPanel } from './ComboBaoPanel';
@@ -35,7 +36,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
                   padding: '4px 12px',
                   borderRadius: 'var(--radius-full)',
                   background: is655 ? '#f43f5e' : '#f59e0b',
-                  color: '#ffffff',
+                  color: '#000000',
                   fontWeight: 800,
                   fontSize: '0.82rem',
                   letterSpacing: '0.05em',
@@ -43,9 +44,9 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
               >
                 VIETLOTT CHÍNH THỨC
               </span>
-              <h1 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#ffffff' }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 900, color: 'var(--text-main)' }}>
                 Xổ Số Tự Chọn {gameName}
-              </h1>
+              </h2>
               {latestDraw && (
                 <span className="badge badge-hot" style={{ fontSize: '0.84rem' }}>
                   Kỳ #{latestDraw.id}
@@ -59,7 +60,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
               {latestDraw && (
                 <>
                   <span style={{ opacity: 0.4 }}>•</span>
-                  <span>Mở thưởng ngày: <strong style={{ color: '#ffffff' }}>{latestDraw.date}</strong></span>
+                  <span>Mở thưởng ngày: <strong style={{ color: 'var(--text-main)' }}>{latestDraw.date}</strong></span>
                 </>
               )}
             </p>
@@ -113,15 +114,14 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
               {latestDraw.balls.map((num, idx) => {
                 const numStr = num.toString().padStart(2, '0');
                 return (
-                  <div
+                  <Ball
                     key={idx}
-                    className="lottery-ball ball-gold"
-                    style={{ width: 56, height: 56, fontSize: '1.45rem', cursor: 'pointer' }}
+                    value={numStr}
+                    size="lg"
+                    tone="gold"
                     onClick={() => onSelectNumber(numStr)}
-                    title={`Bấm để xem phân tích số ${numStr}`}
-                  >
-                    {numStr}
-                  </div>
+                    title={`Số ${numStr}, bấm để xem phân tích`}
+                  />
                 );
               })}
 
@@ -129,14 +129,13 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 8 }}>
                   <div style={{ width: 2, height: 36, background: 'rgba(255,255,255,0.15)' }} />
                   <div style={{ textAlign: 'center' }}>
-                    <div
-                      className="lottery-ball ball-jackpot2"
-                      style={{ width: 56, height: 56, fontSize: '1.45rem', cursor: 'pointer' }}
+                    <Ball
+                      value={latestDraw.special.toString().padStart(2, '0')}
+                      size="lg"
+                      tone="jackpot2"
                       onClick={() => onSelectNumber(latestDraw.special!.toString().padStart(2, '0'))}
-                      title={`Bóng đặc biệt Jackpot 2: số ${latestDraw.special}`}
-                    >
-                      {latestDraw.special.toString().padStart(2, '0')}
-                    </div>
+                      title={`Bóng đặc biệt Jackpot 2, số ${latestDraw.special}`}
+                    />
                     <div style={{ fontSize: '0.68rem', color: '#fb7185', fontWeight: 800, marginTop: 4 }}>
                       JACKPOT 2
                     </div>
@@ -153,7 +152,7 @@ export const VietlottProductHub: React.FC<VietlottProductHubProps> = (props) => 
                     borderRadius: 'var(--radius-sm)',
                     background: 'rgba(255, 255, 255, 0.06)',
                     border: '1px solid var(--border-subtle)',
-                    color: '#ffffff',
+                    color: 'var(--text-main)',
                     fontSize: '0.8rem',
                     fontWeight: 600,
                     cursor: 'pointer',

@@ -11,7 +11,7 @@ export const Max3DPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model }
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14, marginBottom: 20 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 {subTab === 'max3d' ? 'BẢNG MỞ THƯỞNG VIETLOTT MAX 3D' : 'BẢNG MỞ THƯỞNG VIETLOTT MAX 3D PRO'}
               </h3>
               <span className="badge badge-hot">KỲ #{current3DData?.id || '#00784'}</span>
@@ -226,7 +226,7 @@ export const Max3DPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model }
       {/* Biểu đồ phân bổ chữ số 0 - 9 trong kỳ mở thưởng Max 3D */}
       <div className="glass-card" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <BarChart3 size={18} color="var(--accent-cyan)" />
             PHÂN BỔ TẦN SUẤT CHỮ SỐ (0 - 9) TRONG KỲ NÀY
           </h4>
@@ -276,7 +276,7 @@ export const Max3DPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model }
                     }}
                   />
                 </div>
-                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   {digit}
                 </span>
               </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Brain, Cpu, ShieldCheck, Sparkles } from 'lucide-react';
 import { MLInsightsData } from '../types';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface AIStrategyHubProps {
   mlData: MLInsightsData | null;
@@ -29,7 +30,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
           <Brain size={26} color="var(--accent-purple)" />
-          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
             PHÒNG THÍ NGHIỆM THUẬT TOÁN & KIỂM THỬ BACKTEST
           </h2>
         </div>
@@ -53,7 +54,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
           {mlData.sample_sets.map((p, idx) => (
             <div key={idx} className="glass-card" style={{ padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>{p.name}</span>
+                <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>{p.name}</span>
                 <span className="badge badge-hot" style={{ fontSize: '0.68rem' }}>MẪU #{idx + 1}</span>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginBottom: 16 }}>
@@ -65,7 +66,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
                   <div
                     key={num}
                     className="lottery-ball ball-gold"
-                    onClick={() => onSelectNumber(num)}
+                    {...clickableDivProps(() => onSelectNumber(num))}
                     style={{ width: 44, height: 44, fontSize: '1.1rem', cursor: 'pointer' }}
                     title={`Bấm để xem chi tiết số ${num}`}
                   >
@@ -83,7 +84,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
           <Cpu size={20} color="var(--accent-cyan)" />
           <div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Bảng Đo Lường Hiệu Suất Thực Tế (Walk-Forward Backtesting 50 Kỳ Gần Nhất)
             </h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
@@ -115,7 +116,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
                       background: idx === 0 ? 'rgba(245, 158, 11, 0.08)' : (isRandom ? 'rgba(255,255,255,0.02)' : 'transparent'),
                     }}
                   >
-                    <td style={{ padding: '12px 14px', fontWeight: 700, color: idx === 0 ? 'var(--accent-gold)' : (isRandom ? 'var(--text-dim)' : '#ffffff') }}>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: idx === 0 ? 'var(--accent-gold)' : (isRandom ? 'var(--text-dim)' : 'var(--text-main)') }}>
                       {item.strategy_name}
                       {isRandom && ' (Đối chứng)'}
                     </td>

@@ -30,7 +30,7 @@
 
 .primary {
   background: var(--accent-gold);
-  color: #000000;
+  color: var(--text-on-solid-gold);
 }
 .primary:hover:not(:disabled) { background: var(--accent-gold-light); }
 

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { BacNhoData, BacNhoItem } from '../types';
 import { Brain, Copy, Check } from 'lucide-react';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface BacNhoHubProps {
   bacNhoData: BacNhoData | null;
@@ -71,7 +72,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   BẠC NHỚ MA TRẬN 20 NĂM (DATA-DRIVEN BAC NHO)
                 </h2>
                 <span className="badge badge-hot">7,500+ KỲ QUAY</span>
@@ -155,6 +156,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
               type="text"
               maxLength={2}
               value={selectedNum}
+              aria-label={mode === 'special' ? 'Hôm trước 2 số cuối giải đặc biệt là' : 'Hôm trước có số'}
               onChange={(e) => {
                 const val = e.target.value.replace(/\D/g, '');
                 setSelectedNum(val);
@@ -166,7 +168,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                 borderRadius: 'var(--radius-sm)',
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid var(--accent-gold)',
-                color: '#ffffff',
+                color: 'var(--text-main)',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '1.1rem',
                 fontWeight: 800,
@@ -203,7 +205,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: 16,
-            background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8))',
+            background: 'var(--bg-card-gradient)',
             borderLeft: '4px solid #a855f7',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -211,7 +213,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                 {selectedNum.padStart(2, '0')}
               </div>
               <div>
-                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>
+                <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   {mode === 'special' ? `Khi Giải ĐB về ${selectedNum.padStart(2, '0')}` : `Khi Lô ${selectedNum.padStart(2, '0')} xuất hiện`}
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
@@ -242,7 +244,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                 <div
                   key={item.number}
                   className="glass-card hover-glow"
-                  onClick={() => onSelectNumber(item.number)}
+                  {...clickableDivProps(() => onSelectNumber(item.number))}
                   style={{
                     padding: 16,
                     cursor: 'pointer',
@@ -265,7 +267,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                     </div>
 
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: isTop3 ? 'var(--accent-gold)' : '#ffffff', fontFamily: 'var(--font-mono)' }}>
+                      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: isTop3 ? 'var(--accent-gold)' : 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
                         {item.rate}%
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>

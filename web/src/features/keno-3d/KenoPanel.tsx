@@ -11,7 +11,7 @@ export const KenoPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model })
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14, marginBottom: 20 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 KẾT QUẢ VIETLOTT KENO MỚI NHẤT
               </h3>
               <span className="badge badge-hot">
@@ -122,7 +122,7 @@ export const KenoPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model })
         {/* Cột Trái: Bàn Cờ Ma Trận 80 Số */}
         <div className="glass-card" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <Flame size={18} color="var(--accent-red)" />
               BÀN CỜ NHIỆT KENO (1 - 80)
             </h4>
@@ -212,7 +212,7 @@ export const KenoPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model })
         {/* Cột Phải: Bộ Thử Vé & Mô Phỏng Bậc 1 - 10 */}
         <div className="glass-card" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <Trophy size={18} color="var(--accent-gold)" />
               ĐỐI SOÁT & THỬ VÉ KENO (BẬC 1 - 10)
             </h4>
@@ -312,7 +312,7 @@ export const KenoPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model })
                 ) : (
                   <Info size={18} color="var(--accent-red)" />
                 )}
-                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                   {matchedUserKeno.length === userKenoPicks.length
                     ? `🎉 XUẤT SẮC! Trúng 100% (${matchedUserKeno.length}/${userKenoPicks.length}) con số đã chọn!`
                     : matchedUserKeno.length > 0
