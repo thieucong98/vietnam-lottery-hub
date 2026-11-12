@@ -1,5 +1,5 @@
 {
-  "_comment": "Ngưỡng max_* làm CI fail; target_* chỉ cảnh báo. Ngưỡng dữ liệu đặt theo kích thước 2026-11-12 cộng khoảng 10%. Sau Phase 1 (AUT-13): initial_data = tiêu chí < 100 KB; JS/CSS = kích thước sau khi thêm router, tách chunk theo route và chuyển inline style sang CSS Modules, cộng khoảng 10%.",
+  "_comment": "Ngưỡng max_* làm CI fail; target_* chỉ cảnh báo. Ngưỡng dữ liệu đặt theo kích thước 2026-11-12 cộng khoảng 10%. Sau Phase 1 (AUT-13): initial_data = tiêu chí < 100 KB; JS/CSS = kích thước sau khi thêm router, tách chunk theo route và chuyển inline style sang CSS Modules, cộng khoảng 10%. Sau Phase 4 (AUT-16): total_css nâng lên kích thước sau khi thêm trang Phân tích minh bạch, Phòng thí nghiệm xác suất, Quick Pick có tùy chọn (CSS Modules) cộng khoảng 10%.",
   "initial_data_files": [
     "data/summary.json",
     "bundles/xsmb_draws_recent.json"
@@ -45,8 +45,8 @@
       "max_gzip": 160000
     },
     "total_css": {
-      "max_raw": 45000,
-      "max_gzip": 14000
+      "max_raw": 53000,
+      "max_gzip": 16800
     }
   }
 }

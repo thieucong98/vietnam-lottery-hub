@@ -175,6 +175,15 @@ def run():
         logger.error(f"Lỗi khi tạo bộ số mẫu & backtest: {e}")
         record_error("ml_insights", e)
 
+    # 7b. Phân tích minh bạch (thống kê mô tả có khoảng tin cậy, kiểm định ngẫu nhiên)
+    try:
+        from engine.analytics.transparency import TransparencyAnalyzer
+        TransparencyAnalyzer().analyze()
+        logger.info("-> Xuất phân tích minh bạch thành công.")
+    except Exception as e:
+        logger.error(f"Lỗi khi phân tích minh bạch: {e}")
+        record_error("stats_report", e)
+
     # 8. Render README
     logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")
     try:
