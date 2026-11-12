@@ -11,6 +11,7 @@ const KenoPage = lazy(() => import('../pages/KenoPage'));
 const HeatmapPage = lazy(() => import('../pages/HeatmapPage'));
 const GanPage = lazy(() => import('../pages/GanPage'));
 const BacNhoPage = lazy(() => import('../pages/BacNhoPage'));
+const AnalysisPage = lazy(() => import('../pages/AnalysisPage'));
 const FilterPage = lazy(() => import('../pages/FilterPage'));
 const AiPage = lazy(() => import('../pages/AiPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -45,6 +46,7 @@ export const PageRoutes: React.FC = () => {
         <Route path="/keno-3d/:view?" element={<KenoPage />} />
         <Route path="/nhiet" element={<HeatmapPage />} />
         <Route path="/gan" element={<GanPage />} />
+        <Route path="/phan-tich" element={<AnalysisPage />} />
         <Route path="/bac-nho" element={<BacNhoPage />} />
         <Route path="/loc-ve/:view?" element={<FilterPage />} />
         <Route path="/thuat-toan" element={<AiPage />} />

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { SummaryData, MLInsightsData, LotteryIndexData } from '../types';
 import { clickableDivProps } from '../ui/clickableDiv';
+import { ChartNote } from '../ui';
 
 interface BentoInsightsGridProps {
   xsmbData: LotteryIndexData | null;
@@ -147,6 +148,10 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               );
             })}
           </div>
+          <ChartNote
+            sample="100 kỳ XSMB gần nhất (mỗi số kỳ vọng về khoảng 27 kỳ nếu ngẫu nhiên)"
+            warning="Số về nhiều không có xác suất về cao hơn ở kỳ sau."
+          />
         </div>
 
         <button
@@ -239,6 +244,10 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               );
             })}
           </div>
+          <ChartNote
+            sample={xsmbData ? `${xsmbData.metadata.total_draws.toLocaleString('vi-VN')} kỳ XSMB` : 'toàn bộ lịch sử XSMB'}
+            warning="Số lâu chưa về không đến lượt về: kỳ sau nó có cùng xác suất như mọi số khác."
+          />
         </div>
 
         <button
@@ -374,7 +383,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
             padding: '4px 0',
           }}
         >
-          <span>Xem phòng thí nghiệm thuật toán & Backtest</span>
+          <span>Xem phòng thí nghiệm xác suất (thuật toán so với ngẫu nhiên)</span>
           <ArrowRight size={14} />
         </button>
       </div>

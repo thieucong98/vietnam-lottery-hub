@@ -5,6 +5,7 @@ import {
   MLInsightsData,
   NumberAppearance,
   NumberDetail,
+  StatsReportData,
   SummaryData,
   VietlottCooccurrenceData,
   VietlottHistoricalDraw,
@@ -26,6 +27,7 @@ export interface DatasetMap {
   summary: SummaryData;
   mlInsights: MLInsightsData;
   bacNho: BacNhoData;
+  statsReport: StatsReportData;
   cooccurrence: VietlottCooccurrenceData;
   xsmbStats: LotteryIndexData;
   vietlott655Stats: LotteryIndexData;
@@ -48,6 +50,7 @@ export const DATASETS: { [K in DatasetKey]: DatasetSpec<DatasetMap[K]> } = {
   summary: { url: dataUrl('summary.json') },
   mlInsights: { url: dataUrl('ml_insights.json') },
   bacNho: { url: dataUrl('bac_nho.json') },
+  statsReport: { url: dataUrl('stats_report.json') },
   cooccurrence: { url: dataUrl('vietlott_cooccurrence.json') },
   xsmbStats: { url: bundleUrl('xsmb_stats.json') },
   vietlott655Stats: { url: bundleUrl('vietlott_655_stats.json') },

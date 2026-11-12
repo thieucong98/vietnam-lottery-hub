@@ -12,3 +12,7 @@ export { Modal } from './Modal';
 export type { ModalProps } from './Modal';
 export { Sheet } from './Sheet';
 export type { SheetProps } from './Sheet';
+export { BarChart } from './BarChart';
+export type { BarChartProps } from './BarChart';
+export { ChartNote, DEFAULT_CHART_WARNING } from './ChartNote';
+export type { ChartNoteProps } from './ChartNote';

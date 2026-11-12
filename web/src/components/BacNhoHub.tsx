@@ -1,318 +1,144 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { GitBranch } from 'lucide-react';
 import { BacNhoData, BacNhoItem } from '../types';
-import { Brain, Copy, Check } from 'lucide-react';
-import { clickableDivProps } from '../ui/clickableDiv';
+import { Ball, ChartNote, Tabs } from '../ui';
+import { formatDate, formatInt, formatP } from '../utils/statsText';
+import { Verdict } from '../features/analysis/Verdict';
+import styles from '../features/analysis/analysis.module.css';
 
 interface BacNhoHubProps {
   bacNhoData: BacNhoData | null;
   onSelectNumber: (num: string) => void;
 }
 
+type Mode = 'special' | 'loto';
+
+const pct = (x: number) => `${x.toLocaleString('vi-VN', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+
+/** Thống kê có điều kiện XSMB: sau ngày có điều kiện X, tỷ lệ số Y về ngày kế tiếp, luôn so với tần suất nền. URL: `/bac-nho` */
 export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber }) => {
-  const [mode, setMode] = useState<'special' | 'loto'>('special');
-  const [copied, setCopied] = useState(false);
-
-  // Mặc định chọn 2 số cuối giải ĐB mới nhất nếu có, hoặc số 51
-  const defaultNum = bacNhoData?.metadata?.latest_special_2d || '51';
-  const [selectedNum, setSelectedNum] = useState<string>(defaultNum);
-
-  // Đồng bộ khi dữ liệu tải xong
-  React.useEffect(() => {
-    if (bacNhoData?.metadata?.latest_special_2d) {
-      setSelectedNum(bacNhoData.metadata.latest_special_2d);
-    }
-  }, [bacNhoData?.metadata?.latest_special_2d]);
+  const [mode, setMode] = useState<Mode>('special');
+  const [input, setInput] = useState<string | null>(null);
+  // Mặc định: 2 số cuối giải ĐB của kỳ mới nhất
+  const selectedNum = input ?? bacNhoData?.metadata?.latest_special_2d ?? '00';
 
   const currentItem: BacNhoItem | undefined = useMemo(() => {
-    if (!bacNhoData) return undefined;
-    const formatted = selectedNum.padStart(2, '0');
-    if (mode === 'special') {
-      return bacNhoData.by_special?.[formatted];
-    } else {
-      return bacNhoData.by_loto?.[formatted];
-    }
+    if (!bacNhoData || !selectedNum) return undefined;
+    const key = selectedNum.padStart(2, '0');
+    return mode === 'special' ? bacNhoData.by_special?.[key] : bacNhoData.by_loto?.[key];
   }, [bacNhoData, mode, selectedNum]);
 
   if (!bacNhoData) {
     return (
-      <div className="glass-card" style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
-        Đang tải ma trận Bạc Nhớ 20 năm dữ liệu...
+      <div className={`glass-card ${styles.card}`} style={{ textAlign: 'center', color: 'var(--text-dim)' }}>
+        Đang tải thống kê có điều kiện...
       </div>
     );
   }
 
-  const followers = currentItem?.top_followers || [];
-  const topNumbersStr = followers.slice(0, 10).map((f) => f.number).join(', ');
-
-  const handleCopyTop = () => {
-    navigator.clipboard.writeText(topNumbersStr);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const meta = bacNhoData.metadata;
+  const num = selectedNum.padStart(2, '0');
+  const followers = currentItem?.top_followers ?? [];
+  const minAdjP = followers.length ? Math.min(...followers.map((f) => f.p_value_adjusted)) : 1;
+  const condition = mode === 'special' ? `2 số cuối giải Đặc Biệt là ${num}` : `số ${num} xuất hiện trong 27 giải`;
+  const smallSample = currentItem && currentItem.total_triggers < 100;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* Header Banner */}
-      <div className="glass-card animate-fade-in" style={{ padding: 24, position: 'relative', overflow: 'hidden' }}>
-        <div style={{
-          position: 'absolute',
-          top: -30,
-          right: -30,
-          width: 140,
-          height: 140,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
+    <div className={styles.stack}>
+      <div className={`glass-card ${styles.intro}`}>
+        <h2 className={styles.h2}><GitBranch size={24} color="var(--accent-purple)" />Thống Kê Có Điều Kiện (XSMB)</h2>
+        <p className={styles.lead}>
+          Câu hỏi: <em>sau những ngày có điều kiện X, mỗi số Y xuất hiện vào ngày kế tiếp với tỷ lệ bao nhiêu?</em> Mỗi tỷ lệ luôn được đặt cạnh{' '}
+          <strong>tần suất nền</strong>, tức tỷ lệ số Y xuất hiện vào một ngày bất kỳ (khoảng 24%). Nếu hai con số gần nhau, điều kiện X không nói thêm
+          điều gì. {bacNhoData.disclaimer}
+        </p>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="lottery-ball ball-purple" style={{ width: 48, height: 48, fontSize: '1.3rem' }}>
-              <Brain size={24} />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                  BẠC NHỚ MA TRẬN 20 NĂM (DATA-DRIVEN BAC NHO)
-                </h2>
-                <span className="badge badge-hot">7,500+ KỲ QUAY</span>
-                <span className="badge badge-normal" style={{ color: 'var(--accent-cyan)' }}>
-                  XÁC SUẤT CÓ ĐIỀU KIỆN
-                </span>
-              </div>
-              <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                Khác biệt với bạc nhớ truyền miệng, hệ thống quét chính xác toàn bộ 20 năm lịch sử (2005 - {bacNhoData.metadata.latest_date.slice(0, 4)}) 
-                để thống kê: <em>sau những ngày có số X, số nào từng xuất hiện nhiều nhất vào ngày kế tiếp</em>. Các kỳ quay độc lập nhau, nên thống kê này không cho biết trước kết quả kỳ sau.
-              </p>
-            </div>
-          </div>
-
-          {/* Nút sao chép Top 10 số theo sau */}
-          {followers.length > 0 && (
-            <button
-              onClick={handleCopyTop}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '9px 18px',
-                borderRadius: 'var(--radius-sm)',
-                background: copied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(168, 85, 247, 0.2)',
-                border: copied ? '1px solid var(--accent-emerald)' : '1px solid #a855f7',
-                color: copied ? 'var(--accent-emerald)' : '#d8b4fe',
-                fontWeight: 700,
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-            >
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Đã sao chép Top 10 số' : 'Sao chép Top 10 Bạc Nhớ'}</span>
-            </button>
-          )}
-        </div>
-
-        {/* Chế độ chọn Bạc Nhớ */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', background: 'rgba(0,0,0,0.3)', padding: 4, borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-            <button
-              onClick={() => setMode('special')}
-              style={{
-                padding: '7px 16px',
-                borderRadius: 'var(--radius-sm)',
-                border: 'none',
-                background: mode === 'special' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : 'transparent',
-                color: mode === 'special' ? '#ffffff' : 'var(--text-muted)',
-                fontWeight: 700,
-                fontSize: '0.84rem',
-                cursor: 'pointer',
-              }}
-            >
-              ⭐ Theo 2 Số Cuối Giải Đặc Biệt
-            </button>
-            <button
-              onClick={() => setMode('loto')}
-              style={{
-                padding: '7px 16px',
-                borderRadius: 'var(--radius-sm)',
-                border: 'none',
-                background: mode === 'loto' ? 'linear-gradient(135deg, #f59e0b, #ef4444)' : 'transparent',
-                color: mode === 'loto' ? '#ffffff' : 'var(--text-muted)',
-                fontWeight: 700,
-                fontSize: '0.84rem',
-                cursor: 'pointer',
-              }}
-            >
-              🎯 Theo 27 Giải (Lô Tô)
-            </button>
-          </div>
-
-          {/* Ô nhập số kiểm tra */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)', fontWeight: 600 }}>
-              {mode === 'special' ? 'Hôm trước 2 số cuối ĐB là:' : 'Hôm trước có số:'}
-            </span>
+        <div className={styles.row} style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginTop: 16 }}>
+          <Tabs<Mode>
+            ariaLabel="Loại điều kiện"
+            value={mode}
+            onChange={setMode}
+            items={[
+              { id: 'special', label: 'Theo 2 số cuối giải Đặc Biệt' },
+              { id: 'loto', label: 'Theo số xuất hiện trong 27 giải' },
+            ]}
+          />
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.85rem', color: 'var(--text-dim)' }}>
+            {mode === 'special' ? 'Hôm trước 2 số cuối ĐB là' : 'Hôm trước có số'}
             <input
               type="text"
+              inputMode="numeric"
               maxLength={2}
               value={selectedNum}
-              aria-label={mode === 'special' ? 'Hôm trước 2 số cuối giải đặc biệt là' : 'Hôm trước có số'}
-              onChange={(e) => {
-                const val = e.target.value.replace(/\D/g, '');
-                setSelectedNum(val);
-              }}
-              style={{
-                width: 60,
-                textAlign: 'center',
-                padding: '6px 10px',
-                borderRadius: 'var(--radius-sm)',
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid var(--accent-gold)',
-                color: 'var(--text-main)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '1.1rem',
-                fontWeight: 800,
-              }}
+              onChange={(e) => setInput(e.target.value.replace(/\D/g, ''))}
+              style={{ width: 60, textAlign: 'center', padding: '6px 10px', borderRadius: 'var(--radius-sm)', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--accent-gold)', color: 'var(--text-main)', fontFamily: 'var(--font-mono)', fontSize: '1.1rem', fontWeight: 800 }}
             />
-            {bacNhoData.metadata.latest_special_2d && (
-              <button
-                onClick={() => setSelectedNum(bacNhoData.metadata.latest_special_2d)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: 'var(--radius-sm)',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--border-subtle)',
-                  color: 'var(--text-muted)',
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                }}
-              >
-                Gần nhất: {bacNhoData.metadata.latest_special_2d} ({bacNhoData.metadata.latest_date})
-              </button>
-            )}
-          </div>
+          </label>
+          <button type="button" className="tab-btn" onClick={() => setInput(null)}>
+            Kỳ mới nhất: {meta.latest_special_2d} ({formatDate(meta.latest_date)})
+          </button>
         </div>
       </div>
 
-      {/* Thông số Trigger & Kết Quả */}
       {currentItem ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {/* Banner Tóm tắt */}
-          <div className="glass-card" style={{
-            padding: 18,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: 16,
-            background: 'var(--bg-card-gradient)',
-            borderLeft: '4px solid #a855f7',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div className="lottery-ball ball-gold" style={{ width: 50, height: 50, fontSize: '1.4rem' }}>
-                {selectedNum.padStart(2, '0')}
-              </div>
-              <div>
-                <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                  {mode === 'special' ? `Khi Giải ĐB về ${selectedNum.padStart(2, '0')}` : `Khi Lô ${selectedNum.padStart(2, '0')} xuất hiện`}
-                </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                  Đã xảy ra <strong>{currentItem.total_triggers} lần</strong> trong 7,500+ kỳ quay XSMB 20 năm qua. Dưới đây là các con số ngày hôm sau hay xuất hiện nhất:
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: 10 }}>
-              <span className="badge badge-normal" style={{ fontSize: '0.82rem' }}>
-                Tần suất mẫu: {currentItem.total_triggers} kỳ
-              </span>
-            </div>
+        <div className={`glass-card ${styles.card}`}>
+          <h3 className={styles.h3}>Sau những ngày {condition}</h3>
+          <div className={styles.kpis}>
+            <div className={styles.kpi}>Số ngày thỏa điều kiện (cỡ mẫu)<strong>{formatInt(currentItem.total_triggers)} ngày</strong></div>
+            <div className={styles.kpi}>Tần suất nền tính trên<strong>{formatInt(meta.base_sample)} ngày</strong></div>
+            <div className={styles.kpi}>p nhỏ nhất (đã hiệu chỉnh 100 phép so sánh)<strong>{formatP(minAdjP)}</strong></div>
           </div>
-
-          {/* Grid Top 10 Followers */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: 16,
-          }}>
-            {followers.map((item, idx) => {
-              const isTop3 = idx < 3;
-              const isGanRisk = item.days_since_last > 10;
-              const isHotCycle = item.days_since_last <= 2;
-
-              return (
-                <div
-                  key={item.number}
-                  className="glass-card hover-glow"
-                  {...clickableDivProps(() => onSelectNumber(item.number))}
-                  style={{
-                    padding: 16,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 12,
-                    border: isTop3 ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid var(--border-subtle)',
-                    background: isTop3 ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(15, 23, 42, 0.6))' : 'var(--bg-glass)',
-                  }}
-                  title="Bấm để xem lịch sử 20 năm chi tiết của số này"
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: isTop3 ? 'var(--accent-gold)' : 'var(--text-dim)', width: 20 }}>
-                        #{idx + 1}
-                      </span>
-                      <div className={`lottery-ball ${isTop3 ? 'ball-gold' : 'ball-slate'}`} style={{ width: 44, height: 44, fontSize: '1.25rem' }}>
-                        {item.number}
-                      </div>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: isTop3 ? 'var(--accent-gold)' : 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
-                        {item.rate}%
-                      </div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
-                        {item.hits} / {currentItem.total_triggers} lần
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Thanh tiến trình tỉ lệ */}
-                  <div>
-                    <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
-                      <div style={{
-                        width: `${Math.min(100, item.rate * 2.5)}%`,
-                        height: '100%',
-                        background: isTop3 ? 'linear-gradient(90deg, #f59e0b, #ef4444)' : 'var(--accent-cyan)',
-                        borderRadius: 3,
-                      }} />
-                    </div>
-                  </div>
-
-                  {/* Footer card: trạng thái gan và nhịp */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem' }}>
-                    <span style={{ color: 'var(--text-dim)' }}>
-                      Gan hiện tại: <strong style={{ color: isGanRisk ? 'var(--accent-rose)' : 'var(--text-main)' }}>{item.days_since_last} ngày</strong>
-                    </span>
-                    {isHotCycle ? (
-                      <span className="badge badge-hot" style={{ fontSize: '0.68rem', padding: '1px 6px' }}>
-                        Đang Nhịp
-                      </span>
-                    ) : isGanRisk ? (
-                      <span className="badge badge-normal" style={{ fontSize: '0.68rem', color: '#fb7185', padding: '1px 6px' }}>
-                        Cảnh Báo Gan
-                      </span>
-                    ) : (
-                      <span style={{ color: 'var(--text-dim)' }}>Khá đều</span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+          {smallSample && (
+            <p className={`${styles.verdict} ${styles.verdictNotable}`}>
+              Cỡ mẫu nhỏ ({currentItem.total_triggers} ngày): khoảng tin cậy rộng, tỷ lệ có điều kiện dao động mạnh. Đừng đọc chênh lệch lớn ở đây như một quy luật.
+            </p>
+          )}
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <caption className="sr-only">10 số có tỷ lệ ngày kế tiếp cao nhất sau những ngày {condition}</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Số</th>
+                  <th>Ngày kế tiếp có số này</th>
+                  <th>Tỷ lệ có điều kiện</th>
+                  <th>Khoảng tin cậy 95%</th>
+                  <th>Tần suất nền</th>
+                  <th>Chênh lệch</th>
+                  <th>p (đã hiệu chỉnh)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {followers.map((f, idx) => {
+                  const diff = f.rate - f.base_rate;
+                  return (
+                    <tr key={f.number}>
+                      <td className={styles.mono}>{idx + 1}</td>
+                      <td><Ball value={f.number} size="sm" tone="slate" onClick={() => onSelectNumber(f.number)} title={`Xem thống kê số ${f.number}`} /></td>
+                      <td className={styles.mono}>{formatInt(f.hits)} / {formatInt(currentItem.total_triggers)}</td>
+                      <td className={styles.mono}><strong>{pct(f.rate)}</strong></td>
+                      <td className={styles.mono}>{pct(f.ci_low)} - {pct(f.ci_high)}</td>
+                      <td className={styles.mono}>{pct(f.base_rate)}</td>
+                      <td className={styles.mono}>{diff >= 0 ? '+' : ''}{diff.toLocaleString('vi-VN', { maximumFractionDigits: 1 })} điểm %</td>
+                      <td className={styles.mono}>{formatP(f.p_value_adjusted)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
+          <Verdict p={minAdjP} label="So với tần suất nền" />
+          <p className={styles.muted} style={{ marginTop: 8 }}>
+            Bảng chỉ hiện 10 số cao nhất trong 100 số, nên tỷ lệ của chúng luôn nhỉnh hơn tần suất nền dù kết quả hoàn toàn ngẫu nhiên. Vì vậy p-value được nhân
+            với 100 (hiệu chỉnh Bonferroni). Khi tần suất nền nằm trong khoảng tin cậy 95%, chênh lệch không khác gì may rủi.
+          </p>
+          <ChartNote
+            sample={`${formatInt(currentItem.total_triggers)} ngày thỏa điều kiện trong ${formatInt(meta.total_draws_analyzed)} kỳ XSMB đến ${formatDate(meta.latest_date)}`}
+          />
         </div>
       ) : (
-        <div className="glass-card" style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)' }}>
-          Không tìm thấy dữ liệu mẫu cho số {selectedNum}. Vui lòng nhập số từ 00 đến 99.
+        <div className={`glass-card ${styles.card}`} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+          Không có dữ liệu cho số {selectedNum || '(trống)'}. Vui lòng nhập số từ 00 đến 99.
         </div>
       )}
     </div>
