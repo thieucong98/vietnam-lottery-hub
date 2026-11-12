@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Ball, Button, Modal, Table, Tabs } from './index';
+import { Ball, Button, Modal, Sheet, Table, Tabs } from './index';
 
 describe('bộ component cơ bản', () => {
   it('Ball hiển thị số 2 chữ số và có nhãn khi bấm được', () => {
@@ -33,6 +33,33 @@ describe('bộ component cơ bản', () => {
     expect(onChange).toHaveBeenCalledWith('b');
   });
 
+  it('Tabs: chỉ tab đang chọn có tabIndex 0, phím mũi tên và End chuyển tab', () => {
+    const onChange = vi.fn();
+    render(
+      <Tabs
+        ariaLabel="Chế độ"
+        value="a"
+        onChange={onChange}
+        panelId="p"
+        items={[
+          { id: 'a', label: 'A' },
+          { id: 'b', label: 'B' },
+          { id: 'c', label: 'C' },
+        ]}
+      />
+    );
+    const a = screen.getByRole('tab', { name: 'A' });
+    expect(a).toHaveAttribute('tabindex', '0');
+    expect(a).toHaveAttribute('aria-controls', 'p');
+    expect(screen.getByRole('tab', { name: 'B' })).toHaveAttribute('tabindex', '-1');
+    fireEvent.keyDown(a, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenLastCalledWith('b');
+    fireEvent.keyDown(a, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenLastCalledWith('c');
+    fireEvent.keyDown(a, { key: 'End' });
+    expect(onChange).toHaveBeenLastCalledWith('c');
+  });
+
   it('Table hiển thị dòng trống khi không có dữ liệu', () => {
     render(<Table columns={[{ key: 'x', header: 'X', render: () => null }]} rows={[]} rowKey={(_, i) => i} emptyText="Trống" />);
     expect(screen.getByText('Trống')).toBeInTheDocument();
@@ -49,5 +76,75 @@ describe('bộ component cơ bản', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
     expect(onClose).toHaveBeenCalledTimes(2);
+  });
+
+  it('Modal trả focus về nút đã mở, kể cả khi bên trong có ô autoFocus', () => {
+    const Demo = () => {
+      const [open, setOpen] = useState(false);
+      return (
+        <>
+          <button onClick={() => setOpen(true)}>Mở</button>
+          <Modal open={open} onClose={() => setOpen(false)} title="Tra cứu">
+            <input autoFocus aria-label="Số" />
+          </Modal>
+        </>
+      );
+    };
+    render(<Demo />);
+    const opener = screen.getByRole('button', { name: 'Mở' });
+    opener.focus();
+    fireEvent.click(opener);
+    expect(screen.getByRole('textbox', { name: 'Số' })).toHaveFocus();
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(opener).toHaveFocus();
+  });
+
+  it('Hai hộp thoại: Esc chỉ đóng hộp thoại trên cùng, khóa cuộn giữ tới khi đóng hết', () => {
+    const closeA = vi.fn();
+    const closeB = vi.fn();
+    document.body.style.overflow = 'auto';
+    const { rerender } = render(
+      <>
+        <Modal open onClose={closeA} title="A">a</Modal>
+        <Sheet open onClose={closeB} title="B">b</Sheet>
+      </>
+    );
+    expect(document.body.style.overflow).toBe('hidden');
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(closeB).toHaveBeenCalledOnce();
+    expect(closeA).not.toHaveBeenCalled();
+
+    // Đóng A trước khi đóng B: trang vẫn khóa cuộn
+    rerender(
+      <>
+        <Modal open={false} onClose={closeA} title="A">a</Modal>
+        <Sheet open onClose={closeB} title="B">b</Sheet>
+      </>
+    );
+    expect(document.body.style.overflow).toBe('hidden');
+    rerender(
+      <>
+        <Modal open={false} onClose={closeA} title="A">a</Modal>
+        <Sheet open={false} onClose={closeB} title="B">b</Sheet>
+      </>
+    );
+    expect(document.body.style.overflow).toBe('auto');
+  });
+
+  it('Bấm nền đóng hộp thoại, kéo chọn chữ từ trong ra nền thì không', () => {
+    const onClose = vi.fn();
+    render(
+      <Modal open onClose={onClose} title="Tiêu đề">
+        nội dung
+      </Modal>
+    );
+    const overlay = screen.getByRole('dialog').parentElement!;
+    fireEvent.mouseDown(screen.getByText('nội dung'));
+    fireEvent.click(overlay);
+    expect(onClose).not.toHaveBeenCalled();
+    fireEvent.mouseDown(overlay);
+    fireEvent.click(overlay);
+    expect(onClose).toHaveBeenCalledOnce();
   });
 });

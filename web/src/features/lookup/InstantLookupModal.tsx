@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Search, Trophy, Layers } from 'lucide-react';
-import { Ball, Modal, Tabs } from '../../ui';
+import { Ball, Modal, Tabs, tabId } from '../../ui';
 import type { LookupMode } from '../../app/routes';
 import { useInstantLookup } from './useInstantLookup';
 import { SingleNumberPanel } from './SingleNumberPanel';
@@ -19,10 +19,12 @@ const SINGLE_LABEL = {
 export const InstantLookupModal: React.FC<InstantLookupModalProps> = (props) => {
   const model = useInstantLookup(props);
   const { activeTabMode, setActiveTabMode, selectedGame, isVietlott } = model;
+  const panelId = useId();
 
   const tabs = (
     <Tabs<LookupMode>
       ariaLabel="Chế độ tra cứu"
+      panelId={panelId}
       value={activeTabMode}
       onChange={setActiveTabMode}
       items={[
@@ -56,9 +58,11 @@ export const InstantLookupModal: React.FC<InstantLookupModalProps> = (props) => 
       }
       toolbar={tabs}
     >
-      {activeTabMode === 'single' && <SingleNumberPanel model={model} />}
-      {activeTabMode === 'combination' && <CombinationPanel model={model} />}
-      {activeTabMode === 'pair' && <PairPanel model={model} />}
+      <div role="tabpanel" id={panelId} aria-labelledby={tabId(panelId, activeTabMode)}>
+        {activeTabMode === 'single' && <SingleNumberPanel model={model} />}
+        {activeTabMode === 'combination' && <CombinationPanel model={model} />}
+        {activeTabMode === 'pair' && <PairPanel model={model} />}
+      </div>
     </Modal>
   );
 };

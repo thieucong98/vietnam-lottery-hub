@@ -99,7 +99,7 @@ Plugin Vite đọc JSON trong `public/data` và ghi vào `dist/bundles/`. Các f
 | --- | --- | --- | --- |
 | `xsmb_draws_recent.json` | 30 kỳ đầu của `xsmb_recent_draws.json`, dạng mảng | ~5 KB | Trang chủ |
 | `xsmb_draws.json` | 365 kỳ, dạng mảng | ~54 KB (gzip ~24 KB) | Tab lịch sử XSMB, URL ngày cũ |
-| `xsmb_stats.json`, `vietlott_6x5_stats.json` | `*_index.json` bỏ `recent_history`, `top_pairs`, `yearly_distribution` | 11-30 KB | Ma trận nhiệt, bảng số lâu chưa về, bộ lọc |
+| `xsmb_stats.json`, `vietlott_655_stats.json`, `vietlott_645_stats.json` | `*_index.json` bỏ `recent_history`, `top_pairs`, `yearly_distribution` | 11-30 KB | Ma trận nhiệt, bảng số lâu chưa về, bộ lọc |
 | `detail/<game>/<số>.json` | Một số trong `*_index.json` | ~3 KB | Hộp thoại tra cứu một số |
 | `vietlott_655_draws.json`, `vietlott_645_draws.json` | Tách từ `vietlott_full_draws.json` | 86-107 KB | Dò bộ số, lịch sử Vietlott |
 
@@ -111,8 +111,9 @@ Lưu ý khi chạy Docker với `docker-compose.yml`: thư mục `public/data` �
 
 ```ts
 import { useDataset, useJson } from '../data/useData';
+import { numberDetailUrl } from '../data/datasets';
 
-const summary = useDataset('summary');                 // { data, error, loading }
+const summary = useDataset('summary');                 // { data, error, loading, retry }
 const stats = useDataset('xsmbStats', inView);         // enabled = false để hoãn tải
 const detail = useJson<NumberDetail>(numberDetailUrl('xsmb', '68'));
 ```
@@ -161,12 +162,14 @@ Nhận mọi thuộc tính của `<button>`; `type` mặc định là `"button"`
   ariaLabel="Chế độ tra cứu"
   value={mode}
   onChange={setMode}
+  panelId={panelId}                     // id của role="tabpanel" (tùy chọn, nên có)
   fill                                  // chia đều chiều ngang (tùy chọn)
   items={[{ id: 'single', label: 'Đơn số', icon: <Search size={15} /> }, ...]}
 />
+<div role="tabpanel" id={panelId} aria-labelledby={tabId(panelId, mode)}>...</div>
 ```
 
-Có `role="tablist"` / `role="tab"` / `aria-selected`.
+Theo mẫu ARIA tabs: `role="tablist"` / `role="tab"` / `aria-selected` / `aria-controls`; chỉ tab đang chọn nằm trong thứ tự Tab, phím mũi tên trái/phải, Home, End chuyển và chọn tab.
 
 ### Ball
 
@@ -203,11 +206,11 @@ Có `role="tablist"` / `role="tab"` / `aria-selected`.
 | `toolbar` | `ReactNode` | Thanh dưới tiêu đề, thường là `Tabs` |
 | `size` | `'sm' \| 'md' \| 'lg'` | 520 / 720 / 960 px; dưới 640 px chiếm toàn màn hình |
 
-Khi mở: khóa cuộn trang nền, đưa focus vào hộp thoại, trả focus khi đóng (`ui/useDialogBehavior.ts`).
+Khi mở: khóa cuộn trang nền, đưa focus vào hộp thoại, giữ Tab / Shift+Tab trong hộp thoại, trả focus về phần tử đã mở nó khi đóng (`ui/useDialogBehavior.ts`). Khi có nhiều hộp thoại cùng mở, chỉ hộp thoại trên cùng nhận Esc và Tab (thứ tự theo `layer`: Modal 100, cổng 18+ 105, pháp lý 110); khóa cuộn chỉ gỡ khi hộp thoại cuối cùng đóng. Bấm nền chỉ đóng khi nhấn và thả chuột đều trên nền.
 
 ### Sheet
 
-Bảng trượt từ đáy màn hình cho menu và bộ lọc trên di động. Props: `open`, `onClose`, `title`, `subtitle`, `children`. Hành vi Esc / focus giống `Modal`.
+Bảng trượt từ đáy màn hình, dành cho menu và bộ lọc trên di động (chưa có màn hình nào dùng; menu "Thêm" của `MobileBottomNav` vẫn là bản riêng, chuyển sang `Sheet` ở Phase 2). Props: `open`, `onClose`, `title`, `subtitle`, `children`, `className`. Hành vi Esc / focus / khóa cuộn giống `Modal`.
 
 ### useControllableState
 

@@ -41,7 +41,7 @@ Trong `daily-crawler.yml` bước này chạy trước bước commit, nên dữ
 - `max_raw` / `max_gzip`: vượt là CI fail.
 - `target_*`: chỉ cảnh báo.
 
-"Dữ liệu lúc mở trang" (`initial_data`) là các tệp trong `initial_data_files` của `size-budget.json`, đo trên bản build (`web/dist`): `data/summary.json` và `bundles/xsmb_draws_recent.json`. Ngưỡng là tiêu chí Phase 1 (< 100 KB). Khi đổi dữ liệu trang chủ tải lúc mở (`web/src/pages/XsmbPage.tsx`), cập nhật danh sách này; smoke test Playwright đo lại bằng request thật. `largest_bundle_file` giới hạn từng gói dữ liệu sinh lúc build (`web/build/dataBundles.ts`, xem `docs/frontend-architecture.md`).
+"Dữ liệu lúc mở trang" (`initial_data`) là các tệp trong `initial_data_files` của `size-budget.json`, đo trên bản build (`web/dist`): `data/summary.json` và `bundles/xsmb_draws_recent.json`. Ngưỡng là tiêu chí Phase 1 (< 100 KB). Khi đổi dữ liệu trang chủ tải lúc mở (`summary.json` tải ở `web/src/App.tsx` qua `pages/useSummary.ts`, phần còn lại ở `web/src/pages/XsmbPage.tsx`), cập nhật danh sách này; smoke test Playwright đo lại bằng request thật. `required_bundle_files` liệt kê các gói bắt buộc phải có trong bản build (thiếu thì exit 2). `largest_bundle_file` giới hạn từng gói dữ liệu sinh lúc build (`web/build/dataBundles.ts`, xem `docs/frontend-architecture.md`).
 
 ```bash
 python scripts/check_size_budget.py --only data
