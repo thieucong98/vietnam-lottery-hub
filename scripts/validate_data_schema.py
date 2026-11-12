@@ -36,6 +36,7 @@ FILE_SCHEMAS = {
     "vietlott_full_draws.json": "vietlott_full_draws.schema.json",
     "vietlott_cooccurrence.json": "vietlott_cooccurrence.schema.json",
     "xsmb_recent_draws.json": "xsmb_recent_draws.schema.json",
+    "jackpot.json": "jackpot.schema.json",
 }
 
 # Thư mục history -> (schema, danh sách số phải có)
