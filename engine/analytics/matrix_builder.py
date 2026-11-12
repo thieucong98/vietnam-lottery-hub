@@ -42,7 +42,7 @@ class MatrixBuilder:
         df_2digits.to_parquet(two_digits_parquet, index=False)
         logger.info(f"Đã tạo {two_digits_csv} và {two_digits_parquet}")
 
-        # 3. Xây dựng xsmb-sparse (Mỗi dòng là 1 ngày, các cột từ 0..99 là số nháy lô về ngày đó)
+        # 3. Xây dựng xsmb-sparse (Mỗi dòng là 1 ngày, các cột từ 0..99 là số lần xuất hiện trong ngày đó)
         dates = df_2digits["date"].values
         n_days = len(dates)
         sparse_arr = np.zeros((n_days, 100), dtype=np.int16)

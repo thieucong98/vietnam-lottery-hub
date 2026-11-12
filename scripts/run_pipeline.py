@@ -145,7 +145,7 @@ def main():
         generate_ml_insights()
         logger.info("-> Xuất báo cáo AI & Backtest thành công.")
     except Exception as e:
-        logger.error(f"Lỗi khi tạo dự đoán ML: {e}")
+        logger.error(f"Lỗi khi tạo bộ số mẫu & backtest: {e}")
 
     # 8. Render README
     logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")

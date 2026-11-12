@@ -11,7 +11,7 @@ class FrequencyStrategy(BaseStrategy):
         super().__init__(name=f"Frequency (N={window})")
         self.window = window
 
-    def predict(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
+    def pick(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
         recent_draws = history[-self.window:] if len(history) >= self.window else history
         counts = Counter()
         for draw in recent_draws:
@@ -26,12 +26,12 @@ class FrequencyStrategy(BaseStrategy):
         return sorted(most_common)
 
 class LongAbsenceStrategy(BaseStrategy):
-    """Chiến lược Cầu Gan: Chọn các số có thời gian vắng mặt lâu nhất (lô gan)."""
+    """Chiến lược Số lâu chưa về: Chọn các số có thời gian vắng mặt lâu nhất."""
 
     def __init__(self):
-        super().__init__(name="Long Absence (Lô Gan)")
+        super().__init__(name="Long Absence (Số lâu chưa về)")
 
-    def predict(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
+    def pick(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
         last_seen = {num: -1 for num in range(1, max_number + 1)}
         for idx, draw in enumerate(history):
             for num in draw:
@@ -50,7 +50,7 @@ class ExponentialDecayStrategy(BaseStrategy):
         super().__init__(name=f"Exponential Decay (\u03bb={decay_rate})")
         self.decay_rate = decay_rate
 
-    def predict(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
+    def pick(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
         scores = np.zeros(max_number + 1, dtype=float)
         total_draws = len(history)
         for idx, draw in enumerate(history):
@@ -67,7 +67,7 @@ class MarkovChainStrategy(BaseStrategy):
     def __init__(self):
         super().__init__(name="Markov Chain (Bậc 1)")
 
-    def predict(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
+    def pick(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
         if len(history) < 2:
             return sorted(list(range(1, k + 1)))
 
@@ -96,7 +96,7 @@ class RandomStrategy(BaseStrategy):
     def __init__(self):
         super().__init__(name="Random Baseline")
 
-    def predict(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
+    def pick(self, history: List[List[int]], k: int = 6, max_number: int = 55) -> List[int]:
         nums = list(range(1, max_number + 1))
         np.random.shuffle(nums)
         return sorted(nums[:k])

@@ -32,7 +32,7 @@ export interface NumberDetail {
   recent_history: NumberAppearance[];
 }
 
-export interface XienPairResult {
+export interface CoOccurrencePairResult {
   num1: string;
   num2: string;
   total_co_hits: number;
@@ -125,9 +125,9 @@ export interface LotteryIndexData {
   numbers: Record<string, NumberDetail>;
 }
 
-export interface MLPrediction {
+export interface MLSampleSet {
   name: string;
-  predicted_numbers: string[];
+  sample_picks: string[];
   description: string;
 }
 
@@ -140,11 +140,15 @@ export interface BacktestItem {
   hit_rate_at_least_4: string;
 }
 
+// ml_insights.json schema v2 (engine/ml/render_insights.py)
 export interface MLInsightsData {
+  schema_version: number;
   product: string;
   latest_id: string;
   latest_date: string;
-  predictions: MLPrediction[];
+  disclaimer: string;
+  jackpot_odds: string;
+  sample_sets: MLSampleSet[];
   backtest_report: BacktestItem[];
 }
 

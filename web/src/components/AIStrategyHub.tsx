@@ -14,7 +14,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
   if (!mlData) {
     return (
       <div className="glass-card" style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
-        Đang tải phân tích AI & Backtest...
+        Đang tải bộ số mẫu & Backtest...
       </div>
     );
   }
@@ -30,34 +30,38 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
           <Brain size={26} color="var(--accent-purple)" />
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
-            HỆ THỐNG PHÂN TÍCH THUẬT TOÁN AI & KIỂM THỬ BACKTEST
+            PHÒNG THÍ NGHIỆM THUẬT TOÁN & KIỂM THỬ BACKTEST
           </h2>
         </div>
         <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', maxWidth: 850 }}>
-          Hệ thống áp dụng các mô hình xác suất thống kê hiện đại (Chuỗi Markov, Suy giảm số mũ Exponential Decay, Tần suất trượt) để phân tích phân phối kỳ quay tiếp theo, đồng thời kiểm định (Backtesting) minh bạch so với kết quả ngẫu nhiên để đảm bảo tính khách quan.
+          Trang này minh họa cách một số thuật toán thống kê (Chuỗi Markov, Suy giảm số mũ, Tần suất trượt) chọn số từ dữ liệu lịch sử, và đo lại kết quả của chúng trên các kỳ đã quay so với cách chọn ngẫu nhiên. Kết quả backtest cho thấy không thuật toán nào vượt trội so với chọn ngẫu nhiên.
         </p>
       </div>
 
-      {/* Grid 4 Chiến lược Dự đoán */}
+      {/* Grid 4 bộ số mẫu theo thuật toán (chỉ minh họa) */}
       <div>
         <h3 style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
           <Sparkles size={18} color="var(--accent-gold)" />
-          Bộ Số Gợi Ý Dựa Trên Thuật Toán Cho Kỳ Tiếp Theo ({mlData.product})
+          Bộ Số Mẫu Theo Thuật Toán (Chỉ Minh Họa) – {mlData.product}
         </h3>
 
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 14 }}>
+          {mlData.disclaimer} Xác suất trúng Jackpot 1 của mọi bộ 6 số luôn là <strong>{mlData.jackpot_odds}</strong>.
+        </p>
+
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-          {mlData.predictions.map((p, idx) => (
+          {mlData.sample_sets.map((p, idx) => (
             <div key={idx} className="glass-card" style={{ padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                 <span style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>{p.name}</span>
-                <span className="badge badge-hot" style={{ fontSize: '0.68rem' }}>MÔ HÌNH #{idx + 1}</span>
+                <span className="badge badge-hot" style={{ fontSize: '0.68rem' }}>MẪU #{idx + 1}</span>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginBottom: 16 }}>
                 {p.description}
               </p>
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {p.predicted_numbers.map((num) => (
+                {p.sample_picks.map((num) => (
                   <div
                     key={num}
                     className="lottery-ball ball-gold"
@@ -112,7 +116,6 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
                     }}
                   >
                     <td style={{ padding: '12px 14px', fontWeight: 700, color: idx === 0 ? 'var(--accent-gold)' : (isRandom ? 'var(--text-dim)' : '#ffffff') }}>
-                      {idx === 0 && '👑 '}
                       {item.strategy_name}
                       {isRandom && ' (Đối chứng)'}
                     </td>
@@ -153,7 +156,7 @@ export const AIStrategyHub: React.FC<AIStrategyHubProps> = ({
       }}>
         <ShieldCheck size={20} color="var(--accent-emerald)" style={{ flexShrink: 0 }} />
         <span>
-          <strong>Lưu ý khoa học:</strong> Xổ số là trò chơi may rủi độc lập (I.I.D). Mọi dự đoán và phân tích chỉ mang tính chất nghiên cứu thống kê thực nghiệm và tham khảo giải trí, không đảm bảo trúng thưởng 100%. Hãy chơi có trách nhiệm và vui vẻ!
+          <strong>Lưu ý khoa học:</strong> Xổ số là trò chơi may rủi độc lập (I.I.D). Bộ số mẫu và bảng backtest chỉ là thống kê mô tả dữ liệu lịch sử. Không thuật toán nào làm tăng xác suất trúng. Hãy chơi có trách nhiệm.
         </span>
       </div>
     </div>

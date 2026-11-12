@@ -12,7 +12,7 @@ from engine.ml.strategies.all_strategies import (
 )
 
 class BacktestEngine:
-    """Kiểm thử hiệu suất các chiến lược dự đoán trên dữ liệu lịch sử thực tế."""
+    """Đo số trùng khớp của các thuật toán chọn số mẫu trên dữ liệu lịch sử, so với baseline ngẫu nhiên."""
 
     def __init__(self, strategies: List[BaseStrategy] = None):
         self.strategies = strategies or [
@@ -41,10 +41,10 @@ class BacktestEngine:
                 hist_up_to_t = draws[:t]
                 actual_draw = set(draws[t][:k])
 
-                pred = strat.predict(hist_up_to_t, k=k, max_number=max_number)
-                pred_set = set(pred)
+                picks = strat.pick(hist_up_to_t, k=k, max_number=max_number)
+                pick_set = set(picks)
 
-                common = len(actual_draw.intersection(pred_set))
+                common = len(actual_draw.intersection(pick_set))
                 match_counts.append(common)
                 if common >= 3:
                     hits_at_least_3 += 1

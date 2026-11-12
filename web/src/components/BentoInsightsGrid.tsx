@@ -31,7 +31,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
   onViewAllHeatmap,
   onViewAI,
 }) => {
-  // 1. Phân tích Top Cầu Nóng (Hot Numbers 100 ngày)
+  // 1. Top số xuất hiện nhiều (Hot Numbers 100 ngày)
   const topHotNumbers = useMemo(() => {
     return (xsmbData?.top_frequent || []).slice(0, 3);
   }, [xsmbData]);
@@ -69,17 +69,17 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
       }
     });
 
-    // Trích xuất dự đoán từ AI Model (Markov / Frequency)
-    const markovPred = mlData?.predictions?.find((p) => p.name.includes('Markov')) || mlData?.predictions?.[0];
-    const topPredictions = markovPred ? markovPred.predicted_numbers.slice(0, 4) : ['11', '22', '33', '44'];
+    // Bộ số mẫu theo thuật toán Markov (chỉ minh họa)
+    const markovSample = mlData?.sample_sets?.find((p) => p.name.includes('Markov')) || mlData?.sample_sets?.[0];
+    const sampleNumbers = markovSample ? markovSample.sample_picks.slice(0, 4) : [];
 
     return {
       maxHead,
       maxHeadCount,
       evenCount,
       oddCount,
-      topPredictions,
-      markovName: markovPred?.name || 'Mô hình Markov Bậc 1',
+      sampleNumbers,
+      markovName: markovSample?.name || 'Mô hình Markov Bậc 1',
     };
   }, [summaryData, mlData]);
 
@@ -87,7 +87,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
 
   return (
     <div className="bento-grid bento-grid-3 animate-fade-in" style={{ width: '100%' }}>
-      {/* THẺ 1: TOP CẦU NÓNG HÔM NAY (HOT NUMBERS) */}
+      {/* THẺ 1: TOP SỐ XUẤT HIỆN NHIỀU (HOT NUMBERS) */}
       <div className="bento-card">
         <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
@@ -96,7 +96,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                 <Flame size={18} color="#0f172a" />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Cầu Số Nổi Bật</h3>
+                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Số Xuất Hiện Nhiều</h3>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tần suất cao nhất 100 kỳ qua</span>
               </div>
             </div>
@@ -131,7 +131,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                     </div>
                     <div>
                       <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
-                        Nổ <strong>{freq}</strong> nháy
+                        Về <strong>{freq}</strong> lần
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
                         Tổng 20 năm: {item.total_hits.toLocaleString()} lần
@@ -141,7 +141,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
 
                   <div style={{ textAlign: 'right' }}>
                     <span className="badge badge-normal" style={{ color: 'var(--accent-gold)', borderColor: 'rgba(245, 158, 11, 0.3)' }}>
-                      {rate}% kỳ nổ
+                      {rate}% số kỳ
                     </span>
                   </div>
                 </div>
@@ -273,7 +273,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               </div>
               <div>
                 <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Bản Tin Toán Học</h3>
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tóm tắt dữ liệu & xác suất AI</span>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tóm tắt thống kê kỳ gần nhất</span>
               </div>
             </div>
             <span className="badge badge-normal" style={{ fontSize: '0.68rem', color: 'var(--accent-emerald)', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
@@ -297,7 +297,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                   <span>Mật Độ Đầu Lô Tô</span>
                 </div>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  Đầu <strong>{dailyInsights.maxHead}</strong> có mật độ cao nhất kỳ qua với <strong>{dailyInsights.maxHeadCount} nháy</strong>.
+                  Đầu <strong>{dailyInsights.maxHead}</strong> có mật độ cao nhất kỳ qua với <strong>{dailyInsights.maxHeadCount} lần</strong>.
                 </p>
               </div>
 
@@ -330,10 +330,10 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 700, color: '#fbbf24', marginBottom: 4 }}>
                   <Sparkles size={14} />
-                  <span>Gợi Ý Chuyển Dịch Markov</span>
+                  <span>Bộ Số Mẫu Markov (Chỉ Minh Họa, Vietlott 6/55)</span>
                 </div>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  {dailyInsights.topPredictions.map((num, i) => (
+                  {dailyInsights.sampleNumbers.map((num, i) => (
                     <span
                       key={i}
                       onClick={() => onSelectNumber(num)}
@@ -375,7 +375,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
             padding: '4px 0',
           }}
         >
-          <span>Khám phá phòng Lab AI & Backtest</span>
+          <span>Xem phòng thí nghiệm thuật toán & Backtest</span>
           <ArrowRight size={14} />
         </button>
       </div>
