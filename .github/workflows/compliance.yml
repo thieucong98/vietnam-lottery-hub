@@ -55,14 +55,42 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'web/package-lock.json'
 
-      - name: 7. Build Web & lint bản build
-        run: |
-          cd web
-          npm ci
-          npm run build
-          cd ..
-          python scripts/compliance_lint.py web/dist
+      - name: 7. Cài đặt dependencies Web
+        working-directory: web
+        run: npm ci
 
-      - name: 8. Budget kích thước bundle
-        run: |
-          python scripts/check_size_budget.py --only bundle
+      - name: 8. ESLint
+        working-directory: web
+        run: npm run lint
+
+      - name: 9. Vitest (utils, logic dò vé, URL, gói dữ liệu, component cơ bản)
+        working-directory: web
+        run: npm test
+
+      - name: 10. Build Web
+        working-directory: web
+        run: npm run build
+
+      - name: 11. Budget kích thước bản build (dữ liệu lúc mở trang < 100 KB, gói dữ liệu, JS, CSS)
+        run: python scripts/check_size_budget.py --only bundle
+
+      - name: 12. Compliance lint trên bản build
+        run: python scripts/compliance_lint.py web/dist
+
+      - name: 13. Cài đặt trình duyệt Playwright
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: 14. Playwright smoke test (5 luồng chính, desktop + mobile)
+        working-directory: web
+        run: npm run test:e2e
+
+      - name: 15. Lưu báo cáo Playwright khi lỗi
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            web/playwright-report
+            web/test-results
+          retention-days: 7

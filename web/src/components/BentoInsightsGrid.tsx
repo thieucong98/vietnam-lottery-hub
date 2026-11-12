@@ -7,8 +7,6 @@ import {
   TrendingUp,
   Sparkles,
   BarChart3,
-  Calendar,
-  Zap,
 } from 'lucide-react';
 import { SummaryData, MLInsightsData, LotteryIndexData } from '../types';
 
@@ -33,13 +31,13 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
 }) => {
   // 1. Top số xuất hiện nhiều (Hot Numbers 100 ngày)
   const topHotNumbers = useMemo(() => {
-    return (xsmbData?.top_frequent || []).slice(0, 3);
-  }, [xsmbData]);
+    return (xsmbData?.top_frequent || summaryData?.xsmb_top_frequent || []).slice(0, 3);
+  }, [xsmbData, summaryData]);
 
   // 2. Phân tích Top Lô Gan & Tiến độ chạm kỷ lục
   const topGanNumbers = useMemo(() => {
-    return (xsmbData?.top_gan || []).slice(0, 3);
-  }, [xsmbData]);
+    return (xsmbData?.top_gan || summaryData?.xsmb_top_gan || []).slice(0, 3);
+  }, [xsmbData, summaryData]);
 
   // 3. Data Storytelling: Tự động phân tích câu chuyện dữ liệu hôm nay
   const dailyInsights = useMemo(() => {

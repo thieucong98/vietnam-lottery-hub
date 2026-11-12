@@ -322,10 +322,17 @@ uv run pytest
 # Kiểm tra cú pháp và định dạng mã nguồn Python
 uv run ruff check .
 
-# Kiểm tra TypeScript và Build Frontend
+# Frontend: lint, unit test (Vitest), build, ngân sách dung lượng, smoke test (Playwright)
 cd web
+npm run lint
+npm test
 npm run build
+python3 ../scripts/check_size_budget.py --only bundle
+npx playwright install --with-deps chromium   # lần đầu
+npm run test:e2e
 ```
+
+Cấu trúc thư mục frontend, bảng URL, cách tải dữ liệu theo màn hình và API của bộ component (`web/src/ui`) được mô tả trong [docs/frontend-architecture.md](docs/frontend-architecture.md).
 
 ---
 

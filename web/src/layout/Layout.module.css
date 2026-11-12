@@ -1,0 +1,168 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+  min-height: 100vh;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+@media (max-width: 899px) {
+  .main { padding-bottom: 88px; }
+}
+
+/* Hero */
+.hero {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.5));
+}
+.heroTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.heroTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+.heroText {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.kbd {
+  font-size: 0.72rem;
+  opacity: 0.8;
+  padding: 1px 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+.legalButton {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+/* Nút tra cứu nổi (desktop) */
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 40;
+  padding: 14px 22px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4), 0 0 20px rgba(239, 68, 68, 0.3);
+}
+.fab:hover { transform: translateY(-3px) scale(1.03); }
+
+/* Footer */
+.footer {
+  margin-top: 60px;
+  border-top: 1px solid var(--border-subtle);
+  padding: 40px 20px 24px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: rgba(5, 8, 15, 0.98);
+}
+.footerGrid {
+  max-width: 1400px;
+  margin: 0 auto 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+.footerHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+.footerText {
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.footerBadges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.badgeEmerald {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
+}
+.badgeCyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 4px;
+}
+.footerList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.footerBar {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+  margin-right: 6px;
+}
+.footerLink {
+  color: var(--accent-emerald);
+  text-decoration: none;
+}
+.smallBall {
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+}

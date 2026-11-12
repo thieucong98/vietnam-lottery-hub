@@ -2,7 +2,7 @@
 
 - Mỗi tệp JSON được kiểm tra theo schema trong schemas/data (JSON Schema 2020-12).
 - Thư mục history/ phải đủ bộ tệp 00-99 (XSMB), 01-55 (6/55), 01-45 (6/45).
-- Mọi tệp ./data/*.json mà web/src gọi fetch phải tồn tại.
+- Mọi tệp ./data/*.json mà web/src tải (fetch('./data/...') hoặc dataUrl('...')) phải tồn tại.
 - Kiểm tra chéo: kỳ mới nhất trong summary.json khớp với các tệp chỉ mục.
 
 Thoát với mã 1 nếu có lỗi.
@@ -46,7 +46,9 @@ HISTORY_SETS = {
 }
 
 MAX_ERRORS_PER_FILE = 5
-FETCH_RE = re.compile(r"""fetch\(\s*[`'"]\./data/([\w./-]+\.json)[`'"]""")
+FETCH_RE = re.compile(
+    r"""(?:fetch\(\s*[`'"]\./data/|dataUrl\(\s*[`'"])([\w./${}-]+\.json)[`'"]"""
+)
 
 def load_validator(name: str) -> Draft202012Validator:
     schema = json.loads((SCHEMA_DIR / name).read_text(encoding="utf-8"))
@@ -69,7 +71,7 @@ def validate_file(path: Path, validator: Draft202012Validator, data_dir: Path) -
     return out
 
 def fetched_files(src_dir: Path) -> set[str]:
-    """Tệp ./data/*.json được gọi cố định trong mã frontend (bỏ qua đường dẫn có biến)."""
+    """Tệp ./data/*.json được tải cố định trong mã frontend (bỏ qua đường dẫn có biến)."""
     names: set[str] = set()
     for p in src_dir.rglob("*.ts*"):
         for m in FETCH_RE.finditer(p.read_text(encoding="utf-8")):

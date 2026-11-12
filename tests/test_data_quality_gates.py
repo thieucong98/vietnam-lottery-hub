@@ -73,6 +73,52 @@ def test_budget_passes_for_current_data():
     failures, _ = budget.evaluate(measures, cfg["budgets"])
     assert failures == []
 
-def test_budget_reads_initial_files_from_app():
-    names = budget.initial_data_files([ROOT / "web" / "src" / "App.tsx"])
-    assert names[0] == "summary.json"
+def _fake_dist(root: Path) -> Path:
+    dist = root / "dist"
+    (dist / "assets").mkdir(parents=True)
+    (dist / "data").mkdir()
+    (dist / "bundles").mkdir()
+    (dist / "index.html").write_text('<script type="module" src="./assets/index-abc.js"></script>', encoding="utf-8")
+    (dist / "assets" / "index-abc.js").write_text("console.log(1)", encoding="utf-8")
+    (dist / "assets" / "index-abc.css").write_text("a{}", encoding="utf-8")
+    (dist / "data" / "summary.json").write_text("{}", encoding="utf-8")
+    (dist / "bundles" / "xsmb_draws_recent.json").write_text('{"draws":[]}', encoding="utf-8")
+    return dist
+
+def test_budget_measures_initial_data_from_dist(tmp_path):
+    cfg = json.loads((ROOT / "size-budget.json").read_text(encoding="utf-8"))
+    cfg["required_bundle_files"] = ["bundles/xsmb_draws_recent.json"]
+    measures = {m.name: m for m in budget.measure_bundle(cfg, _fake_dist(tmp_path))}
+    assert measures["initial_data"].raw == len("{}") + len('{"draws":[]}')
+    assert measures["largest_bundle_file"].detail == "bundles/xsmb_draws_recent.json"
+
+def test_budget_fails_when_initial_file_missing(tmp_path):
+    dist = _fake_dist(tmp_path)
+    (dist / "bundles" / "xsmb_draws_recent.json").unlink()
+    with pytest.raises(FileNotFoundError):
+        budget.measure_bundle({"initial_data_files": ["bundles/xsmb_draws_recent.json"]}, dist)
+
+def test_initial_data_target_is_phase1_criterion():
+    cfg = json.loads((ROOT / "size-budget.json").read_text(encoding="utf-8"))
+    assert cfg["budgets"]["initial_data"]["max_raw"] <= 100 * 1024
+
+def test_schema_detects_frontend_data_files():
+    names = schema.fetched_files(ROOT / "web" / "src")
+    assert {"summary.json", "ml_insights.json", "bac_nho.json", "vietlott_cooccurrence.json"} <= names
+    assert not any("${" in n for n in names)
+
+def test_budget_fails_when_required_bundle_missing(tmp_path):
+    dist = _fake_dist(tmp_path)
+    cfg = {"initial_data_files": ["data/summary.json"], "required_bundle_files": ["bundles/xsmb_stats.json"]}
+    with pytest.raises(FileNotFoundError, match="xsmb_stats.json"):
+        budget.measure_bundle(cfg, dist)
+
+def test_budget_fails_without_css(tmp_path):
+    dist = _fake_dist(tmp_path)
+    (dist / "assets" / "index-abc.css").unlink()
+    with pytest.raises(FileNotFoundError, match="CSS"):
+        budget.measure_bundle({"initial_data_files": ["data/summary.json"]}, dist)
+
+def test_budget_fails_for_empty_data_dir(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        budget.measure_data({}, tmp_path)

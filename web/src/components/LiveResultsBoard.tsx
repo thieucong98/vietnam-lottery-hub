@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar, Trophy, Sparkles, ChevronRight, ChevronLeft, Award, Flame, Dice5 } from 'lucide-react';
-import { LatestDrawXSMB, LatestDrawVietlott, LatestDraw3D, LatestDrawKeno } from '../types';
+import { Calendar, Trophy, Sparkles, ChevronRight, ChevronLeft, Flame, Dice5 } from 'lucide-react';
+import { LatestDrawXSMB, LatestDraw3D, LatestDrawKeno } from '../types';
 import { OfficialResultsLink } from './OfficialResultsLink';
 
 interface LiveResultsBoardProps {

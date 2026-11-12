@@ -1,0 +1,34 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.fallback {
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 340px;
+}
+.fallbackBall {
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  animation: pulse-ring 1.5s infinite;
+}
+.fallbackLine { width: 220px; height: 16px; }
+.fallbackLineShort { width: 140px; height: 12px; }
+.notice {
+  padding: 16px 20px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+.noticeWarn {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: var(--accent-gold-light);
+}
+.lazyBlock {
+  min-height: 200px;
+}

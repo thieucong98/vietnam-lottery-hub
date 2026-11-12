@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { BacNhoData, BacNhoItem } from '../types';
-import { Sparkles, Brain, Flame, Calendar, Award, Copy, Check, Info, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Brain, Copy, Check } from 'lucide-react';
 
 interface BacNhoHubProps {
   bacNhoData: BacNhoData | null;

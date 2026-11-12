@@ -102,8 +102,12 @@ export interface LatestDrawKeno {
 
 export interface SummaryData {
   xsmb_latest?: LatestDrawXSMB;
+  xsmb_top_gan?: TopGanItem[];
+  xsmb_top_frequent?: TopFreqItem[];
   vietlott_655_latest?: LatestDrawVietlott;
+  vietlott_655_top_gan?: TopGanItem[];
   vietlott_645_latest?: LatestDrawVietlott;
+  vietlott_645_top_gan?: TopGanItem[];
   vietlott_3d_latest?: LatestDraw3D;
   vietlott_3d_pro_latest?: LatestDraw3D;
   vietlott_keno_latest?: LatestDrawKeno;

@@ -1,0 +1,493 @@
+.text1Muted {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.opacity03Mb12 {
+  opacity: 0.3;
+  margin-bottom: 12px;
+}
+
+.alignCenterPad40x20Dim {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-dim);
+}
+
+.text085 {
+  font-size: 0.85rem;
+}
+
+.text11Mb8 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.alignCenterPad24Dim {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-dim);
+}
+
+.dimText075 {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+.text075DimMr4 {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-right: 4px;
+}
+
+.rowCenterGap6 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pad8x10 {
+  padding: 8px 10px;
+}
+
+.text072 {
+  font-size: 0.72rem;
+}
+
+.text072BgGradientBlack {
+  font-size: 0.72rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000000;
+  font-weight: 800;
+}
+
+.pad8x10FontMonoWeight600 {
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.borderBottomLineTint {
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.borderBottomLineSubtleDimAlignLeft {
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  text-align: left;
+}
+
+.w100pText085 {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.maxH280ScrollYAuto {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.pad4x8Round4BgTint {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(30, 41, 59, 0.8);
+  color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.text078Dim {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.rowCenterGap62 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rowCenterGap12 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+}
+
+.pad6x12RoundSmBgTint {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rowCenterGap5 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--accent-emerald);
+  color: var(--accent-emerald);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rowCenterGap8 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowText09Weight700 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rowJustifyBetweenCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.pad18 {
+  padding: 18px;
+}
+
+.gold {
+  color: var(--accent-gold);
+}
+
+.text078Muted {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.w26H26Text08 {
+  width: 26px;
+  height: 26px;
+  font-size: 0.8rem;
+}
+
+.rowCenterGap82 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.rowGap10 {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rowText085Weight700 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pad16 {
+  padding: 16px;
+}
+
+.text065GoldWeight700 {
+  font-size: 0.65rem;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+.colCenterGap4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1 0 28px;
+  cursor: pointer;
+}
+
+.rowEndGap6 {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 75px;
+  padding-top: 10px;
+  overflow-x: auto;
+}
+
+.bgClearBorderNoneGold {
+  background: transparent;
+  border: none;
+  color: var(--accent-gold);
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.rowText085Weight7002 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rowJustifyBetweenCenter2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.text08Weight500 {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.text14Weight800Emerald {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-emerald);
+  font-family: var(--font-mono);
+}
+
+.text075Dim {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.pad14 {
+  padding: 14px;
+}
+
+.text14Weight800Cyan {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+}
+
+.text14Weight800Gold {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+}
+
+.gridColsAutoGap12 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.text08RedWeight600 {
+  font-size: 0.8rem;
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+.text11Muted {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.text21Weight800Gold {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.text075DimCaseUpper {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.colAlignRightEnd {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.text08Muted {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.text092HexM4x0 {
+  font-size: 0.92rem;
+  color: #e2e8f0;
+  margin: 4px 0;
+}
+
+.text078 {
+  font-size: 0.78rem;
+}
+
+.text13Weight800White {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.rowCenterGap83 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.w72H72Text2 {
+  width: 72px;
+  height: 72px;
+  font-size: 2rem;
+}
+
+.rowCenterGap16 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rowBgGradientBorderLineTint {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.colGap18 {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.text08Dim {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.rowCenterGap84 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rowPad6x14RoundSm {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-gold);
+  color: #000000;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text085White {
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.rowBgTintBorderLineTint {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.w100pPad14x16x14x50RoundMd {
+  width: 100%;
+  padding: 14px 16px 14px 50px;
+  border-radius: var(--radius-md);
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  outline: none;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.posAbsoluteGold {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-gold);
+}
+
+.posRelative {
+  position: relative;
+}
+
+.flex1MinW160JustifyCenter {
+  flex: 1;
+  min-width: 160px;
+  justify-content: center;
+}
+
+.flex1MinW140JustifyCenter {
+  flex: 1;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.colGap12 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.colGap20 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
