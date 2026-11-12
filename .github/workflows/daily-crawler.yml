@@ -72,6 +72,10 @@ jobs:
         run: |
           uv run pytest
 
+      - name: 6b. Compliance lint (chặn thuật ngữ lô đề / "dự đoán" trong mã & dữ liệu xuất ra)
+        run: |
+          python scripts/compliance_lint.py
+
       - name: 7. Tự động Commit & Push dữ liệu mới nhất
         id: auto_commit
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -107,6 +111,11 @@ jobs:
           cd web
           npm ci
           npm run build
+
+      - name: 10b. Compliance lint trên bản build
+        if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python scripts/compliance_lint.py web/dist
 
       - name: 11. Cấu hình GitHub Pages
         if: steps.run_pipeline.outputs.has_new_data == 'true' || github.event_name == 'workflow_dispatch'

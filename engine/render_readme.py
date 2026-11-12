@@ -58,21 +58,21 @@ Hiển thị trực quan 27 giải mở thưởng chuẩn truyền thống, bả
 ---
 
 ### 2. Trung Tâm Vietlott (Power 6/55 & Mega 6/45)
-Tích hợp trọn gói: Bộ tạo dàn vé nhanh chuẩn phân phối Gauss (**Quick Pick Pro**), Phân tích Vé Bao (Bao 5 đến Bao 18), Ma trận Cặp số & Bộ ba đồng xuất hiện (**Co-occurrence Analysis**), cùng công cụ mô phỏng chiến lược nuôi vé Backtest PnL trong 1,400+ kỳ quay.
+Tích hợp: Bộ tạo vé ngẫu nhiên theo phân phối tổng (**Quick Pick Pro**), Phân tích Vé Bao (Bao 5 đến Bao 18), Ma trận Cặp số & Bộ ba đồng xuất hiện (**Co-occurrence Analysis**), cùng công cụ **Mô phỏng chi phí** (tổng tiền vé, tổng giải nhận được, giá trị kỳ vọng âm của mỗi vé) trên 1,400+ kỳ quay. Không công cụ nào làm tăng xác suất trúng (Power 6/55 Jackpot 1: 1/28.989.675; Mega 6/45 Jackpot: 1/8.145.060).
 
 ![Vietlott Hub Preview](docs/images/preview_vietlott.png)
 
 ---
 
 ### 3. Bạc Nhớ Ma Trận 20 Năm (Data-Driven Bac Nho Engine)
-Được huấn luyện trên hơn 7,500 kỳ quay lịch sử (2005 - 2026), thuật toán tính toán xác suất có điều kiện $P(A|B)$ chính xác: khi hôm trước về số X hoặc Đề về Y thì hôm sau số nào có xác suất nổ cao nhất, kết hợp đánh giá nhịp chu kỳ và cảnh báo lô gan.
+Thống kê tần suất có điều kiện $P(A|B)$ trên hơn 7,500 kỳ quay lịch sử (2005 - 2026): sau những ngày có số X (hoặc 2 số cuối Giải Đặc Biệt là Y), số nào từng xuất hiện nhiều nhất vào ngày kế tiếp. Các kỳ quay độc lập nhau, nên đây là thống kê mô tả, không cho biết trước kết quả.
 
 ![Bac Nho Engine Preview](docs/images/preview_bacnho.png)
 
 ---
 
-### 4. Bộ Tạo Dàn Vé Gauss & Trình So Vé Hàng Loạt
-Bộ lọc dàn số đa tiêu chí (Chạm, Tổng, Chẵn/Lẻ, Lớn/Bé, Kép, loại trừ Lô gan). Trình so vé hàng loạt cho phép dán danh sách 10 đến 64 vé và đối soát ngay lập tức với kỳ quay mới nhất.
+### 4. Bộ Lọc Vé Vietlott & Thống Kê Nhiều Số
+Bộ lọc vé Vietlott theo tổng, chẵn/lẻ, nhỏ/lớn và cặp đồng xuất hiện (ghi rõ không làm tăng xác suất trúng). Công cụ thống kê nhiều số cho biết mỗi số 2 chữ số xuất hiện bao nhiêu lần trong 27 giải của kỳ XSMB mới nhất.
 
 ![Filter and Checker Preview](docs/images/preview_filter.png)
 
@@ -109,21 +109,23 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
 
 * ⚡ **Tra Cứu Lịch Sử Siêu Tốc (Zero-Latency Instant Lookup - `Ctrl + K`)**:
   * Tra cứu tức thì lịch sử bất kỳ số nào: XSMB (00-99), Vietlott Power 6/55 (01-55), Mega 6/45 (01-45).
-  * Hiển thị ngày đầu tiên xuất hiện (First Seen), kỳ quay gần nhất (Last Seen), tổng số lần về trong 20 năm, số lần trúng Đề.
-  * Tra cứu Cặp Lô Xiên (Xiên 2), tần suất xuất hiện cùng nhau, kèm nút xuất file CSV phân tích chi tiết.
+  * Hiển thị ngày đầu tiên xuất hiện (First Seen), kỳ quay gần nhất (Last Seen), tổng số lần về trong 20 năm, số lần là 2 số cuối Giải Đặc Biệt.
+  * Tra cứu cặp số cùng xuất hiện (thống kê), tần suất xuất hiện cùng nhau, kèm nút xuất file CSV phân tích chi tiết.
 
 * 🧠 **Bạc Nhớ Ma Trận 20 Năm (Data-Driven Bac Nho Engine)**:
   * Thuật toán thống kê xác suất có điều kiện dựa trên ma trận thưa 7,500+ ngày.
-  * Dự báo tự động số tiềm năng theo kết quả ngày hôm trước, cảnh báo chu kỳ nhịp nổ vs lô gan.
+  * Thống kê các số từng xuất hiện sau một số cho trước, kèm chu kỳ xuất hiện và lô gan. Không cho biết trước kết quả kỳ sau.
 
 * 🎯 **Trung Tâm Phân Tích Vietlott Tích Hợp (Power 6/55 & Mega 6/45)**:
-  * **Quick Pick Pro:** Tạo dàn vé thông minh chuẩn đường cong phân phối Gauss (tổng điểm 120-180, cân bằng chẵn/lẻ 3-3, tỷ lệ nhỏ/lớn 3-3, ưu tiên cặp số hot).
-  * **Vé Bao 5 đến Bao 18:** Hỗ trợ tính toán số tổ hợp, chi phí đầu tư và kiểm tra trúng thưởng đa tầng.
+  * **Quick Pick Pro:** Tạo vé ngẫu nhiên có bộ lọc (tổng điểm 120-180, chẵn/lẻ 3-3, nhỏ/lớn 3-3, cặp số hay đồng xuất hiện). Bộ lọc không làm tăng xác suất trúng.
+  * **Vé Bao 5 đến Bao 18:** Hỗ trợ tính toán số tổ hợp, tiền vé và kiểm tra trúng thưởng đa tầng.
   * **Ma Trận Cặp & Bộ Ba:** Xếp hạng 20 cặp và 20 bộ ba bóng số xuất hiện cùng nhau nhiều nhất trong toàn bộ lịch sử Vietlott.
-  * **Backtest PnL Simulator:** Giả lập hiệu quả tài chính nếu nuôi cố định bộ số qua 100 kỳ, 1 năm hoặc toàn bộ lịch sử.
+  * **Mô phỏng chi phí:** Tổng tiền vé và tổng giải nhận được nếu mua một bộ số qua 100 kỳ, 1 năm hoặc toàn bộ lịch sử, kèm giá trị kỳ vọng âm của mỗi vé.
 
 * 🎰 **Trung Tâm Keno & Max 3D**:
   * Bàn cờ nhiệt 80 bóng số, bộ chọn Keno Bậc 1 đến Bậc 10 và bảng tra cứu Max 3D / Max 3D Pro.
+
+* 🔎 **Kết quả chính thức:** Luôn đối chiếu với nguồn chính thức: [Vietlott](https://vietlott.vn/) và [XSKT Thủ đô](https://xosothudo.com.vn/).
 
 * 🤖 **Tự Động Hóa CI/CD & Telegram Bot 2 Chiều**:
   * GitHub Actions tự động cào dữ liệu lúc **18:35** (XSMB) và **18:45** (Vietlott) mỗi ngày, tái tạo chỉ mục và tự động cập nhật README & GitHub Pages.

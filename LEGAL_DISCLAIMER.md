@@ -18,7 +18,7 @@ Tại nước Cộng hòa Xã hội Chủ nghĩa Việt Nam, hoạt động kinh
    - Được điều chỉnh bởi **Nghị định số 30/2007/NĐ-CP** ngày 01/03/2007 của Chính phủ về kinh doanh xổ số.
    - Được sửa đổi, bổ sung bởi **Nghị định số 78/2012/NĐ-CP** ngày 05/10/2012 của Chính phủ.
    - Hướng dẫn thi hành theo **Thông tư số 75/2013/TT-BTC** ngày 04/06/2013 của Bộ Tài chính.
-   - Các Công ty TNHH MTV Xổ số Kiến thiết do Ủy ban nhân dân các tỉnh, thành phố trực thuộc Trung ương quản lý (tiêu biểu như Công ty TNHH MTV Xổ số Kiến thiết Thủ đô) được phép phát hành các loại hình vé số kiến thiết truyền thống và vé số **Lô tô tự chọn** (Lô tô 2 số, 3 số, lô tô cặp/xiên) có in vé và thu nộp thuế, đóng góp trực tiếp vào ngân sách địa phương để xây dựng các công trình y tế, giáo dục và an sinh xã hội.
+   - Các Công ty TNHH MTV Xổ số Kiến thiết do Ủy ban nhân dân các tỉnh, thành phố trực thuộc Trung ương quản lý (tiêu biểu như Công ty TNHH MTV Xổ số Kiến thiết Thủ đô) được phép phát hành các loại hình vé số kiến thiết truyền thống và vé số **Lô tô tự chọn** có in vé và thu nộp thuế, đóng góp trực tiếp vào ngân sách địa phương để xây dựng các công trình y tế, giáo dục và an sinh xã hội.
 
 2. **Xổ số điện toán Vietlott hợp pháp:**
    - Được thành lập và hoạt động theo **Quyết định số 1108/QĐ-TTg** ngày 24/08/2011 của Thủ tướng Chính phủ.
@@ -44,11 +44,13 @@ Dự án này **KHÔNG** tổ chức cá cược, **KHÔNG** làm trung gian ghi
 1. **Bản chất xác suất toán học ngẫu nhiên độc lập:**
    Xổ số là trò chơi có bản chất biến cố ngẫu nhiên độc lập tuyệt đối. Mỗi kỳ mở thưởng đều được tiến hành độc lập dưới sự giám sát nghiêm ngặt của Hội đồng Giám sát Xổ số gồm đại diện Bộ Công an, Bộ Tài chính, Viện Kiểm sát và các cơ quan tư pháp.
 2. **Giá trị của các công cụ thống kê & AI/ML:**
-   Các thuật toán trong dự án này (bao gồm Phân tích chu kỳ Lô Gan, Ma trận Bạc Nhớ 20 năm, Dự đoán xác suất Markov/Poisson, Phân phối chuẩn Gauss, hay Hệ số đồng xuất hiện Co-occurrence) chỉ mang giá trị **thống kê mô tả dữ liệu lịch sử thực nghiệm (Empirical Historical Data Analysis)**.
+   Các thuật toán trong dự án này (bao gồm Phân tích chu kỳ Lô Gan, Ma trận Bạc Nhớ 20 năm, Chuỗi Markov, Phân phối chuẩn Gauss, hay Hệ số đồng xuất hiện Co-occurrence) chỉ mang giá trị **thống kê mô tả dữ liệu lịch sử thực nghiệm (Empirical Historical Data Analysis)**. Các "bộ số mẫu theo thuật toán" chỉ để minh họa cách thuật toán hoạt động; bảng backtest kèm theo cho thấy chúng không vượt trội so với chọn ngẫu nhiên.
 3. **Không đảm bảo kết quả tương lai:**
    Khoa học dữ liệu chứng minh rằng không có bất kỳ thuật toán hay hệ thống nào có thể dự đoán chính xác kết quả của một biến cố ngẫu nhiên trong tương lai. Nền tảng **tuyệt đối không đảm bảo, không cam kết và không chịu trách nhiệm** về tỷ lệ chính xác của bất kỳ con số nào.
 4. **Không cấu thành lời khuyên đầu tư tài chính:**
    Mọi thông tin, số liệu, bảng biểu được hiển thị trên nền tảng này đều chỉ mang tính tham khảo học thuật, không phải là khuyến nghị hay lời khuyên đầu tư tài chính.
+5. **Xác suất thật và giá trị kỳ vọng âm:**
+   Không công cụ chọn số nào trên nền tảng làm tăng xác suất trúng. Xác suất trúng giải cao nhất của mỗi vé đơn là **1/28.989.675** (Power 6/55, Jackpot 1) và **1/8.145.060** (Mega 6/45, Jackpot). Công cụ "Mô phỏng chi phí" hiển thị tổng tiền vé, tổng giải nhận được và giá trị kỳ vọng của mỗi vé; giá trị này luôn âm, nghĩa là trung bình người chơi mất tiền.
 
 ---
 
@@ -62,12 +64,26 @@ Chúng tôi khuyến nghị mạnh mẽ tất cả người dùng tuân thủ c�
 * 🚫 **Tuyệt đối không vay mượn:** Không bao giờ vay mượn tiền bạc, cầm cố tài sản hoặc dồn toàn bộ vốn liếng vào việc mua vé số.
 * 🛑 **Biết điểm dừng:** Không cố gắng "gỡ gạc" khi không trúng thưởng.
 
+* 🔞 **Cổng xác nhận 18+:** Lần đầu truy cập, trang web yêu cầu xác nhận đủ 18 tuổi. Lựa chọn chỉ được lưu trên trình duyệt của người dùng (localStorage).
+
 ---
 
-## 5. BẢN QUYỀN MÃ NGUỒN & GIỚI HẠN TRÁCH NHIỆM PHÁP LÝ
+## 5. PHẠM VI TÍNH NĂNG & QUYỀN RIÊNG TƯ
+
+* **Chỉ thống kê mô tả:** Nền tảng hiển thị kết quả và thống kê dữ liệu lịch sử của XSKT miền Bắc và Vietlott. Nền tảng không cung cấp công cụ tạo số cho các hình thức lô đề và không hiển thị thông báo "trúng" cho các hình thức không tương ứng với vé hợp pháp.
+* **Không thương mại:** Không bán vé, không có nút mua vé, không liên kết đại lý, không quảng cáo cờ bạc và không thu tiền dưới bất kỳ hình thức nào.
+* **Không thu thập dữ liệu cá nhân:** Không tài khoản, không analytics có định danh. Mọi dữ liệu người dùng (ví dụ xác nhận 18+) chỉ lưu trên máy người dùng.
+* **Nguồn kết quả chính thức:** Dữ liệu được tổng hợp tự động và có thể chậm hoặc sai sót. Luôn đối chiếu với nguồn chính thức: [Vietlott](https://vietlott.vn/) và [XSKT Thủ đô](https://xosothudo.com.vn/).
+
+---
+
+## 6. BẢN QUYỀN MÃ NGUỒN & GIỚI HẠN TRÁCH NHIỆM PHÁP LÝ
 
 * Toàn bộ mã nguồn của dự án được phát hành theo giấy phép mã nguồn mở vì mục đích giáo dục và cộng đồng.
 * Tác giả và các bên đóng góp dự án **được miễn trừ hoàn toàn** khỏi mọi khiếu nại, tổn thất, thiệt hại trực tiếp hoặc gián tiếp, hay trách nhiệm pháp lý phát sinh từ việc sử dụng sai mục đích, hiểu sai thông tin hoặc hành vi sử dụng trái pháp luật của bất kỳ bên thứ ba nào.
 
 ---
+
+> **Lưu ý về căn cứ pháp lý:** Các văn bản được dẫn chiếu ở trên (Nghị định 30/2007/NĐ-CP, Nghị định 78/2012/NĐ-CP, Thông tư 75/2013/TT-BTC, Nghị định 144/2021/NĐ-CP, Quyết định 1108/QĐ-TTg, Điều 321, 322 Bộ luật Hình sự) **chưa được xác minh** là còn hiệu lực hoặc đã được thay thế. Cần luật sư hoặc người có chuyên môn pháp lý kiểm tra trước khi dựa vào.
+
 *Văn bản có hiệu lực kể từ ngày công bố và được cập nhật định kỳ theo các quy định mới nhất của pháp luật Việt Nam.*

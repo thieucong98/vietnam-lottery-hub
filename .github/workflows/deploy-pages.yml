@@ -37,6 +37,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'web/package-lock.json'
 
+      - name: 2b. Compliance lint (chặn thuật ngữ lô đề / "dự đoán")
+        run: |
+          python3 scripts/compliance_lint.py
+
       - name: 3. Cài đặt Dependencies Web
         run: |
           cd web
@@ -46,6 +50,10 @@ jobs:
         run: |
           cd web
           npm run build
+
+      - name: 4b. Compliance lint trên bản build
+        run: |
+          python3 scripts/compliance_lint.py web/dist
 
       - name: 5. Cấu hình GitHub Pages
         uses: actions/configure-pages@v5
