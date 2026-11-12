@@ -44,10 +44,10 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nav]);
 
-  // Cuộn lên đầu khi đổi trang (không áp dụng khi mở/đóng hộp thoại)
+  // Cuộn lên đầu khi đổi tab (không áp dụng khi đổi tab con, đổi ngày hay mở/đóng hộp thoại)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [pagePath]);
+  }, [currentTab]);
 
   const setCurrentTab = (tab: string) => nav.goTab(tab as TabId);
 

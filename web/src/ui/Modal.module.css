@@ -77,3 +77,9 @@
   .header, .toolbar { padding-left: 16px; padding-right: 16px; }
   .body { padding: 16px; }
 }
+
+/* Keyframes khai báo trong module: CSS Modules đổi tên animation nên không dùng được keyframes toàn cục */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

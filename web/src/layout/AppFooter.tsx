@@ -76,6 +76,15 @@ export const AppFooter: React.FC<{ onOpenLegal: () => void }> = ({ onOpenLegal }
         >
           LEGAL_DISCLAIMER.md ↗
         </a>
+        {/* Link mã nguồn: header ẩn nút GitHub trên mobile nên giữ một link ở chân trang */}
+        <a
+          className={styles.footerLink}
+          href="https://github.com/thieucong98/vietnam-lottery-hub"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Mã nguồn trên GitHub ↗
+        </a>
       </div>
     </div>
   </footer>

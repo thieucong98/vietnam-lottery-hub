@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, useRef } from 'react';
 import { X } from 'lucide-react';
 import styles from './Sheet.module.css';
 import { useDialogBehavior } from './useDialogBehavior';
@@ -16,10 +16,21 @@ export interface SheetProps {
 export const Sheet: React.FC<SheetProps> = ({ open, onClose, title, subtitle, children, className }) => {
   const titleId = useId();
   const panelRef = useDialogBehavior<HTMLDivElement>(open, onClose);
+  // Chỉ đóng khi bấm cả xuống và lên trên nền (kéo chọn chữ trong bảng ra ngoài không đóng)
+  const pressedOverlay = useRef(false);
   if (!open) return null;
 
   return (
-    <div className={`${styles.overlay} ${className ?? ''}`} onClick={onClose}>
+    <div
+      className={`${styles.overlay} ${className ?? ''}`}
+      onMouseDown={(e) => {
+        pressedOverlay.current = e.target === e.currentTarget;
+      }}
+      onClick={(e) => {
+        if (pressedOverlay.current && e.target === e.currentTarget) onClose();
+        pressedOverlay.current = false;
+      }}
+    >
       <div
         ref={panelRef}
         role="dialog"
@@ -27,7 +38,6 @@ export const Sheet: React.FC<SheetProps> = ({ open, onClose, title, subtitle, ch
         aria-labelledby={titleId}
         tabIndex={-1}
         className={styles.panel}
-        onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.header}>
           <div>

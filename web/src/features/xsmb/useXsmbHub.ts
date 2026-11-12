@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useControllableState } from '../../ui/useControllableState';
+import { checkXsmbLastTwoDigits } from '../../utils/ticketCheck';
 import {
   SummaryData,
   LatestDrawXSMB,
@@ -86,46 +87,10 @@ export function useXsmbHub(props: XSMBProductHubProps) {
   const lotoList = latestDraw?.loto_numbers || [];
   const rawPrizes = latestDraw?.raw_prizes || {};
 
-  // Dò vé XSMB
+  // Dò vé XSMB: logic dùng chung, có test trong utils/ticketCheck.test.ts
   const handleCheck = () => {
-    const raw = checkInput.trim();
-    if (!raw) return;
-
-    // Lấy 2 chữ số cuối
-    const last2 = raw.length >= 2 ? raw.slice(-2) : raw.padStart(2, '0');
-
-    // Đếm số lần 2 số cuối xuất hiện trong 27 giải
-    const hits = lotoList.filter((n) => n === last2).length;
-
-    // Tìm các giải thưởng cụ thể
-    const matchedPrizes: string[] = [];
-    let isSpecial = false;
-
-    for (const [pKey, pVal] of Object.entries(rawPrizes)) {
-      if (pVal === null || pVal === undefined) continue;
-      const strVal = pVal.toString();
-      if (strVal.endsWith(last2)) {
-        let pLabel = pKey;
-        if (pKey === 'special') {
-          pLabel = 'Giải Đặc Biệt';
-          isSpecial = true;
-        } else if (pKey === 'prize1') pLabel = 'Giải Nhất';
-        else if (pKey.startsWith('prize2')) pLabel = 'Giải Nhì';
-        else if (pKey.startsWith('prize3')) pLabel = 'Giải Ba';
-        else if (pKey.startsWith('prize4')) pLabel = 'Giải Tư';
-        else if (pKey.startsWith('prize5')) pLabel = 'Giải Năm';
-        else if (pKey.startsWith('prize6')) pLabel = 'Giải Sáu';
-        else if (pKey.startsWith('prize7')) pLabel = 'Giải Bảy';
-        matchedPrizes.push(`${pLabel} (${strVal})`);
-      }
-    }
-
-    setCheckResult({
-      query: raw,
-      hits,
-      prizes: matchedPrizes,
-      isSpecial,
-    });
+    const result = checkXsmbLastTwoDigits(checkInput, rawPrizes, lotoList);
+    if (result) setCheckResult(result);
   };
 
   return {

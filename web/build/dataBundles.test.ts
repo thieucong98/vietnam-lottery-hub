@@ -27,6 +27,7 @@ describe('buildDataBundles', () => {
       JSON.stringify({ metadata: { generated_at: 'x' }, vietlott_655: [{ id: '1', date: 'd', balls: [1] }], vietlott_645: [] })
     );
     const out = buildDataBundles(dir);
+    expect(() => buildDataBundles(dir, { strict: true })).toThrow(/xsmb_recent_draws\.json/);
     expect([...out.keys()].sort()).toEqual([
       'detail/xsmb/00.json',
       'detail/xsmb/01.json',
@@ -38,8 +39,19 @@ describe('buildDataBundles', () => {
     fs.rmSync(dir, { recursive: true });
   });
 
+  it('báo giải XSMB thiếu hoặc không phải số khi strict', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vlh-'));
+    for (const name of ['xsmb_index.json', 'vietlott_655_index.json', 'vietlott_645_index.json']) {
+      fs.writeFileSync(path.join(dir, name), JSON.stringify({ numbers: {} }));
+    }
+    fs.writeFileSync(path.join(dir, 'vietlott_full_draws.json'), JSON.stringify({ vietlott_655: [], vietlott_645: [] }));
+    fs.writeFileSync(path.join(dir, 'xsmb_recent_draws.json'), JSON.stringify([{ date: '2026-11-11', raw_prizes: { special: 1 } }]));
+    expect(() => buildDataBundles(dir, { strict: true })).toThrow(/kỳ 2026-11-11 thiếu hoặc sai giải prize1/);
+    fs.rmSync(dir, { recursive: true });
+  });
+
   it('chạy được trên dữ liệu thật trong public/data', () => {
-    const out = buildDataBundles(path.resolve(__dirname, '../public/data'));
+    const out = buildDataBundles(path.resolve(__dirname, '../public/data'), { strict: true });
     const stats = JSON.parse(out.get('xsmb_stats.json')!);
     expect(Object.keys(stats.numbers)).toHaveLength(100);
     expect(out.get('xsmb_draws_recent.json')!.length).toBeLessThan(20 * 1024);

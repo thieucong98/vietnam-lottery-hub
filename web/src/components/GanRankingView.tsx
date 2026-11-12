@@ -7,7 +7,8 @@ import { formatDate, formatInt } from '../utils/statsText';
 interface GanRankingViewProps {
   xsmbData: LotteryIndexData | null;
   vietlottData: LotteryIndexData | null;
-  onSelectNumber: (num: string) => void;
+  /** source: bảng đang xem (XSMB hay Vietlott) để mở tra cứu đúng trò chơi */
+  onSelectNumber: (num: string, source: 'xsmb' | 'vietlott') => void;
 }
 
 export const GanRankingView: React.FC<GanRankingViewProps> = ({
@@ -80,7 +81,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
               return (
                 <div
                   key={item.number}
-                  onClick={() => onSelectNumber(item.number)}
+                  onClick={() => onSelectNumber(item.number, activeTab)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -140,7 +141,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
               return (
                 <div
                   key={item.number}
-                  onClick={() => onSelectNumber(item.number)}
+                  onClick={() => onSelectNumber(item.number, activeTab)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LiveResultsBoard } from '../components/LiveResultsBoard';
 import { UniversalQuickChecker } from '../components/UniversalQuickChecker';
@@ -13,6 +13,13 @@ import { useSummary } from './useSummary';
 import { LoadError, TabFallback } from './TabFallback';
 import styles from './pages.module.css';
 
+/** YYYY-MM-DD và là ngày có thật (loại 2026-13-40) */
+function isValidDate(value: string) {
+  if (!XSMB_DATE_PATTERN.test(value)) return false;
+  const d = new Date(`${value}T00:00:00Z`);
+  return !isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
+}
+
 const HeatmapMatrix = lazy(() => import('../components/HeatmapMatrix').then((m) => ({ default: m.HeatmapMatrix })));
 
 /** Trang chủ / XSMB. URL: `/` (kỳ mới nhất) hoặc `/xsmb/2026-11-11` */
@@ -20,14 +27,23 @@ export default function XsmbPage() {
   const { date } = useParams();
   const navigate = useNavigate();
   const nav = useAppNavigation();
-  const selectedDate = date && XSMB_DATE_PATTERN.test(date) ? date : null;
+  const selectedDate = date && isValidDate(date) ? date : null;
+  const invalidDate = Boolean(date) && !selectedDate;
 
   const summary = useSummary();
   const recent = useDataset('xsmbDrawsRecent');
   const [historyOpen, setHistoryOpen] = useState(false);
   const notInRecent = Boolean(selectedDate && recent.data && !recent.data.some((d) => d.date === selectedDate));
-  // 365 kỳ chỉ tải khi mở tab Lịch Sử hoặc khi ngày trên URL nằm ngoài 30 kỳ gần nhất
-  const full = useDataset('xsmbDraws', historyOpen || notInRecent);
+  // Đang xem kỳ cũ nhất trong 30 kỳ: cần 365 kỳ để nút "kỳ trước" đi tiếp
+  const atRecentEnd = Boolean(selectedDate && recent.data && recent.data[recent.data.length - 1]?.date === selectedDate);
+  // 365 kỳ chỉ tải khi mở tab Lịch Sử, khi ngày trên URL nằm ngoài 30 kỳ gần nhất hoặc khi lùi tới kỳ cuối của 30 kỳ
+  // Đã cần 365 kỳ một lần thì giữ luôn, để danh sách không co lại còn 30 kỳ khi quay về trang chủ
+  const [keepFull, setKeepFull] = useState(false);
+  const wantFull = keepFull || historyOpen || notInRecent || atRecentEnd;
+  useEffect(() => {
+    if (wantFull) setKeepFull(true);
+  }, [wantFull]);
+  const full = useDataset('xsmbDraws', wantFull);
   const draws = useMemo(() => full.data ?? recent.data ?? [], [full.data, recent.data]);
 
   const [mlRef, mlInView] = useInView<HTMLDivElement>();
@@ -42,11 +58,16 @@ export default function XsmbPage() {
 
   const availableDates = useMemo(() => draws.map((d) => d.date), [draws]);
 
-  if (summary.error) return <LoadError what="kết quả mới nhất" />;
+  if (summary.error) return <LoadError what="kết quả mới nhất" onRetry={summary.retry} />;
   if (!summary.data) return <SkeletonLoader />;
 
   return (
     <div className={styles.stack}>
+      {invalidDate && (
+        <div className={`glass-card ${styles.notice} ${styles.noticeWarn}`} role="status">
+          Ngày {date} không hợp lệ. Đang hiển thị kỳ mới nhất.
+        </div>
+      )}
       {missingDate && (
         <div className={`glass-card ${styles.notice} ${styles.noticeWarn}`} role="status">
           Không có dữ liệu kỳ {selectedDate} trong 365 kỳ gần nhất. Đang hiển thị kỳ mới nhất.

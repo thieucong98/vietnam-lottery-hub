@@ -229,6 +229,9 @@ export const KenoPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model })
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
             Chọn từ 1 đến 10 con số trực tiếp trên bàn cờ hoặc bấm chọn nhanh để thử đối soát xem vé của bạn trúng bao nhiêu con số ở kỳ này:
           </p>
+          <p style={{ fontSize: '0.76rem', color: 'var(--text-dim)' }}>
+            Chọn nhanh chỉ để thử đối soát; chọn số nào cũng <strong>không làm tăng xác suất trúng</strong>.
+          </p>
 
           {/* Nút Chọn Nhanh Vé Bậc 1 - 10 */}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>

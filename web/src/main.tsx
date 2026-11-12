@@ -10,7 +10,7 @@ import './index.css';
 
 // Link cũ dạng ?tab=heatmap -> /#/nhiet
 const legacyTab = new URLSearchParams(window.location.search).get('tab');
-if (legacyTab && LEGACY_TAB_PARAM[legacyTab] && !window.location.hash) {
+if (legacyTab && Object.prototype.hasOwnProperty.call(LEGACY_TAB_PARAM, legacyTab) && !window.location.hash) {
   window.history.replaceState(null, '', `${window.location.pathname}#${LEGACY_TAB_PARAM[legacyTab]}`);
 }
 

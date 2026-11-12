@@ -189,13 +189,12 @@ export function useInstantLookup({ target, onChangeTarget }: InstantLookupModalP
   };
 
   // ---------------- Tab 2: bộ số / vé bao ----------------
-  const comboBalls = useMemo(
-    () =>
-      activeTabMode === 'combination' && target.numbers.length >= COMBO_MIN
-        ? target.numbers.map((n) => parseInt(n, 10)).sort((a, b) => a - b)
-        : DEFAULT_COMBO,
-    [activeTabMode, target.numbers]
-  );
+  // Khóa theo chuỗi số: target được tạo lại mỗi lần render nên mảng numbers luôn là mảng mới
+  const comboKey = activeTabMode === 'combination' ? target.numbers.join('-') : '';
+  const comboBalls = useMemo(() => {
+    const nums = comboKey ? comboKey.split('-').map((n) => parseInt(n, 10)) : [];
+    return nums.length >= COMBO_MIN ? nums.sort((a, b) => a - b) : DEFAULT_COMBO;
+  }, [comboKey]);
   const setComboBalls = (nums: number[]) =>
     update({ mode: 'combination', numbers: [...nums].sort((a, b) => a - b).map(pad2) });
 
@@ -216,7 +215,7 @@ export function useInstantLookup({ target, onChangeTarget }: InstantLookupModalP
 
   const handleApplyComboInput = () => {
     const unique = parseNumberList(comboInputText, minNumber, maxNumber);
-    if (unique.length >= COMBO_MIN) setComboBalls(unique.slice(0, COMBO_MAX));
+    if (unique.length >= COMBO_MIN) setComboBalls(unique.sort((a, b) => a - b).slice(0, COMBO_MAX));
   };
 
   const handleRandomCombo = () => {
@@ -277,6 +276,7 @@ export function useInstantLookup({ target, onChangeTarget }: InstantLookupModalP
   const hist1 = useJson<NumberAppearance[]>(pairReady ? numberHistoryUrl(selectedGame, urlPair![0]) : null);
   const hist2 = useJson<NumberAppearance[]>(pairReady ? numberHistoryUrl(selectedGame, urlPair![1]) : null);
   const pairLoading = hist1.loading || hist2.loading;
+  const pairError = hist1.error ?? hist2.error;
   const pairMatches = useMemo(
     () => (urlPair && hist1.data && hist2.data ? findPairCoOccurrences(hist1.data, hist2.data, urlPair[0], urlPair[1]) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -360,6 +360,7 @@ export function useInstantLookup({ target, onChangeTarget }: InstantLookupModalP
     pairNum2,
     setPairNum2,
     pairLoading,
+    pairError,
     pairMatches,
     handleCheckPair,
   };

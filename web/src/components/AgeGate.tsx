@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
+import { useDialogBehavior } from '../ui/useDialogBehavior';
+
+// Cổng bắt buộc: Esc không đóng được, phải chọn một nút
+const ignoreClose = () => {};
 
 // Chỉ lưu trên máy người dùng (localStorage), không gửi đi đâu
 export const AGE_GATE_STORAGE_KEY = 'vlh_age_confirmed_v1';
@@ -20,6 +24,8 @@ interface AgeGateProps {
 export const AgeGate: React.FC<AgeGateProps> = ({ onOpenLegal }) => {
   const [confirmed, setConfirmed] = useState<boolean>(readConfirmed);
   const [declined, setDeclined] = useState<boolean>(false);
+  // Lớp 105: trên hộp thoại tra cứu (100) nên giữ Tab/Esc, dưới hộp thoại pháp lý (110)
+  const gateRef = useDialogBehavior<HTMLDivElement>(!confirmed, ignoreClose, { layer: 105 });
 
   if (confirmed) return null;
 
@@ -34,10 +40,13 @@ export const AgeGate: React.FC<AgeGateProps> = ({ onOpenLegal }) => {
 
   return (
     <div
+      ref={gateRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="age-gate-title"
+      tabIndex={-1}
       style={{
+        outline: 'none',
         position: 'fixed',
         inset: 0,
         // Trên InstantLookupModal (100), dưới LegalComplianceModal (110) để đọc được tuyên bố pháp lý

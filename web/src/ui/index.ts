@@ -2,7 +2,7 @@ export { Button } from './Button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './Button';
 export { Card } from './Card';
 export type { CardProps } from './Card';
-export { Tabs } from './Tabs';
+export { Tabs, tabId } from './Tabs';
 export type { TabsProps, TabItem } from './Tabs';
 export { Ball } from './Ball';
 export type { BallProps, BallTone } from './Ball';

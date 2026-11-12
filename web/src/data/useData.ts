@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { loadJson, peekJson } from './api';
 import { DATASETS, DatasetKey, DatasetMap } from './datasets';
 
@@ -6,6 +6,8 @@ export interface DataState<T> {
   data: T | null;
   error: Error | null;
   loading: boolean;
+  /** Tải lại sau khi lỗi (lỗi mạng không bị cache, xem api.ts) */
+  retry: () => void;
 }
 
 /**
@@ -19,6 +21,8 @@ export function useJson<T>(url: string | null, parse?: (raw: unknown) => T, cach
     data: key ? peekJson<T>(key) ?? null : null,
     error: null,
   }));
+  const [attempt, setAttempt] = useState(0);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
 
   useEffect(() => {
     if (!url || !key) return;
@@ -38,14 +42,14 @@ export function useJson<T>(url: string | null, parse?: (raw: unknown) => T, cach
     };
     // parse là hàm thuần gắn với cacheKey, không cần theo dõi
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, key]);
+  }, [url, key, attempt]);
 
   // Khi key vừa đổi, state còn của key cũ: dùng cache nếu có, nếu không coi như đang tải
   if (state.key !== key) {
     const cached = key ? peekJson<T>(key) : undefined;
-    return { data: cached ?? null, error: null, loading: Boolean(key) && cached === undefined };
+    return { data: cached ?? null, error: null, loading: Boolean(key) && cached === undefined, retry };
   }
-  return { data: state.data, error: state.error, loading: Boolean(key) && state.data === null && state.error === null };
+  return { data: state.data, error: state.error, loading: Boolean(key) && state.data === null && state.error === null, retry };
 }
 
 /** Tải một dataset theo tên (xem data/datasets.ts). enabled = false để hoãn. */

@@ -7,7 +7,7 @@ test.describe('Luồng chính', () => {
     await page.goto('./');
     await expect(page.locator('#xsmb-live-results')).toBeVisible();
     await page.waitForLoadState('networkidle');
-    const kb = data.total() / 1024;
+    const kb = (await data.total()) / 1024;
     console.log(`Dữ liệu tải lúc mở trang: ${kb.toFixed(1)} KB`, data.files.map((f) => f.url.split('/').slice(-2).join('/')));
     expect(kb).toBeLessThan(100);
   });

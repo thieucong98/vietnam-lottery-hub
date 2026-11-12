@@ -41,6 +41,9 @@ export const CombinationPanel: React.FC<{ model: InstantLookupModalModel }> = ({
                 <p className={styles.text08Muted}>
                   Chọn từ 2 đến 18 số để kiểm tra xem đã từng trúng Jackpot 1, Jackpot 2, Giải Nhất/Nhì/Ba nào trong lịch sử 1.400+ kỳ quay!
                 </p>
+                <p className={styles.text08Muted}>
+                  Kết quả quá khứ không ảnh hưởng kỳ sau; chọn bộ số nào cũng <strong>không làm tăng xác suất trúng</strong>. Xác suất trúng Jackpot{selectedGame === 'vietlott_655' ? ' 1' : ''} của mỗi bộ 6 số: <strong>{selectedGame === 'vietlott_655' ? '1/28.989.675' : '1/8.145.060'}</strong>.
+                </p>
               </div>
 
               {/* Các nút preset */}

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useId } from 'react';
+import { useDialogBehavior } from '../ui/useDialogBehavior';
 import {
   X,
   ShieldCheck,
@@ -14,13 +15,9 @@ interface LegalComplianceModalProps {
 }
 
 export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOpen, onClose }) => {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    if (isOpen) window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const titleId = useId();
+  // Lớp 110: nằm trên cổng 18+ (105) nên Esc chỉ đóng hộp thoại này
+  const dialogRef = useDialogBehavior<HTMLDivElement>(isOpen, onClose, { layer: 110 });
 
   if (!isOpen) return null;
 
@@ -42,8 +39,14 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
       }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
         className="glass-card animate-fade-in"
         style={{
+          outline: 'none',
           width: '100%',
           maxWidth: 860,
           maxHeight: '92vh',
@@ -73,7 +76,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
               <Scale size={20} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
+              <h2 id={titleId} style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
                 Tuyên Bố Pháp Lý, Miễn Trừ Trách Nhiệm & Chơi Có Trách Nhiệm (18+)
               </h2>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -82,7 +85,9 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
+            aria-label="Đóng"
             style={{
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid var(--border-subtle)',
