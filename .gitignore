@@ -39,3 +39,8 @@ desktop.ini
 *.pfx
 *.cert
 pipeline_report.json
+
+# Playwright
+web/test-results/
+web/playwright-report/
+web/blob-report/
