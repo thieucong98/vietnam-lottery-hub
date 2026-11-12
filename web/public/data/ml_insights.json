@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
   "product": "Power 6/55",
-  "latest_id": "01422",
-  "latest_date": "2026-11-10",
+  "latest_id": "01423",
+  "latest_date": "2026-11-12",
   "disclaimer": "Bộ số mẫu chỉ minh họa cách thuật toán hoạt động trên dữ liệu lịch sử. Mỗi kỳ quay là biến cố độc lập, nên các bộ số này không làm tăng xác suất trúng.",
   "jackpot_odds": "1/28.989.675",
   "sample_sets": [
     {
       "name": "Tần suất cao (Hot Numbers)",
       "sample_picks": [
+        "01",
         "07",
         "11",
         "18",
         "24",
-        "27",
-        "55"
+        "27"
       ],
       "description": "Bộ số mẫu theo thuật toán Frequency (N=50) (chỉ minh họa)"
     },
@@ -35,8 +35,8 @@
       "sample_picks": [
         "01",
         "07",
-        "11",
         "18",
+        "25",
         "27",
         "31"
       ],
@@ -45,21 +45,29 @@
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "sample_picks": [
-        "29",
-        "35",
+        "22",
+        "34",
+        "40",
         "41",
-        "43",
-        "48",
-        "55"
+        "42",
+        "51"
       ],
       "description": "Bộ số mẫu theo thuật toán Markov Chain (Bậc 1) (chỉ minh họa)"
     }
   ],
   "backtest_report": [
     {
+      "strategy_name": "Random Baseline",
+      "test_draws": 50,
+      "average_matches": 0.86,
+      "max_match_in_one_draw": 3,
+      "hit_rate_at_least_3": "8.0%",
+      "hit_rate_at_least_4": "0.0%"
+    },
+    {
       "strategy_name": "Long Absence (Số lâu chưa về)",
       "test_draws": 50,
-      "average_matches": 0.78,
+      "average_matches": 0.76,
       "max_match_in_one_draw": 3,
       "hit_rate_at_least_3": "2.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -75,7 +83,7 @@
     {
       "strategy_name": "Frequency (N=100)",
       "test_draws": 50,
-      "average_matches": 0.62,
+      "average_matches": 0.6,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
@@ -92,14 +100,6 @@
       "strategy_name": "Markov Chain (Bậc 1)",
       "test_draws": 50,
       "average_matches": 0.52,
-      "max_match_in_one_draw": 2,
-      "hit_rate_at_least_3": "0.0%",
-      "hit_rate_at_least_4": "0.0%"
-    },
-    {
-      "strategy_name": "Random Baseline",
-      "test_draws": 50,
-      "average_matches": 0.48,
       "max_match_in_one_draw": 2,
       "hit_rate_at_least_3": "0.0%",
       "hit_rate_at_least_4": "0.0%"
