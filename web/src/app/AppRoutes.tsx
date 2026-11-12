@@ -14,6 +14,12 @@ const BacNhoPage = lazy(() => import('../pages/BacNhoPage'));
 const FilterPage = lazy(() => import('../pages/FilterPage'));
 const AiPage = lazy(() => import('../pages/AiPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+// Tiện ích (Phase 3)
+const TicketCheckPage = lazy(() => import('../pages/TicketCheckPage'));
+const MyTicketsPage = lazy(() => import('../pages/MyTicketsPage'));
+const SchedulePage = lazy(() => import('../pages/SchedulePage'));
+const DrawLookupPage = lazy(() => import('../pages/DrawLookupPage'));
+const BudgetPage = lazy(() => import('../pages/BudgetPage'));
 const LegalComplianceModal = lazy(() =>
   import('../components/LegalComplianceModal').then((m) => ({ default: m.LegalComplianceModal }))
 );
@@ -42,6 +48,11 @@ export const PageRoutes: React.FC = () => {
         <Route path="/bac-nho" element={<BacNhoPage />} />
         <Route path="/loc-ve/:view?" element={<FilterPage />} />
         <Route path="/thuat-toan" element={<AiPage />} />
+        <Route path="/do-ve" element={<TicketCheckPage />} />
+        <Route path="/ve-cua-toi" element={<MyTicketsPage />} />
+        <Route path="/lich-quay" element={<SchedulePage />} />
+        <Route path="/ket-qua/:game?/:key?" element={<DrawLookupPage />} />
+        <Route path="/choi-co-trach-nhiem" element={<BudgetPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>

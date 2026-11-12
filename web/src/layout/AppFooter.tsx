@@ -3,7 +3,7 @@ import { AlertTriangle, Scale, ShieldCheck } from 'lucide-react';
 import { Ball, Button } from '../ui';
 import styles from './Layout.module.css';
 
-export const AppFooter: React.FC<{ onOpenLegal: () => void }> = ({ onOpenLegal }) => (
+export const AppFooter: React.FC<{ onOpenLegal: () => void; onOpenBudget?: () => void }> = ({ onOpenLegal, onOpenBudget }) => (
   <footer className={styles.footer}>
     <div className={styles.footerGrid}>
       {/* Thông tin dự án */}
@@ -53,6 +53,11 @@ export const AppFooter: React.FC<{ onOpenLegal: () => void }> = ({ onOpenLegal }
           <li>• Thuật toán thống kê chỉ phản ánh dữ liệu lịch sử, không đảm bảo tương lai.</li>
           <li>• Biết dừng lại đúng lúc để bảo vệ bản thân và gia đình.</li>
         </ul>
+        {onOpenBudget && (
+          <Button variant="gold" size="sm" icon={<AlertTriangle size={14} />} onClick={onOpenBudget}>
+            Tự đặt ngân sách & nơi hỗ trợ
+          </Button>
+        )}
       </div>
     </div>
 

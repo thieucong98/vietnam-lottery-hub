@@ -221,3 +221,24 @@ export interface VietlottCooccurrenceData {
     top_triplets: VietlottCooccurrenceItem[];
   };
 }
+
+export interface JackpotRecord {
+  id: string;
+  date: string;
+  jackpot1: number;
+  jackpot2?: number | null;
+}
+
+// jackpot.json (engine/crawlers/jackpot.py): giá trị Jackpot theo kỳ, lấy từ trang kết quả vietlott.vn
+export interface JackpotProductData {
+  latest: JackpotRecord | null;
+  history: JackpotRecord[];
+}
+
+export interface JackpotData {
+  schema_version: number;
+  generated_at: string;
+  source: string;
+  vietlott_655: JackpotProductData;
+  vietlott_645: JackpotProductData;
+}

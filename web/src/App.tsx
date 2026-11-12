@@ -7,6 +7,7 @@ import { AgeGate } from './components/AgeGate';
 import { Button } from './ui';
 import { HeroBanner } from './layout/HeroBanner';
 import { AppFooter } from './layout/AppFooter';
+import { TicketResultsBanner } from './features/tickets/TicketResultsBanner';
 import { OverlayRoutes, PageRoutes } from './app/AppRoutes';
 import { getBackgroundLocation, useAppNavigation } from './app/navigation';
 import { isOverlayPath, TabId, tabFromPath } from './app/routes';
@@ -62,6 +63,7 @@ export function App() {
       />
 
       <main className={`app-main-content ${styles.main}`}>
+        <TicketResultsBanner summary={summary.data} />
         <HeroBanner onOpenSearch={() => nav.openSearch()} onOpenHeatmap={() => nav.goTab('heatmap')} onOpenLegal={nav.openLegal} />
         <PageRoutes />
       </main>
@@ -77,7 +79,7 @@ export function App() {
       {/* Cổng xác nhận 18+ bắt buộc lần đầu (lưu localStorage) */}
       <AgeGate onOpenLegal={nav.openLegal} />
 
-      <AppFooter onOpenLegal={nav.openLegal} />
+      <AppFooter onOpenLegal={nav.openLegal} onOpenBudget={() => nav.goTool('budget')} />
 
       <MobileBottomNav
         currentTab={currentTab}
