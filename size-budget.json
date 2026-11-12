@@ -1,0 +1,34 @@
+{
+  "_comment": "Ngưỡng max_* làm CI fail; target_* chỉ cảnh báo. Đặt theo kích thước 2026-11-12 cộng khoảng 10% biên tăng trưởng dữ liệu. Siết dần sau Phase 1 (mục tiêu dữ liệu lúc mở trang < 100 KB).",
+  "initial_data_entry_files": ["web/src/App.tsx"],
+  "budgets": {
+    "initial_data": {
+      "max_raw": 2400000,
+      "max_gzip": 215000,
+      "target_raw": 102400
+    },
+    "largest_data_file": {
+      "max_raw": 700000,
+      "max_gzip": 34000
+    },
+    "largest_history_file": {
+      "max_raw": 180000,
+      "max_gzip": 12000
+    },
+    "data_dir_total": {
+      "max_raw": 20000000
+    },
+    "entry_js": {
+      "max_raw": 320000,
+      "max_gzip": 88000
+    },
+    "total_js": {
+      "max_raw": 470000,
+      "max_gzip": 125000
+    },
+    "total_css": {
+      "max_raw": 16000,
+      "max_gzip": 5000
+    }
+  }
+}

@@ -40,6 +40,14 @@ jobs:
           uv sync --all-extras
           uv run pytest
 
+      - name: 5b. Kiểm tra schema JSON dữ liệu xuất bản
+        run: |
+          uv run python scripts/validate_data_schema.py
+
+      - name: 5c. Budget kích thước dữ liệu
+        run: |
+          python scripts/check_size_budget.py --only data
+
       - name: 6. Cài đặt Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -54,3 +62,7 @@ jobs:
           npm run build
           cd ..
           python scripts/compliance_lint.py web/dist
+
+      - name: 8. Budget kích thước bundle
+        run: |
+          python scripts/check_size_budget.py --only bundle

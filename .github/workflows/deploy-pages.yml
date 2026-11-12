@@ -55,6 +55,20 @@ jobs:
         run: |
           python3 scripts/compliance_lint.py web/dist
 
+      - name: 4c. Budget kích thước dữ liệu & bundle
+        run: |
+          python3 scripts/check_size_budget.py
+
+      - name: 4d. Cài đặt astral-sh/setup-uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: 4e. Kiểm tra schema JSON dữ liệu xuất bản
+        run: |
+          uv sync --all-extras
+          uv run python scripts/validate_data_schema.py
+
       - name: 5. Cấu hình GitHub Pages
         uses: actions/configure-pages@v5
 
