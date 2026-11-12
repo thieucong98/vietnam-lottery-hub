@@ -4,7 +4,7 @@
  */
 import type { LotteryGame, VietlottGame } from '../data/datasets';
 
-export type TabId = 'xsmb' | 'vietlott_655' | 'vietlott_645' | 'keno_3d' | 'heatmap' | 'gan' | 'bacnho' | 'filter' | 'ai';
+export type TabId = 'xsmb' | 'vietlott_655' | 'vietlott_645' | 'keno_3d' | 'heatmap' | 'gan' | 'analysis' | 'bacnho' | 'filter' | 'ai';
 
 export const TAB_PATHS: Record<TabId, string> = {
   xsmb: '/',
@@ -13,6 +13,7 @@ export const TAB_PATHS: Record<TabId, string> = {
   keno_3d: '/keno-3d',
   heatmap: '/nhiet',
   gan: '/gan',
+  analysis: '/phan-tich',
   bacnho: '/bac-nho',
   filter: '/loc-ve',
   ai: '/thuat-toan',

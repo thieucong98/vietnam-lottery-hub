@@ -185,12 +185,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button
+            className={`tab-btn ${currentTab === 'analysis' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('analysis')}
+            style={{ padding: '6px 14px', fontSize: '0.84rem' }}
+          >
+            <ShieldCheck size={15} color="var(--accent-emerald)" />
+            <span>Phân Tích</span>
+          </button>
+
+          <button
             className={`tab-btn ${currentTab === 'bacnho' ? 'active' : ''}`}
             onClick={() => setCurrentTab('bacnho')}
             style={{ padding: '6px 14px', fontSize: '0.84rem' }}
+            title="Thống kê có điều kiện, so với tần suất nền"
           >
             <Sparkles size={15} color="#c084fc" />
-            <span>Bạc Nhớ</span>
+            <span>Có Điều Kiện</span>
           </button>
 
           <button
@@ -206,9 +216,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             className={`tab-btn ${currentTab === 'ai' ? 'active' : ''}`}
             onClick={() => setCurrentTab('ai')}
             style={{ padding: '6px 14px', fontSize: '0.84rem' }}
+            title="Phòng thí nghiệm xác suất: thuật toán so với chọn ngẫu nhiên"
           >
             <Brain size={15} />
-            <span>AI</span>
+            <span>Thí Nghiệm</span>
           </button>
         </nav>
 

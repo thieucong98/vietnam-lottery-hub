@@ -172,7 +172,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
                 • <strong>Bản chất ngẫu nhiên độc lập:</strong> Xổ số là trò chơi có bản chất biến cố ngẫu nhiên độc lập về mặt toán học. Mỗi kỳ quay thưởng đều được tổ chức độc lập dưới sự giám sát của Hội đồng Giám sát Xổ số gồm đại diện Bộ Công an, Bộ Tài chính và cơ quan tư pháp.
               </p>
               <p>
-                • <strong>Thuật toán chỉ mang tính thống kê mô tả:</strong> Các thuật toán trong hệ thống (Markov, Poisson, Lô Gan, Bạc Nhớ 20 năm, Phân phối Gauss, Co-occurrence) chỉ mang giá trị <strong>nghiên cứu thực nghiệm dữ liệu lịch sử</strong>. Không thuật toán hay AI nào biết trước được kết quả mở thưởng, và không công cụ nào trên trang làm tăng xác suất trúng.
+                • <strong>Thuật toán chỉ mang tính thống kê mô tả:</strong> Các thuật toán trong hệ thống (Markov, Poisson, Lô Gan, Thống kê có điều kiện, Phân phối Gauss, Co-occurrence) chỉ mang giá trị <strong>nghiên cứu thực nghiệm dữ liệu lịch sử</strong>. Không thuật toán hay AI nào biết trước được kết quả mở thưởng, và không công cụ nào trên trang làm tăng xác suất trúng.
               </p>
               <p>
                 • <strong>Không cấu thành lời khuyên đầu tư:</strong> Mọi thông tin hiển thị trên trang web chỉ mang tính tham khảo giải trí, không phải lời khuyên đầu tư tài chính. Tác giả dự án được miễn trừ khỏi mọi trách nhiệm pháp lý hoặc tổn thất phát sinh từ quyết định của người dùng.

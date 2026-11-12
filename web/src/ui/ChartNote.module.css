@@ -1,0 +1,16 @@
+.note {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin-top: 10px;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+.note strong {
+  color: var(--text-muted);
+}
+.icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}

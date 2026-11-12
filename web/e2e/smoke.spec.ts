@@ -36,6 +36,31 @@ test.describe('Luồng chính', () => {
     await expect(page.getByText(/Vé #1/).first()).toBeVisible();
   });
 
+  test('6. Phân tích minh bạch, phòng thí nghiệm và thống kê có điều kiện hiển thị cỡ mẫu', async ({ page }) => {
+    await page.goto('./#/phan-tich');
+    await expect(page.getByRole('heading', { name: 'Phân Tích Minh Bạch' })).toBeVisible();
+    await expect(page.getByText(/nằm trong dao động ngẫu nhiên/).first()).toBeVisible();
+    await expect(page.getByText('Cỡ mẫu:').first()).toBeVisible();
+
+    await page.goto('./#/thuat-toan');
+    await expect(page.getByRole('heading', { name: 'Phòng Thí Nghiệm Xác Suất' })).toBeVisible();
+    await expect(page.getByText(/p-value so với ngẫu nhiên/)).toBeVisible();
+
+    await page.goto('./#/bac-nho');
+    await expect(page.getByRole('heading', { name: /Thống Kê Có Điều Kiện/ })).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: 'Tần suất nền' })).toBeVisible();
+  });
+
+  test('7. Quick Pick ngẫu nhiên có tùy chọn ghi rõ không làm tăng xác suất trúng', async ({ page }) => {
+    await page.goto('./#/vietlott/645');
+    await expect(page.getByText('không làm tăng xác suất trúng').first()).toBeVisible();
+    await page.getByLabel('Số lượng số chẵn').selectOption('3');
+    await page.getByRole('button', { name: 'Chọn ngẫu nhiên' }).click();
+    // Dòng tóm tắt dưới bộ số (khác với <option> cùng nội dung trong ô chọn)
+    await expect(page.locator('strong', { hasText: '3 chẵn - 3 lẻ' })).toBeVisible();
+    await expect(page.getByText(/Gợi ý tránh chia giải/)).toBeVisible();
+  });
+
   test('5. Mỗi màn hình có URL riêng, nút back hoạt động', async ({ page, isMobile }) => {
     await page.goto('./');
     await expect(page.locator('#xsmb-live-results')).toBeVisible();

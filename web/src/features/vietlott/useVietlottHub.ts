@@ -7,6 +7,7 @@ import {
   VietlottCooccurrenceItem,
 } from '../../types';
 import { getVietlottBaoCost } from '../../utils/lotteryUtils';
+import { popularPatterns, quickPick, QuickPickOptions, validateQuickPick } from '../../utils/quickPick';
 
 export interface VietlottProductHubProps {
   gameType: 'vietlott_655' | 'vietlott_645';
@@ -25,7 +26,6 @@ export interface VietlottProductHubProps {
   initialBalls?: number[];
 }
 
-export type GeneratorMode = 'random' | 'balanced' | 'golden_sum' | 'hot_bias';
 export type ActiveTool = 'quick_pick' | 'combo_bao' | 'cooccurrence' | 'history';
 export type BacktestHorizon = 'all' | '3y' | '1y' | '100';
 
@@ -51,11 +51,16 @@ export function useVietlottHub(props: VietlottProductHubProps) {
   // Sub-tabs nội bộ hợp nhất trên màn hình sản phẩm
   const [activeTool, setActiveTool] = useControllableState<ActiveTool>(tool, onToolChange, 'quick_pick');
 
-  // --- TOOL 1: QUICK PICK PRO STATE ---
-  const [generatorMode, setGeneratorMode] = useState<GeneratorMode>('balanced');
+  // --- TOOL 1: QUICK PICK NGẪU NHIÊN CÓ TÙY CHỌN ---
   const [pinnedNumbers, setPinnedNumbers] = useState<number[]>([]);
+  const [excludedNumbers, setExcludedNumbers] = useState<number[]>([]);
+  const [sumFilterOn, setSumFilterOn] = useState<boolean>(false);
+  // Mặc định: khoảng quanh tổng kỳ vọng 6 x (N + 1) / 2
+  const [sumRange, setSumRange] = useState<[number, number]>(is655 ? [138, 198] : [113, 163]);
+  const [evenCount, setEvenCount] = useState<number | null>(null);
+  const [avoidPopular, setAvoidPopular] = useState<boolean>(false);
   const [generatedNumbers, setGeneratedNumbers] = useState<number[]>([]);
-  const [isRolling, setIsRolling] = useState<boolean>(false);
+  const [quickPickError, setQuickPickError] = useState<string | null>(null);
   const [quickPickCopied, setQuickPickCopied] = useState<boolean>(false);
 
   // --- TOOL 2: TRA CỨU BỘ SỐ & VÉ BAO STATE ---
@@ -106,79 +111,37 @@ export function useVietlottHub(props: VietlottProductHubProps) {
   }, [indexData]);
 
   // ==========================================
-  // THUẬT TOÁN 1: QUICK PICK PRO
+  // CÔNG CỤ 1: QUICK PICK NGẪU NHIÊN CÓ TÙY CHỌN
   // ==========================================
-  const handleGenerateNumbers = () => {
-    setIsRolling(true);
-    setQuickPickCopied(false);
-
-    setTimeout(() => {
-      const availableNumbers = Array.from({ length: maxNumber }, (_, i) => i + 1).filter(
-        (n) => !pinnedNumbers.includes(n)
-      );
-
-      const neededCount = 6 - pinnedNumbers.length;
-      if (neededCount <= 0) {
-        setGeneratedNumbers([...pinnedNumbers].sort((a, b) => a - b));
-        setIsRolling(false);
-        return;
-      }
-
-      let selected: number[] = [];
-
-      if (generatorMode === 'hot_bias') {
-        const hotAvailable = topHotList.filter((n) => availableNumbers.includes(n));
-        const regularAvailable = availableNumbers.filter((n) => !topHotList.includes(n));
-        const hotCount = Math.min(neededCount, Math.floor(Math.random() * 2) + 2);
-        const shuffledHot = [...hotAvailable].sort(() => 0.5 - Math.random());
-        const shuffledRegular = [...regularAvailable].sort(() => 0.5 - Math.random());
-
-        selected = [...shuffledHot.slice(0, hotCount), ...shuffledRegular.slice(0, neededCount - hotCount)];
-        while (selected.length < neededCount && shuffledRegular.length > 0) {
-          const next = shuffledRegular.pop();
-          if (next && !selected.includes(next)) selected.push(next);
-        }
-      } else if (generatorMode === 'balanced') {
-        const currentOdds = pinnedNumbers.filter((n) => n % 2 !== 0).length;
-        const targetOdds = 3;
-        const needOdds = Math.max(0, targetOdds - currentOdds);
-        const needEvens = Math.max(0, 3 - pinnedNumbers.filter((n) => n % 2 === 0).length);
-
-        const odds = availableNumbers.filter((n) => n % 2 !== 0).sort(() => 0.5 - Math.random());
-        const evens = availableNumbers.filter((n) => n % 2 === 0).sort(() => 0.5 - Math.random());
-
-        selected = [...odds.slice(0, needOdds), ...evens.slice(0, needEvens)];
-        const remaining = availableNumbers.filter((n) => !selected.includes(n)).sort(() => 0.5 - Math.random());
-        while (selected.length < neededCount && remaining.length > 0) {
-          const n = remaining.pop();
-          if (n) selected.push(n);
-        }
-      } else if (generatorMode === 'golden_sum') {
-        const targetMin = is655 ? 140 : 110;
-        const targetMax = is655 ? 200 : 165;
-        let attempts = 0;
-        while (attempts < 100) {
-          attempts++;
-          const shuffled = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
-          const trial = [...pinnedNumbers, ...shuffled];
-          const sum = trial.reduce((a, b) => a + b, 0);
-          if (sum >= targetMin && sum <= targetMax) {
-            selected = shuffled;
-            break;
-          }
-        }
-        if (selected.length === 0) {
-          selected = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
-        }
-      } else {
-        selected = [...availableNumbers].sort(() => 0.5 - Math.random()).slice(0, neededCount);
-      }
-
-      const finalCombo = [...pinnedNumbers, ...selected].sort((a, b) => a - b);
-      setGeneratedNumbers(finalCombo);
-      setIsRolling(false);
-    }, 280);
+  // Các tùy chọn chỉ giới hạn tập bộ số; trong tập đó mọi bộ có cùng khả năng được chọn (utils/quickPick.ts)
+  const lastDrawBalls = useMemo(() => latestDraw?.balls ?? [], [latestDraw]);
+  const pickOptions: QuickPickOptions = {
+    maxNumber,
+    pinned: pinnedNumbers,
+    excluded: excludedNumbers,
+    sumRange: sumFilterOn ? sumRange : null,
+    evenCount,
+    avoidPopular,
+    lastDraw: lastDrawBalls,
   };
+  const pickOptionsError = validateQuickPick(pickOptions);
+
+  const handleGenerateNumbers = () => {
+    setQuickPickCopied(false);
+    const res = quickPick(pickOptions);
+    if ('reason' in res) {
+      setQuickPickError(res.reason);
+    } else {
+      setGeneratedNumbers(res.numbers);
+      setQuickPickError(null);
+    }
+  };
+
+  const handleToggleExcluded = (num: number) => {
+    setExcludedNumbers((prev) => (prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num].sort((a, b) => a - b)));
+  };
+
+  const generatedPatterns = useMemo(() => popularPatterns(generatedNumbers, lastDrawBalls), [generatedNumbers, lastDrawBalls]);
 
   const handleTogglePin = (num: number) => {
     if (pinnedNumbers.includes(num)) {
@@ -370,14 +333,24 @@ export function useVietlottHub(props: VietlottProductHubProps) {
     onSelectNumber,
     activeTool,
     setActiveTool,
-    generatorMode,
-    setGeneratorMode,
     pinnedNumbers,
     setPinnedNumbers,
+    excludedNumbers,
+    setExcludedNumbers,
+    handleToggleExcluded,
+    sumFilterOn,
+    setSumFilterOn,
+    sumRange,
+    setSumRange,
+    evenCount,
+    setEvenCount,
+    avoidPopular,
+    setAvoidPopular,
+    pickOptionsError,
+    quickPickError,
+    generatedPatterns,
     generatedNumbers,
     setGeneratedNumbers,
-    isRolling,
-    setIsRolling,
     quickPickCopied,
     setQuickPickCopied,
     selectedBalls,
