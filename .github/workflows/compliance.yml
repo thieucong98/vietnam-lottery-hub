@@ -71,11 +71,7 @@ jobs:
         working-directory: web
         run: npm run build
 
-      - name: 11. Ngân sách dung lượng (dữ liệu lúc mở trang < 100 KB)
-        working-directory: web
-        run: npm run check:data-budget
-
-      - name: 11b. Budget kích thước bundle (size-budget.json)
+      - name: 11. Budget kích thước bản build (dữ liệu lúc mở trang < 100 KB, gói dữ liệu, JS, CSS)
         run: python scripts/check_size_budget.py --only bundle
 
       - name: 12. Compliance lint trên bản build

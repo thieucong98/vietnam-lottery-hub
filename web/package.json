@@ -11,8 +11,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "check:data-budget": "node scripts/check-data-budget.mjs"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.3.0",

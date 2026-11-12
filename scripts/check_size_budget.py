@@ -1,8 +1,9 @@
 """Budget kích thước dữ liệu và bundle frontend, cấu hình trong size-budget.json.
 
-- data: dữ liệu tải lúc mở trang (các fetch('./data/*.json') cố định trong tệp entry, mặc định
-  web/src/App.tsx), tệp JSON lớn nhất, tệp history lớn nhất, tổng thư mục dữ liệu.
-- bundle: chunk JS entry (được dist/index.html tham chiếu), tổng JS và CSS trong dist/assets.
+- data: tệp JSON lớn nhất, tệp history lớn nhất, tổng thư mục dữ liệu (web/public/data).
+- bundle (sau npm run build): dữ liệu tải lúc mở trang chủ (`initial_data_files` trong
+  size-budget.json, đường dẫn trong dist/), gói dữ liệu lớn nhất trong dist/bundles, chunk JS
+  entry (được dist/index.html tham chiếu), tổng JS và CSS trong dist/assets.
 
 Ngưỡng `max_*` làm CI fail; `target_*` chỉ in cảnh báo (mục tiêu sẽ siết dần sau Phase 1).
 Kích thước gzip đo ở mức nén 9, xấp xỉ dung lượng truyền qua GitHub Pages.
@@ -26,7 +27,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CONFIG = REPO_ROOT / "size-budget.json"
-FETCH_RE = re.compile(r"""fetch\(\s*['"]\./data/([\w.-]+\.json)['"]""")
 ENTRY_SCRIPT_RE = re.compile(r"""<script[^>]+src="[^"]*?/?(assets/[\w.-]+\.js)\"""")
 
 @dataclass
@@ -47,22 +47,8 @@ def measure_files(name: str, paths: list[Path], detail: str = "") -> Measure:
         gz += gz_size(b)
     return Measure(name, raw, gz, detail)
 
-def initial_data_files(entry_files: list[Path]) -> list[str]:
-    names: list[str] = []
-    for f in entry_files:
-        for m in FETCH_RE.finditer(f.read_text(encoding="utf-8")):
-            if m.group(1) not in names:
-                names.append(m.group(1))
-    return names
-
 def measure_data(cfg: dict, data_dir: Path) -> list[Measure]:
-    entry_files = [REPO_ROOT / p for p in cfg.get("initial_data_entry_files", ["web/src/App.tsx"])]
-    names = initial_data_files(entry_files)
-    missing = [n for n in names if not (data_dir / n).exists()]
-    if missing:
-        raise FileNotFoundError(f"thiếu tệp dữ liệu tải lúc mở trang: {', '.join(missing)}")
-    out = [measure_files("initial_data", [data_dir / n for n in names], f"{len(names)} tệp: {', '.join(names)}")]
-
+    out: list[Measure] = []
     top = sorted(data_dir.glob("*.json"), key=lambda p: p.stat().st_size, reverse=True)
     if top:
         out.append(measure_files("largest_data_file", [top[0]], top[0].name))
@@ -74,17 +60,30 @@ def measure_data(cfg: dict, data_dir: Path) -> list[Measure]:
     out.append(Measure("data_dir_total", total, 0, f"{sum(1 for p in data_dir.rglob('*') if p.is_file())} tệp"))
     return out
 
-def measure_bundle(dist_dir: Path) -> list[Measure]:
+def measure_bundle(cfg: dict, dist_dir: Path) -> list[Measure]:
     index_html = dist_dir / "index.html"
     if not index_html.exists():
         raise FileNotFoundError(f"không có {index_html}; chạy npm run build trước")
     match = ENTRY_SCRIPT_RE.search(index_html.read_text(encoding="utf-8"))
     if not match:
         raise ValueError("không tìm thấy script entry trong dist/index.html")
+
+    # Trang chủ tải các tệp này (web/src/pages/XsmbPage.tsx); Playwright đo lại bằng request thật
+    names = cfg.get("initial_data_files", [])
+    missing = [n for n in names if not (dist_dir / n).exists()]
+    if missing:
+        raise FileNotFoundError(f"thiếu tệp dữ liệu tải lúc mở trang trong dist: {', '.join(missing)}")
+    out = [measure_files("initial_data", [dist_dir / n for n in names], f"{len(names)} tệp: {', '.join(names)}")]
+
+    # Gói dữ liệu sinh lúc build (web/build/dataBundles.ts)
+    bundles = sorted((dist_dir / "bundles").rglob("*.json"), key=lambda p: p.stat().st_size, reverse=True)
+    if bundles:
+        out.append(measure_files("largest_bundle_file", [bundles[0]], str(bundles[0].relative_to(dist_dir))))
+
     assets = dist_dir / "assets"
     js = sorted(assets.glob("*.js"))
     css = sorted(assets.glob("*.css"))
-    return [
+    return out + [
         measure_files("entry_js", [dist_dir / match.group(1)], match.group(1)),
         measure_files("total_js", js, f"{len(js)} chunk"),
         measure_files("total_css", css, f"{len(css)} tệp"),
@@ -130,7 +129,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.only in (None, "data"):
             measures += measure_data(cfg, args.data_dir)
         if args.only in (None, "bundle"):
-            measures += measure_bundle(args.dist_dir)
+            measures += measure_bundle(cfg, args.dist_dir)
     except (FileNotFoundError, ValueError) as e:
         print(f"::error::size budget: {e}")
         return 2

@@ -39,9 +39,9 @@ Trong `daily-crawler.yml` bước này chạy trước bước commit, nên dữ
 `scripts/check_size_budget.py` đọc ngưỡng trong `size-budget.json`:
 
 - `max_raw` / `max_gzip`: vượt là CI fail.
-- `target_raw`: chỉ cảnh báo. Mục tiêu dữ liệu tải lúc mở trang < 100 KB sau Phase 1.
+- `target_*`: chỉ cảnh báo.
 
-"Dữ liệu lúc mở trang" là các `fetch('./data/*.json')` cố định trong `web/src/App.tsx`. Ngưỡng hiện tại bằng kích thước ngày 2026-11-12 cộng khoảng 10%. Khi Phase 1 tách dữ liệu theo màn hình, hạ `max_raw` của `initial_data` xuống gần kích thước mới.
+"Dữ liệu lúc mở trang" (`initial_data`) là các tệp trong `initial_data_files` của `size-budget.json`, đo trên bản build (`web/dist`): `data/summary.json` và `bundles/xsmb_draws_recent.json`. Ngưỡng là tiêu chí Phase 1 (< 100 KB). Khi đổi dữ liệu trang chủ tải lúc mở (`web/src/pages/XsmbPage.tsx`), cập nhật danh sách này; smoke test Playwright đo lại bằng request thật. `largest_bundle_file` giới hạn từng gói dữ liệu sinh lúc build (`web/build/dataBundles.ts`, xem `docs/frontend-architecture.md`).
 
 ```bash
 python scripts/check_size_budget.py --only data

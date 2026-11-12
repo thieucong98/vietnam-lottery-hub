@@ -327,7 +327,7 @@ cd web
 npm run lint
 npm test
 npm run build
-npm run check:data-budget
+python3 ../scripts/check_size_budget.py --only bundle
 npx playwright install --with-deps chromium   # lần đầu
 npm run test:e2e
 ```

@@ -1,11 +1,13 @@
 {
-  "_comment": "Ngưỡng max_* làm CI fail; target_* chỉ cảnh báo. Đặt theo kích thước 2026-11-12 cộng khoảng 10% biên tăng trưởng dữ liệu. Siết dần sau Phase 1 (mục tiêu dữ liệu lúc mở trang < 100 KB).",
-  "initial_data_entry_files": ["web/src/App.tsx"],
+  "_comment": "Ngưỡng max_* làm CI fail; target_* chỉ cảnh báo. Ngưỡng dữ liệu đặt theo kích thước 2026-11-12 cộng khoảng 10%. Sau Phase 1 (AUT-13): initial_data = tiêu chí < 100 KB; JS/CSS = kích thước sau khi thêm router, tách chunk theo route và chuyển inline style sang CSS Modules, cộng khoảng 10%.",
+  "initial_data_files": [
+    "data/summary.json",
+    "bundles/xsmb_draws_recent.json"
+  ],
   "budgets": {
     "initial_data": {
-      "max_raw": 2400000,
-      "max_gzip": 215000,
-      "target_raw": 102400
+      "max_raw": 102400,
+      "max_gzip": 30720
     },
     "largest_data_file": {
       "max_raw": 700000,
@@ -18,17 +20,21 @@
     "data_dir_total": {
       "max_raw": 20000000
     },
+    "largest_bundle_file": {
+      "max_raw": 153600,
+      "max_gzip": 30720
+    },
     "entry_js": {
       "max_raw": 320000,
       "max_gzip": 88000
     },
     "total_js": {
-      "max_raw": 470000,
-      "max_gzip": 125000
+      "max_raw": 530000,
+      "max_gzip": 160000
     },
     "total_css": {
-      "max_raw": 16000,
-      "max_gzip": 5000
+      "max_raw": 45000,
+      "max_gzip": 14000
     }
   }
 }

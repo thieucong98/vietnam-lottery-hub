@@ -10,8 +10,6 @@ web/
 │   ├── dataBundles.ts        # Plugin Vite sinh gói dữ liệu gọn theo màn hình (mục 3)
 │   └── preloadFonts.ts       # Chèn <link rel="preload"> cho font chính
 ├── e2e/                      # Playwright smoke test (5 luồng chính, desktop + mobile)
-├── scripts/
-│   └── check-data-budget.mjs # Kiểm tra ngân sách dung lượng bản build
 ├── public/data/              # JSON do engine Python xuất ra (nguồn dữ liệu duy nhất)
 └── src/
     ├── main.tsx              # Điểm vào: HashRouter, font, CSS toàn cục, chuyển link cũ ?tab=
@@ -123,7 +121,7 @@ const detail = useJson<NumberDetail>(numberDetailUrl('xsmb', '68'));
 - Mỗi URL chỉ tải một lần mỗi phiên (`data/api.ts`); lỗi mạng không bị cache.
 - Thêm dataset mới: thêm vào `DatasetMap` và `DATASETS`; nếu cần gói gọn hơn file gốc, thêm vào `buildDataBundles` và test trong `build/dataBundles.test.ts`.
 
-Ngân sách kiểm tra trong CI (`npm run check:data-budget`): dữ liệu lúc mở trang < 100 KB, mỗi gói < 150 KB, JS chính < 100 KB gzip.
+Ngân sách kiểm tra trong CI bằng `scripts/check_size_budget.py --only bundle` (ngưỡng trong `size-budget.json`, xem `docs/data-quality.md`): dữ liệu lúc mở trang < 100 KB, mỗi gói < 150 KB, cùng giới hạn JS và CSS.
 
 ## 4. Bộ component cơ bản (`src/ui`)
 
@@ -230,14 +228,14 @@ cd web
 npm run lint                 # ESLint (TypeScript + react-hooks)
 npm test                     # Vitest: utils, logic dò vé, URL, giải nén dữ liệu, bộ component
 npm run build                # tsc (app + build/e2e) và vite build
-npm run check:data-budget    # Ngân sách dung lượng
+python3 ../scripts/check_size_budget.py --only bundle   # Ngân sách dung lượng
 npx playwright install --with-deps chromium
 npm run test:e2e             # Smoke test trên bản build, desktop và mobile (Pixel 7)
 ```
 
 5 luồng smoke test (`e2e/smoke.spec.ts`): trang chủ và dung lượng dữ liệu lúc mở; tra cứu một số qua URL và đóng bằng Esc; dò bộ số Vietlott qua URL; tạo vé ở bộ lọc; điều hướng bằng URL và nút back.
 
-CI (`.github/workflows/compliance.yml`) chạy compliance lint, pytest, ESLint, Vitest, build, ngân sách dung lượng, compliance lint trên bản build và Playwright cho mọi PR vào `main`.
+CI (`.github/workflows/compliance.yml`) chạy compliance lint, pytest, kiểm tra schema dữ liệu, ESLint, Vitest, build, ngân sách dung lượng, compliance lint trên bản build và Playwright cho mọi PR vào `main`.
 
 Đo Lighthouse mobile (Performance) trên bản build cục bộ, Lighthouse 12.8, mô phỏng mạng di động: 93 (FCP 2,1 s, LCP 2,7 s, TBT 130-150 ms, CLS 0-0,06). Thay đổi chính để đạt: tải dữ liệu theo màn hình, tách mã theo route, font tự host có preload thay cho Google Fonts.
 
