@@ -30,7 +30,8 @@ def _redact(text: str, *secrets: str | None) -> str:
     return text
 
 class GitHubChannel(Protocol):
-    def find_open_alert(self) -> dict | None: ...
+    def find_open_alerts(self) -> list[dict]: ...
+    def close_duplicate(self, number: int, keep: int) -> str: ...
     def open_alert(self, body: str) -> str: ...
     def update_alert(self, number: int, body: str, comment: str) -> str: ...
     def close_alert(self, number: int, comment: str) -> str: ...
@@ -59,10 +60,16 @@ class GitHubIssues:
             raise RuntimeError(_redact(f"GitHub API {method} {path} -> {resp.status_code}: {resp.text[:300]}", self._token))
         return resp
 
-    def find_open_alert(self) -> dict | None:
-        resp = self._request("GET", "/issues", params={"labels": ALERT_LABEL, "state": "open", "per_page": 10})
-        issues = [i for i in resp.json() if "pull_request" not in i]
-        return issues[0] if issues else None
+    def find_open_alerts(self) -> list[dict]:
+        """Issue cảnh báo đang mở, cũ nhất trước."""
+        params = {"labels": ALERT_LABEL, "state": "open", "per_page": 20, "sort": "created", "direction": "asc"}
+        resp = self._request("GET", "/issues", params=params)
+        return [i for i in resp.json() if "pull_request" not in i]
+
+    def close_duplicate(self, number: int, keep: int) -> str:
+        self._request("POST", f"/issues/{number}/comments", json={"body": f"Trùng với #{keep}, đóng tự động."})
+        self._request("PATCH", f"/issues/{number}", json={"state": "closed", "state_reason": "not_planned"})
+        return f"đóng issue trùng #{number}"
 
     def open_alert(self, body: str) -> str:
         self._ensure_label()
@@ -111,8 +118,12 @@ class DryRunGitHub:
     def __init__(self):
         self.calls: list[tuple[str, str]] = []
 
-    def find_open_alert(self) -> dict | None:
-        return None
+    def find_open_alerts(self) -> list[dict]:
+        return []
+
+    def close_duplicate(self, number: int, keep: int) -> str:
+        self.calls.append(("duplicate", str(number)))
+        return f"dry-run: sẽ đóng issue trùng #{number}"
 
     def open_alert(self, body: str) -> str:
         self.calls.append(("open", body))
@@ -195,9 +206,18 @@ def dispatch_alerts(
     existing = None
     if github is not None:
         try:
-            existing = github.find_open_alert()
+            open_alerts = github.find_open_alerts()
         except RuntimeError as e:
             logger.error(f"Không đọc được issue cảnh báo: {e}")
+            open_alerts = []
+        if open_alerts:
+            existing = open_alerts[0]
+        # API danh sách issue có độ trễ nhất quán, hai lần chạy sát nhau có thể mở trùng
+        for dup in open_alerts[1:]:
+            try:
+                actions.append(github.close_duplicate(dup["number"], existing["number"]))
+            except RuntimeError as e:
+                logger.error(f"Không đóng được issue trùng: {e}")
 
     notify = False
     issue_ref = None

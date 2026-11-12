@@ -123,8 +123,14 @@ class FakeGitHub:
         self.existing = existing
         self.calls = []
 
-    def find_open_alert(self):
-        return self.existing
+    def find_open_alerts(self):
+        if self.existing is None:
+            return []
+        return self.existing if isinstance(self.existing, list) else [self.existing]
+
+    def close_duplicate(self, number, keep):
+        self.calls.append(("duplicate", number))
+        return "duplicate"
 
     def open_alert(self, body):
         self.calls.append(("open", body))
@@ -210,3 +216,11 @@ def test_telegram_errors_do_not_leak_token(monkeypatch, capsys):
         logger.remove(sink)
     assert messages and all(token not in m for m in messages)
     assert _redact(f"a {token} b", token) == "a *** b"
+
+def test_dispatch_closes_duplicate_alerts(tmp_path):
+    report = _problem_report(tmp_path)
+    body = f"<!-- data-alert-fingerprint: {report.fingerprint()} -->"
+    gh, tg = FakeGitHub([{"number": 3, "html_url": "u", "body": body}, {"number": 4, "html_url": "u", "body": body}]), FakeTelegram()
+    dispatch_alerts(report, telegram=tg, github=gh)
+    assert gh.calls == [("duplicate", 4)]
+    assert tg.sent == []
