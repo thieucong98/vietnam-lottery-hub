@@ -81,12 +81,12 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
               </div>
               <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginTop: 4 }}>
                 Khác biệt với bạc nhớ truyền miệng, hệ thống quét chính xác toàn bộ 20 năm lịch sử (2005 - {bacNhoData.metadata.latest_date.slice(0, 4)}) 
-                để chứng minh khoa học: <em>Khi hôm trước về số X thì ngày mai số nào có tỷ lệ xuất hiện cao nhất</em>.
+                để thống kê: <em>sau những ngày có số X, số nào từng xuất hiện nhiều nhất vào ngày kế tiếp</em>. Các kỳ quay độc lập nhau, nên thống kê này không cho biết trước kết quả kỳ sau.
               </p>
             </div>
           </div>
 
-          {/* Nút sao chép dàn gợi ý */}
+          {/* Nút sao chép Top 10 số theo sau */}
           {followers.length > 0 && (
             <button
               onClick={handleCopyTop}
@@ -127,7 +127,7 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                 cursor: 'pointer',
               }}
             >
-              ⭐ Bạc Nhớ Theo Đề (Giải Đặc Biệt)
+              ⭐ Theo 2 Số Cuối Giải Đặc Biệt
             </button>
             <button
               onClick={() => setMode('loto')}
@@ -142,14 +142,14 @@ export const BacNhoHub: React.FC<BacNhoHubProps> = ({ bacNhoData, onSelectNumber
                 cursor: 'pointer',
               }}
             >
-              🎯 Bạc Nhớ Theo Lô Tô
+              🎯 Theo 27 Giải (Lô Tô)
             </button>
           </div>
 
           {/* Ô nhập số kiểm tra */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)', fontWeight: 600 }}>
-              {mode === 'special' ? 'Hôm trước Đề về:' : 'Hôm trước có Lô:'}
+              {mode === 'special' ? 'Hôm trước 2 số cuối ĐB là:' : 'Hôm trước có số:'}
             </span>
             <input
               type="text"

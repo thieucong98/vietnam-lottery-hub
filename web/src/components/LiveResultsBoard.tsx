@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Trophy, Sparkles, ChevronRight, ChevronLeft, Award, Flame, Dice5 } from 'lucide-react';
 import { LatestDrawXSMB, LatestDrawVietlott, LatestDraw3D, LatestDrawKeno } from '../types';
+import { OfficialResultsLink } from './OfficialResultsLink';
 
 interface LiveResultsBoardProps {
   gameType: 'xsmb' | 'vietlott_655' | 'vietlott_645';
@@ -133,6 +134,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
 
         {/* Các sản phẩm Vietlott đồng hành: Max 3D & Keno */}
         <CompanionVietlottGames latest3D={latest3D} latestKeno={latestKeno} />
+        <OfficialResultsLink sources={['vietlott']} />
       </div>
     );
   }
@@ -378,6 +380,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
       {/* Các sản phẩm Vietlott đồng hành: Max 3D & Keno */}
       <div style={{ gridColumn: '1 / -1' }}>
         <CompanionVietlottGames latest3D={latest3D} latestKeno={latestKeno} />
+        <OfficialResultsLink sources={['xsktThuDo', 'vietlott']} />
       </div>
     </div>
   );

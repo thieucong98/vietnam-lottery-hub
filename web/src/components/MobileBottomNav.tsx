@@ -101,7 +101,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         <button
           className={`mobile-nav-item ${isMoreActive ? 'active' : ''}`}
           onClick={() => setIsDrawerOpen(true)}
-          title="Thống kê, Bạc nhớ, AI & Bộ lọc"
+          title="Thống kê, Bạc nhớ, Thuật toán & Bộ lọc"
         >
           <div className="nav-icon-wrapper">
             <BarChart3 size={20} />
@@ -210,7 +210,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       Ma Trận Nhiệt (00 - 99)
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      Bản đồ tần suất nhiệt 100 số đề & loto 20 năm
+                      Bản đồ tần suất nhiệt 100 số (2 chữ số) 20 năm
                     </div>
                   </div>
                 </div>
@@ -354,7 +354,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   </div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
-                      Bộ Lọc Dàn Vé Chuẩn Gauss
+                      Bộ Lọc Vé Theo Phân Phối Tổng
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
                       Tạo vé tối ưu xác suất & so hàng loạt
@@ -403,7 +403,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   </div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
-                      Mô Hình AI & Kiểm Thử Backtest
+                      Thuật Toán Mẫu & Kiểm Thử Backtest
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
                       Chuỗi Markov, Exponential Decay & Hiệu suất thực tế

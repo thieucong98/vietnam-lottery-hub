@@ -37,7 +37,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
             BẢNG XẾP HẠNG LÔ GAN & TẦN SUẤT
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-            Theo dõi những con số gan lì nhất và những con số có phong độ nổ nhiều nhất
+            Theo dõi những con số gan lì nhất và những con số xuất hiện nhiều nhất
           </p>
         </div>
 
@@ -172,7 +172,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
 
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--accent-gold)', fontFamily: 'var(--font-mono)' }}>
-                      {item.freq_100d ?? item.total_hits} <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>nháy</span>
+                      {item.freq_100d ?? item.total_hits} <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>lần</span>
                     </div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--accent-emerald)' }}>
                       Phong độ rất cao 🔥

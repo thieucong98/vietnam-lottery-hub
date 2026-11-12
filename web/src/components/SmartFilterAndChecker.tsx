@@ -6,7 +6,6 @@ import {
 } from '../types';
 import {
   CheckCircle2,
-  Filter,
   Copy,
   Check,
   Sparkles,
@@ -122,21 +121,10 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
   onSelectNumber,
   onSwitchToVietlottCombo,
 }) => {
-  const [activeSubTab, setActiveSubTab] = useState<'xsmb_filter' | 'vietlott_filter' | 'checker'>('vietlott_filter');
+  const [activeSubTab, setActiveSubTab] = useState<'vietlott_filter' | 'checker'>('vietlott_filter');
 
   // ==========================================
-  // STATE CHO BỘ LỌC DÀN SỐ XSMB
-  // ==========================================
-  const [selectedChams, setSelectedChams] = useState<number[]>([]);
-  const [selectedTongs, setSelectedTongs] = useState<number[]>([]);
-  const [tongParity, setTongParity] = useState<'all' | 'even' | 'odd'>('all');
-  const [tongSize, setTongSize] = useState<'all' | 'small' | 'large'>('all'); // small < 10, large >= 10
-  const [includeKiepBang, setIncludeKiepBang] = useState<boolean>(true);
-  const [excludeGanDays, setExcludeGanDays] = useState<number>(0); // 0: không loại, 10: loại gan > 10d, 15: loại gan > 15d
-  const [filterCopied, setFilterCopied] = useState<boolean>(false);
-
-  // ==========================================
-  // STATE CHO TẠO DÀN & LỌC VÉ VIETLOTT
+  // STATE CHO TẠO & LỌC VÉ VIETLOTT
   // ==========================================
   const [vietlottProduct, setVietlottProduct] = useState<'655' | '645'>('655');
   const [vTicketType, setVTicketType] = useState<VietlottTicketType>('single');
@@ -156,86 +144,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
   const [ticketInput, setTicketInput] = useState<string>('03, 14, 28, 51, 68, 86, 89, 90');
   const [customSpecialInput, setCustomSpecialInput] = useState<string>('');
 
-  // 1. Logic lọc dàn số XSMB
-  const filteredNumbers: string[] = useMemo(() => {
-    const list: string[] = [];
-
-    for (let i = 0; i < 100; i++) {
-      const str = i.toString().padStart(2, '0');
-      const d1 = parseInt(str[0], 10);
-      const d2 = parseInt(str[1], 10);
-      const sum = (d1 + d2) % 10;
-      const rawSum = d1 + d2;
-      const isKiepBang = d1 === d2;
-
-      // Lọc theo Chạm
-      if (selectedChams.length > 0) {
-        if (!selectedChams.includes(d1) && !selectedChams.includes(d2)) {
-          continue;
-        }
-      }
-
-      // Lọc theo Tổng cụ thể
-      if (selectedTongs.length > 0) {
-        if (!selectedTongs.includes(sum)) {
-          continue;
-        }
-      }
-
-      // Lọc theo Chẵn / Lẻ của Tổng
-      if (tongParity === 'even' && sum % 2 !== 0) continue;
-      if (tongParity === 'odd' && sum % 2 === 0) continue;
-
-      // Lọc theo Tổng bé / lớn
-      if (tongSize === 'small' && rawSum >= 10) continue;
-      if (tongSize === 'large' && rawSum < 10) continue;
-
-      // Lọc kép bằng
-      if (!includeKiepBang && isKiepBang) continue;
-
-      // Loại trừ Lô Gan
-      if (excludeGanDays > 0 && xsmbData?.numbers) {
-        const numDetail = xsmbData.numbers[str];
-        if (numDetail && numDetail.days_since_last > excludeGanDays) {
-          continue;
-        }
-      }
-
-      list.push(str);
-    }
-
-    return list;
-  }, [selectedChams, selectedTongs, tongParity, tongSize, includeKiepBang, excludeGanDays, xsmbData]);
-
-  const handleCopyFiltered = () => {
-    navigator.clipboard.writeText(filteredNumbers.join(', '));
-    setFilterCopied(true);
-    setTimeout(() => setFilterCopied(false), 2000);
-  };
-
-  const handleSendToChecker = () => {
-    setTicketInput(filteredNumbers.join(', '));
-    setActiveSubTab('checker');
-  };
-
-  const handleToggleCham = (c: number) => {
-    setSelectedChams((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]));
-  };
-
-  const handleToggleTong = (t: number) => {
-    setSelectedTongs((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
-  };
-
-  const handleResetFilter = () => {
-    setSelectedChams([]);
-    setSelectedTongs([]);
-    setTongParity('all');
-    setTongSize('all');
-    setIncludeKiepBang(true);
-    setExcludeGanDays(0);
-  };
-
-  // 2. Logic Sinh Dàn Vé Vietlott Thông Minh
+  // 2. Logic Sinh Vé Vietlott Theo Bộ Lọc
   const maxBall = vietlottProduct === '655' ? 55 : 45;
   const midBall = vietlottProduct === '655' ? 27 : 22;
   const activeVietlottIdx = vietlottProduct === '655' ? vietlott655Data : vietlott645Data;
@@ -473,27 +382,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
             }}
           >
             <Trophy size={16} />
-            <span>Tạo Dàn & Lọc Vé Vietlott</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubTab('xsmb_filter')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '8px 18px',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              background: activeSubTab === 'xsmb_filter' ? 'linear-gradient(135deg, #3b82f6, #06b6d4)' : 'transparent',
-              color: activeSubTab === 'xsmb_filter' ? '#ffffff' : 'var(--text-muted)',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-            }}
-          >
-            <Filter size={16} />
-            <span>Lọc Dàn XSMB (Đề & Lô)</span>
+            <span>Tạo & Lọc Vé Vietlott</span>
           </button>
 
           <button
@@ -513,19 +402,19 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
             }}
           >
             <CheckCircle2 size={16} />
-            <span>Trình So Vé Hàng Loạt</span>
+            <span>Thống Kê Nhiều Số XSMB</span>
           </button>
         </div>
 
         <div style={{ fontSize: '0.82rem', color: 'var(--text-dim)' }}>
           {activeSubTab === 'vietlott_filter'
-            ? 'Tối ưu hóa xác suất trúng theo Phân phối chuẩn Gauss & Cặp Co-occurrence'
+            ? 'Lọc theo phân phối tổng & cặp đồng xuất hiện. Không làm tăng xác suất trúng.'
             : `Kỳ quay đối soát: ${latestXSMB?.date || 'Mới nhất'} (Đặc biệt: ${specialPrizeNumber || '--'})`}
         </div>
       </div>
 
       {/* ========================================================= */}
-      {/* 1. VIEW: TẠO DÀN & LỌC VÉ VIETLOTT THÔNG MINH (NEW!)      */}
+      {/* 1. VIEW: TẠO & LỌC VÉ VIETLOTT                           */}
       {/* ========================================================= */}
       {activeSubTab === 'vietlott_filter' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -535,10 +424,10 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
               <div>
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Sparkles size={18} color="var(--accent-gold)" />
-                  BỘ TẠO DÀN VÉ VIETLOTT CHUẨN XÁC SUẤT GAUSS
+                  BỘ TẠO VÉ VIETLOTT THEO PHÂN PHỐI TỔNG (GAUSS)
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                  Lọc bỏ các bộ số bất khả thi (tổng quá lệch, toàn số chẵn/lẻ) và ưu tiên các cặp số có xác suất đồng xuất hiện cao trong 1.400+ kỳ.
+                  Sinh vé ngẫu nhiên rồi lọc theo tổng, chẵn/lẻ và các cặp số từng đồng xuất hiện trong 1.400+ kỳ. Mọi bộ 6 số đều có cùng xác suất trúng Jackpot ({vietlottProduct === '655' ? '1/28.989.675' : '1/8.145.060'}); bộ lọc này không làm tăng xác suất trúng.
                 </p>
               </div>
 
@@ -902,7 +791,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
               </div>
             )}
 
-            {/* Các Nút Bấm Tạo Dàn */}
+            {/* Các Nút Bấm Tạo Vé */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', paddingTop: 8, borderTop: '1px solid var(--border-subtle)' }}>
               <button
                 onClick={() => handleGenerateVietlottTickets()}
@@ -1020,7 +909,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   }}
                 >
                   <Copy size={16} />
-                  <span>{vCopiedNotice ? 'Đã sao chép tất cả!' : 'Sao chép toàn bộ dàn'}</span>
+                  <span>{vCopiedNotice ? 'Đã sao chép tất cả!' : 'Sao chép toàn bộ vé'}</span>
                 </button>
               )}
             </div>
@@ -1049,7 +938,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   Các tiêu chí bạn đang chọn (Tổng Gauss, tỷ lệ Chẵn/Lẻ, Nhỏ/Lớn, Lọc số gan hoặc Cặp số bắt buộc) có thể quá hẹp hoặc xung đột với nhau.
                 </p>
                 <div style={{ marginTop: 8, fontSize: '0.82rem', color: 'var(--accent-gold)' }}>
-                  💡 <strong>Gợi ý:</strong> Hãy nới lỏng các bộ lọc (chọn phân bổ <em>Cân Bằng</em>, giữ <em>Chuẩn Gauss</em> hoặc bỏ cặp số bắt buộc) rồi bấm tạo lại dàn vé.
+                  💡 <strong>Gợi ý:</strong> Hãy nới lỏng các bộ lọc (chọn phân bổ <em>Cân Bằng</em>, giữ <em>Chuẩn Gauss</em> hoặc bỏ cặp số bắt buộc) rồi bấm tạo lại.
                 </div>
               </div>
             </div>
@@ -1060,7 +949,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
             <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
                 <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
-                  DÀN VÉ VỪA SINH ({generatedTickets.length} Vé Thỏa Mãn Tất Cả Tiêu Chí)
+                  CÁC VÉ VỪA SINH ({generatedTickets.length} Vé Thỏa Mãn Tất Cả Tiêu Chí)
                 </h4>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
                   Bấm "Kiểm tra lịch sử" để đối soát từng vé với toàn bộ 1.400+ kỳ quay!
@@ -1200,298 +1089,15 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* 2. VIEW: BỘ LỌC DÀN SỐ XSMB                               */}
-      {/* ========================================================= */}
-      {activeSubTab === 'xsmb_filter' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {/* Cụm điều khiển bộ lọc */}
-          <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-              <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>CẤU HÌNH THÔNG SỐ LỌC DÀN XSMB</h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  Lọc chạm, tổng, loại trừ lô gan để tạo dàn số chuẩn xác cho đề hoặc lô tô.
-                </p>
-              </div>
-              <button
-                onClick={handleResetFilter}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 12px',
-                  borderRadius: 'var(--radius-sm)',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--border-subtle)',
-                  color: 'var(--text-dim)',
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                }}
-              >
-                <RefreshCw size={13} />
-                <span>Đặt lại mặc định</span>
-              </button>
-            </div>
-
-            {/* Lọc Chạm 0 - 9 */}
-            <div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--accent-gold)', marginBottom: 8 }}>
-                1. LỌC THEO CHẠM (Chạm đầu hoặc đuôi):
-              </div>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((c) => {
-                  const isSelected = selectedChams.includes(c);
-                  return (
-                    <button
-                      key={c}
-                      onClick={() => handleToggleCham(c)}
-                      style={{
-                        width: 44,
-                        height: 38,
-                        borderRadius: 'var(--radius-sm)',
-                        background: isSelected ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                        color: isSelected ? '#000000' : 'var(--text-main)',
-                        border: isSelected ? 'none' : '1px solid var(--border-subtle)',
-                        fontWeight: 800,
-                        fontSize: '0.92rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.15s',
-                      }}
-                    >
-                      {c}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Lọc Tổng 0 - 9 */}
-            <div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--accent-cyan)', marginBottom: 8 }}>
-                2. LỌC THEO TỔNG (Tổng chữ số % 10):
-              </div>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((t) => {
-                  const isSelected = selectedTongs.includes(t);
-                  return (
-                    <button
-                      key={t}
-                      onClick={() => handleToggleTong(t)}
-                      style={{
-                        width: 44,
-                        height: 38,
-                        borderRadius: 'var(--radius-sm)',
-                        background: isSelected ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.05)',
-                        color: isSelected ? '#000000' : 'var(--text-main)',
-                        border: isSelected ? 'none' : '1px solid var(--border-subtle)',
-                        fontWeight: 800,
-                        fontSize: '0.92rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.15s',
-                      }}
-                    >
-                      T{t}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Bộ lọc nâng cao: Chẵn/Lẻ, Kép bằng, Loại gan */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-dim)', marginBottom: 8 }}>
-                  3. TỔNG CHẴN / LẺ:
-                </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {[
-                    { id: 'all', label: 'Tất cả' },
-                    { id: 'even', label: 'Tổng Chẵn' },
-                    { id: 'odd', label: 'Tổng Lẻ' },
-                  ].map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => setTongParity(p.id as any)}
-                      style={{
-                        flex: 1,
-                        padding: '6px 10px',
-                        borderRadius: 'var(--radius-sm)',
-                        background: tongParity === p.id ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                        color: tongParity === p.id ? '#000000' : 'var(--text-main)',
-                        border: '1px solid var(--border-subtle)',
-                        fontSize: '0.78rem',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-dim)', marginBottom: 8 }}>
-                  4. KÉP BẰNG (00, 11, ... 99):
-                </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button
-                    onClick={() => setIncludeKiepBang(true)}
-                    style={{
-                      flex: 1,
-                      padding: '6px 10px',
-                      borderRadius: 'var(--radius-sm)',
-                      background: includeKiepBang ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                      color: includeKiepBang ? '#000000' : 'var(--text-main)',
-                      border: '1px solid var(--border-subtle)',
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Lấy kép bằng
-                  </button>
-                  <button
-                    onClick={() => setIncludeKiepBang(false)}
-                    style={{
-                      flex: 1,
-                      padding: '6px 10px',
-                      borderRadius: 'var(--radius-sm)',
-                      background: !includeKiepBang ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                      color: !includeKiepBang ? '#000000' : 'var(--text-main)',
-                      border: '1px solid var(--border-subtle)',
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Bỏ kép bằng
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-dim)', marginBottom: 8 }}>
-                  5. LOẠI TRỪ LÔ GAN:
-                </div>
-                <select
-                  value={excludeGanDays}
-                  onChange={(e) => setExcludeGanDays(Number(e.target.value))}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: 'var(--radius-sm)',
-                    background: 'rgba(30, 41, 59, 0.7)',
-                    border: '1px solid var(--border-subtle)',
-                    color: '#ffffff',
-                    fontSize: '0.85rem',
-                    outline: 'none',
-                  }}
-                >
-                  <option value={0}>Không loại trừ số gan</option>
-                  <option value={10}>Loại bỏ các số gan &gt; 10 ngày</option>
-                  <option value={15}>Loại bỏ các số gan &gt; 15 ngày</option>
-                  <option value={20}>Loại bỏ các số gan &gt; 20 ngày (An toàn)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Kết quả dàn số */}
-          <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>DÀN SỐ ĐÃ LỌC:</span>
-                <span className="badge badge-gold" style={{ fontSize: '0.85rem' }}>
-                  {filteredNumbers.length} số (chiếm {filteredNumbers.length}%)
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button
-                  onClick={handleCopyFiltered}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-sm)',
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid var(--border-subtle)',
-                    color: filterCopied ? 'var(--accent-emerald)' : 'var(--text-main)',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {filterCopied ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{filterCopied ? 'Đã sao chép!' : 'Sao chép dàn số'}</span>
-                </button>
-
-                <button
-                  onClick={handleSendToChecker}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-sm)',
-                    background: 'linear-gradient(135deg, #10b981, #06b6d4)',
-                    border: 'none',
-                    color: '#ffffff',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <CheckCircle2 size={14} />
-                  <span>So khớp dàn này</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Grid các số */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(48px, 1fr))',
-                gap: 8,
-                maxHeight: 280,
-                overflowY: 'auto',
-                padding: '4px',
-              }}
-            >
-              {filteredNumbers.map((num) => (
-                <button
-                  key={num}
-                  onClick={() => onSelectNumber(num)}
-                  className="lottery-ball ball-gold"
-                  style={{
-                    width: 44,
-                    height: 44,
-                    fontSize: '0.95rem',
-                    cursor: 'pointer',
-                  }}
-                  title="Bấm để xem lịch sử số này"
-                >
-                  {num}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================= */}
-      {/* 3. VIEW: TRÌNH SO VÉ HÀNG LOẠT (CHECKER)                  */}
+      {/* 3. VIEW: THỐNG KÊ NHIỀU SỐ 2 CHỮ SỐ TRONG KỲ XSMB MỚI NHẤT */}
       {/* ========================================================= */}
       {activeSubTab === 'checker' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>TRÌNH SO VÉ HÀNG LOẠT TỨC THÌ</h3>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>THỐNG KÊ NHIỀU SỐ TRONG KỲ XSMB MỚI NHẤT</h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Dán danh sách vé đã mua để kiểm tra xem hôm nay trúng được bao nhiêu con, có nổ Giải Đặc Biệt (Đề) hay không.
+                Nhập nhiều số 2 chữ số để xem mỗi số xuất hiện bao nhiêu lần trong 27 giải của kỳ mới nhất. Đây là thống kê dữ liệu; vé XSKT miền Bắc hợp pháp là vé 5 chữ số, hãy dò vé tại tab XSMB.
               </p>
             </div>
 
@@ -1499,7 +1105,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
               <textarea
                 value={ticketInput}
                 onChange={(e) => setTicketInput(e.target.value)}
-                placeholder="Nhập hoặc dán các con số đã mua (cách nhau bởi dấu phẩy, khoảng trắng hoặc dấu gạch)..."
+                placeholder="Nhập các số 2 chữ số (cách nhau bởi dấu phẩy, khoảng trắng hoặc dấu gạch)..."
                 rows={3}
                 style={{
                   width: '100%',
@@ -1529,7 +1135,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   cursor: 'pointer',
                 }}
               >
-                Mẫu dàn lô 8 số
+                Ví dụ 8 số
               </button>
               <button
                 onClick={() => setTicketInput('00, 11, 22, 33, 44, 55, 66, 77, 88, 99')}
@@ -1543,7 +1149,7 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   cursor: 'pointer',
                 }}
               >
-                Mẫu dàn kép bằng
+                Ví dụ số kép
               </button>
               <button
                 onClick={() => setTicketInput('')}
@@ -1566,30 +1172,30 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
           <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
               <div>
-                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>KẾT QUẢ ĐỐI SOÁT VÉ</h4>
+                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ffffff' }}>KẾT QUẢ THỐNG KÊ</h4>
                 <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 4 }}>
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                    Tổng số vé: <strong>{checkerReport.totalTickets}</strong> con
+                    Tổng số đã nhập: <strong>{checkerReport.totalTickets}</strong>
                   </span>
                   <span>•</span>
                   <span style={{ fontSize: '0.85rem', color: 'var(--accent-emerald)', fontWeight: 700 }}>
-                    Trúng: {checkerReport.matchCount} / {checkerReport.totalTickets} ({checkerReport.rate}%)
+                    Có xuất hiện: {checkerReport.matchCount} / {checkerReport.totalTickets} ({checkerReport.rate}%)
                   </span>
                   <span>•</span>
                   <span style={{ fontSize: '0.85rem', color: 'var(--accent-gold)', fontWeight: 700 }}>
-                    Tổng số nháy nổ: {checkerReport.totalHits} nháy
+                    Tổng số lần xuất hiện: {checkerReport.totalHits}
                   </span>
                 </div>
               </div>
 
               {checkerReport.hitSpecial && (
                 <div className="badge badge-hot" style={{ fontSize: '0.9rem', padding: '6px 14px' }}>
-                  🎉 CHÚC MỪNG: TRÚNG GIẢI ĐẶC BIỆT ({specialPrizeNumber})!
+                  Có số trùng 2 số cuối Giải Đặc Biệt ({specialPrizeNumber})
                 </div>
               )}
             </div>
 
-            {/* Chi tiết từng con số trong vé */}
+            {/* Chi tiết từng số */}
             <div
               style={{
                 display: 'grid',
@@ -1629,15 +1235,15 @@ export const SmartFilterAndChecker: React.FC<SmartFilterAndCheckerProps> = ({
                   <div style={{ textAlign: 'right' }}>
                     {item.isSpecial ? (
                       <div style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--accent-rose)' }}>
-                        ĐẶC BIỆT
+                        2 SỐ CUỐI ĐB
                       </div>
                     ) : item.isWin ? (
                       <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--accent-emerald)' }}>
-                        {item.hits} NHÁY
+                        {item.hits} LẦN
                       </div>
                     ) : (
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                        Trượt
+                        Không có
                       </div>
                     )}
                   </div>
