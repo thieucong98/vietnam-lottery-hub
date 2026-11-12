@@ -1,5 +1,5 @@
 import React from 'react';
-import { Brain, Cpu, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Brain, Cpu, ShieldCheck, Sparkles } from 'lucide-react';
 import { MLInsightsData } from '../types';
 
 interface AIStrategyHubProps {

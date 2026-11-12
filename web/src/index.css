@@ -1,6 +1,7 @@
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Font tự host (src/main.tsx), không gọi Google Fonts */
+  --font-main: 'Plus Jakarta Sans Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
   /* Color Palette */
   --bg-app: #080c14;
@@ -486,3 +487,16 @@ body {
   }
 }
 
+
+/* Ẩn trực quan nhưng vẫn đọc được bằng trình đọc màn hình */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

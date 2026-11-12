@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, TrendingUp, Trophy, ArrowRight } from 'lucide-react';
+import { AlertTriangle, TrendingUp } from 'lucide-react';
 import { LotteryIndexData } from '../types';
 
 interface GanRankingViewProps {

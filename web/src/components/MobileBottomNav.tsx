@@ -12,7 +12,6 @@ import {
   Brain,
   ShieldCheck,
   ChevronRight,
-  Trophy,
 } from 'lucide-react';
 
 interface MobileBottomNavProps {

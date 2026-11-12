@@ -9,7 +9,6 @@ import {
   Github,
   Sparkles,
   Filter,
-  Trophy,
   ShieldCheck,
   Zap,
 } from 'lucide-react';
@@ -211,8 +210,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* ACTIONS & EXTERNAL LINKS */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          {/* Quick Search Action */}
+          {/* Quick Search Action (mobile dùng nút giữa thanh điều hướng dưới) */}
           <button
+            className="hide-mobile"
             onClick={onOpenSearch}
             style={{
               display: 'flex',
@@ -276,6 +276,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* GitHub Icon */}
           <a
+            className="hide-mobile"
             href="https://github.com/thieucong98/vietnam-lottery-hub"
             target="_blank"
             rel="noreferrer"

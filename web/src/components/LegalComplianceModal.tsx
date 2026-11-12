@@ -5,9 +5,7 @@ import {
   Scale,
   AlertTriangle,
   HeartHandshake,
-  BookOpen,
   Check,
-  ExternalLink,
 } from 'lucide-react';
 
 interface LegalComplianceModalProps {
