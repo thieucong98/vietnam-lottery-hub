@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { AlertTriangle, TrendingUp } from 'lucide-react';
 import { LotteryIndexData } from '../types';
+import { ChartNote } from '../ui';
+import { formatDate, formatInt } from '../utils/statsText';
 
 interface GanRankingViewProps {
   xsmbData: LotteryIndexData | null;
@@ -184,6 +186,10 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
           </div>
         </div>
       </div>
+      <ChartNote
+        sample={`${formatInt(currentData.metadata.total_draws)} kỳ đến ${formatDate(currentData.metadata.latest_date)}; cột "xuất hiện nhiều" tính trên 100 kỳ gần nhất`}
+        warning="Số lâu chưa về không đến lượt về: kỳ sau nó có cùng xác suất như mọi số khác. Trang Phân Tích cho biết khoảng vắng như vậy thường gặp đến mức nào khi kết quả hoàn toàn ngẫu nhiên."
+      />
     </div>
   );
 };

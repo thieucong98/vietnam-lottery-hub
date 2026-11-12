@@ -37,6 +37,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   const isMoreActive = [
     'heatmap',
     'gan',
+    'analysis',
     'bacnho',
     'filter',
     'ai',
@@ -100,7 +101,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         <button
           className={`mobile-nav-item ${isMoreActive ? 'active' : ''}`}
           onClick={() => setIsDrawerOpen(true)}
-          title="Thống kê, Bạc nhớ, Thuật toán & Bộ lọc"
+          title="Phân tích, thống kê có điều kiện, phòng thí nghiệm & bộ lọc"
         >
           <div className="nav-icon-wrapper">
             <BarChart3 size={20} />
@@ -265,7 +266,56 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 <ChevronRight size={18} color="var(--text-dim)" />
               </button>
 
-              {/* Option: Bạc Nhớ 20 Năm */}
+              {/* Option: Phân tích minh bạch */}
+              <button
+                onClick={() => handleSelectTab('analysis')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  background:
+                    currentTab === 'analysis'
+                      ? 'rgba(16, 185, 129, 0.15)'
+                      : 'rgba(255, 255, 255, 0.03)',
+                  border:
+                    currentTab === 'analysis'
+                      ? '1px solid var(--accent-emerald)'
+                      : '1px solid var(--border-subtle)',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      background: 'rgba(16, 185, 129, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-emerald)',
+                    }}
+                  >
+                    <ShieldCheck size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
+                      Phân Tích Minh Bạch
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                      Tần suất, khoảng cách, tổng, chẵn/lẻ và kiểm định ngẫu nhiên
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight size={18} color="var(--text-dim)" />
+              </button>
+
+              {/* Option: Thống kê có điều kiện */}
               <button
                 onClick={() => handleSelectTab('bacnho')}
                 style={{
@@ -304,10 +354,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   </div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
-                      Bạc Nhớ Ma Trận 20 Năm
+                      Thống Kê Có Điều Kiện
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      Quy luật số về theo sau từ 7,500+ kỳ quay
+                      Tỷ lệ ngày kế tiếp so với tần suất nền, kèm cỡ mẫu
                     </div>
                   </div>
                 </div>
@@ -402,10 +452,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   </div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>
-                      Thuật Toán Mẫu & Kiểm Thử Backtest
+                      Phòng Thí Nghiệm Xác Suất
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      Chuỗi Markov, Exponential Decay & Hiệu suất thực tế
+                      Thuật toán so với 1.000 lần chọn ngẫu nhiên, kèm p-value
                     </div>
                   </div>
                 </div>

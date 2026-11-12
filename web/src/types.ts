@@ -135,16 +135,32 @@ export interface MLSampleSet {
   description: string;
 }
 
-export interface BacktestItem {
+export interface BacktestStrategyRow {
   strategy_name: string;
-  test_draws: number;
   average_matches: number;
+  total_matches: number;
   max_match_in_one_draw: number;
-  hit_rate_at_least_3: string;
-  hit_rate_at_least_4: string;
+  /** Tỷ lệ 0-1 */
+  hit_rate_at_least_3: number;
+  hit_rate_at_least_4: number;
+  /** P(chọn ngẫu nhiên đạt tổng số trùng >= thuật toán) */
+  p_value: number;
 }
 
-// ml_insights.json schema v2 (engine/ml/render_insights.py)
+export interface BacktestRun {
+  test_draws: number;
+  simulations: number;
+  expected_average: number;
+  random: {
+    mean_average: number;
+    low_95: number;
+    high_95: number;
+    histogram: { average_matches: number[]; counts: number[] };
+  };
+  strategies: BacktestStrategyRow[];
+}
+
+// ml_insights.json schema v3 (engine/ml/render_insights.py)
 export interface MLInsightsData {
   schema_version: number;
   product: string;
@@ -153,14 +169,98 @@ export interface MLInsightsData {
   disclaimer: string;
   jackpot_odds: string;
   sample_sets: MLSampleSet[];
-  backtest_report: BacktestItem[];
+  backtests: BacktestRun[];
 }
 
 export interface BacNhoFollower {
   number: string;
   hits: number;
+  /** Phần trăm 0-100 */
   rate: number;
+  ci_low: number;
+  ci_high: number;
+  /** Tần suất nền (phần trăm): tỷ lệ ngày có số này, không cần điều kiện */
+  base_rate: number;
+  /** p-value nhị thức so với nền, đã nhân số phép so sánh (Bonferroni) */
+  p_value_adjusted: number;
   days_since_last: number;
+}
+
+// ---------- stats_report.json (engine/analytics/transparency.py) ----------
+
+export interface StatTest {
+  statistic: number;
+  df?: number;
+  p_value: number;
+}
+
+export interface StatHistogram {
+  labels: string[];
+  observed: number[];
+  expected: number[];
+}
+
+export interface FrequencyStats {
+  draws: number;
+  trials: number;
+  trial_unit: string;
+  expected_rate: number;
+  from?: string;
+  numbers: { number: string; hits: number; rate: number; ci_low: number; ci_high: number }[];
+  outside_ci: number;
+  expected_outside_ci: number;
+  chi_square: StatTest;
+}
+
+export interface GameStatsReport {
+  name: string;
+  numbers_range: [string, string];
+  draw_size: number;
+  model: string;
+  jackpot_odds: string | null;
+  sample: { draws: number; from: string; to: string };
+  frequency: FrequencyStats;
+  frequency_recent: FrequencyStats;
+  gaps: {
+    presence_rate: number;
+    expected_mean_gap: number;
+    observed_mean_gap: number | null;
+    gap_count: number;
+    histogram: StatHistogram;
+    chi_square: StatTest;
+    numbers: { number: string; mean_gap: number | null; max_gap: number | null; current_gap: number; prob_current_gap: number; runs_p: number }[];
+    longest_current: { number: string; gap: number; prob_any_number: number };
+    runs_per_number: { tested: number; below_0_05: number; expected_below_0_05: number };
+  };
+  sums: {
+    draws: number;
+    expected_mean: number;
+    observed_mean: number;
+    mean_ci_low: number;
+    mean_ci_high: number;
+    histogram: StatHistogram;
+    chi_square: StatTest;
+    runs_test: StatTest;
+  };
+  parity: {
+    draws: number;
+    histogram: StatHistogram;
+    even_share: number;
+    even_share_ci_low: number;
+    even_share_ci_high: number;
+    expected_even_share: number;
+    chi_square: StatTest;
+  };
+}
+
+export type StatsGameKey = 'vietlott_655' | 'vietlott_645' | 'xsmb';
+
+export interface StatsReportData {
+  schema_version: number;
+  generated_at: string;
+  disclaimer: string;
+  recent_window: number;
+  games: Record<StatsGameKey, GameStatsReport>;
 }
 
 export interface BacNhoItem {
@@ -170,12 +270,17 @@ export interface BacNhoItem {
   top_followers: BacNhoFollower[];
 }
 
+// bac_nho.json schema v2 (engine/analytics/bac_nho_analyzer.py)
 export interface BacNhoData {
+  schema_version: number;
+  disclaimer: string;
   metadata: {
     generated_at: string;
     latest_date: string;
     latest_special_2d: string;
     total_draws_analyzed: number;
+    /** Số ngày dùng để tính tần suất nền */
+    base_sample: number;
   };
   by_loto: Record<string, BacNhoItem>;
   by_special: Record<string, BacNhoItem>;

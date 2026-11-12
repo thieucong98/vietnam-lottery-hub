@@ -18,6 +18,9 @@ describe('tabFromPath', () => {
     ['/keno-3d/max-3d', 'keno_3d'],
     ['/nhiet', 'heatmap'],
     ['/loc-ve/xsmb', 'filter'],
+    ['/phan-tich', 'analysis'],
+    ['/bac-nho', 'bacnho'],
+    ['/thuat-toan', 'ai'],
     ['/khong-co', 'xsmb'],
   ])('%s -> %s', (path, tab) => expect(tabFromPath(path)).toBe(tab));
 });

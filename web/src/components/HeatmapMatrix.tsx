@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Flame, Eye, Sparkles } from 'lucide-react';
 import { LotteryIndexData } from '../types';
+import { ChartNote } from '../ui';
+import { formatDate, formatInt } from '../utils/statsText';
 
 interface HeatmapMatrixProps {
   data: LotteryIndexData | null;
@@ -157,6 +159,14 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
           </>
         )}
       </div>
+      <ChartNote
+        sample={
+          mode === 'freq'
+            ? `100 kỳ gần nhất đến ${formatDate(data.metadata.latest_date)} (mỗi số kỳ vọng về khoảng 27 lần nếu ngẫu nhiên)`
+            : `${formatInt(data.metadata.total_draws)} kỳ đến ${formatDate(data.metadata.latest_date)}`
+        }
+        warning="Màu đậm nhạt chỉ phản ánh dao động ngẫu nhiên giữa các số. Kiểm định đầy đủ ở trang Phân Tích. Các kỳ quay độc lập, nên số nóng hay số lâu chưa về không có xác suất về cao hơn ở kỳ sau."
+      />
     </div>
   );
 };
