@@ -57,7 +57,10 @@ Dùng `HashRouter` vì GitHub Pages không có rewrite cho SPA. Mọi đường 
 | `/#/vietlott/655/bo-so?so=03-11-16-22-35-41` | Dò bộ số / vé bao, nạp sẵn bộ số |
 | `/#/vietlott/655/cap-so`, `/#/vietlott/655/lich-su` | Cặp & bộ ba cùng xuất hiện, kho lịch sử |
 | `/#/keno-3d`, `/#/keno-3d/max-3d`, `/#/keno-3d/max-3d-pro` | Keno, Max 3D, Max 3D Pro |
-| `/#/nhiet`, `/#/gan`, `/#/bac-nho`, `/#/thuat-toan` | Ma trận nhiệt, số lâu chưa về, thống kê có điều kiện, thuật toán mẫu |
+| `/#/nhiet`, `/#/gan` | Ma trận nhiệt, số lâu chưa về |
+| `/#/phan-tich` | Phân tích minh bạch: tần suất có khoảng tin cậy, khoảng cách, tổng, chẵn/lẻ, kiểm định ngẫu nhiên |
+| `/#/bac-nho` | Thống kê có điều kiện XSMB (luôn so với tần suất nền, có cỡ mẫu) |
+| `/#/thuat-toan` | Phòng thí nghiệm xác suất: thuật toán so với 1.000 lần chọn ngẫu nhiên |
 | `/#/loc-ve`, `/#/loc-ve/xsmb` | Bộ lọc vé Vietlott, thống kê nhiều số XSMB |
 | `/#/so/68`, `/#/so/07?game=655` | Hộp thoại tra cứu một số (XSMB mặc định; `game=655` hoặc `645`) |
 | `/#/tra-cuu/bo-so?game=645&so=03-11` | Hộp thoại tra cứu bộ số Vietlott |
@@ -208,6 +211,19 @@ Khi mở: khóa cuộn trang nền, đưa focus vào hộp thoại, trả focus 
 ### Sheet
 
 Bảng trượt từ đáy màn hình cho menu và bộ lọc trên di động. Props: `open`, `onClose`, `title`, `subtitle`, `children`. Hành vi Esc / focus giống `Modal`.
+
+### BarChart và ChartNote (Phase 4)
+
+`BarChart`: cột quan sát, tùy chọn vạch `expected` (kỳ vọng nếu ngẫu nhiên) và `highlightIndex`. Có bảng ẩn cho trình đọc màn hình (`ariaLabel` làm caption).
+
+`ChartNote`: chú thích bắt buộc dưới **mọi biểu đồ**: `sample` (cỡ mẫu, ví dụ "1.422 kỳ (01/08/2017 - 10/11/2026)") và `warning` (mặc định `DEFAULT_CHART_WARNING`). Biểu đồ mới phải có `ChartNote`.
+
+```tsx
+<BarChart ariaLabel="Phân bố tổng" labels={h.labels} observed={h.observed} expected={h.expected} />
+<ChartNote sample={`${n} kỳ`} />
+```
+
+Diễn giải p-value bằng lời: `utils/statsText.ts` (`explainP`) và `features/analysis/Verdict.tsx`.
 
 ### useControllableState
 

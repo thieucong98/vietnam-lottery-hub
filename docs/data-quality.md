@@ -30,7 +30,7 @@ uv run python -m engine.monitoring.health_check --now 2026-11-12T22:40 --dry-run
 
 ## Kiểm tra schema JSON
 
-`scripts/validate_data_schema.py` kiểm tra mọi tệp trong `web/public/data` theo `schemas/data/*.schema.json` (JSON Schema 2020-12), đủ bộ tệp `history/`, các tệp mà `web/src` gọi `fetch`, và kỳ mới nhất khớp giữa `summary.json` với các chỉ mục. `ml_insights.json` phải là schema v2 (`sample_picks`, có `disclaimer` và `jackpot_odds`).
+`scripts/validate_data_schema.py` kiểm tra mọi tệp trong `web/public/data` theo `schemas/data/*.schema.json` (JSON Schema 2020-12), đủ bộ tệp `history/`, các tệp mà `web/src` gọi `fetch`, và kỳ mới nhất khớp giữa `summary.json` với các chỉ mục. `ml_insights.json` phải là schema v3 (`sample_picks`, `disclaimer`, `jackpot_odds`, `backtests` có p-value so với chọn ngẫu nhiên). `bac_nho.json` là schema v2 (mỗi số có `base_rate`, khoảng tin cậy và `p_value_adjusted`). `stats_report.json` (Phase 4) theo `stats_report.schema.json`. Phương pháp thống kê: `docs/analytics-methodology.md`.
 
 Trong `daily-crawler.yml` bước này chạy trước bước commit, nên dữ liệu sai schema không được commit hay deploy. Khi đổi cấu trúc JSON ở `engine/`, cập nhật schema tương ứng trong cùng PR.
 
