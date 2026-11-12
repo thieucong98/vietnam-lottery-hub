@@ -48,9 +48,12 @@ services:
     volumes:
       - ./data:/app/data:ro
       - ./web/public/data:/app/web/public/data:ro
+      # Danh sách đăng ký nhận kết quả (opt-in), không commit
+      - ./bot_state:/app/bot_state
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
       - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - BOT_STATE_DIR=/app/bot_state
     command: ["uv", "run", "python", "scripts/run_telegram_bot.py"]
     profiles:
       - bot

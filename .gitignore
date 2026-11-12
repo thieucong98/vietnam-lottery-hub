@@ -39,6 +39,8 @@ desktop.ini
 *.pfx
 *.cert
 pipeline_report.json
+# Đăng ký nhận kết quả của Telegram bot (chat_id), chỉ lưu trên máy chạy bot
+bot_state/
 
 # Playwright
 web/test-results/
