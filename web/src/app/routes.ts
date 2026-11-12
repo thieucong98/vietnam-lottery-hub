@@ -97,16 +97,32 @@ export function lookupPath({ mode, game, numbers }: LookupTarget): string {
   return `/tra-cuu/${mode === 'combination' ? 'bo-so' : 'cap'}?${query}`;
 }
 
+const GAME_MAX: Record<LotteryGame, number> = { xsmb: 99, vietlott_655: 55, vietlott_645: 45 };
+
+/** Danh sách số trong `?so=`: bỏ số ngoài phạm vi của trò chơi và số trùng */
+function parseSoParam(value: string | null, game: LotteryGame): string[] {
+  const min = game === 'xsmb' ? 0 : 1;
+  const nums = (value ?? '')
+    .split(/[-,\s]+/)
+    .filter((t) => /^\d{1,2}$/.test(t))
+    .map((t) => parseInt(t, 10))
+    .filter((n) => n >= min && n <= GAME_MAX[game]);
+  return Array.from(new Set(nums)).map(pad2);
+}
+
 export function parseLookupLocation(pathname: string, search: URLSearchParams): LookupTarget | null {
-  const so = (search.get('so') ?? '').split(/[-,\s]+/).filter((t) => /^\d{1,2}$/.test(t)).map(pad2);
   const single = pathname.match(/^\/so\/(\d{1,2})$/);
   if (single) return { mode: 'single', game: gameFromParam(search.get('game')), numbers: [pad2(single[1])] };
   if (pathname === '/tra-cuu') return { mode: 'single', game: gameFromParam(search.get('game')), numbers: [] };
   if (pathname === '/tra-cuu/bo-so') {
-    const game = gameFromParam(search.get('game'), 'vietlott_655');
-    return { mode: 'combination', game: game === 'xsmb' ? 'vietlott_655' : game, numbers: so };
+    const param = gameFromParam(search.get('game'), 'vietlott_655');
+    const game = param === 'xsmb' ? 'vietlott_655' : param;
+    return { mode: 'combination', game, numbers: parseSoParam(search.get('so'), game) };
   }
-  if (pathname === '/tra-cuu/cap') return { mode: 'pair', game: gameFromParam(search.get('game')), numbers: so.slice(0, 2) };
+  if (pathname === '/tra-cuu/cap') {
+    const game = gameFromParam(search.get('game'));
+    return { mode: 'pair', game, numbers: parseSoParam(search.get('so'), game).slice(0, 2) };
+  }
   return null;
 }
 
@@ -127,8 +143,9 @@ export function lookupTargetFromText(text: string, game: LotteryGame = 'xsmb'): 
   return { mode: 'single', game, numbers: first && first.length <= 2 ? [pad2(first)] : [] };
 }
 
-export const OVERLAY_PREFIXES = ['/so/', '/tra-cuu', '/phap-ly'];
-export const isOverlayPath = (pathname: string) => OVERLAY_PREFIXES.some((p) => pathname.startsWith(p));
+/** Đường dẫn của hộp thoại. Đường dẫn sai (vd. /so/abc, /tra-cuu/xyz) không phải hộp thoại nên rơi vào trang 404. */
+const OVERLAY_PATH_PATTERN = /^\/(so\/\d{1,2}|tra-cuu(\/(bo-so|cap))?|phap-ly)$/;
+export const isOverlayPath = (pathname: string) => OVERLAY_PATH_PATTERN.test(pathname);
 
 /** Hỗ trợ link cũ dạng ?tab=heatmap (trước khi có router) */
 export const LEGACY_TAB_PARAM: Record<string, string> = {

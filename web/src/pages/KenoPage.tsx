@@ -4,7 +4,7 @@ import { KenoAndMax3DView } from '../features/keno-3d/KenoAndMax3DView';
 import { fromSlug, KENO_VIEW_SLUGS, paths } from '../app/routes';
 import { useAppNavigation } from '../app/navigation';
 import { useSummary } from './useSummary';
-import { TabFallback } from './TabFallback';
+import { LoadError, TabFallback } from './TabFallback';
 
 /** Keno, Max 3D, Max 3D Pro. URL: `/keno-3d`, `/keno-3d/max-3d`, `/keno-3d/max-3d-pro` */
 export default function KenoPage() {
@@ -15,6 +15,7 @@ export default function KenoPage() {
   const summary = useSummary();
 
   if (!view) return <Navigate to={paths.keno()} replace />;
+  if (summary.error) return <LoadError what="kết quả Keno/Max 3D" />;
   if (!summary.data) return <TabFallback />;
   return (
     <KenoAndMax3DView

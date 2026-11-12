@@ -68,5 +68,16 @@ describe('URL tra cứu', () => {
 
   it('trang thường không phải hộp thoại', () => {
     expect(isOverlayPath('/vietlott/655')).toBe(false);
+    expect(isOverlayPath('/phap-ly')).toBe(true);
+  });
+
+  it.each(['/so/abc', '/so/100', '/tra-cuu/xyz', '/phap-ly/x'])('đường dẫn hộp thoại sai %s -> trang 404', (path) => {
+    expect(isOverlayPath(path)).toBe(false);
+  });
+
+  it('bỏ số ngoài phạm vi và số trùng trong ?so=', () => {
+    expect(parseLookupLocation('/tra-cuu/bo-so', new URLSearchParams('game=655&so=99-07-07-00-55'))?.numbers).toEqual(['07', '55']);
+    expect(parseLookupLocation('/tra-cuu/cap', new URLSearchParams('game=645&so=50-07-12'))?.numbers).toEqual(['07', '12']);
+    expect(parseLookupLocation('/tra-cuu/cap', new URLSearchParams('game=xsmb&so=00-99'))?.numbers).toEqual(['00', '99']);
   });
 });

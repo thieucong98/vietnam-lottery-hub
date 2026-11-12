@@ -22,7 +22,9 @@ export default function VietlottPage({ game }: { game: VietlottGame }) {
   const nav = useAppNavigation();
   const tool = fromSlug(VIETLOTT_TOOL_SLUGS, toolSlug);
   const maxBall = game === 'vietlott_655' ? 55 : 45;
-  const initialBalls = parseNumberList(search.get('so') ?? '', 1, maxBall);
+  // Vé Bao tối đa 18 bóng (6/55) hoặc 15 bóng (6/45), giống giới hạn khi bấm chọn trên bàn số
+  const maxBao = game === 'vietlott_655' ? 18 : 15;
+  const initialBalls = parseNumberList(search.get('so') ?? '', 1, maxBall).sort((a, b) => a - b).slice(0, maxBao);
 
   const summary = useSummary();
   const stats = useDataset(STATS_DATASET[game]);
@@ -53,7 +55,11 @@ export default function VietlottPage({ game }: { game: VietlottGame }) {
       <div ref={ganRef} className={styles.lazyBlock}>
         {ganInView && (
           <Suspense fallback={<TabFallback />}>
-            <GanRankingView xsmbData={xsmbStats.data} vietlottData={stats.data} onSelectNumber={(n) => nav.openNumber(n, game)} />
+            <GanRankingView
+              xsmbData={xsmbStats.data}
+              vietlottData={stats.data}
+              onSelectNumber={(n, source) => nav.openNumber(n, source === 'vietlott' ? game : 'xsmb')}
+            />
           </Suspense>
         )}
       </div>

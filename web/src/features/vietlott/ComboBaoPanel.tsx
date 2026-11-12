@@ -18,6 +18,9 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
             Chọn từ <strong>2 đến 6 bóng</strong> (vé đơn) hoặc lên đến <strong>{is655 ? '18' : '15'} bóng</strong> (vé Bao). Hệ thống đối soát toàn bộ {sortedDraws.length} kỳ quay lịch sử để thống kê các cấp giải từng trùng khớp.
           </p>
+          <p style={{ fontSize: '0.76rem', color: 'var(--text-dim)', marginTop: 4 }}>
+            Chọn ngẫu nhiên hay tự chọn đều <strong>không làm tăng xác suất trúng</strong>. Xác suất trúng Jackpot{is655 ? ' 1' : ''} của mỗi bộ 6 số: <strong>{is655 ? '1/28.989.675' : '1/8.145.060'}</strong>.
+          </p>
         </div>
 
         {/* Thông tin loại vé */}

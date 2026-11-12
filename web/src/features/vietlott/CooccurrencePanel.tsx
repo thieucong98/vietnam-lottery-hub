@@ -13,7 +13,7 @@ export const CooccurrencePanel: React.FC<{ model: VietlottProductHubModel }> = (
             <span>Ma Trận Đồng Xuất Hiện: Cặp Số & Bộ Ba Thường Về Cùng Nhau ({gameName})</span>
           </h3>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: 4 }}>
-            Dữ liệu thống kê xác suất toàn diện qua {sortedDraws.length} kỳ quay lịch sử. Bấm nút nạp để đưa trực tiếp vào phân tích Vé Bao!
+            Thống kê tần suất xuất hiện cùng nhau qua {sortedDraws.length} kỳ quay lịch sử. Bấm nút nạp để đưa trực tiếp vào phân tích Vé Bao!
           </p>
         </div>
       </div>
