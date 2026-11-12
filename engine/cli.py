@@ -16,6 +16,7 @@ from engine.missing_detector import MissingDetector
 from engine.analytics.index_builder import IndexBuilder
 from engine.analytics.bac_nho_analyzer import BacNhoAnalyzer
 from engine.analytics.vietlott_combination_analyzer import VietlottCombinationAnalyzer
+from engine.analytics.transparency import TransparencyAnalyzer
 from engine.ml.render_insights import generate_ml_insights
 from engine.render_readme import render_readme
 
@@ -67,7 +68,10 @@ def build_index():
     logger.info("Cập nhật giá trị Jackpot...")
     from engine.crawlers.jackpot import sync_and_export_jackpots
     sync_and_export_jackpots()
-    
+
+    logger.info("Phân tích minh bạch (thống kê mô tả, kiểm định ngẫu nhiên)...")
+    TransparencyAnalyzer().analyze()
+
     typer.echo("Đã hoàn tất xây dựng ma trận và xuất chỉ mục tra cứu!")
 
 @app.command()

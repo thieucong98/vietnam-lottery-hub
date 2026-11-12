@@ -185,6 +185,16 @@ def run():
         logger.error(f"Lỗi khi cập nhật Jackpot: {e}")
         record_error("jackpot", e)
 
+    # 7c. Phân tích minh bạch (thống kê mô tả có khoảng tin cậy, kiểm định ngẫu nhiên)
+    logger.info("Bước 7c/8: Phân tích minh bạch (thống kê mô tả, kiểm định ngẫu nhiên)...")
+    try:
+        from engine.analytics.transparency import TransparencyAnalyzer
+        TransparencyAnalyzer().analyze()
+        logger.info("-> Xuất phân tích minh bạch thành công.")
+    except Exception as e:
+        logger.error(f"Lỗi khi phân tích minh bạch: {e}")
+        record_error("stats_report", e)
+
     # 8. Render README
     logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")
     try:
