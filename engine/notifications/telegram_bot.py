@@ -7,6 +7,11 @@ from pathlib import Path
 import requests
 from loguru import logger
 
+from engine.notifications.subscriptions import PRODUCTS as SUB_PRODUCTS, SubscriptionStore, parse_products
+from engine.notifications.ticket_check import VIETLOTT, check_ticket_lines
+
+WEB_URL = "https://thieucong98.github.io/vietnam-lottery-hub/"
+
 def format_telegram_message(summary_data: dict, gan_data: dict = None) -> str:
     """Format kết quả xổ số thành thông báo HTML đẹp mắt cho Telegram"""
     xsmb = summary_data.get("xsmb_latest", {})
@@ -126,8 +131,16 @@ def _load_json_data(data_path: Path):
         logger.error(f"Lỗi đọc JSON {data_path}: {e}")
         return None
 
-def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") -> str:
-    """Xử lý lệnh từ người dùng và trả về nội dung HTML để phản hồi"""
+def handle_telegram_command(
+    cmd_text: str,
+    data_dir: str = "web/public/data",
+    chat_id: int | str | None = None,
+    store: SubscriptionStore | None = None,
+) -> str:
+    """Xử lý lệnh từ người dùng và trả về nội dung HTML để phản hồi.
+
+    chat_id/store chỉ cần cho /dangky, /huydangky (đăng ký nhận kết quả là opt-in).
+    """
     text = cmd_text.strip()
     parts = text.split()
     if not parts:
@@ -140,21 +153,42 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
     # 1. /start hoặc /help
     if cmd in ["/start", "/help", "help", "trogiup"]:
         return (
-            "🤖 <b>CHÀO MỪNG ĐẾN VỚI BOT TRA CỨU XỔ SỐ & VIETLOTT</b>\n\n"
-            "Danh sách lệnh bạn có thể sử dụng:\n"
-            "🔴 <b>/xsmb</b> - Kết quả XSMB hôm nay & đầu đuôi\n"
-            "🟡 <b>/power</b> hoặc <b>/655</b> - Kết quả Vietlott Power 6/55 mới nhất\n"
-            "🔵 <b>/mega</b> hoặc <b>/645</b> - Kết quả Vietlott Mega 6/45 mới nhất\n"
-            "🟢 <b>/keno</b> - Kết quả Vietlott Keno 20 số & Thuộc tính Chẵn/Lẻ, Lớn/Nhỏ\n"
-            "🎲 <b>/3d</b> hoặc <b>/max3d</b> - Kết quả Vietlott Max 3D & Max 3D Pro\n"
-            "🎯 <b>/check &lt;các số&gt;</b> - Thống kê số / dò vé Vietlott (VD: <code>/check 68</code> hoặc <code>/check 07 18 24 35 41 55</code>)\n"
-            "⏳ <b>/gan [xsmb|655|645]</b> - Top 10 số gan lì chưa về lâu nhất\n"
-            "🧠 <b>/bacnho &lt;số&gt;</b> - Bạc nhớ 20 năm: những số hay về theo sau số này\n"
-            "🔥 <b>/hot [655|645]</b> - Top các cặp số có tần suất về cùng nhau cao nhất\n"
-            "🌐 <b>/web</b> - Link truy cập nền tảng trực tuyến\n"
-            "⚖️ <b>/legal</b> - Chính sách pháp lý & Chơi có trách nhiệm (18+)\n\n"
-            "<i>Dữ liệu được cập nhật tự động 100% sau mỗi giờ quay!</i>\n\n"
-            "⚠️ <b>Lưu ý:</b> Dữ liệu chỉ phục vụ mục đích học thuật xác suất thống kê đối với XSKT & Vietlott hợp pháp. Không có công cụ nào làm tăng xác suất trúng. Nghiêm cấm sử dụng cho hoạt động lô đề, cờ bạc bất hợp pháp.\n\n🔎 Kết quả chính thức: https://vietlott.vn/ • https://xosothudo.com.vn/"
+            "🤖 <b>BOT TRA CỨU KẾT QUẢ XỔ SỐ & VIETLOTT</b>\n\n"
+            "<b>Kết quả</b>\n"
+            "🔴 <b>/xsmb</b> - Kết quả XSMB mới nhất\n"
+            "🟡 <b>/power</b> hoặc <b>/655</b> - Power 6/55 mới nhất\n"
+            "🔵 <b>/mega</b> hoặc <b>/645</b> - Mega 6/45 mới nhất\n"
+            "🟢 <b>/keno</b> - Keno mới nhất\n"
+            "🎲 <b>/3d</b> hoặc <b>/max3d</b> - Max 3D & Max 3D Pro\n"
+            "📅 <b>/lichquay</b> - Lịch quay và giá trị Jackpot\n\n"
+            "<b>Dò vé</b>\n"
+            "🎫 <b>/dove &lt;vé&gt;</b> - Dò vé theo cơ cấu giải (VD: <code>/dove 74129</code>, <code>/dove 655 2026-11-10 01 02 21 38 39 51</code>). "
+            "Trên web, mục <b>Vé của tôi</b> có nút sao chép lệnh dò cho các vé đã lưu.\n\n"
+            "<b>Thống kê mô tả dữ liệu lịch sử</b>\n"
+            "🎯 <b>/check &lt;các số&gt;</b> - Thống kê một số, hoặc số lần một bộ số từng trùng các kỳ Power 6/55\n"
+            "⏳ <b>/gan [xsmb|655|645]</b> - 10 số lâu chưa về nhất\n"
+            "🧠 <b>/bacnho &lt;số&gt;</b> - Thống kê có điều kiện: số xuất hiện ngày kế tiếp sau số này\n"
+            "🔥 <b>/hot [655|645]</b> - Các cặp số cùng xuất hiện nhiều nhất\n\n"
+            "<b>Nhận kết quả (tự chọn)</b>\n"
+            "🔔 <b>/dangky [xsmb|655|645]</b> - Đăng ký nhận kết quả khi có kỳ mới\n"
+            "🔕 <b>/huydangky</b> - Hủy đăng ký, xóa thông tin đăng ký\n\n"
+            "🌐 <b>/web</b> - Trang web • ⚖️ <b>/legal</b> - Pháp lý • 💚 <b>/trachnhiem</b> - Chơi có trách nhiệm\n\n"
+            "<i>Dữ liệu cập nhật tự động sau giờ quay, có thể chậm hoặc sai sót.</i>\n\n"
+            "⚠️ <b>Lưu ý:</b> Chỉ thống kê dữ liệu lịch sử của XSKT & Vietlott hợp pháp. Không có công cụ nào làm tăng xác suất trúng "
+            f"(Power 6/55 Jackpot 1: {VIETLOTT['vietlott_655']['odds']}; Mega 6/45: {VIETLOTT['vietlott_645']['odds']}). "
+            "Nghiêm cấm sử dụng cho lô đề, cờ bạc bất hợp pháp. Chỉ dành cho người từ 18 tuổi.\n\n"
+            "🔎 Kết quả chính thức: https://vietlott.vn/ • https://xosothudo.com.vn/"
+        )
+
+    # 1b. /trachnhiem: công cụ chơi có trách nhiệm
+    if cmd in ["/trachnhiem", "/ngansach", "/responsible"]:
+        return (
+            "💚 <b>CHƠI CÓ TRÁCH NHIỆM</b>\n\n"
+            "• Xổ số là trò chơi giải trí, giá trị kỳ vọng của mỗi vé thấp hơn giá vé. Chỉ dùng số tiền bạn chấp nhận mất.\n"
+            "• Đặt trước ngân sách mỗi tháng và dừng khi hết; không vay mượn, không mua thêm để gỡ.\n"
+            "• Trang web có công cụ tự đặt ngân sách và ghi chép chi tiêu, dữ liệu chỉ lưu trên máy của bạn:\n"
+            f"{WEB_URL}#/choi-co-trach-nhiem\n\n"
+            "Nếu thấy khó kiểm soát việc chơi, hãy nói với người thân hoặc tìm bác sĩ, chuyên gia tâm lý. Khẩn cấp: gọi 115."
         )
 
     # 2. /legal hoặc /policy
@@ -173,7 +207,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         return (
             "🌐 <b>NỀN TẢNG TRA CỨU & PHÂN TÍCH XỔ SỐ CHUYÊN NGHIỆP</b>\n\n"
             "👉 Truy cập ngay tại: https://thieucong98.github.io/vietnam-lottery-hub/\n\n"
-            "⚡ Tra cứu 20 năm XSMB, Vietlott 6/55, 6/45, Max 3D, Keno hoàn toàn miễn phí!"
+            "⚡ Tra cứu kết quả, dò vé, lịch quay và thống kê XSMB, Vietlott 6/55, 6/45, Max 3D, Keno, miễn phí và không cần tài khoản."
         )
 
     # 3. /xsmb
@@ -321,9 +355,10 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         if not idx_data or "top_gan" not in idx_data:
             return "⚠️ Không thể đọc dữ liệu lô gan lúc này."
 
-        resp = f"⏳ <b>TOP 10 SỐ GAN LÌ NHẤT {title}</b>\n\n"
+        resp = f"⏳ <b>10 SỐ LÂU CHƯA VỀ NHẤT (GAN) {title}</b>\n\n"
         for i, item in enumerate(idx_data["top_gan"][:10], 1):
             resp += f"{i}. Số <b>{item['number']}</b>: Chưa về <b>{item['days_since']}</b> {unit} (Kỷ lục: {item['max_gap']} {unit})\n"
+        resp += "\n<i>Thống kê lịch sử. Số lâu chưa về không có khả năng về cao hơn ở kỳ sau.</i>"
         return resp
 
     # 7. /bacnho <số>
@@ -342,7 +377,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
         if not item:
             return f"⚠️ Không có dữ liệu bạc nhớ cho số <b>{target_num}</b>."
 
-        resp = f"🧠 <b>BẠC NHỚ 20 NĂM: SAU NHỮNG NGÀY CÓ SỐ {target_num}</b>\n"
+        resp = f"🧠 <b>THỐNG KÊ CÓ ĐIỀU KIỆN (BẠC NHỚ): SAU NHỮNG NGÀY CÓ SỐ {target_num}</b>\n"
         resp += f"📊 Đã ghi nhận {item.get('total_triggers', 0)} lần xuất hiện trong lịch sử.\n\n"
         resp += "<b>Những số từng xuất hiện nhiều nhất vào ngày kế tiếp (thống kê lịch sử, không cho biết trước kết quả):</b>\n"
         for f in item.get("top_followers", [])[:6]:
@@ -359,10 +394,11 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
 
         pairs = cooc[target_prod].get("top_pairs", [])[:7]
         prod_name = "POWER 6/55" if target_prod == "vietlott_655" else "MEGA 6/45"
-        resp = f"🔥 <b>TOP CẶP SỐ CÙNG VỀ NHIỀU NHẤT ({prod_name})</b>\n\n"
+        resp = f"🔥 <b>CÁC CẶP SỐ CÙNG XUẤT HIỆN NHIỀU NHẤT ({prod_name})</b>\n\n"
         for i, p in enumerate(pairs, 1):
             nums_str = " - ".join(p["numbers"])
             resp += f"{i}. Cặp [ <b>{nums_str}</b> ]: cùng về <b>{p['hits']}</b> kỳ\n"
+        resp += "\n<i>Thống kê lịch sử, không làm tăng xác suất trúng.</i>"
         return resp
 
     # 9. /check <danh sách số>
@@ -431,7 +467,7 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             balls_str = " - ".join(f"<b>{n:02d}</b>" for n in sorted(int_nums))
             ticket_type = f"Vé đơn 6 số" if len(int_nums) == 6 else f"Vé Bao {len(int_nums)}" if len(int_nums) > 6 else f"Tổ hợp {len(int_nums)} số"
 
-            resp = f"🏆 <b>KẾT QUẢ SO KHỚP BỘ SỐ VIETLOTT POWER 6/55</b>\n"
+            resp = f"📊 <b>THỐNG KÊ LỊCH SỬ BỘ SỐ VIETLOTT POWER 6/55</b>\n"
             resp += f"Bộ số: [ {balls_str} ] ({ticket_type})\n"
             resp += f"Đã so khớp qua toàn bộ <b>{len(draws_655)}</b> kỳ quay lịch sử:\n\n"
             resp += f"🥇 <b>Jackpot 1 (6/6):</b> {jp1} lần\n"
@@ -439,10 +475,132 @@ def handle_telegram_command(cmd_text: str, data_dir: str = "web/public/data") ->
             resp += f"⭐ <b>Giải Nhất (5/6):</b> {p1} lần\n"
             resp += f"🔹 <b>Giải Nhì (4/6):</b> {p2} lần\n"
             resp += f"🔸 <b>Giải Ba (3/6):</b> {p3} lần\n\n"
-            resp += f"👉 <i>Kiểm tra tài chính & chi tiết từng kỳ: https://thieucong98.github.io/vietnam-lottery-hub/</i>"
+            resp += f"<i>Đây là số kỳ trong quá khứ bộ số từng trùng, không phải dò vé. Dò vé một kỳ: /dove. Xác suất Jackpot 1 của một vé 6 số: {VIETLOTT['vietlott_655']['odds']}.</i>\n"
+            resp += f"👉 <i>Chi tiết từng kỳ: {WEB_URL}</i>"
             return resp
 
+    # 10. /dove: dò vé theo cơ cấu giải. Mỗi dòng sau lệnh là một vé; bot không lưu vé.
+    if cmd in ["/dove", "dove"]:
+        lines = text.splitlines()
+        first_rest = lines[0].split(maxsplit=1)[1:] if lines else []
+        ticket_lines = first_rest + lines[1:]
+        recent = _load_json_data(base_dir / "xsmb_recent_draws.json") or []
+        full = _load_json_data(base_dir / "vietlott_full_draws.json") or {}
+        return check_ticket_lines(
+            ticket_lines,
+            recent if isinstance(recent, list) else [],
+            {"vietlott_655": full.get("vietlott_655", []), "vietlott_645": full.get("vietlott_645", [])},
+        )
+
+    # 11. /lichquay hoặc /jackpot
+    if cmd in ["/lichquay", "/lich", "/jackpot"]:
+        return format_schedule_message(_load_json_data(base_dir / "jackpot.json"))
+
+    # 12. /dangky, /huydangky: đăng ký nhận kết quả (opt-in)
+    if cmd in ["/dangky", "/subscribe"]:
+        if store is None or chat_id is None:
+            return "⚠️ Bot đang chạy ở chế độ không hỗ trợ đăng ký."
+        products = parse_products(args)
+        if products is None:
+            return "⚠️ Mã không hợp lệ. Dùng: <code>/dangky</code> (tất cả) hoặc <code>/dangky xsmb 655 645</code>."
+        store.subscribe(chat_id, products)
+        names = ", ".join(SUB_PRODUCTS[p]["label"] for p in products)
+        return (
+            f"🔔 Đã đăng ký nhận kết quả: <b>{names}</b>.\n"
+            "Bot chỉ lưu mã cuộc trò chuyện và các trò chơi bạn chọn, để gửi kết quả khi có kỳ mới. "
+            "Gõ /huydangky bất cứ lúc nào để hủy và xóa thông tin này."
+        )
+    if cmd in ["/huydangky", "/unsubscribe", "/stop"]:
+        if store is None or chat_id is None:
+            return "⚠️ Bot đang chạy ở chế độ không hỗ trợ đăng ký."
+        if store.unsubscribe(chat_id):
+            return "🔕 Đã hủy đăng ký và xóa thông tin đăng ký của bạn."
+        return "Bạn chưa đăng ký nhận kết quả."
+
     return "⚠️ Lệnh không hợp lệ. Gõ <b>/help</b> để xem hướng dẫn sử dụng."
+
+
+# Lịch quay theo giờ Việt Nam (0 = Thứ Hai theo datetime.weekday), giống web/src/utils/drawSchedule.ts
+DRAW_SCHEDULE = [
+    ("XSMB", "Hằng ngày", 18, 15, set(range(7))),
+    ("Power 6/55", "Thứ Ba, Thứ Năm, Thứ Bảy", 18, 0, {1, 3, 5}),
+    ("Mega 6/45", "Thứ Tư, Thứ Sáu, Chủ Nhật", 18, 0, {2, 4, 6}),
+    ("Max 3D", "Thứ Hai, Thứ Tư, Thứ Sáu", 18, 0, {0, 2, 4}),
+    ("Max 3D Pro", "Thứ Ba, Thứ Năm, Thứ Bảy", 18, 0, {1, 3, 5}),
+]
+WEEKDAY_VN = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
+
+
+def next_draw(days: set[int], hour: int, minute: int, now=None):
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+
+    tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    now = now or datetime.now(tz)
+    for i in range(8):
+        d = (now + timedelta(days=i)).date()
+        at = datetime(d.year, d.month, d.day, hour, minute, tzinfo=tz)
+        if d.weekday() in days and at > now:
+            return at
+    return None
+
+
+def _vnd(v) -> str:
+    return f"{int(v):,}".replace(",", ".") + "đ"
+
+
+def format_schedule_message(jackpot: dict | None, now=None) -> str:
+    resp = "📅 <b>LỊCH QUAY (GIỜ VIỆT NAM)</b>\n\n"
+    for label, days_label, hour, minute, days in DRAW_SCHEDULE:
+        nxt = next_draw(days, hour, minute, now)
+        when = f"{WEEKDAY_VN[nxt.weekday()]} {nxt:%d/%m} lúc {nxt:%H:%M}" if nxt else "?"
+        resp += f"• <b>{label}</b> ({days_label}, {hour:02d}:{minute:02d}): kỳ tới {when}\n"
+    resp += "\n🏆 <b>JACKPOT</b>\n"
+    for key, label in [("vietlott_655", "Power 6/55"), ("vietlott_645", "Mega 6/45")]:
+        latest = ((jackpot or {}).get(key) or {}).get("latest")
+        if latest:
+            jp2 = f", Jackpot 2: {_vnd(latest['jackpot2'])}" if latest.get("jackpot2") else ""
+            resp += f"• {label} kỳ #{latest['id']} ({latest['date']}): Jackpot 1 <b>{_vnd(latest['jackpot1'])}</b>{jp2}\n"
+        else:
+            resp += f"• {label}: chưa có dữ liệu, xem https://vietlott.vn/\n"
+    resp += (
+        f"\n<i>Xác suất Jackpot 1 của một vé 6 số không đổi theo giá trị Jackpot: Power 6/55 {VIETLOTT['vietlott_655']['odds']}, "
+        f"Mega 6/45 {VIETLOTT['vietlott_645']['odds']}. Lịch có thể thay đổi dịp Tết.</i>"
+    )
+    return resp
+
+
+def format_subscription_message(product: str, summary: dict, data_dir: str = "web/public/data") -> str:
+    cmd = SUB_PRODUCTS[product]["command"]
+    body = handle_telegram_command(cmd, data_dir=data_dir)
+    return body + "\n\n🔕 <i>Bạn nhận tin này vì đã đăng ký. Gõ /huydangky để hủy.</i>"
+
+
+def send_subscription_updates(token: str, data_dir: str, store: SubscriptionStore, post=None) -> int:
+    """Gửi kết quả kỳ mới cho người đã đăng ký. Trả về số tin đã gửi."""
+    post = post or requests.post
+    summary = _load_json_data(Path(data_dir) / "summary.json") or {}
+    due = store.due_products(summary)
+    if not due:
+        return 0
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    sent = 0
+    for product in due:
+        text = format_subscription_message(product, summary, data_dir)
+        for chat_id, products in store.subscribers().items():
+            if product not in products:
+                continue
+            try:
+                res = post(url, json={"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}, timeout=10)
+                if getattr(res, "status_code", 200) == 403:
+                    # Người dùng đã chặn bot: xóa đăng ký
+                    store.unsubscribe(chat_id)
+                else:
+                    sent += 1
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"Lỗi gửi kết quả đăng ký: {e}")
+        store.mark_sent(product, summary)
+    return sent
 
 def run_telegram_bot_polling(data_dir: str = "web/public/data"):
     """Vòng lặp Long Polling nhận tin nhắn và phản hồi tức thì từ Telegram Bot"""
@@ -455,9 +613,21 @@ def run_telegram_bot_polling(data_dir: str = "web/public/data"):
     offset = None
     url = f"https://api.telegram.org/bot{token}/getUpdates"
     send_url = f"https://api.telegram.org/bot{token}/sendMessage"
+    store = SubscriptionStore()
+    last_broadcast_check = 0.0
 
     while True:
         try:
+            # Kiểm tra kỳ mới cho người đã đăng ký mỗi 5 phút
+            if time.time() - last_broadcast_check > 300:
+                last_broadcast_check = time.time()
+                try:
+                    n = send_subscription_updates(token, data_dir, store)
+                    if n:
+                        logger.info(f"Đã gửi {n} tin kết quả cho người đăng ký.")
+                except Exception as e:
+                    logger.warning(f"Lỗi gửi tin đăng ký: {e}")
+
             params = {"timeout": 30}
             if offset is not None:
                 params["offset"] = offset
@@ -481,8 +651,9 @@ def run_telegram_bot_polling(data_dir: str = "web/public/data"):
                 text = msg.get("text", "")
 
                 if chat_id and text:
-                    logger.info(f"Nhận tin nhắn từ {chat_id}: '{text}'")
-                    reply_html = handle_telegram_command(text, data_dir=data_dir)
+                    # Không ghi nội dung tin nhắn vào log (có thể chứa số vé)
+                    logger.info(f"Nhận lệnh {text.split()[0][:20]!r}")
+                    reply_html = handle_telegram_command(text, data_dir=data_dir, chat_id=chat_id, store=store)
                     requests.post(send_url, json={
                         "chat_id": chat_id,
                         "text": reply_html,
