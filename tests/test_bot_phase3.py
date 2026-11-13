@@ -153,3 +153,41 @@ def test_subscription_broadcast(tmp_path: Path):
     assert "2" not in store.subscribers()
     # Không gửi lặp khi chưa có kỳ mới
     assert send_subscription_updates("t", str(data_dir), store, post) == 0
+
+class FakeRes429(FakeRes):
+    def __init__(self, retry_after):
+        super().__init__(429)
+        self.retry_after = retry_after
+
+    def json(self):
+        return {"ok": False, "error_code": 429, "parameters": {"retry_after": self.retry_after}}
+
+def test_subscription_broadcast_retries_on_429(tmp_path: Path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    real = json.loads(Path(DATA_DIR, "summary.json").read_text(encoding="utf-8"))
+    (data_dir / "summary.json").write_text(json.dumps(real), encoding="utf-8")
+
+    store = SubscriptionStore(tmp_path / "subs.json")
+    store.subscribe(1, ["xsmb"])
+    store.subscribe(2, ["xsmb"])
+    send_subscription_updates("t", str(data_dir), store, lambda *a, **k: FakeRes())
+
+    real["xsmb_latest"]["date"] = "2099-01-01"
+    (data_dir / "summary.json").write_text(json.dumps(real), encoding="utf-8")
+    attempts = {"1": 0, "2": 0}
+    waits = []
+
+    def post(url, json=None, timeout=0):
+        attempts[json["chat_id"]] += 1
+        if json["chat_id"] == "1" and attempts["1"] == 1:
+            return FakeRes429(999)
+        if json["chat_id"] == "2":
+            return FakeRes(500)
+        return FakeRes()
+
+    # 429: chờ (giới hạn 30 giây) rồi gửi lại; lỗi khác không tính là đã gửi
+    assert send_subscription_updates("t", str(data_dir), store, post, sleep=waits.append) == 1
+    assert attempts == {"1": 2, "2": 1}
+    assert waits == [30]
+    assert set(store.subscribers()) == {"1", "2"}

@@ -76,6 +76,13 @@ describe('xuất / nhập JSON', () => {
     expect(sanitizeTickets('hỏng')).toEqual([]);
     expect(sanitizeTickets([{ game: 'xsmb', numbers: '74129', drawDate: '2026-11-11', id: 'x' }, 5])).toHaveLength(1);
   });
+
+  it('sanitizeTickets giữ nguyên thứ tự qua nhiều lần đọc', () => {
+    const list = [make('xsmb', '22222', '2026-11-11'), make('xsmb', '11111', '2026-11-11')];
+    const once = sanitizeTickets(JSON.parse(JSON.stringify(list)));
+    expect(once.map((t) => t.numbers)).toEqual(['22222', '11111']);
+    expect(sanitizeTickets(JSON.parse(JSON.stringify(once)))).toEqual(once);
+  });
 });
 
 describe('trạng thái vé', () => {

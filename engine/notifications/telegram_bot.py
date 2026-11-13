@@ -576,9 +576,19 @@ def format_subscription_message(product: str, summary: dict, data_dir: str = "we
     return body + "\n\n🔕 <i>Bạn nhận tin này vì đã đăng ký. Gõ /huydangky để hủy.</i>"
 
 
-def send_subscription_updates(token: str, data_dir: str, store: SubscriptionStore, post=None) -> int:
+MAX_RETRY_AFTER = 30  # giây, chặn trên thời gian chờ khi Telegram trả 429
+
+def _retry_after(res) -> int:
+    try:
+        value = int(res.json().get("parameters", {}).get("retry_after", 1))
+    except Exception:
+        value = 1
+    return max(1, min(value, MAX_RETRY_AFTER))
+
+def send_subscription_updates(token: str, data_dir: str, store: SubscriptionStore, post=None, sleep=None) -> int:
     """Gửi kết quả kỳ mới cho người đã đăng ký. Trả về số tin đã gửi."""
     post = post or requests.post
+    sleep = sleep or time.sleep
     summary = _load_json_data(Path(data_dir) / "summary.json") or {}
     due = store.due_products(summary)
     if not due:
@@ -590,13 +600,22 @@ def send_subscription_updates(token: str, data_dir: str, store: SubscriptionStor
         for chat_id, products in store.subscribers().items():
             if product not in products:
                 continue
+            payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
             try:
-                res = post(url, json={"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}, timeout=10)
-                if getattr(res, "status_code", 200) == 403:
+                res = post(url, json=payload, timeout=10)
+                status = getattr(res, "status_code", 200)
+                if status == 429:
+                    # Telegram giới hạn tốc độ: chờ theo retry_after rồi gửi lại một lần
+                    sleep(_retry_after(res))
+                    res = post(url, json=payload, timeout=10)
+                    status = getattr(res, "status_code", 200)
+                if status == 403:
                     # Người dùng đã chặn bot: xóa đăng ký
                     store.unsubscribe(chat_id)
-                else:
+                elif status == 200:
                     sent += 1
+                else:
+                    logger.warning(f"Gửi kết quả đăng ký thất bại: HTTP {status}")
             except requests.exceptions.RequestException as e:
                 logger.warning(f"Lỗi gửi kết quả đăng ký: {e}")
         store.mark_sent(product, summary)

@@ -128,7 +128,7 @@ function sanitizeTicket(raw: unknown): SavedTicket | null {
 /** Đọc danh sách vé đã lưu, bỏ phần hỏng */
 export function sanitizeTickets(raw: unknown): SavedTicket[] {
   if (!Array.isArray(raw)) return [];
-  return addTickets([], raw.map(sanitizeTicket).filter((t): t is SavedTicket => t !== null)).list.reverse();
+  return addTickets([], raw.map(sanitizeTicket).filter((t): t is SavedTicket => t !== null)).list;
 }
 
 export function exportTickets(list: SavedTicket[], now: Date = new Date()): string {

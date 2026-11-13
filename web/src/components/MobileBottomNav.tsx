@@ -193,7 +193,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   borderRadius: 'var(--radius-md)',
                   background: currentTab === 'tools' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)',
                   border: currentTab === 'tools' ? '1px solid var(--accent-emerald)' : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
