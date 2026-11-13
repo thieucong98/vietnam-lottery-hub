@@ -296,7 +296,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'analysis'
                       ? '1px solid var(--accent-emerald)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
