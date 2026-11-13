@@ -36,10 +36,11 @@
   --accent-purple: #8b5cf6;
   --accent-purple-on-tint: #c084fc;
 
-  /* Chữ đặt trên nền --accent-gold/--accent-emerald dạng khối màu đặc (nút, badge).
-     Đổi theo theme vì độ sáng của 2 màu này đổi theo theme: tối dùng chữ đen, sáng dùng chữ trắng. */
+  /* Chữ đặt trên nền --accent-gold/--accent-emerald/--accent-cyan dạng khối màu đặc (nút, badge).
+     Đổi theo theme vì độ sáng của các màu này đổi theo theme: tối dùng chữ đen, sáng dùng chữ trắng. */
   --text-on-solid-gold: #000000;
   --text-on-solid-emerald: #000000;
+  --text-on-solid-cyan: #000000;
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -92,6 +93,7 @@ html[data-theme='light'] {
 
   --text-on-solid-gold: #ffffff;
   --text-on-solid-emerald: #ffffff;
+  --text-on-solid-cyan: #ffffff;
 
   --shadow-card: 0 10px 24px -12px rgba(15, 23, 42, 0.18), 0 0 1px 1px rgba(15, 23, 42, 0.04);
 }
@@ -491,7 +493,7 @@ html[data-theme='light'] body {
 }
 
 .mobile-drawer-content {
-  background: #0f172a;
+  background: var(--bg-card-solid);
   border-top-left-radius: var(--radius-lg);
   border-top-right-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);

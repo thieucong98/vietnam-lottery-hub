@@ -126,7 +126,7 @@ export const LegalComplianceModal: React.FC<LegalComplianceModalProps> = ({ isOp
             }}
           >
             <ShieldCheck size={26} color="var(--accent-emerald)" style={{ flexShrink: 0, marginTop: 2 }} />
-            <div style={{ fontSize: '0.86rem', color: '#e2e8f0', lineHeight: 1.6 }}>
+            <div style={{ fontSize: '0.86rem', color: 'var(--text-main)', lineHeight: 1.6 }}>
               <strong style={{ color: 'var(--text-main)' }}>ĐỊNH VỊ HỌC THUẬT & KHOA HỌC DỮ LIỆU:</strong>
               <br />
               Nền tảng này được phát triển hoàn toàn vì mục đích <strong>nghiên cứu khoa học dữ liệu (Data Science), thống kê xác suất và kỹ thuật dữ liệu lớn (Data Engineering)</strong>. Nền tảng <strong>CHỈ</strong> thu thập và phân tích kết quả công khai của các sản phẩm xổ số hợp pháp do Nhà nước cấp phép (Xổ số kiến thiết 3 miền và Xổ số điện toán Vietlott).

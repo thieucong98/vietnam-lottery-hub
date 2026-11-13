@@ -366,7 +366,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                       padding: '5px 12px',
                       borderRadius: 'var(--radius-sm)',
                       background: isSelected ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.04)',
-                      color: isSelected ? '#000000' : 'var(--text-main)',
+                      color: isSelected ? 'var(--text-on-solid-cyan)' : 'var(--text-main)',
                       border: isSelected ? 'none' : '1px solid var(--border-subtle)',
                       fontSize: '0.78rem',
                       fontFamily: 'var(--font-mono)',

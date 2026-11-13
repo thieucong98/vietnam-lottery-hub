@@ -30,6 +30,7 @@ export function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
+        if (isSettingsOpen) return;
         if (nav.isOverlayOpen) nav.closeOverlay();
         else nav.openSearch();
         return;
@@ -45,7 +46,7 @@ export function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nav]);
+  }, [nav, isSettingsOpen]);
 
   // Cuộn lên đầu khi đổi tab (không áp dụng khi đổi tab con, đổi ngày hay mở/đóng hộp thoại)
   useEffect(() => {
