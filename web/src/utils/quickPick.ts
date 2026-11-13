@@ -100,6 +100,9 @@ export interface QuickPickOptions {
 
 export type QuickPickResult = { ok: true; numbers: number[]; attempts: number } | { ok: false; reason: string };
 
+// Mẫu vẫn còn khi thêm số vào bộ: nếu số đã ghim có mẫu này thì mọi bộ đầy đủ đều có
+const PERSISTENT_PATTERNS = new Set<PopularPattern>(['consecutive', 'same_decade', 'same_last_digit', 'repeat_last_draw']);
+
 export function validateQuickPick(opts: QuickPickOptions): string | null {
   const count = opts.count ?? 6;
   const pinned = new Set(opts.pinned ?? []);
@@ -121,6 +124,11 @@ export function validateQuickPick(opts: QuickPickOptions): string | null {
     const maxSum = count * opts.maxNumber - (count * (count - 1)) / 2;
     if (lo > hi) return 'Tổng nhỏ nhất phải không lớn hơn tổng lớn nhất.';
     if (hi < minSum || lo > maxSum) return `Tổng của ${count} số chỉ nằm trong khoảng ${minSum}-${maxSum}.`;
+  }
+  if (opts.avoidPopular && pinned.size > 0) {
+    const found = popularPatterns([...pinned], opts.lastDraw);
+    const fixed = pinned.size === count ? found : found.filter((p) => PERSISTENT_PATTERNS.has(p));
+    if (fixed.length) return `Số đã ghim đã thuộc bộ số phổ biến (${POPULAR_PATTERN_LABELS[fixed[0]]}). Bỏ ghim bớt hoặc tắt "Tránh bộ số phổ biến".`;
   }
   return null;
 }
