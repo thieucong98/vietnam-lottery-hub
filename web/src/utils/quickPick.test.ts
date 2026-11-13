@@ -77,4 +77,14 @@ describe('quickPick', () => {
     const res = quickPick({ maxNumber: 45, pinned: [3], excluded: [3] });
     expect(res.ok).toBe(false);
   });
+
+  it('báo lỗi ngay khi số đã ghim đã thuộc bộ phổ biến mà vẫn bật tránh bộ phổ biến', () => {
+    expect(validateQuickPick({ maxNumber: 55, pinned: [7, 8, 9], avoidPopular: true })).toMatch(/Số đã ghim/);
+    expect(validateQuickPick({ maxNumber: 55, pinned: [1, 2, 3, 4, 5, 6], avoidPopular: true })).toMatch(/Số đã ghim/);
+    // Ghim toàn số nhỏ hoặc cách đều vẫn chọn được vì số chọn thêm có thể phá mẫu
+    expect(validateQuickPick({ maxNumber: 55, pinned: [5, 10, 15], avoidPopular: true })).toBeNull();
+    expect(validateQuickPick({ maxNumber: 55, pinned: [7, 8, 9] })).toBeNull();
+    const res = quickPick({ maxNumber: 55, pinned: [5, 10, 15], avoidPopular: true }, seeded(5));
+    expect(res.ok).toBe(true);
+  });
 });
