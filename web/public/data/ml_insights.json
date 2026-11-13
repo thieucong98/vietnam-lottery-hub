@@ -437,6 +437,15 @@
           "p_value": 0.4136
         },
         {
+          "strategy_name": "Markov Chain (Bậc 1)",
+          "average_matches": 0.65,
+          "total_matches": 195,
+          "max_match_in_one_draw": 3,
+          "hit_rate_at_least_3": 0.01,
+          "hit_rate_at_least_4": 0.0,
+          "p_value": 0.5315
+        },
+        {
           "strategy_name": "Frequency (N=100)",
           "average_matches": 0.647,
           "total_matches": 194,
@@ -444,15 +453,6 @@
           "hit_rate_at_least_3": 0.0133,
           "hit_rate_at_least_4": 0.0033,
           "p_value": 0.5714
-        },
-        {
-          "strategy_name": "Markov Chain (Bậc 1)",
-          "average_matches": 0.627,
-          "total_matches": 188,
-          "max_match_in_one_draw": 3,
-          "hit_rate_at_least_3": 0.01,
-          "hit_rate_at_least_4": 0.0,
-          "p_value": 0.7502
         }
       ]
     }
