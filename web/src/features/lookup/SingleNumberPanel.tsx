@@ -2,6 +2,7 @@ import React from 'react';
 import { Search, Calendar, AlertTriangle, Layers, Sparkles, Filter, CheckCircle2, BarChart2, Download, Copy, ArrowRight } from 'lucide-react';
 import type { InstantLookupModalModel } from './useInstantLookup';
 import { clickableDivProps } from '../../ui/clickableDiv';
+import { ChartNote } from '../../ui';
 import styles from './SingleNumberPanel.module.css';
 
 export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model }) => {
@@ -278,6 +279,10 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                       );
                     })}
                   </div>
+                  <ChartNote
+                    sample={`${detail.total_hits.toLocaleString('vi-VN')} lần về trong ${Object.keys(detail.yearly_distribution).length} năm${detail.first_seen_date ? ` (từ ${detail.first_seen_date})` : ''}`}
+                    warning="Năm đầu và năm hiện tại chưa đủ 12 tháng nên cột thấp hơn. Chênh lệch giữa các năm còn lại là dao động ngẫu nhiên và không cho biết trước kết quả kỳ sau."
+                  />
                 </div>
               )}
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "bac_nho.json (thống kê có điều kiện)",
+  "title": "bac_nho.json schema v2 (thống kê có điều kiện, kèm tần suất nền và cỡ mẫu)",
   "type": "object",
   "properties": {
     "metadata": {
@@ -21,13 +21,18 @@
         "total_draws_analyzed": {
           "type": "integer",
           "minimum": 1
+        },
+        "base_sample": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": [
         "generated_at",
         "latest_date",
         "latest_special_2d",
-        "total_draws_analyzed"
+        "total_draws_analyzed",
+        "base_sample"
       ]
     },
     "by_loto": {
@@ -65,12 +70,36 @@
                   "days_since_last": {
                     "type": "integer",
                     "minimum": 0
+                  },
+                  "ci_low": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "ci_high": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "base_rate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "p_value_adjusted": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
                   }
                 },
                 "required": [
                   "number",
                   "hits",
                   "rate",
+                  "ci_low",
+                  "ci_high",
+                  "base_rate",
+                  "p_value_adjusted",
                   "days_since_last"
                 ]
               }
@@ -121,12 +150,36 @@
                   "days_since_last": {
                     "type": "integer",
                     "minimum": 0
+                  },
+                  "ci_low": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "ci_high": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "base_rate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "p_value_adjusted": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
                   }
                 },
                 "required": [
                   "number",
                   "hits",
                   "rate",
+                  "ci_low",
+                  "ci_high",
+                  "base_rate",
+                  "p_value_adjusted",
                   "days_since_last"
                 ]
               }
@@ -140,9 +193,18 @@
         }
       },
       "additionalProperties": false
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "disclaimer": {
+      "type": "string",
+      "pattern": "tần suất nền"
     }
   },
   "required": [
+    "schema_version",
+    "disclaimer",
     "metadata",
     "by_loto",
     "by_special"

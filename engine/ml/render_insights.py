@@ -13,12 +13,17 @@ from engine.ml.strategies.all_strategies import (
 
 # Phiên bản schema của ml_insights.json. v2: đổi tên khóa bộ số của v1 thành
 # "sample_sets"/"sample_picks" (chỉ minh họa) và thêm "disclaimer", "jackpot_odds".
-SCHEMA_VERSION = 2
+# v3: "backtest_report" thay bằng "backtests" (so với 1.000 lần chọn ngẫu nhiên, có p-value).
+SCHEMA_VERSION = 3
 
 SAMPLE_DISCLAIMER = (
     "Bộ số mẫu chỉ minh họa cách thuật toán hoạt động trên dữ liệu lịch sử. "
     "Mỗi kỳ quay là biến cố độc lập, nên các bộ số này không làm tăng xác suất trúng."
 )
+
+# Số kỳ kiểm thử: 50 kỳ gần nhất và một khoảng dài hơn để kiểm định có nhiều dữ liệu hơn
+BACKTEST_HORIZONS = (50, 300)
+BACKTEST_SIMULATIONS = 1000
 
 
 def generate_ml_insights(data_dir: Path = Path("data/vietlott"), out_dir: Path = Path("web/public/data")):
@@ -30,9 +35,13 @@ def generate_ml_insights(data_dir: Path = Path("data/vietlott"), out_dir: Path =
     df = pl.read_ndjson(filepath).sort(["date", "id"])
     draws = [r[:6] for r in df["result"].to_list()]
 
-    # 1. Chạy Backtest trên 50 kỳ gần nhất
+    # 1. Backtest walk-forward, so với 1.000 lần chọn ngẫu nhiên (seed cố định để kết quả ổn định giữa các lần chạy)
     engine = BacktestEngine()
-    backtest_report = engine.evaluate(draws, test_draws=50, k=6, max_number=55)
+    backtests = [
+        engine.evaluate(draws, test_draws=h, k=6, max_number=55, simulations=BACKTEST_SIMULATIONS, seed=h)
+        for h in BACKTEST_HORIZONS
+        if len(draws) > h
+    ]
 
     # 2. Sinh các bộ số mẫu theo từng thuật toán (chỉ minh họa)
     strategies = [
@@ -58,7 +67,7 @@ def generate_ml_insights(data_dir: Path = Path("data/vietlott"), out_dir: Path =
         "disclaimer": SAMPLE_DISCLAIMER,
         "jackpot_odds": "1/28.989.675",
         "sample_sets": sample_sets,
-        "backtest_report": backtest_report,
+        "backtests": backtests,
     }
 
     out_dir.mkdir(parents=True, exist_ok=True)

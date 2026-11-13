@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trophy, Calendar, BarChart3 } from 'lucide-react';
 import type { KenoAndMax3DViewModel } from './useKeno3D';
+import { ChartNote } from '../../ui';
 
 export const Max3DPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model }) => {
   const { subTab, current3DData, digitFrequency3D, maxDigitCount } = model;
@@ -283,6 +284,10 @@ export const Max3DPanel: React.FC<{ model: KenoAndMax3DViewModel }> = ({ model }
             );
           })}
         </div>
+        <ChartNote
+          sample={`1 kỳ mới nhất, ${digitFrequency3D.reduce((a, b) => a + b, 0)} lượt chữ số`}
+          warning="Một kỳ là mẫu rất nhỏ, chênh lệch giữa các chữ số ở đây gần như hoàn toàn do ngẫu nhiên. Biểu đồ không cho biết trước kết quả kỳ sau và không làm tăng xác suất trúng."
+        />
       </div>
     </div>
   );

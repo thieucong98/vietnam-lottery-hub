@@ -25,7 +25,7 @@ def test_strategies_sample_picks():
         for num in picks:
             assert 1 <= num <= 55, f"{strat.name}: số {num} phải nằm trong khoảng 1 đến 55"
 
-def test_ml_insights_schema_v2():
+def test_ml_insights_schema_v3():
     import json
     import tempfile
     from pathlib import Path
@@ -38,8 +38,14 @@ def test_ml_insights_schema_v2():
         with open(out_file, "r", encoding="utf-8") as f:
             payload = json.load(f)
 
-    assert payload["schema_version"] == SCHEMA_VERSION == 2
+    assert payload["schema_version"] == SCHEMA_VERSION == 3
     assert "predictions" not in payload
+    assert "backtest_report" not in payload
+    assert [b["test_draws"] for b in payload["backtests"]] == [50, 300]
+    for b in payload["backtests"]:
+        assert b["simulations"] == 1000
+        assert len(b["strategies"]) == 5
+        assert all(0 < s["p_value"] <= 1 for s in b["strategies"])
     assert payload["jackpot_odds"] == "1/28.989.675"
     assert "không làm tăng xác suất trúng" in payload["disclaimer"]
     assert len(payload["sample_sets"]) == 4

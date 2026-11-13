@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "ml_insights.json schema v2 (bộ số mẫu chỉ minh họa, sau Phase 0)",
+  "title": "ml_insights.json schema v3 (bộ số mẫu chỉ minh họa, backtest so với 1.000 lần chọn ngẫu nhiên)",
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": 2
+      "const": 3
     },
     "product": {
       "type": "string",
@@ -58,46 +58,135 @@
       },
       "minItems": 1
     },
-    "backtest_report": {
+    "backtests": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_draws",
+          "simulations",
+          "expected_average",
+          "random",
+          "strategies"
+        ],
         "properties": {
-          "strategy_name": {
-            "type": "string"
-          },
           "test_draws": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 1
           },
-          "average_matches": {
+          "simulations": {
+            "type": "integer",
+            "minimum": 100
+          },
+          "expected_average": {
             "type": "number",
             "minimum": 0
           },
-          "max_match_in_one_draw": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 6
+          "random": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mean_average",
+              "low_95",
+              "high_95",
+              "histogram"
+            ],
+            "properties": {
+              "mean_average": {
+                "type": "number",
+                "minimum": 0
+              },
+              "low_95": {
+                "type": "number",
+                "minimum": 0
+              },
+              "high_95": {
+                "type": "number",
+                "minimum": 0
+              },
+              "histogram": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "average_matches",
+                  "counts"
+                ],
+                "properties": {
+                  "average_matches": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "minItems": 1
+                  },
+                  "counts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "minItems": 1
+                  }
+                }
+              }
+            }
           },
-          "hit_rate_at_least_3": {
-            "type": "string",
-            "pattern": "^\\d+(\\.\\d+)?%$"
-          },
-          "hit_rate_at_least_4": {
-            "type": "string",
-            "pattern": "^\\d+(\\.\\d+)?%$"
+          "strategies": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "strategy_name",
+                "average_matches",
+                "total_matches",
+                "max_match_in_one_draw",
+                "hit_rate_at_least_3",
+                "hit_rate_at_least_4",
+                "p_value"
+              ],
+              "properties": {
+                "strategy_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "average_matches": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "total_matches": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "max_match_in_one_draw": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "hit_rate_at_least_3": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "hit_rate_at_least_4": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "p_value": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
           }
-        },
-        "required": [
-          "strategy_name",
-          "test_draws",
-          "average_matches",
-          "max_match_in_one_draw",
-          "hit_rate_at_least_3",
-          "hit_rate_at_least_4"
-        ]
-      },
-      "minItems": 1
+        }
+      }
     }
   },
   "required": [
@@ -108,7 +197,7 @@
     "disclaimer",
     "jackpot_odds",
     "sample_sets",
-    "backtest_report"
+    "backtests"
   ],
   "additionalProperties": false
 }
