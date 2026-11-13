@@ -25,7 +25,6 @@ export const XsmbQuickCheckPanel: React.FC<{ model: XSMBProductHubModel }> = ({ 
             border: '1px solid var(--border-subtle)',
             color: '#ffffff',
             fontSize: '0.9rem',
-            outline: 'none',
           }}
         />
 
@@ -36,7 +35,7 @@ export const XsmbQuickCheckPanel: React.FC<{ model: XSMBProductHubModel }> = ({ 
             borderRadius: 'var(--radius-sm)',
             background: 'linear-gradient(135deg, #10b981, #06b6d4)',
             border: 'none',
-            color: '#ffffff',
+            color: 'var(--text-main)',
             fontWeight: 700,
             fontSize: '0.88rem',
             cursor: 'pointer',
@@ -66,7 +65,7 @@ export const XsmbQuickCheckPanel: React.FC<{ model: XSMBProductHubModel }> = ({ 
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
             <div>
-              <div style={{ fontSize: '0.85rem', color: '#ffffff', fontWeight: 700 }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: 700 }}>
                 Số cần dò: <span style={{ color: 'var(--accent-gold)' }}>{checkResult.query}</span> (2 số đuôi: {checkResult.query.slice(-2)})
               </div>
               <div style={{ fontSize: '0.82rem', color: checkResult.hits > 0 ? '#34d399' : 'var(--text-muted)', marginTop: 2 }}>

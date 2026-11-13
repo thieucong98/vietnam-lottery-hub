@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AlertTriangle, TrendingUp } from 'lucide-react';
 import { LotteryIndexData } from '../types';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface GanRankingViewProps {
   xsmbData: LotteryIndexData | null;
@@ -34,7 +35,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
       {/* Switch Tab */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
             BẢNG XẾP HẠNG LÔ GAN & TẦN SUẤT
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
@@ -65,7 +66,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
         <div className="glass-card animate-fade-in" style={{ padding: 22 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
             <AlertTriangle size={20} color="var(--accent-red)" />
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Top Số Lâu Chưa Xuất Hiện (Lô Gan)
             </h3>
           </div>
@@ -79,7 +80,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
               return (
                 <div
                   key={item.number}
-                  onClick={() => onSelectNumber(item.number, activeTab)}
+                  {...clickableDivProps(() => onSelectNumber(item.number, activeTab))}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -102,7 +103,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
                       {item.number}
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         Số {item.number}
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
@@ -129,7 +130,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
         <div className="glass-card animate-fade-in" style={{ padding: 22 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
             <TrendingUp size={20} color="var(--accent-gold)" />
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Top Số Xuất Hiện Nhiều Nhất (100 Kỳ Gần Đây)
             </h3>
           </div>
@@ -139,7 +140,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
               return (
                 <div
                   key={item.number}
-                  onClick={() => onSelectNumber(item.number, activeTab)}
+                  {...clickableDivProps(() => onSelectNumber(item.number, activeTab))}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -162,7 +163,7 @@ export const GanRankingView: React.FC<GanRankingViewProps> = ({
                       {item.number}
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         Số {item.number}
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>

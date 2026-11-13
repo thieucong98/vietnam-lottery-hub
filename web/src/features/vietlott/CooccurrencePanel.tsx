@@ -8,7 +8,7 @@ export const CooccurrencePanel: React.FC<{ model: VietlottProductHubModel }> = (
     <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Flame size={20} color="var(--accent-gold)" />
             <span>Ma Trận Đồng Xuất Hiện: Cặp Số & Bộ Ba Thường Về Cùng Nhau ({gameName})</span>
           </h3>
@@ -28,7 +28,7 @@ export const CooccurrencePanel: React.FC<{ model: VietlottProductHubModel }> = (
           <div style={{ background: 'rgba(0,0,0,0.3)', padding: 18, borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
               <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>TOP CẶP SỐ</span>
-              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>Cặp 2 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>Cặp 2 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -92,7 +92,7 @@ export const CooccurrencePanel: React.FC<{ model: VietlottProductHubModel }> = (
           <div style={{ background: 'rgba(0,0,0,0.3)', padding: 18, borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
               <span className="badge badge-hot" style={{ fontSize: '0.75rem' }}>TOP BỘ BA</span>
-              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>Bộ 3 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>Bộ 3 Số Xuất Hiện Cùng Nhau Nhiều Nhất</h4>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

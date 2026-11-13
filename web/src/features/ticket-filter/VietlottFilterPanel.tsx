@@ -13,10 +13,10 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
         {/* Header & Product Switch */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
           <div>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <Sparkles size={18} color="var(--accent-gold)" />
               BỘ TẠO VÉ VIETLOTT THEO PHÂN PHỐI TỔNG (GAUSS)
-            </h3>
+            </h2>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
               Sinh vé ngẫu nhiên rồi lọc theo tổng, chẵn/lẻ và các cặp số từng đồng xuất hiện trong 1.400+ kỳ. Mọi bộ 6 số đều có cùng xác suất trúng Jackpot ({vietlottProduct === '655' ? '1/28.989.675' : '1/8.145.060'}); bộ lọc này không làm tăng xác suất trúng.
             </p>
@@ -132,7 +132,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                         padding: '1px 5px',
                         borderRadius: 3,
                         background: isSelected ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.08)',
-                        color: isSelected ? '#000000' : 'var(--text-dim)',
+                        color: isSelected ? 'var(--text-on-solid-gold)' : 'var(--text-dim)',
                         fontWeight: 700,
                       }}
                     >
@@ -168,7 +168,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                     padding: '4px 12px',
                     borderRadius: 'var(--radius-sm)',
                     background: vTicketCount === cnt ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                    color: vTicketCount === cnt ? '#000000' : 'var(--text-main)',
+                    color: vTicketCount === cnt ? 'var(--text-on-solid-gold)' : 'var(--text-main)',
                     border: '1px solid var(--border-subtle)',
                     fontSize: '0.78rem',
                     fontWeight: 700,
@@ -220,6 +220,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
               1. KHOẢNG TỔNG {currentTicketSpec.size} BÓNG:
             </div>
             <select
+              aria-label="Khoảng tổng điểm"
               value={vSumRange}
               onChange={(e) => setVSumRange(e.target.value as any)}
               style={{
@@ -230,7 +231,6 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                 color: '#ffffff',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.82rem',
-                outline: 'none',
               }}
             >
               <option value="gauss">
@@ -248,6 +248,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
               2. TỶ LỆ CHẴN / LẺ:
             </div>
             <select
+              aria-label="Tỷ lệ chẵn / lẻ"
               value={vParityRatio}
               onChange={(e) => setVParityRatio(e.target.value)}
               style={{
@@ -258,7 +259,6 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                 color: '#ffffff',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.82rem',
-                outline: 'none',
               }}
             >
               <option value="balanced">
@@ -280,6 +280,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
               3. TỶ LỆ NHỎ / LỚN:
             </div>
             <select
+              aria-label="Tỷ lệ nhỏ / lớn"
               value={vLowHighRatio}
               onChange={(e) => setVLowHighRatio(e.target.value)}
               style={{
@@ -290,7 +291,6 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                 color: '#ffffff',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.82rem',
-                outline: 'none',
               }}
             >
               <option value="balanced">
@@ -312,6 +312,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
               4. LOẠI TRỪ SỐ GAN:
             </div>
             <select
+              aria-label="Loại trừ số gan"
               value={vExcludeGanLimit}
               onChange={(e) => setVExcludeGanLimit(parseInt(e.target.value, 10))}
               style={{
@@ -322,7 +323,6 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                 color: '#ffffff',
                 border: '1px solid var(--border-subtle)',
                 fontSize: '0.82rem',
-                outline: 'none',
               }}
             >
               <option value={20}>Loại bỏ các bóng gan &gt; 20 kỳ</option>
@@ -347,7 +347,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                   padding: '5px 12px',
                   borderRadius: 'var(--radius-sm)',
                   background: vSelectedPair === null ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)',
-                  color: vSelectedPair === null ? '#000000' : 'var(--text-main)',
+                  color: vSelectedPair === null ? 'var(--text-on-solid-gold)' : 'var(--text-main)',
                   border: '1px solid var(--border-subtle)',
                   fontSize: '0.78rem',
                   fontWeight: 700,
@@ -366,7 +366,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
                       padding: '5px 12px',
                       borderRadius: 'var(--radius-sm)',
                       background: isSelected ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.04)',
-                      color: isSelected ? '#000000' : 'var(--text-main)',
+                      color: isSelected ? 'var(--text-on-solid-cyan)' : 'var(--text-main)',
                       border: isSelected ? 'none' : '1px solid var(--border-subtle)',
                       fontSize: '0.78rem',
                       fontFamily: 'var(--font-mono)',
@@ -522,9 +522,9 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
         >
           <AlertTriangle size={22} color="var(--accent-red)" style={{ flexShrink: 0, marginTop: 2 }} />
           <div>
-            <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#fca5a5', marginBottom: 6 }}>
+            <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#fca5a5', marginBottom: 6 }}>
               Không tìm thấy vé thỏa mãn đồng thời các điều kiện lọc (sau 4.000 lần thử ngẫu nhiên)
-            </h4>
+            </h3>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.55 }}>
               Các tiêu chí bạn đang chọn (Tổng Gauss, tỷ lệ Chẵn/Lẻ, Nhỏ/Lớn, Lọc số gan hoặc Cặp số bắt buộc) có thể quá hẹp hoặc xung đột với nhau.
             </p>
@@ -539,9 +539,9 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
       {generatedTickets.length > 0 && (
         <div className="glass-card animate-fade-in" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
               CÁC VÉ VỪA SINH ({generatedTickets.length} Vé Thỏa Mãn Tất Cả Tiêu Chí)
-            </h4>
+            </h3>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
               Bấm "Kiểm tra lịch sử" để đối soát từng vé với toàn bộ 1.400+ kỳ quay!
             </span>
@@ -626,7 +626,7 @@ export const VietlottFilterPanel: React.FC<{ model: SmartFilterAndCheckerModel }
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    Tổng: <strong style={{ color: '#ffffff' }}>{t.sum}</strong> | {t.evenCount}C -{' '}
+                    Tổng: <strong style={{ color: 'var(--text-main)' }}>{t.sum}</strong> | {t.evenCount}C -{' '}
                     {t.balls.length - t.evenCount}L | {t.lowCount}N - {t.balls.length - t.lowCount}L
                   </div>
 

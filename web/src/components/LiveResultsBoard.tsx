@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Trophy, Sparkles, ChevronRight, ChevronLeft, Flame, Dice5 } from 'lucide-react';
 import { LatestDrawXSMB, LatestDraw3D, LatestDrawKeno } from '../types';
 import { OfficialResultsLink } from './OfficialResultsLink';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface LiveResultsBoardProps {
   gameType: 'xsmb' | 'vietlott_655' | 'vietlott_645';
@@ -79,7 +80,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 {is655 ? 'KẾT QUẢ VIETLOTT POWER 6/55' : 'KẾT QUẢ VIETLOTT MEGA 6/45'}
               </h2>
               <span className="badge badge-hot">KỲ #{drawData.id}</span>
@@ -104,7 +105,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
                 key={idx}
                 className="lottery-ball ball-gold"
                 style={{ width: 62, height: 62, fontSize: '1.6rem', cursor: 'pointer' }}
-                onClick={() => onSelectNumber(numStr)}
+                {...clickableDivProps(() => onSelectNumber(numStr))}
                 title={`Bấm để xem lịch sử số ${numStr}`}
               >
                 {numStr}
@@ -119,7 +120,8 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
                 <div
                   className="lottery-ball ball-jackpot2"
                   style={{ width: 62, height: 62, fontSize: '1.6rem', cursor: 'pointer' }}
-                  onClick={() => onSelectNumber(jackpot2Number.toString().padStart(2, '0'))}
+                  {...clickableDivProps(
+                    () => onSelectNumber(jackpot2Number.toString().padStart(2, '0')))}
                   title={`Bóng đặc biệt Jackpot 2: số ${jackpot2Number}`}
                 >
                   {jackpot2Number.toString().padStart(2, '0')}
@@ -157,7 +159,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Trophy size={20} color="var(--accent-gold)" />
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)' }}>
               BẢNG MỞ THƯỞNG XSMB
             </h2>
             {isHistorical && (
@@ -189,7 +191,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
                     borderRadius: 'var(--radius-sm)',
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid var(--border-subtle)',
-                    color: canGoPrev ? '#ffffff' : 'var(--text-dim)',
+                    color: canGoPrev ? 'var(--text-main)' : 'var(--text-dim)',
                     cursor: canGoPrev ? 'pointer' : 'not-allowed',
                     display: 'flex',
                     alignItems: 'center',
@@ -226,7 +228,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
                     borderRadius: 'var(--radius-sm)',
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid var(--border-subtle)',
-                    color: canGoNext ? '#ffffff' : 'var(--text-dim)',
+                    color: canGoNext ? 'var(--text-main)' : 'var(--text-dim)',
                     cursor: canGoNext ? 'pointer' : 'not-allowed',
                     display: 'flex',
                     alignItems: 'center',
@@ -312,7 +314,7 @@ export const LiveResultsBoard: React.FC<LiveResultsBoardProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Sparkles size={20} color="var(--accent-emerald)" />
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)' }}>
               BẢNG LÔ TÔ ĐẦU - ĐUÔI
             </h2>
           </div>
@@ -400,7 +402,7 @@ const CompanionVietlottGames: React.FC<{ latest3D?: LatestDraw3D; latestKeno?: L
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Dice5 size={18} color="var(--accent-gold)" />
-              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>VIETLOTT MAX 3D</h3>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-main)' }}>VIETLOTT MAX 3D</h3>
             </div>
             <span className="badge badge-normal" style={{ fontSize: '0.72rem' }}>
               KỲ #{latest3D.id} ({latest3D.date})
@@ -450,7 +452,7 @@ const CompanionVietlottGames: React.FC<{ latest3D?: LatestDraw3D; latestKeno?: L
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Flame size={18} color="#ef4444" />
-              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>VIETLOTT KENO (QUAY NHANH)</h3>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-main)' }}>VIETLOTT KENO (QUAY NHANH)</h3>
             </div>
             <span className="badge badge-hot" style={{ fontSize: '0.72rem' }}>
               KỲ {latestKeno.id} ({latestKeno.date})

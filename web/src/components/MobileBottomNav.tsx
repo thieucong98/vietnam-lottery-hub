@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import {
   Calendar,
   Dices,
   Search,
+  Settings,
   Zap,
   BarChart3,
   X,
@@ -13,12 +14,14 @@ import {
   ShieldCheck,
   ChevronRight,
 } from 'lucide-react';
+import { useDialogBehavior } from '../ui/useDialogBehavior';
 
 interface MobileBottomNavProps {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
   onOpenSearch: () => void;
   onOpenLegal?: () => void;
+  onOpenSettings: () => void;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
@@ -26,8 +29,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   setCurrentTab,
   onOpenSearch,
   onOpenLegal,
+  onOpenSettings,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const drawerTitleId = useId();
+  const drawerRef = useDialogBehavior<HTMLDivElement>(isDrawerOpen, () => setIsDrawerOpen(false));
 
   const isHomeActive = currentTab === 'xsmb';
   const isVietlottActive =
@@ -116,7 +122,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           onClick={() => setIsDrawerOpen(false)}
         >
           <div
+            ref={drawerRef}
             className="mobile-drawer-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={drawerTitleId}
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Drawer Header */}
@@ -132,10 +143,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             >
               <div>
                 <h3
+                  id={drawerTitleId}
                   style={{
                     fontSize: '1.15rem',
                     fontWeight: 800,
-                    color: '#ffffff',
+                    color: 'var(--text-main)',
                     letterSpacing: '-0.01em',
                   }}
                 >
@@ -147,11 +159,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               </div>
               <button
                 onClick={() => setIsDrawerOpen(false)}
+                aria-label="Đóng"
                 style={{
-                  width: 36,
-                  height: 36,
+                  width: 44,
+                  height: 44,
                   borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'var(--bg-glass)',
                   border: '1px solid var(--border-subtle)',
                   color: 'var(--text-muted)',
                   display: 'flex',
@@ -184,7 +197,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'heatmap'
                       ? '1px solid var(--accent-red)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -233,7 +246,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'gan'
                       ? '1px solid var(--accent-cyan)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -282,7 +295,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'bacnho'
                       ? '1px solid var(--accent-purple)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -297,7 +310,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#c084fc',
+                      color: 'var(--accent-purple-on-tint)',
                     }}
                   >
                     <Sparkles size={20} />
@@ -331,7 +344,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'filter'
                       ? '1px solid var(--accent-emerald)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -380,7 +393,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     currentTab === 'ai'
                       ? '1px solid var(--accent-gold)'
                       : '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -412,6 +425,50 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 <ChevronRight size={18} color="var(--text-dim)" />
               </button>
 
+              {/* Option: Giao diện & cỡ chữ */}
+              <button
+                onClick={() => {
+                  setIsDrawerOpen(false);
+                  onOpenSettings();
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--bg-glass)',
+                  border: '1px solid var(--border-subtle)',
+                  color: 'var(--text-main)',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      background: 'var(--bg-glass)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    <Settings size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>Giao Diện & Cỡ Chữ</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                      Chọn theme sáng/tối và cỡ chữ dễ đọc
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight size={18} color="var(--text-dim)" />
+              </button>
+
               {/* Option: Pháp lý 18+ */}
               {onOpenLegal && (
                 <button
@@ -427,14 +484,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     borderRadius: 'var(--radius-md)',
                     background: 'rgba(16, 185, 129, 0.08)',
                     border: '1px solid rgba(16, 185, 129, 0.3)',
-                    color: '#34d399',
+                    color: 'var(--accent-emerald-on-tint)',
                     cursor: 'pointer',
                     textAlign: 'left',
                     marginTop: 6,
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <ShieldCheck size={20} color="#10b981" />
+                    <ShieldCheck size={20} color="var(--accent-emerald)" />
                     <div>
                       <div style={{ fontWeight: 700, fontSize: '0.88rem' }}>
                         Quy Định Pháp Lý & 18+ Chơi Có Trách Nhiệm

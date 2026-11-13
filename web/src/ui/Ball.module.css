@@ -22,7 +22,7 @@ button.ball {
 /* Bóng phẳng dùng trong bảng, danh sách */
 .flat-muted {
   background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  color: var(--text-main);
 }
 .flat-dim {
   background: rgba(255, 255, 255, 0.06);
@@ -31,12 +31,12 @@ button.ball {
 }
 .flat-gold {
   background: var(--accent-gold);
-  color: #000000;
+  color: var(--text-on-solid-gold);
   font-weight: 800;
 }
 .flat-special {
   background: rgba(239, 68, 68, 0.25);
-  color: #ffffff;
+  color: var(--accent-red-on-tint);
   border: 1px solid var(--accent-red);
   font-weight: 800;
 }

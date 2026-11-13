@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LiveResultsBoard } from '../components/LiveResultsBoard';
 import { UniversalQuickChecker } from '../components/UniversalQuickChecker';
+import { DrawScheduleWidget } from '../components/DrawScheduleWidget';
 import { BentoInsightsGrid } from '../components/BentoInsightsGrid';
 import { SkeletonLoader } from '../components/SkeletonLoader';
 import { XSMBProductHub } from '../features/xsmb/XSMBProductHub';
@@ -74,20 +75,7 @@ export default function XsmbPage() {
         </div>
       )}
 
-      <XSMBProductHub
-        summaryData={summary.data}
-        historicalDraws={draws}
-        onSelectNumber={(n) => nav.openNumber(n, 'xsmb')}
-        onSelectHistoricalDraw={(draw) => {
-          navigate(paths.xsmbDate(draw.date));
-          document.getElementById('xsmb-live-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }}
-        selectedDrawDate={activeDraw?.date}
-        onTabChange={(tab) => tab === 'history' && setHistoryOpen(true)}
-      />
-
-      <UniversalQuickChecker summaryData={summary.data} onOpenDeepLookup={(text) => nav.openLookupText(text, 'xsmb')} />
-
+      {/* 1. Kết quả mới nhất */}
       <LiveResultsBoard
         gameType="xsmb"
         drawData={activeDraw}
@@ -99,6 +87,25 @@ export default function XsmbPage() {
         onNavigateDate={(d) => navigate(d === latest?.date ? paths.home() : paths.xsmbDate(d))}
         isHistorical={Boolean(found && found.date !== latest?.date)}
         onResetToLatest={() => navigate(paths.home())}
+      />
+
+      {/* 2. Dò vé */}
+      <UniversalQuickChecker summaryData={summary.data} onOpenDeepLookup={(text) => nav.openLookupText(text, 'xsmb')} />
+
+      {/* 3. Lịch quay */}
+      <DrawScheduleWidget />
+
+      {/* Công cụ chuyên sâu (tầng thứ hai) */}
+      <XSMBProductHub
+        summaryData={summary.data}
+        historicalDraws={draws}
+        onSelectNumber={(n) => nav.openNumber(n, 'xsmb')}
+        onSelectHistoricalDraw={(draw) => {
+          navigate(paths.xsmbDate(draw.date));
+          document.getElementById('xsmb-live-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }}
+        selectedDrawDate={activeDraw?.date}
+        onTabChange={(tab) => tab === 'history' && setHistoryOpen(true)}
       />
 
       <div ref={mlRef}>

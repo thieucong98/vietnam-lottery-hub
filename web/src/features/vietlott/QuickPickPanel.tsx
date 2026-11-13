@@ -9,7 +9,7 @@ export const QuickPickPanel: React.FC<{ model: VietlottProductHubModel }> = ({ m
     <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 20 }}>
         <div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Sparkles size={20} color="var(--accent-gold)" />
             <span>Trình Tạo Bộ Số Ngẫu Nhiên Thông Minh ({gameName})</span>
           </h3>
@@ -116,12 +116,12 @@ export const QuickPickPanel: React.FC<{ model: VietlottProductHubModel }> = ({ m
         {generatedNumbers.length === 6 && (
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             <span>
-              Tổng điểm: <strong style={{ color: '#ffffff' }}>{generatedNumbers.reduce((a, b) => a + b, 0)}</strong>
+              Tổng điểm: <strong style={{ color: 'var(--text-main)' }}>{generatedNumbers.reduce((a, b) => a + b, 0)}</strong>
             </span>
             <span>•</span>
             <span>
               Chẵn/Lẻ:{' '}
-              <strong style={{ color: '#ffffff' }}>
+              <strong style={{ color: 'var(--text-main)' }}>
                 {generatedNumbers.filter((n) => n % 2 === 0).length} Chẵn -{' '}
                 {generatedNumbers.filter((n) => n % 2 !== 0).length} Lẻ
               </strong>
@@ -138,7 +138,7 @@ export const QuickPickPanel: React.FC<{ model: VietlottProductHubModel }> = ({ m
               borderRadius: 'var(--radius-full)',
               background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
               border: 'none',
-              color: '#ffffff',
+              color: 'var(--text-main)',
               fontWeight: 800,
               fontSize: '0.92rem',
               cursor: isRolling ? 'not-allowed' : 'pointer',
@@ -161,7 +161,7 @@ export const QuickPickPanel: React.FC<{ model: VietlottProductHubModel }> = ({ m
                   borderRadius: 'var(--radius-full)',
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid var(--border-subtle)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   fontWeight: 600,
                   fontSize: '0.88rem',
                   cursor: 'pointer',

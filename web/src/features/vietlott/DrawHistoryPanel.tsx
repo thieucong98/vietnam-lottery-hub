@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Ball } from '../../ui';
 import type { VietlottProductHubModel } from './useVietlottHub';
 
 export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({ model }) => {
@@ -8,7 +9,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
     <div className="glass-card animate-fade-in" style={{ padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14, marginBottom: 20 }}>
         <div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Calendar size={20} color="var(--accent-purple)" />
             <span>Kho Lịch Sử Kỳ Quay Toàn Diện ({filteredHistory.length} kỳ)</span>
           </h3>
@@ -41,8 +42,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
               style={{
                 background: 'transparent',
                 border: 'none',
-                outline: 'none',
-                color: '#ffffff',
+                color: 'var(--text-main)',
                 fontSize: '0.84rem',
                 width: 260,
               }}
@@ -89,7 +89,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
                   #{draw.id}
                 </span>
                 <div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                     {draw.date}
                   </div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
@@ -100,28 +100,26 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 {draw.balls.map((num, idx) => (
-                  <div
+                  <Ball
                     key={idx}
-                    className="lottery-ball ball-gold"
-                    style={{ width: 44, height: 44, fontSize: '1.15rem', cursor: 'pointer' }}
+                    value={num.toString().padStart(2, '0')}
+                    size="md"
+                    tone="gold"
                     onClick={() => onSelectNumber(num.toString().padStart(2, '0'))}
-                    title={`Bấm để xem lịch sử số ${num}`}
-                  >
-                    {num.toString().padStart(2, '0')}
-                  </div>
+                    title={`Số ${num}, bấm để xem lịch sử`}
+                  />
                 ))}
 
                 {is655 && draw.special && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 6 }}>
                     <div style={{ width: 1, height: 26, background: 'rgba(255,255,255,0.1)' }} />
-                    <div
-                      className="lottery-ball ball-jackpot2"
-                      style={{ width: 44, height: 44, fontSize: '1.15rem', cursor: 'pointer' }}
+                    <Ball
+                      value={draw.special.toString().padStart(2, '0')}
+                      size="md"
+                      tone="jackpot2"
                       onClick={() => onSelectNumber(draw.special!.toString().padStart(2, '0'))}
-                      title={`Jackpot 2: số ${draw.special}`}
-                    >
-                      {draw.special.toString().padStart(2, '0')}
-                    </div>
+                      title={`Jackpot 2, số ${draw.special}`}
+                    />
                   </div>
                 )}
               </div>
@@ -168,7 +166,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
               borderRadius: 'var(--radius-sm)',
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid var(--border-subtle)',
-              color: currentPage === 1 ? 'var(--text-dim)' : '#ffffff',
+              color: currentPage === 1 ? 'var(--text-dim)' : 'var(--text-main)',
               fontSize: '0.82rem',
               cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
               display: 'flex',
@@ -181,7 +179,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
           </button>
 
           <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-            Trang <strong style={{ color: '#ffffff' }}>{currentPage}</strong> / {totalPages}
+            Trang <strong style={{ color: 'var(--text-main)' }}>{currentPage}</strong> / {totalPages}
           </span>
 
           <button
@@ -192,7 +190,7 @@ export const DrawHistoryPanel: React.FC<{ model: VietlottProductHubModel }> = ({
               borderRadius: 'var(--radius-sm)',
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid var(--border-subtle)',
-              color: currentPage === totalPages ? 'var(--text-dim)' : '#ffffff',
+              color: currentPage === totalPages ? 'var(--text-dim)' : 'var(--text-main)',
               fontSize: '0.82rem',
               cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
               display: 'flex',

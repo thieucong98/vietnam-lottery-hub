@@ -326,7 +326,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
         position: 'relative',
         overflow: 'hidden',
         padding: '24px 28px',
-        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.7) 100%)',
+        background: 'var(--bg-card-gradient)',
         border: '1px solid rgba(245, 158, 11, 0.35)',
         boxShadow: '0 12px 35px -10px rgba(0, 0, 0, 0.7), 0 0 25px -5px rgba(245, 158, 11, 0.2)',
       }}
@@ -367,7 +367,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.01em' }}>
                 DÒ VÉ SIÊU TỐC 3 GIÂY
               </h2>
               <span className="badge badge-hot" style={{ fontSize: '0.68rem' }}>
@@ -427,7 +427,6 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
               fontSize: '0.98rem',
               fontWeight: 600,
               fontFamily: 'var(--font-mono)',
-              outline: 'none',
               boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.5)',
             }}
           />
@@ -441,7 +440,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
             borderRadius: 'var(--radius-md)',
             background: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
             border: 'none',
-            color: '#ffffff',
+            color: 'var(--text-main)',
             fontWeight: 800,
             fontSize: '0.95rem',
             cursor: 'pointer',
@@ -537,7 +536,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                   ) : (
                     <HelpCircle size={22} color="var(--text-dim)" />
                   )}
-                  <strong style={{ fontSize: '1.05rem', color: '#ffffff' }}>
+                  <strong style={{ fontSize: '1.05rem', color: 'var(--text-main)' }}>
                     Kết quả so khớp bộ số Vietlott: [ {evaluation.tokens.map((n: number) => n.toString().padStart(2, '0')).join(' - ')} ]
                   </strong>
                 </div>
@@ -671,7 +670,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-main)' }}>
                     {evaluation.bothHits
                       ? `Cả 2 số [${evaluation.n1} - ${evaluation.n2}] cùng xuất hiện trong 27 giải XSMB kỳ ${evaluation.date}`
                       : evaluation.hits1 > 0 || evaluation.hits2 > 0
@@ -720,7 +719,7 @@ export const UniversalQuickChecker: React.FC<UniversalQuickCheckerProps> = ({
                   {evaluation.number}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-main)' }}>
                     {evaluation.xsmbSpecial
                       ? `Số ${evaluation.number} trùng 2 số cuối Giải Đặc Biệt XSMB kỳ ${evaluation.date}`
                       : evaluation.xsmbHits > 0

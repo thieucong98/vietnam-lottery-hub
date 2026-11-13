@@ -11,7 +11,7 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
       {/* Header Module Vé Bao */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Layers size={20} color="var(--accent-emerald)" />
             <span>Tra Cứu Bộ Số & Vé Bao (Tổ Hợp 2 - {is655 ? '18' : '15'} Bóng)</span>
           </h3>
@@ -307,7 +307,7 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
                 <DollarSign size={18} />
               </div>
               <div>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   Mô Phỏng Chi Phí
                 </h4>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
@@ -331,7 +331,7 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
                     borderRadius: 'var(--radius-sm)',
                     border: 'none',
                     background: backtestHorizon === h.id ? 'var(--accent-emerald)' : 'transparent',
-                    color: backtestHorizon === h.id ? '#000000' : 'var(--text-muted)',
+                    color: backtestHorizon === h.id ? 'var(--text-on-solid-emerald)' : 'var(--text-muted)',
                     fontWeight: 700,
                     fontSize: '0.76rem',
                     cursor: 'pointer',
@@ -447,7 +447,7 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
       {/* Dòng Thời Gian Các Kỳ Trúng Thưởng (Matched Timeline) */}
       <div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
-          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>
+          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Danh Sách Kỳ Quay Từng Trúng Thưởng ({filteredTimeline.length} kỳ)
           </h4>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -504,7 +504,7 @@ export const ComboBaoPanel: React.FC<{ model: VietlottProductHubModel }> = ({ mo
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ minWidth: 80 }}>
-                      <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-main)' }}>
                         #{item.draw.id}
                       </div>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>

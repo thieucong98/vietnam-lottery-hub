@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Flame, Eye, Sparkles } from 'lucide-react';
 import { LotteryIndexData } from '../types';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface HeatmapMatrixProps {
   data: LotteryIndexData | null;
@@ -30,7 +31,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
   // Tính màu sắc cho từng ô
   const getCellColor = (numStr: string) => {
     const item = data.numbers[numStr];
-    if (!item) return { bg: 'rgba(255,255,255,0.03)', text: '#ffffff' };
+    if (!item) return { bg: 'rgba(255,255,255,0.03)', text: 'var(--text-main)' };
 
     if (mode === 'freq') {
       // Tần suất: từ slate tối đến vàng kim rực rỡ
@@ -65,7 +66,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Flame size={22} color="var(--accent-gold)" />
-            <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-main)' }}>
               MA TRẬN NHIỆT ĐỘ 100 SỐ (00 - 99)
             </h2>
           </div>
@@ -102,17 +103,18 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
           const item = data.numbers[numStr];
           const colors = getCellColor(numStr);
 
+          const cellLabel = `Số ${numStr}: vắng ${item?.days_since_last || 0} ngày, tần suất 100 kỳ ${item?.freq_100d || 0} lần`;
           return (
             <div
               key={numStr}
               className="heatmap-cell"
-              onClick={() => onSelectNumber(numStr)}
+              {...clickableDivProps(() => onSelectNumber(numStr))}
               style={{
                 background: colors.bg,
                 borderColor: colors.border,
                 color: colors.text,
               }}
-              title={`Số ${numStr}: Vắng ${item?.days_since_last || 0} ngày, Tần suất 100d: ${item?.freq_100d || 0} lần`}
+              title={cellLabel}
             >
               <span style={{ fontSize: '0.95rem', fontWeight: 800 }}>{numStr}</span>
               <span style={{ fontSize: '0.65rem', opacity: 0.85 }}>

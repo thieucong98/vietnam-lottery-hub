@@ -1,6 +1,7 @@
 import React from 'react';
 import { RefreshCw, Award } from 'lucide-react';
 import type { InstantLookupModalModel } from './useInstantLookup';
+import { clickableDivProps } from '../../ui/clickableDiv';
 import styles from './CombinationPanel.module.css';
 
 export const CombinationPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model }) => {
@@ -83,8 +84,8 @@ export const CombinationPanel: React.FC<{ model: InstantLookupModalModel }> = ({
               {comboBalls.map((b) => (
                 <div className={styles.inlineRowCenterJustifyCenter}
                   key={b}
-                  onClick={() => handleToggleComboBall(b)}
-                  title="Click để bỏ bóng này"
+                  {...clickableDivProps(() => handleToggleComboBall(b))}
+                  title="Bấm để bỏ bóng này"
                 >
                   {b.toString().padStart(2, '0')}
                 </div>
@@ -302,7 +303,7 @@ export const CombinationPanel: React.FC<{ model: InstantLookupModalModel }> = ({
                                       height: 24,
                                       borderRadius: '50%',
                                       background: m.matchedSpecial ? 'var(--accent-red)' : 'rgba(239, 68, 68, 0.2)',
-                                      color: '#ffffff',
+                                      color: 'var(--text-main)',
                                       border: '1px solid var(--accent-red)',
                                       fontSize: '0.72rem',
                                       fontFamily: 'var(--font-mono)',

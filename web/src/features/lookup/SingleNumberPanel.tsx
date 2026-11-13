@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Calendar, AlertTriangle, Layers, Sparkles, Filter, CheckCircle2, BarChart2, Download, Copy, ArrowRight } from 'lucide-react';
 import type { InstantLookupModalModel } from './useInstantLookup';
+import { clickableDivProps } from '../../ui/clickableDiv';
 import styles from './SingleNumberPanel.module.css';
 
 export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = ({ model }) => {
@@ -79,7 +80,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                     padding: '3px 10px',
                     borderRadius: '9999px',
                     background: searchQuery === num ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.05)',
-                    color: searchQuery === num ? '#000000' : 'var(--text-main)',
+                    color: searchQuery === num ? 'var(--text-on-solid-gold)' : 'var(--text-main)',
                     border: '1px solid var(--border-subtle)',
                     fontSize: '0.8rem',
                     fontFamily: 'var(--font-mono)',
@@ -184,7 +185,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                     style={{
                       fontSize: '1.4rem',
                       fontWeight: 800,
-                      color: detail.is_gan ? 'var(--accent-red)' : '#ffffff',
+                      color: detail.is_gan ? 'var(--accent-red)' : 'var(--text-main)',
                       fontFamily: 'var(--font-mono)',
                     }}
                   >
@@ -245,10 +246,10 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                       return (
                         <div className={styles.colCenterGap4}
                           key={yr}
-                          onClick={async () => {
+                          {...clickableDivProps(async () => {
                             setSelectedYear(isSelected ? 'all' : yr);
                             if (!loadedFullList) loadFullHistory();
-                          }}
+                          })}
                         >
                           <span className={styles.text065GoldWeight700}>
                             {count}
@@ -292,7 +293,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                     {detail.top_pairs.map((p) => (
                       <div className={styles.rowCenterGap82}
                         key={p.number}
-                        onClick={() => setSearchQuery(p.number)}
+                        {...clickableDivProps(() => setSearchQuery(p.number))}
                       >
                         <span
                           className={`lottery-ball ball-slate ${styles.w26H26Text08}`}
@@ -355,6 +356,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                     <Filter size={14} color="var(--text-dim)" />
                     <span className={styles.text078Dim}>Năm:</span>
                     <select className={styles.pad4x8Round4BgTint}
+                      aria-label="Lọc theo năm"
                       value={selectedYear}
                       onChange={async (e) => {
                         const yr = e.target.value;
@@ -441,7 +443,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                 </div>
 
                 {/* Bảng danh sách các ngày đã về */}
-                <div className={styles.maxH280ScrollYAuto}>
+                <div className={styles.maxH280ScrollYAuto} tabIndex={0} role="region" aria-label="Danh sách các ngày đã về, cuộn để xem thêm">
                   <table className={styles.w100pText085}>
                     <thead>
                       <tr className={styles.borderBottomLineSubtleDimAlignLeft}
@@ -530,7 +532,7 @@ export const SingleNumberPanel: React.FC<{ model: InstantLookupModalModel }> = (
                                             height: 24,
                                             borderRadius: '50%',
                                             background: hist.result[6] === targetNum ? 'var(--accent-red)' : 'rgba(239, 68, 68, 0.25)',
-                                            color: '#ffffff',
+                                            color: 'var(--text-main)',
                                             border: '1px solid var(--accent-red)',
                                             fontSize: '0.72rem',
                                             fontFamily: 'var(--font-mono)',

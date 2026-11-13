@@ -22,7 +22,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = (props) => {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: 16,
-          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%)',
+          background: 'var(--bg-card-gradient)',
           border: '1px solid rgba(245, 158, 11, 0.25)',
         }}
       >
@@ -35,7 +35,7 @@ export const KenoAndMax3DView: React.FC<KenoAndMax3DViewProps> = (props) => {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
                 TRUNG TÂM VIETLOTT KENO & MAX 3D / 3D PRO
               </h2>
               <span className="badge badge-hot">QUAY NHANH & 3 CHỮ SỐ</span>

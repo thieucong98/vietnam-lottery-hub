@@ -15,7 +15,7 @@ export const XSMBProductHub: React.FC<XSMBProductHubProps> = (props) => {
       style={{
         padding: '20px 24px',
         borderRadius: 'var(--radius-md)',
-        background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.95))',
+        background: 'var(--bg-card-gradient)',
         border: '1px solid var(--border-subtle)',
       }}
     >
@@ -34,7 +34,7 @@ export const XSMBProductHub: React.FC<XSMBProductHubProps> = (props) => {
           >
             TOOLKIT XSMB
           </div>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Công Cụ Hỗ Trợ Người Chơi Tại Chỗ
           </h3>
         </div>

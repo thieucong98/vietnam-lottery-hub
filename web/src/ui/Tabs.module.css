@@ -32,8 +32,8 @@
   outline-offset: 2px;
 }
 .active {
-  color: #ffffff;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+  color: var(--accent-gold-on-tint);
+  background: linear-gradient(135deg, var(--accent-gold-glow), rgba(245, 158, 11, 0.05));
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 15px var(--accent-gold-glow);
 }

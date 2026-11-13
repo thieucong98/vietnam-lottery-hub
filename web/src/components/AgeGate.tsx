@@ -72,7 +72,7 @@ export const AgeGate: React.FC<AgeGateProps> = ({ onOpenLegal }) => {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <ShieldCheck size={28} color="var(--accent-emerald)" />
-          <h2 id="age-gate-title" style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
+          <h2 id="age-gate-title" style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Xác nhận độ tuổi (18+)
           </h2>
         </div>
@@ -98,7 +98,7 @@ export const AgeGate: React.FC<AgeGateProps> = ({ onOpenLegal }) => {
                   borderRadius: 'var(--radius-sm)',
                   background: 'var(--accent-emerald)',
                   border: 'none',
-                  color: '#000000',
+                  color: 'var(--text-on-solid-emerald)',
                   fontWeight: 800,
                   fontSize: '0.9rem',
                   cursor: 'pointer',

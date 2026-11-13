@@ -7,17 +7,20 @@ import {
   Dices,
   Calendar,
   Github,
+  Settings,
   Sparkles,
   Filter,
   ShieldCheck,
   Zap,
 } from 'lucide-react';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface NavbarProps {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
   onOpenSearch: () => void;
   onOpenLegal?: () => void;
+  onOpenSettings: () => void;
   latestDate?: string;
 }
 
@@ -26,6 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   setCurrentTab,
   onOpenSearch,
   onOpenLegal,
+  onOpenSettings,
   latestDate,
 }) => {
   return (
@@ -34,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: 'rgba(8, 12, 20, 0.92)',
+        background: 'var(--bg-sticky-surface)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--border-subtle)',
@@ -57,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       >
         {/* LOGO & BRANDING */}
         <div
-          onClick={() => setCurrentTab('xsmb')}
+          {...clickableDivProps(() => setCurrentTab('xsmb'))}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -223,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               background:
                 'linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(239, 68, 68, 0.12))',
               border: '1px solid var(--accent-gold)',
-              color: '#ffffff',
+              color: 'var(--text-main)',
               fontSize: '0.84rem',
               fontWeight: 700,
               cursor: 'pointer',
@@ -273,6 +277,30 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hide-mobile">18+ Pháp Lý</span>
             </button>
           )}
+
+          {/* Giao diện & cỡ chữ */}
+          <button
+            onClick={onOpenSettings}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 36,
+              height: 36,
+              minWidth: 36,
+              minHeight: 36,
+              borderRadius: 'var(--radius-full)',
+              background: 'var(--bg-glass)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            title="Giao diện & cỡ chữ"
+            aria-label="Giao diện & cỡ chữ"
+          >
+            <Settings size={16} />
+          </button>
 
           {/* GitHub Icon */}
           <a

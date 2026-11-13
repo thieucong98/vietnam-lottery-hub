@@ -9,6 +9,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { SummaryData, MLInsightsData, LotteryIndexData } from '../types';
+import { clickableDivProps } from '../ui/clickableDiv';
 
 interface BentoInsightsGridProps {
   xsmbData: LotteryIndexData | null;
@@ -94,7 +95,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                 <Flame size={18} color="#0f172a" />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Số Xuất Hiện Nhiều</h3>
+                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: 'var(--text-main)' }}>Số Xuất Hiện Nhiều</h3>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tần suất cao nhất 100 kỳ qua</span>
               </div>
             </div>
@@ -108,7 +109,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               return (
                 <div
                   key={idx}
-                  onClick={() => onSelectNumber(item.number)}
+                  {...clickableDivProps(() => onSelectNumber(item.number))}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -128,7 +129,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                       {item.number}
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         Về <strong>{freq}</strong> lần
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
@@ -178,7 +179,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                 <AlertTriangle size={18} color="#f59e0b" />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Cảnh Báo Lô Gan</h3>
+                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: 'var(--text-main)' }}>Cảnh Báo Lô Gan</h3>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tiến trình so với kỷ lục 20 năm</span>
               </div>
             </div>
@@ -197,7 +198,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
               return (
                 <div
                   key={idx}
-                  onClick={() => onSelectNumber(item.number)}
+                  {...clickableDivProps(() => onSelectNumber(item.number))}
                   style={{
                     padding: '8px 12px',
                     borderRadius: 'var(--radius-sm)',
@@ -214,7 +215,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                       <div className="lottery-ball ball-slate" style={{ width: 32, height: 32, fontSize: '0.95rem', fontWeight: 800 }}>
                         {item.number}
                       </div>
-                      <span style={{ fontSize: '0.86rem', fontWeight: 700, color: '#ffffff' }}>
+                      <span style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-main)' }}>
                         Gan <strong>{currentG}</strong> ngày
                       </span>
                     </div>
@@ -270,7 +271,7 @@ export const BentoInsightsGrid: React.FC<BentoInsightsGridProps> = ({
                 <Brain size={18} color="#0f172a" />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#ffffff' }}>Bản Tin Toán Học</h3>
+                <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: 'var(--text-main)' }}>Bản Tin Toán Học</h3>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Tóm tắt thống kê kỳ gần nhất</span>
               </div>
             </div>
