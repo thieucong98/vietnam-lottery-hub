@@ -129,7 +129,7 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
 
 * 🤖 **Tự Động Hóa CI/CD & Telegram Bot 2 Chiều**:
   * GitHub Actions tự động cào dữ liệu lúc **18:35** (XSMB) và **18:45** (Vietlott) mỗi ngày, tái tạo chỉ mục và tự động cập nhật README & GitHub Pages.
-  * Telegram Bot hỗ trợ tra cứu tương tác 2 chiều: `/xsmb`, `/power`, `/mega`, `/check`, `/gan`, `/bacnho`, `/hot`.
+  * Telegram Bot hỗ trợ tra cứu tương tác 2 chiều: `/xsmb`, `/power`, `/mega`, `/check`, `/gan`, `/bacnho`, `/hot`, dò vé `/dove`, lịch quay & Jackpot `/lichquay`, chơi có trách nhiệm `/trachnhiem`. Nhận kết quả khi có kỳ mới là tự chọn: `/dangky [xsmb|655|645]`, hủy bằng `/huydangky`.
 
 ---
 

@@ -175,6 +175,16 @@ def run():
         logger.error(f"Lỗi khi tạo bộ số mẫu & backtest: {e}")
         record_error("ml_insights", e)
 
+    # 7b. Giá trị Jackpot (vietlott.vn; bỏ qua nếu bị chặn, giữ dữ liệu cũ)
+    logger.info("Bước 7b/8: Cập nhật giá trị Jackpot Power 6/55 & Mega 6/45...")
+    try:
+        from engine.crawlers.jackpot import sync_and_export_jackpots
+        added_jp = sync_and_export_jackpots()
+        logger.info(f"-> Jackpot: thêm {added_jp} kỳ.")
+    except Exception as e:
+        logger.error(f"Lỗi khi cập nhật Jackpot: {e}")
+        record_error("jackpot", e)
+
     # 8. Render README
     logger.info("Bước 8/8: Cập nhật bảng kết quả sống động vào README.md...")
     try:

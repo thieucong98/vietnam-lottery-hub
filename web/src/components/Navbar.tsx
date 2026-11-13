@@ -12,6 +12,7 @@ import {
   Filter,
   ShieldCheck,
   Zap,
+  ListChecks,
 } from 'lucide-react';
 import { clickableDivProps } from '../ui/clickableDiv';
 
@@ -209,6 +210,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Brain size={15} />
             <span>AI</span>
+          </button>
+
+          <button
+            className={`tab-btn ${currentTab === 'tools' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('tools')}
+            style={{ padding: '6px 14px', fontSize: '0.84rem' }}
+          >
+            <ListChecks size={15} color="#34d399" />
+            <span>Dò Vé & Tiện Ích</span>
           </button>
         </nav>
 

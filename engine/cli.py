@@ -63,6 +63,10 @@ def build_index():
     
     logger.info("Sinh bộ số mẫu theo thuật toán & Báo cáo Backtest...")
     generate_ml_insights()
+
+    logger.info("Cập nhật giá trị Jackpot...")
+    from engine.crawlers.jackpot import sync_and_export_jackpots
+    sync_and_export_jackpots()
     
     typer.echo("Đã hoàn tất xây dựng ma trận và xuất chỉ mục tra cứu!")
 

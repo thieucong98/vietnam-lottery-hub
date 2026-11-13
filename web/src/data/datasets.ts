@@ -1,5 +1,6 @@
 import {
   BacNhoData,
+  JackpotData,
   LotteryIndexData,
   MLInsightsData,
   NumberAppearance,
@@ -33,6 +34,7 @@ export interface DatasetMap {
   xsmbDraws: XSMBHistoricalDraw[];
   vietlott655Draws: VietlottDrawsData;
   vietlott645Draws: VietlottDrawsData;
+  jackpot: JackpotData;
 }
 
 export type DatasetKey = keyof DatasetMap;
@@ -54,6 +56,7 @@ export const DATASETS: { [K in DatasetKey]: DatasetSpec<DatasetMap[K]> } = {
   xsmbDraws: { url: bundleUrl('xsmb_draws.json'), parse: decodeXsmbDraws },
   vietlott655Draws: { url: bundleUrl('vietlott_655_draws.json') },
   vietlott645Draws: { url: bundleUrl('vietlott_645_draws.json') },
+  jackpot: { url: dataUrl('jackpot.json') },
 };
 
 export const STATS_DATASET: Record<LotteryGame, DatasetKey & `${string}Stats`> = {

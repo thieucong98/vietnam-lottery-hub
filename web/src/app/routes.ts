@@ -4,7 +4,7 @@
  */
 import type { LotteryGame, VietlottGame } from '../data/datasets';
 
-export type TabId = 'xsmb' | 'vietlott_655' | 'vietlott_645' | 'keno_3d' | 'heatmap' | 'gan' | 'bacnho' | 'filter' | 'ai';
+export type TabId = 'xsmb' | 'vietlott_655' | 'vietlott_645' | 'keno_3d' | 'heatmap' | 'gan' | 'bacnho' | 'filter' | 'ai' | 'tools';
 
 export const TAB_PATHS: Record<TabId, string> = {
   xsmb: '/',
@@ -16,10 +16,31 @@ export const TAB_PATHS: Record<TabId, string> = {
   bacnho: '/bac-nho',
   filter: '/loc-ve',
   ai: '/thuat-toan',
+  tools: '/do-ve',
 };
+
+// ---------- Tiện ích (Phase 3): dò vé, vé của tôi, lịch quay & Jackpot, tra cứu kỳ, chơi có trách nhiệm ----------
+
+export type ToolId = 'check' | 'my_tickets' | 'schedule' | 'results' | 'budget';
+export const TOOL_PATHS: Record<ToolId, string> = {
+  check: '/do-ve',
+  my_tickets: '/ve-cua-toi',
+  schedule: '/lich-quay',
+  results: '/ket-qua',
+  budget: '/choi-co-trach-nhiem',
+};
+
+export function toolFromPath(pathname: string): ToolId | undefined {
+  const first = `/${pathname.split('/')[1] ?? ''}`;
+  return (Object.entries(TOOL_PATHS) as [ToolId, string][]).find(([, p]) => p === first)?.[0];
+}
+
+/** Trò chơi trong URL tiện ích: xsmb, 655, 645 */
+export type ToolGame = 'xsmb' | 'vietlott_655' | 'vietlott_645';
 
 /** Tab đang chọn trên thanh điều hướng, suy ra từ đường dẫn trang */
 export function tabFromPath(pathname: string): TabId {
+  if (toolFromPath(pathname)) return 'tools';
   if (pathname.startsWith('/vietlott/645')) return 'vietlott_645';
   if (pathname.startsWith('/vietlott')) return 'vietlott_655';
   const first = `/${pathname.split('/')[1] ?? ''}`;
@@ -69,7 +90,25 @@ export const paths = {
   keno: (view: KenoView = 'keno') => withSlug(TAB_PATHS.keno_3d, KENO_VIEW_SLUGS[view]),
   filter: (view: FilterView = 'vietlott_filter') => withSlug(TAB_PATHS.filter, FILTER_VIEW_SLUGS[view]),
   legal: () => '/phap-ly',
+  /** Dò vé, nạp sẵn danh sách vé: /do-ve?game=xsmb&ngay=2026-11-11&ve=74129.00972 */
+  check: (game?: ToolGame, date?: string, tickets?: string[]) => {
+    const q = new URLSearchParams();
+    if (game) q.set('game', GAME_PARAM[game]);
+    if (date) q.set('ngay', date);
+    if (tickets && tickets.length) q.set('ve', tickets.join('.'));
+    const qs = q.toString();
+    return qs ? `${TOOL_PATHS.check}?${qs}` : TOOL_PATHS.check;
+  },
+  myTickets: () => TOOL_PATHS.my_tickets,
+  schedule: () => TOOL_PATHS.schedule,
+  /** Kết quả một kỳ: /ket-qua/xsmb/2026-11-11, /ket-qua/655/01422 */
+  result: (game?: ToolGame, key?: string) =>
+    game ? `${TOOL_PATHS.results}/${GAME_PARAM[game]}${key ? `/${key}` : ''}` : TOOL_PATHS.results,
+  budget: () => TOOL_PATHS.budget,
 };
+
+/** Phân tách tham số `ve` của /do-ve (vé cách nhau bởi dấu chấm; số trong vé Vietlott cách nhau bởi gạch ngang) */
+export const parseTicketParam = (value: string | null) => (value ?? '').split('.').map((t) => t.trim()).filter(Boolean).slice(0, 50);
 
 // ---------- Tra cứu (mở dạng hộp thoại phủ lên trang hiện tại) ----------
 

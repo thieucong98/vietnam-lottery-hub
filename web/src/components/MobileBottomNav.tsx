@@ -13,6 +13,7 @@ import {
   Brain,
   ShieldCheck,
   ChevronRight,
+  ListChecks,
 } from 'lucide-react';
 import { useDialogBehavior } from '../ui/useDialogBehavior';
 
@@ -46,6 +47,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     'bacnho',
     'filter',
     'ai',
+    'tools',
   ].includes(currentTab);
 
   const handleSelectTab = (tab: string) => {
@@ -179,6 +181,47 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
             {/* Drawer Options Grid */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+
+              {/* Option: Dò vé & tiện ích (Phase 3) */}
+              <button
+                onClick={() => handleSelectTab('tools')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  background: currentTab === 'tools' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                  border: currentTab === 'tools' ? '1px solid var(--accent-emerald)' : '1px solid var(--border-subtle)',
+                  color: 'var(--text-main)',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      background: 'rgba(16, 185, 129, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-emerald)',
+                    }}
+                  >
+                    <ListChecks size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>Dò Vé & Tiện Ích</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                      Dò nhiều vé, Vé của tôi, lịch quay & Jackpot, ngân sách
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight size={18} color="var(--text-dim)" />
+              </button>
 
               {/* Option: Ma Trận Nhiệt */}
               <button

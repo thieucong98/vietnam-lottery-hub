@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import type { LotteryGame } from '../data/datasets';
-import { isOverlayPath, LookupTarget, lookupPath, lookupTargetFromText, paths, TAB_PATHS, TabId } from './routes';
+import { isOverlayPath, LookupTarget, lookupPath, lookupTargetFromText, paths, TAB_PATHS, TabId, ToolId, TOOL_PATHS } from './routes';
 
 /** State gắn vào URL của hộp thoại: trang nằm phía sau hộp thoại */
 export interface OverlayState {
@@ -34,6 +34,7 @@ export function useAppNavigation() {
   return useMemo(
     () => ({
       goTab: (tab: TabId) => navigate(TAB_PATHS[tab]),
+      goTool: (tool: ToolId) => navigate(TOOL_PATHS[tool]),
       openLookup: (target: LookupTarget) => openOverlay(lookupPath(target)),
       openNumber: (num: string, game: LotteryGame = 'xsmb') =>
         openOverlay(lookupPath({ mode: 'single', game, numbers: [num.padStart(2, '0')] })),

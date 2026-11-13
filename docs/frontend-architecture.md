@@ -63,6 +63,11 @@ Dùng `HashRouter` vì GitHub Pages không có rewrite cho SPA. Mọi đường 
 | `/#/tra-cuu/bo-so?game=645&so=03-11` | Hộp thoại tra cứu bộ số Vietlott |
 | `/#/tra-cuu/cap?game=xsmb&so=68-86` | Hộp thoại tra cứu cặp số |
 | `/#/phap-ly` | Hộp thoại tuyên bố pháp lý |
+| `/#/do-ve?game=xsmb&ngay=2026-11-11&ve=74129.00972` | Dò nhiều vé theo cơ cấu giải (`game`: `xsmb`, `655`, `645`; vé cách nhau bởi dấu chấm, số trong vé Vietlott cách nhau bởi gạch ngang) |
+| `/#/ve-cua-toi` | Vé của tôi (lưu trên máy, tự dò khi có kết quả) |
+| `/#/lich-quay` | Lịch quay, đếm ngược, Jackpot hiện tại và lịch sử |
+| `/#/ket-qua/xsmb/2026-11-11`, `/#/ket-qua/655/01422` | Kết quả một kỳ theo ngày hoặc mã kỳ, chia sẻ ảnh/link |
+| `/#/choi-co-trach-nhiem` | Ngân sách tháng, sổ chi tiêu, cảnh báo, nơi hỗ trợ |
 
 Link cũ dạng `?tab=heatmap` được chuyển sang URL mới trong `main.tsx`.
 
@@ -236,13 +241,27 @@ npx playwright install --with-deps chromium
 npm run test:e2e             # Smoke test trên bản build, desktop và mobile (Pixel 7)
 ```
 
-5 luồng smoke test (`e2e/smoke.spec.ts`): trang chủ và dung lượng dữ liệu lúc mở; tra cứu một số qua URL và đóng bằng Esc; dò bộ số Vietlott qua URL; tạo vé ở bộ lọc; điều hướng bằng URL và nút back.
+5 luồng smoke test (`e2e/smoke.spec.ts`): trang chủ và dung lượng dữ liệu lúc mở; tra cứu một số qua URL và đóng bằng Esc; dò bộ số Vietlott qua URL; tạo vé ở bộ lọc; điều hướng bằng URL và nút back. 5 luồng tiện ích (`e2e/tools.spec.ts`): dò nhiều vé XSMB; dò vé Vietlott từ URL và lưu; Vé của tôi (thêm, tự dò, xuất/nhập JSON); nhắc vé có kết quả mới; lịch quay, tra cứu kỳ và ngân sách.
 
 CI (`.github/workflows/compliance.yml`) chạy compliance lint, pytest, kiểm tra schema dữ liệu, ESLint, Vitest, build, ngân sách dung lượng, compliance lint trên bản build và Playwright cho mọi PR vào `main`.
 
 Đo Lighthouse mobile (Performance) trên bản build cục bộ, Lighthouse 12.8, mô phỏng mạng di động: 93 (FCP 2,1 s, LCP 2,7 s, TBT 130-150 ms, CLS 0-0,06). Thay đổi chính để đạt: tải dữ liệu theo màn hình, tách mã theo route, font tự host có preload thay cho Google Fonts.
 
-## 7. Nguyên tắc tuân thủ khi viết mã mới
+## 7. Tiện ích (Phase 3)
+
+| Thành phần | Vị trí | Ghi chú |
+| --- | --- | --- |
+| Dò vé XSMB theo cơ cấu giải | `utils/xsmbTicket.ts` | Vé 5 chữ số; số trong `raw_prizes` là số nguyên đã mất số 0 đầu nên được đệm theo số chữ số của từng giải. Dữ liệu không có ký hiệu vé, vé trùng 5 số ĐB được báo "ĐB hoặc phụ ĐB". |
+| Dò vé Vietlott, vé bao | `utils/vietlottTicket.ts` | Vé 6 số, bao 5, bao 7-18; tách thành vé con 6 số như cách Vietlott tính thưởng. |
+| Vé của tôi | `utils/myTickets.ts`, `features/tickets/` | localStorage `vlh_my_tickets_v1`, tối đa 500 vé; xuất/nhập JSON (`format: vietnam-lottery-hub/my-tickets`); `TicketResultsBanner` nhắc vé có kết quả mới chỉ bằng `summary.json`. |
+| Lịch quay | `utils/drawSchedule.ts` | Giờ Việt Nam (UTC+7). Cùng lịch với `DRAW_SCHEDULE` trong `engine/notifications/telegram_bot.py`; đổi một chỗ thì đổi cả hai. |
+| Jackpot | `data/jackpot.json` | Sinh bởi `engine/crawlers/jackpot.py` từ trang kết quả vietlott.vn. Trang này có thể chặn truy cập từ ngoài Việt Nam (HTTP 403); khi đó tệp giữ dữ liệu cũ hoặc rỗng và giao diện liên kết tới trang chính thức. |
+| Ngân sách | `utils/budget.ts`, `pages/BudgetPage.tsx` | localStorage `vlh_budget_v1`; cảnh báo từ 80% ngân sách và trước khi ghi khoản làm vượt. |
+| Ảnh chia sẻ | `features/draw-lookup/shareImage.ts` | Vẽ bằng canvas trên máy, không upload. |
+
+Dữ liệu người dùng đọc qua `data/useLocalStore.ts`: mọi giá trị đọc ra đi qua hàm `sanitize*`, nên dữ liệu hỏng hoặc file nhập sai không làm hỏng trang. Logic dò vé của Telegram bot (`engine/notifications/ticket_check.py`) dùng cùng quy tắc; `tests/test_bot_phase3.py` dùng lại các trường hợp trong `xsmbTicket.test.ts` và `vietlottTicket.test.ts`.
+
+## 8. Nguyên tắc tuân thủ khi viết mã mới
 
 Áp dụng cho mọi phase (chi tiết trong kế hoạch AUT-11 và `LEGAL_DISCLAIMER.md`):
 
