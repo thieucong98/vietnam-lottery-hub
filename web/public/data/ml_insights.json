@@ -1,19 +1,19 @@
 {
   "schema_version": 3,
   "product": "Power 6/55",
-  "latest_id": "01425",
-  "latest_date": "2026-11-17",
+  "latest_id": "01426",
+  "latest_date": "2026-11-19",
   "disclaimer": "Bộ số mẫu chỉ minh họa cách thuật toán hoạt động trên dữ liệu lịch sử. Mỗi kỳ quay là biến cố độc lập, nên các bộ số này không làm tăng xác suất trúng.",
   "jackpot_odds": "1/28.989.675",
   "sample_sets": [
     {
       "name": "Tần suất cao (Hot Numbers)",
       "sample_picks": [
-        "05",
         "07",
-        "09",
         "11",
+        "14",
         "18",
+        "23",
         "27"
       ],
       "description": "Bộ số mẫu theo thuật toán Frequency (N=50) (chỉ minh họa)"
@@ -21,11 +21,11 @@
     {
       "name": "Số lâu chưa về (Cold Numbers)",
       "sample_picks": [
-        "03",
         "04",
         "08",
         "15",
         "32",
+        "40",
         "48"
       ],
       "description": "Bộ số mẫu theo thuật toán Long Absence (Số lâu chưa về) (chỉ minh họa)"
@@ -33,24 +33,24 @@
     {
       "name": "Suy giảm số mũ (Exponential)",
       "sample_picks": [
-        "01",
         "05",
         "07",
         "18",
         "20",
-        "41"
+        "23",
+        "38"
       ],
       "description": "Bộ số mẫu theo thuật toán Exponential Decay (λ=0.97) (chỉ minh họa)"
     },
     {
       "name": "Chuỗi Markov (Markov Chain)",
       "sample_picks": [
-        "01",
-        "19",
+        "03",
+        "08",
         "22",
-        "24",
-        "49",
-        "51"
+        "29",
+        "32",
+        "34"
       ],
       "description": "Bộ số mẫu theo thuật toán Markov Chain (Bậc 1) (chỉ minh họa)"
     }
@@ -61,9 +61,9 @@
       "simulations": 1000,
       "expected_average": 0.6545,
       "random": {
-        "mean_average": 0.6508,
-        "low_95": 0.4595,
-        "high_95": 0.84,
+        "mean_average": 0.6558,
+        "low_95": 0.46,
+        "high_95": 0.86,
         "histogram": {
           "average_matches": [
             0.38,
@@ -95,59 +95,51 @@
             0.9,
             0.92,
             0.94,
-            0.96,
-            0.98,
-            1.0,
-            1.02,
-            1.04
+            0.96
           ],
           "counts": [
             2,
-            3,
-            10,
-            10,
-            15,
-            20,
+            1,
+            4,
+            8,
+            17,
             19,
+            35,
+            41,
+            41,
+            44,
+            59,
+            67,
+            76,
+            72,
+            64,
+            66,
+            68,
+            74,
+            65,
             37,
             39,
-            58,
-            60,
-            75,
-            68,
-            90,
-            84,
-            77,
-            64,
-            56,
-            46,
-            39,
-            33,
-            30,
-            21,
-            20,
+            28,
+            32,
+            12,
+            9,
             8,
             4,
-            5,
-            5,
-            0,
-            0,
-            0,
-            0,
-            1,
-            1
+            2,
+            2,
+            4
           ]
         }
       },
       "strategies": [
         {
           "strategy_name": "Long Absence (Số lâu chưa về)",
-          "average_matches": 0.76,
-          "total_matches": 38,
-          "max_match_in_one_draw": 3,
-          "hit_rate_at_least_3": 0.02,
+          "average_matches": 0.72,
+          "total_matches": 36,
+          "max_match_in_one_draw": 2,
+          "hit_rate_at_least_3": 0.0,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.1678
+          "p_value": 0.3167
         },
         {
           "strategy_name": "Frequency (N=30)",
@@ -156,7 +148,7 @@
           "max_match_in_one_draw": 3,
           "hit_rate_at_least_3": 0.02,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.7872
+          "p_value": 0.7882
         },
         {
           "strategy_name": "Frequency (N=100)",
@@ -165,7 +157,7 @@
           "max_match_in_one_draw": 2,
           "hit_rate_at_least_3": 0.0,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.8452
+          "p_value": 0.8322
         },
         {
           "strategy_name": "Markov Chain (Bậc 1)",
@@ -174,7 +166,7 @@
           "max_match_in_one_draw": 2,
           "hit_rate_at_least_3": 0.0,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.9211
+          "p_value": 0.9141
         },
         {
           "strategy_name": "Exponential Decay (λ=0.97)",
@@ -183,7 +175,7 @@
           "max_match_in_one_draw": 2,
           "hit_rate_at_least_3": 0.0,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.9401
+          "p_value": 0.9491
         }
       ]
     },
@@ -192,11 +184,15 @@
       "simulations": 1000,
       "expected_average": 0.6545,
       "random": {
-        "mean_average": 0.6556,
+        "mean_average": 0.6553,
         "low_95": 0.5733,
-        "high_95": 0.7333,
+        "high_95": 0.7433,
         "histogram": {
           "average_matches": [
+            0.5133,
+            0.5167,
+            0.52,
+            0.5233,
             0.5267,
             0.53,
             0.5333,
@@ -276,85 +272,99 @@
             0.78,
             0.7833,
             0.7867,
-            0.79
+            0.79,
+            0.7933,
+            0.7967,
+            0.8,
+            0.8033,
+            0.8067
           ],
           "counts": [
             1,
             0,
             0,
             0,
+            2,
+            0,
+            1,
+            1,
+            0,
             1,
             2,
-            1,
-            1,
-            1,
+            0,
+            2,
+            2,
+            2,
             2,
             3,
-            4,
-            1,
-            8,
-            1,
+            5,
+            6,
+            5,
+            6,
+            5,
             7,
             9,
-            4,
             11,
-            6,
             11,
-            4,
             11,
-            18,
-            16,
-            21,
-            16,
-            12,
-            25,
+            14,
+            15,
             29,
-            31,
+            25,
+            21,
+            23,
             22,
             27,
-            27,
-            42,
-            23,
+            31,
+            19,
+            36,
+            33,
+            25,
             34,
-            26,
-            39,
-            33,
-            33,
-            39,
-            28,
-            19,
-            27,
-            35,
-            27,
-            17,
             30,
-            21,
-            21,
+            24,
+            32,
+            35,
+            34,
+            27,
+            28,
+            24,
+            24,
+            24,
             23,
-            15,
-            19,
-            13,
-            12,
-            13,
-            12,
+            22,
+            27,
+            18,
+            16,
+            18,
+            11,
+            21,
+            18,
+            9,
             12,
             10,
-            10,
-            8,
+            9,
+            6,
             5,
-            1,
             5,
-            1,
+            9,
+            4,
+            6,
             3,
-            1,
-            1,
-            1,
+            2,
+            3,
             3,
             2,
             1,
+            2,
+            0,
+            0,
+            0,
             1,
             0,
+            1,
             0,
+            1,
             0,
             0,
             0,
@@ -370,7 +380,7 @@
           "max_match_in_one_draw": 3,
           "hit_rate_at_least_3": 0.0233,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.1169
+          "p_value": 0.1349
         },
         {
           "strategy_name": "Exponential Decay (λ=0.97)",
@@ -379,7 +389,7 @@
           "max_match_in_one_draw": 3,
           "hit_rate_at_least_3": 0.0167,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.3516
+          "p_value": 0.3417
         },
         {
           "strategy_name": "Long Absence (Số lâu chưa về)",
@@ -388,25 +398,25 @@
           "max_match_in_one_draw": 3,
           "hit_rate_at_least_3": 0.0167,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.5035
+          "p_value": 0.4975
         },
         {
           "strategy_name": "Frequency (N=100)",
-          "average_matches": 0.647,
-          "total_matches": 194,
+          "average_matches": 0.643,
+          "total_matches": 193,
           "max_match_in_one_draw": 4,
           "hit_rate_at_least_3": 0.0133,
           "hit_rate_at_least_4": 0.0033,
-          "p_value": 0.6024
+          "p_value": 0.6104
         },
         {
           "strategy_name": "Markov Chain (Bậc 1)",
-          "average_matches": 0.647,
-          "total_matches": 194,
+          "average_matches": 0.643,
+          "total_matches": 193,
           "max_match_in_one_draw": 3,
           "hit_rate_at_least_3": 0.01,
           "hit_rate_at_least_4": 0.0,
-          "p_value": 0.6024
+          "p_value": 0.6104
         }
       ]
     }
