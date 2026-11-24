@@ -9,7 +9,7 @@
 [![Legal Compliance](https://img.shields.io/badge/Compliance-Legal%20Disclaimer%20%26%2018%2B-emerald.svg)](LEGAL_DISCLAIMER.md)
 
 > 🌐 **Live Web App:** [https://thieucong98.github.io/vietnam-lottery-hub/](https://thieucong98.github.io/vietnam-lottery-hub/)  
-> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 24/11/2026 00:38:06 (Giờ Việt Nam)  
+> 🔄 **Cập nhật dữ liệu tự động lần cuối:** 24/11/2026 15:02:59 (Giờ Việt Nam)  
 > 📊 **Nguồn dữ liệu:** Cào tự động và lưu trữ lịch sử hơn 20 năm (2005 - nay) từ Hội đồng Xổ số Kiến thiết & Vietlott.
 
 ---
@@ -80,18 +80,18 @@ Giám sát 20 bóng số Keno mỗi kỳ, Bàn cờ nhiệt phân tích vùng n�
 
 ## 🏆 KẾT QUẢ MỞ THƯỞNG MỚI NHẤT
 
-### 1. Xổ Số Kiến Thiết Miền Bắc (2026-11-23)
+### 1. Xổ Số Kiến Thiết Miền Bắc (2026-11-24)
 
 | Xổ Số Kiến Thiết Miền Bắc | Thống Kê Đầu - Đuôi Lô Tô |
 | :--- | :--- |
-| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-11-23</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:#ef4444; font-size:1.2em;">94495</strong></td></tr><tr><td>Giải Nhất</td><td><strong>61045</strong></td></tr><tr><td>Giải Nhì</td><td>37123, 28361</td></tr><tr><td>Giải Ba</td><td>65151, 37136, 02163<br>34224, 96461, 90071</td></tr><tr><td>Giải Tư</td><td>6889, 2594, 2250, 0000</td></tr><tr><td>Giải Năm</td><td>6926, 4809, 5179<br>1028, 9121, 4735</td></tr><tr><td>Giải Sáu</td><td>512, 375, 889</td></tr><tr><td>Giải Bảy</td><td>50, 51, 52, 57</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>0, 9</td></tr><tr><td><strong>1</strong></td><td>2</td></tr><tr><td><strong>2</strong></td><td>1, 3, 4, 6, 8</td></tr><tr><td><strong>3</strong></td><td>5, 6</td></tr><tr><td><strong>4</strong></td><td>5</td></tr><tr><td><strong>5</strong></td><td>0, 0, 1, 1, 2, 7</td></tr><tr><td><strong>6</strong></td><td>1, 1, 3</td></tr><tr><td><strong>7</strong></td><td>1, 5, 9</td></tr><tr><td><strong>8</strong></td><td>9, 9</td></tr><tr><td><strong>9</strong></td><td>4, 5</td></tr></table> |
+| <table><tr><td><strong>Ngày quay</strong></td><td><strong>2026-11-24</strong></td></tr><tr><td><strong>Giải Đặc Biệt</strong></td><td><strong style="color:#ef4444; font-size:1.2em;">17489</strong></td></tr><tr><td>Giải Nhất</td><td><strong>26330</strong></td></tr><tr><td>Giải Nhì</td><td>72715, 16485</td></tr><tr><td>Giải Ba</td><td>70775, 30384, 34195<br>58278, 08799, 20923</td></tr><tr><td>Giải Tư</td><td>1388, 9253, 6683, 5500</td></tr><tr><td>Giải Năm</td><td>3411, 4879, 7065<br>7649, 0267, 0653</td></tr><tr><td>Giải Sáu</td><td>749, 219, 324</td></tr><tr><td>Giải Bảy</td><td>98, 27, 40, 63</td></tr></table> | <table><tr><th>Đầu</th><th>Đuôi Lô Tô</th></tr><tr><td><strong>0</strong></td><td>0</td></tr><tr><td><strong>1</strong></td><td>1, 5, 9</td></tr><tr><td><strong>2</strong></td><td>3, 4, 7</td></tr><tr><td><strong>3</strong></td><td>0</td></tr><tr><td><strong>4</strong></td><td>0, 9, 9</td></tr><tr><td><strong>5</strong></td><td>3, 3</td></tr><tr><td><strong>6</strong></td><td>3, 5, 7</td></tr><tr><td><strong>7</strong></td><td>5, 8, 9</td></tr><tr><td><strong>8</strong></td><td>3, 4, 5, 8, 9</td></tr><tr><td><strong>9</strong></td><td>5, 8, 9</td></tr></table> |
 
 ---
 
 ### 2. Vietlott Power 6/55 & Mega 6/45
 
-* **Vietlott Power 6/55 (Kỳ #01427 - Ngày 2026-11-21):**  
-  `[07]` `[29]` `[44]` `[45]` `[50]` `[54]` | `★ [39]` (Số Đặc Biệt)
+* **Vietlott Power 6/55 (Kỳ #01428 - Ngày 2026-11-24):**  
+  `[36]` `[40]` `[43]` `[46]` `[50]` `[55]` | `★ [15]` (Số Đặc Biệt)
 
 * **Vietlott Mega 6/45 (Kỳ #01592 - Ngày 2026-11-22):**  
   `[01]` `[13]` `[14]` `[18]` `[23]` `[39]`
